@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Javier Orraca-Deatcu">
+<meta name="dcterms.date" content="2021-01-24">
+<meta name="description" content="RStudio’s annual conference saw roughly 17,000 attendees for their first global, all-virtual, 24-hour event. I attended several sessions throughout the day and I’ll highlight my favorite data bytes learned that day. I’ll also share relatable content for better modeling with R.">
+
+<title>Javier Orraca-Deatcu - rstudio::global tips, tricks, and more</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-127790709-3', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+<meta name="twitter:title" content="Javier Orraca-Deatcu - rstudio::global tips, tricks, and more">
+<meta name="twitter:description" content="RStudio’s annual conference saw roughly 17,000 attendees for their first global, all-virtual, 24-hour event. I attended several sessions throughout the day and I’ll highlight my favorite data bytes learned that day. I’ll also share relatable content for better modeling with R.">
+<meta name="twitter:image" content="https://www.javierorraca.com/posts/2021-01-24-rstudio-global/Javier_Profile.jpg">
+<meta name="twitter:creator" content="@JavierOrraca">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Javier Orraca-Deatcu</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/orraca"><i class="bi bi-linkedin" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/JavierOrraca"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw"><i class="bi bi-spotify" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JavOrraca"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">rstudio::global tips, tricks, and more</h1>
+                  <div>
+        <div class="description">
+          RStudio’s annual conference saw roughly 17,000 attendees for their first global, all-virtual, 24-hour event. I attended several sessions throughout the day and I’ll highlight my favorite data bytes learned that day. I’ll also share relatable content for better modeling with R.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">RStudio</div>
+                <div class="quarto-category">Conference</div>
+                <div class="quarto-category">tidymodels</div>
+                <div class="quarto-category">R</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      Javier Orraca-Deatcu 
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              Scatter Podcast
+            </p>
+        </div>
+      </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 24, 2021</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#fostering-positive-thinking" id="toc-fostering-positive-thinking" class="nav-link active" data-scroll-target="#fostering-positive-thinking">Fostering Positive Thinking</a></li>
+  <li><a href="#tidymodels" id="toc-tidymodels" class="nav-link" data-scroll-target="#tidymodels">Tidymodels</a>
+  <ul class="collapse">
+  <li><a href="#what-is-it" id="toc-what-is-it" class="nav-link" data-scroll-target="#what-is-it">What is it?</a></li>
+  <li><a href="#irregular-grid-searches" id="toc-irregular-grid-searches" class="nav-link" data-scroll-target="#irregular-grid-searches">Irregular Grid Searches</a>
+  <ul class="collapse">
+  <li><a href="#random-grid-search" id="toc-random-grid-search" class="nav-link" data-scroll-target="#random-grid-search">Random Grid Search</a></li>
+  <li><a href="#space-filling-designs" id="toc-space-filling-designs" class="nav-link" data-scroll-target="#space-filling-designs">Space-Filling Designs</a></li>
+  </ul></li>
+  <li><a href="#usemodels" id="toc-usemodels" class="nav-link" data-scroll-target="#usemodels">usemodels</a></li>
+  <li><a href="#stacks" id="toc-stacks" class="nav-link" data-scroll-target="#stacks">stacks</a>
+  <ul class="collapse">
+  <li><a href="#ensemble-models" id="toc-ensemble-models" class="nav-link" data-scroll-target="#ensemble-models">Ensemble Models</a></li>
+  <li><a href="#stacks-grammar" id="toc-stacks-grammar" class="nav-link" data-scroll-target="#stacks-grammar">stacks Grammar</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I attended several sessions throughout rstudio::global and below are my favorite reminders, takeaways, and new concepts that I learned. You’ll gain the most from this article if you are comfortable with predictive analytics with R and have been exposed to the <code>tidyverse</code> and <code>tidymodels</code> collections of packages. If you missed the conference, all of the presentations and slides will be made available on RStudio’s website soon. Some philosophical, some technical.<br><br> <img src="./images/global-logo-dark.jpg" class="img-fluid" alt="rstudio::global(2021) conference"></p>
+<section id="fostering-positive-thinking" class="level1">
+<h1>Fostering Positive Thinking</h1>
+<p>The opening keynote presentation with RStudio’s Chief Data Scientist, Hadley Wickham, was super refreshing and very encouraging to hear. In short, Wickham encouraged analysts and data scientists to change the way you approach challenges when programming or maintaining code.</p>
+<p>Below are several reminders that Wickham discussed… If you’re your harshest critic, revisit these. I know that I will:</p>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Automatic Thoughts</th>
+<th>Balanced Alternatives</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>I must be a moron if I can’t perform this “simple” task.</td>
+<td>This isn’t something I do very often so it’s unreasonable to expect that I’d automatically be an expert at it.</td>
+</tr>
+<tr class="even">
+<td>The documentation is useless and doesn’t help me at all.</td>
+<td>It’s not possible to document every possible existing situation, but I can still read the docs and learn something.</td>
+</tr>
+<tr class="odd">
+<td>This was a total waste of time. I’ll never get those four hours back again.</td>
+<td>Maybe I didn’t succeed in my original goal, but I made some progress, and I gained valuable insights for the next time that I try.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tidymodels" class="level1">
+<h1>Tidymodels</h1>
+<section id="what-is-it" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-it">What is it?</h3>
+<p>Coming from a converted <code>caret</code>-ista, it wasn’t an easy transition to the full <code>tidymodels</code> framework. I liked the way <code>caret</code> <em>felt</em>, and I did almost everything with it from resampling, modeling, tuning, to model evaluation. Enter <code>tidymodels</code>, a framework that feels like a deconstructed <code>caret</code> - Each major <code>caret</code> feature has been enhanced and wrapped into its own package. I’ve been using this framework for roughly one year and the rate at which this ecosystem has evolved has been impressive.</p>
+<p><code>tidymodels</code> is a collection of tidy-friendly packages written with a consistent vocabulary for reproducible machine learning workflows. Its core packages include the following:</p>
+<ul>
+<li><p><a href="https://rsample.tidymodels.org/">rsample</a>: provides infrastructure for efficient data splitting and resampling</p></li>
+<li><p><a href="https://parsnip.tidymodels.org/">parsnip</a>: a tidy, unified interface to models that can be used to try a range of models without getting bogged down in the syntactical minutiae of the underlying packages</p></li>
+<li><p><a href="https://recipes.tidymodels.org/">recipes</a>: a tidy interface to data pre-processing tools for feature engineering</p></li>
+<li><p><a href="https://workflows.tidymodels.org/">workflows</a>: expands the traditional model-only recipe to a much more holistic blueprint for pre-processing, modeling, post-processing, and evaluation</p></li>
+<li><p><a href="https://tune.tidymodels.org/">tune</a>: helps you optimize the hyperparameters of your model and pre-processing steps</p></li>
+<li><p><a href="https://yardstick.tidymodels.org/">yardstick</a>: measures the effectiveness of models using performance metrics</p></li>
+<li><p><a href="https://broom.tidymodels.org/">broom</a>: converts the information in common statistical R objects into user-friendly, predictable formats</p></li>
+<li><p><a href="https://dials.tidymodels.org/">dials</a>: creates and manages tuning parameters and parameter grids</p></li>
+<li><p><a href="https://usemodels.tidymodels.org/">usemodels</a>: a helpful way to quickly create code snippets to fit models using the tidymodels framework</p>
+<ul>
+<li>At the time of writing this, <code>usemodels</code> is still in very early development (version 0.1.0.). This package follows the <code>usethis</code> philosophy of automating repetitive project development tasks but with a focus on modeling. <code>usemodels</code> helped me fully transition from the <code>caret</code> meta-engine to <code>parsnip</code> + <code>tune</code> + <code>dials</code> + more of the <code>tidymodels</code> framework.</li>
+</ul></li>
+<li><p><a href="https://stacks.tidymodels.org/">stacks</a>: similar to <code>usemodels</code>, this is an early-stage package for model stacking, an ensembling method that takes the outputs of many models and combines them to generate a new model that generates predictions informed by each of its members</p></li>
+</ul>
+</section>
+<section id="irregular-grid-searches" class="level2">
+<h2 class="anchored" data-anchor-id="irregular-grid-searches">Irregular Grid Searches</h2>
+<p>Irregular grid searches help you tune your models by cycling through randomized hyperparameters in an effort to yield the best (or at least better) performance. I’ve been using the <code>dials</code> package to create Latin hypercubes which is explained below, highlighting the benefits of this space-filling design vs a purely randomized irregular grid search. Max Kuhn’s <em>“New in tidymodels”</em> rstudio::global event provided me with a fresh reminder about <em>why</em> these methods are beneficial and <em>how</em> they actually optimize performance.</p>
+<p>The documentation below was copied almost entirely from Chapter 13 of Max Kuhn and Julia Silge’s <a href="https://www.tmwr.org/"><em>Tidy Modeling with R</em></a> (“TMWR”). I’ve deleted certain bits and added minimal helper comments in brackets. If you find yourself statistically programming, bootstrapping / resampling, improving model performance through grid searches, maybe even ensemble stacking, I’d highly recommend that you bookmark the TMWR book.</p>
+<section id="random-grid-search" class="level3">
+<h3 class="anchored" data-anchor-id="random-grid-search">Random Grid Search</h3>
+<p>There a several options for creating non-regular grids. The first is to use random sampling across the range of parameters. The <code>grid_random()</code> function [of the <code>dials</code> package] generates independent uniform random numbers across the parameter ranges. If the parameter object has an associated transformation (such as we have for <code>penalty</code>), the random numbers are generated on the transformed scale. For example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_random</span>(<span class="at">size =</span> <span class="dv">1000</span>) <span class="sc">%&gt;%</span> <span class="co"># 'size' is the number of combinations</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   hidden_units      penalty           epochs    </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Min.   : 1.00   Min.   :0.0000   Min.   :  10  </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1st Qu.: 3.00   1st Qu.:0.0000   1st Qu.: 259  </span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Median : 6.00   Median :0.0000   Median : 480  </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mean   : 5.58   Mean   :0.0432   Mean   : 496  </span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.: 8.00   3rd Qu.:0.0050   3rd Qu.: 738  </span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Max.   :10.00   Max.   :0.9932   Max.   :1000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For <code>penalty</code>, the random numbers are uniform on the log (base 10) scale but the values in the grid are in the natural units.</p>
+<p>The issue with random grids is that, with small-to-medium grids, random values can result in overlapping parameter combinations. Also, the random grid needs to cover the whole parameter space but the likelihood of good coverage increases with the number of grid values. Even for a sample of 15 candidate points, this plot shows some overlap between points for our example multilayer perceptron:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">200</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The 'original = FALSE' option keeps penalty in log10 units</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_random</span>(<span class="at">size =</span> <span class="dv">15</span>, <span class="at">original =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .panel_x, <span class="at">y =</span> .panel_y)) <span class="sc">+</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_blank</span>() <span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_matrix</span>(<span class="fu">vars</span>(hidden_units, penalty, epochs), <span class="at">layer.diag =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Random design with 15 candidates"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/grid-random-matrix-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Random grid search using dials::grid_random()</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="space-filling-designs" class="level3">
+<h3 class="anchored" data-anchor-id="space-filling-designs">Space-Filling Designs</h3>
+<p>A much better approach is to use a set of experimental designs called space-filling designs. While different design methods have slightly different goals, they generally find a configuration of points that cover the parameter space with the smallest chance of overlapping or redundant values. See <a href="https://www.asc.ohio-state.edu/santner.1/TJS-BJW-WIN/master-driver.pdf">Santner et al.&nbsp;(2003)</a> for an overview of space-filling designs.</p>
+<p>The <code>dials</code> package contains functions for Latin hypercube and maximum entropy designs. As with <code>dials::grid_random()</code>, the primary inputs are the number of parameter combinations and a parameter object. Let’s compare the above random design with a Latin hypercube design for 15 candidate parameter values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">200</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_latin_hypercube</span>(<span class="at">size =</span> <span class="dv">15</span>, <span class="at">original =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .panel_x, <span class="at">y =</span> .panel_y)) <span class="sc">+</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_blank</span>() <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_matrix</span>(<span class="fu">vars</span>(hidden_units, penalty, epochs), <span class="at">layer.diag =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Latin Hypercube design with 15 candidates"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/grid-sfd-compare-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Latin hypercube designed using the dials::grid_latin_hypercube() helper</figcaption><p></p>
+</figure>
+</div>
+<p>While not perfect, this design spaces the points further away from one another.</p>
+<p>Space-filling designs can be very effective at representing the parameter space. The default design used by the <code>tune</code> package is the maximum entropy design. These tend to produce grids that cover the candidate space well and drastically increase the chances of finding good results.</p>
+<p>To learn more about advanced <em>iterative search</em> methods such as Bayesian optimization and simulated annealing, please visit <a href="https://www.tmwr.org/iterative-search.html">Chapter 14 of TMWR</a>. Max Kuhn covered these advanced techniques during his <code>tidymodels</code> rstudio::global event and I haven’t had a chance to try these iterative search methods.</p>
+</section>
+</section>
+<section id="usemodels" class="level2">
+<h2 class="anchored" data-anchor-id="usemodels">usemodels</h2>
+<p>In the spirit of sharing useful tips, tricks, and packages, I’d like to introduce you to Max Kuhn’s <code>usemodels</code> package. If you’re on the fence about adopting the <code>tidymodels</code> framework, this package is definitely for you. Even for experienced users, <code>usemodels</code> is an excellent way to quickly generate boilerplate code snippets that are algorithm-specific. This package is not yet on CRAN, so install it using the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installing usemodels from its GitHub repo</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tidymodels/usemodels"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Given a simple formula and a data set, the <code>use_*</code> functions can create code that is appropriate for the data (given the model). [Note: The model formula will be in the form of <code>y ~ a + b + c</code> or <code>y ~ .</code> if you plan on including all available variables in your model.]</p>
+<p>For example, using the <code>palmerpenguins</code> data with a <code>glmnet</code> model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usemodels)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">use_glmnet</span>(body_mass_g <span class="sc">~</span> ., <span class="at">data =</span> penguins)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: The below will be printed in your console with your model recipe and tailored</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># with the required pre-processing steps given your algorithm of choice (in this case,</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># glmnet). The `usemodels` output also provides the code structure for a reproducible </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># workflow, made possible with the `workflows` package. Should you choose to tune</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># your model, `usemodels` also provides code snippets for producing a grid of parameter</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># combinations to use with your hyperparameter tuning grid search.</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>glmnet_recipe <span class="ot">&lt;-</span> </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(<span class="at">formula =</span> body_mass_g <span class="sc">~</span> ., <span class="at">data =</span> penguins) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_novel</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>(), <span class="sc">-</span><span class="fu">all_nominal</span>()) </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>glmnet_spec <span class="ot">&lt;-</span> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linear_reg</span>(<span class="at">penalty =</span> <span class="fu">tune</span>(), <span class="at">mixture =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>) </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>glmnet_workflow <span class="ot">&lt;-</span> </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(glmnet_recipe) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(glmnet_spec) </span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>glmnet_grid <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">crossing</span>(<span class="at">penalty =</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">20</span>), <span class="at">mixture =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="dv">1</span>)) </span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>glmnet_tune <span class="ot">&lt;-</span> </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(glmnet_workflow, <span class="at">resamples =</span> <span class="fu">stop</span>(<span class="st">"add your rsample object"</span>), <span class="at">grid =</span> glmnet_grid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As of today’s date, this package includes templates available with the following code: <code>use_cubist</code>, <code>use_earth</code>, <code>use_glmnet</code>, <code>use_kknn</code>, <code>use_ranger</code>, and <code>use_xgboost</code></p>
+</section>
+<section id="stacks" class="level2">
+<h2 class="anchored" data-anchor-id="stacks">stacks</h2>
+<section id="ensemble-models" class="level3">
+<h3 class="anchored" data-anchor-id="ensemble-models">Ensemble Models</h3>
+<p>Similar to <code>usemodels</code>, this is a very early-stage package that you should start following. There are already several AI tools for producing “model stacks” or “ensemble models” such as <a href="http://h2o-release.s3.amazonaws.com/h2o/master/1735/docs-website/Ruser/Rinstall.html">H2O.ai</a>, <a href="https://community.datarobot.com/t5/resources/welcome-to-using-r-with-datarobot/ta-p/1770">DataRobot</a>, and a few others, however, <code>stacks</code> is the first purpose-built for use with <code>tidymodels</code>. The following narrative is copied almost directly from the <a href="https://stacks.tidymodels.org/">stacks website</a>.</p>
+<p><code>stacks</code> is an R package for model stacking that aligns with the <code>tidymodels</code>. Model stacking is an ensembling method that takes the outputs of many models and combines them to generate a new model - <em>referred to as an ensemble in this package</em> - that generates predictions informed by each of its members.</p>
+<p>The process goes something like this:</p>
+<ol type="1">
+<li><p>Define candidate ensemble members using functionality from rsample, parsnip, workflows, recipes, and tune</p></li>
+<li><p>Initialize a data_stack object with stacks()</p></li>
+<li><p>Iteratively add candidate ensemble members to the data_stack with add_candidates()</p></li>
+<li><p>Evaluate how to combine their predictions with blend_predictions()</p></li>
+<li><p>Fit candidate ensemble members with non-zero stacking coefficients with fit_members()</p></li>
+<li><p>Predict on new data with predict()</p></li>
+</ol>
+</section>
+<section id="stacks-grammar" class="level3">
+<h3 class="anchored" data-anchor-id="stacks-grammar">stacks Grammar</h3>
+<p>At the highest level, ensembles are formed from model definitions. In this package, model definitions are an instance of a minimal workflow, containing a model specification (as defined in the parsnip package) and, optionally, a preprocessor (as defined in the recipes package). Model definitions specify the form of candidate ensemble members.</p>
+<p><img src="./images/model_defs.png" class="img-fluid"></p>
+<p>To be used in the same ensemble, each of these model definitions must share the same resample. This rsample rset object, when paired with the model definitions, can be used to generate the tuning/fitting results objects for the candidate ensemble members with tune.</p>
+<p><img src="./images/candidates.png" class="img-fluid"></p>
+<p>Candidate members first come together in a data_stack object through the add_candidates() function. Principally, these objects are just tibbles, where the first column gives the true outcome in the assessment set (the portion of the training set used for model validation), and the remaining columns give the predictions from each candidate ensemble member. (When the outcome is numeric, there’s only one column per candidate ensemble member. Classification requires as many columns per candidate as there are levels in the outcome variable.) They also bring along a few extra attributes to keep track of model definitions.</p>
+<p><img src="./images/data_stack.png" class="img-fluid"></p>
+<p>Then, the data stack can be evaluated using blend_predictions() to determine to how best to combine the outputs from each of the candidate members. In the stacking literature, this process is commonly called meta-learning.</p>
+<p>The outputs of each member are likely highly correlated. Thus, depending on the degree of regularization you choose, the coefficients for the inputs of (possibly) many of the members will zero out—their predictions will have no influence on the final output, and those terms will thus be thrown out.</p>
+<p><img src="./images/coefs.png" class="img-fluid"></p>
+<p>These stacking coefficients determine which candidate ensemble members will become ensemble members. Candidates with non-zero stacking coefficients are then fitted on the whole training set, altogether making up a <code>model_stack</code> object.</p>
+<p><img src="./images/class_model_stack.png" class="img-fluid"></p>
+<p>This model stack object, outputted from <code>fit_members()</code>, is ready to predict on new data! The trained ensemble members are often referred to as base models in the stacking literature. To learn more about how to use <code>stacks</code>, check out the following excellent vignettes from the <code>tidymodels</code> team:</p>
+<ul>
+<li><p><a href="https://stacks.tidymodels.org/articles/basics.html">Getting Started with stacks</a></p></li>
+<li><p><a href="https://stacks.tidymodels.org/articles/classification.html">Classification Models with stacks</a></p></li>
+</ul>
+<p>Sources:</p>
+<ul>
+<li><p><a href="https://rstudio.com/conference/">rstudio::global(2021)</a></p></li>
+<li><p><a href="https://www.tmwr.org/">Tidy Modeling with R</a></p></li>
+<li><p><a href="https://www.tidymodels.org/">tidymodels</a></p></li>
+<li><p><a href="https://usemodels.tidymodels.org/">usemodels</a></p></li>
+<li><p><a href="https://stacks.tidymodels.org/">stacks</a></p></li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

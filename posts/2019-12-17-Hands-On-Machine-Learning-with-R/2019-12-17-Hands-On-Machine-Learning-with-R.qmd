@@ -1,0 +1,15 @@
+---
+title: "Book Rec: Hands-On Machine Learning with R"
+description: "Digging into Hands-On Machine Learning with R by Brad Boehmke, PhD, and Brandon Greenwell."
+date: 12-17-2019
+categories: [Machine Learning, R, Packages]
+image: images/HOMLR.jpg
+---
+
+![](./images/HOMLR.jpg)
+
+I am super excited to finally dig into Hands-On Machine Learning with R by [Brad Boehmke, Ph.D.](https://www.linkedin.com/in/brad-boehmke-ph-d-9b0a257/) and [Brandon Greenwell](https://www.linkedin.com/in/brandon-greenwell-90310b94/).
+
+There are a ton of solid ML books on the market for Python and R users but I've struggled with developing a best practice ML workflow to make maintainable code and to enhance my sampling, evaluation, and iteration process. As an R user, I'm glad to have this hands-on approach resource to improve my use of the ML stack within R.
+
+The full text and code samples are available online, for free: https://lnkd.in/gvmXY3W

@@ -1,0 +1,14 @@
+---
+title: "Detailed R Package Development Tutorial from Method Bites"
+description: "This is one of the best, most detailed, how-to guides for developing your own R package from A-to-Z"
+date: 09-13-2020
+categories: [Packages, R, Tutorial]
+image: images/methods_bites.png
+---
+
+I'll keep this short since all credit should go towards the amazing Cosima Meyer and Dennis Hammerschmidton... They compressed some of the most valuable steps for creating and deploying a package. This duo's work was published for the MZES Social Science Data Lab. If you want a detailed and easy-to-follow how-to for R package development, bookmark this step-by-step guide!
+
+![](./images/package_dev.png)
+
+Source:<br>
+* Methods Bites: [How to write your own R package and publish it on CRAN](https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/)

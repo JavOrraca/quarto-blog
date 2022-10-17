@@ -1,0 +1,14 @@
+---
+title: "What's New in dbplyr 2.0.0"
+description: "dbplyr, a database backend for dplyr, just released v2.0.0 today... Awesome stuff here!" 
+date: 11-04-2020
+categories: [tidyverse, Packages, R, SQL, dbplyr, dplyr]
+image: images/dbplyr_what_is_new.jpg_large
+---
+
+`dbplyr` 2.0.0 comes loaded with improvements including the translation of `dplyr`'s new `across()` function. If you aren't familiar with this library, `dbplyr` translates your `dplyr` syntax to SQL. I regularly connect to enterprise databases using R and have almost completely transitioned from SQL. Yes, SQL is awesome. Yes, using `dplyr` is a lot more fun!
+
+![](./images/dbplyr.jpeg)
+
+Source:<br>
+* tidyverse blog's [dbplyr 2.0.0 Official Announcement](https://www.tidyverse.org/blog/2020/11/dbplyr-2-0-0/)

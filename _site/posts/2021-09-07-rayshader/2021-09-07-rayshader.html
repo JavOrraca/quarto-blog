@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Javier Orraca-Deatcu">
+<meta name="dcterms.date" content="2021-09-07">
+<meta name="description" content="If you love beautiful 2D and 3D maps, now you can create your own with elevation data, the rayshader package, OpenStreetMap, and ggplot2.">
+
+<title>Javier Orraca-Deatcu - Beautiful Maps with Rayshader</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-127790709-3', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+<meta name="twitter:title" content="Javier Orraca-Deatcu - Beautiful Maps with Rayshader">
+<meta name="twitter:description" content="If you love beautiful 2D and 3D maps, now you can create your own with elevation data, the rayshader package, OpenStreetMap, and ggplot2.">
+<meta name="twitter:image" content="https://www.javierorraca.com/posts/2021-09-07-rayshader/Javier_Profile.jpg">
+<meta name="twitter:creator" content="@JavierOrraca">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Javier Orraca-Deatcu</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/orraca"><i class="bi bi-linkedin" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/JavierOrraca"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw"><i class="bi bi-spotify" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JavOrraca"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html">Resources</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Beautiful Maps with Rayshader</h1>
+                  <div>
+        <div class="description">
+          If you love beautiful 2D and 3D maps, now you can create your own with elevation data, the rayshader package, OpenStreetMap, and ggplot2.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">rayshader</div>
+                <div class="quarto-category">raster</div>
+                <div class="quarto-category">osmdata</div>
+                <div class="quarto-category">sf</div>
+                <div class="quarto-category">ggplot2</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <a href="https://www.javierorraca.com/">Javier Orraca-Deatcu</a> 
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://soundcloud.com/scatterpodcast">
+              Scatter Podcast
+              </a>
+            </p>
+        </div>
+      </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 7, 2021</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a>
+  <ul class="collapse">
+  <li><a href="#libraries" id="toc-libraries" class="nav-link" data-scroll-target="#libraries">Libraries</a></li>
+  <li><a href="#eda" id="toc-eda" class="nav-link" data-scroll-target="#eda">EDA</a></li>
+  <li><a href="#cropping" id="toc-cropping" class="nav-link" data-scroll-target="#cropping">Cropping</a></li>
+  </ul></li>
+  <li><a href="#d-map" id="toc-d-map" class="nav-link" data-scroll-target="#d-map">2D Map</a>
+  <ul class="collapse">
+  <li><a href="#base-map" id="toc-base-map" class="nav-link" data-scroll-target="#base-map">Base Map</a></li>
+  <li><a href="#openstreetmap" id="toc-openstreetmap" class="nav-link" data-scroll-target="#openstreetmap">OpenStreetMap</a></li>
+  <li><a href="#layering" id="toc-layering" class="nav-link" data-scroll-target="#layering">Layering</a></li>
+  <li><a href="#final-touches" id="toc-final-touches" class="nav-link" data-scroll-target="#final-touches">Final Touches</a></li>
+  </ul></li>
+  <li><a href="#d-map-1" id="toc-d-map-1" class="nav-link" data-scroll-target="#d-map-1">3D Map</a>
+  <ul class="collapse">
+  <li><a href="#features" id="toc-features" class="nav-link" data-scroll-target="#features">Features</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>R, <code>rayshader</code>, OpenStreetMap… Lots of amazing learning to be had with these mapping tools. I’m following Tyler Morgan-Wall PhD’s <a href="https://www.tylermw.com/adding-open-street-map-data-to-rayshader-maps-in-r/">Adding Open Street Map Data to Rayshader Maps in R</a> tutorial and learning a lot about the development of beautiful maps with R. Laguna Beach is one of my favorite cities in the USA (<em>and the world!</em>) so I applied the concepts from this tutorial to building 2D and 3D maps of Laguna Beach. My work-in-progress and screen captures are below.</p>
+<p>Tyler Morgan-Wall PhD (TMW) authored the <code>rayshader</code> package and his step-by-step tutorial is both easy to follow and incredibly informative. If you get stuck (<em>more like, “when you get stuck”</em>), you can almost always find an answer on the <code>rayshader</code> website or GitHub repo (excellent technical documentation and code examples).</p>
+<p>One last caveat before I dive into my code - Finding high-quality LIDAR or Digital Elevation Models (DEMs) for United States cities is <em>not easy</em>. To apply the steps below to your location of choice, you’ll have to get creative about cropping LIDAR/DEMs to zoom into the geography that you want to model (more info on cropping in the sections below).</p>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>Where do you start? Find yourself a high-resolution DEM or LIDAR capture of a location that you love. The team at <a href="https://shadedrelief.com/">Shaded Relief</a> has some high-res DEMs for public consumption: <a href="http://shadedrelief.com/SampleElevationModels/">http://shadedrelief.com/SampleElevationModels/</a></p>
+<p>My starting point was a LIDAR capture of Laguna Canyon in California. This geo-data, made available by the United States Geological Survey’s <a href="https://ngmdb.usgs.gov/topoView/">National Geologic Map Database</a>, was captured in 2018 as part of a study on Southern California wildfires. The LIDAR image (captured as a TIF file) includes three variables per observation: latitude, longitude, and elevation. This Laguna Canyon LIDAR image captures these data points in one meter increments (hence the 257 MB file size). You can download this TIF from my Google Drive here: <a href="https://drive.google.com/file/d/1IfdYa0nYYk7_n1McV5IRhgk-rXJtLA9P/view?usp=sharing">https://drive.google.com/Javier/USGS_TIF</a></p>
+<p>Start by installing the development versions of the <code>rayshader</code> and <code>rayimage</code> packages, and loading several others packages used in this project. I run Ubuntu and experienced some dependency issues, at least initially. If you can Google Search, you can figure out the additional Linux libraries that you might need (my apologies for not documenting this better! - I worked on this code in March but just now getting around to documenting my workflow… <em>in September!</em>).</p>
+<section id="libraries" class="level2">
+<h2 class="anchored" data-anchor-id="libraries">Libraries</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install dev packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tylermorganwall/rayshader"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tylermorganwall/rayimage"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rayshader)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Source elevation data</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>laguna <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">raster</span>(<span class="st">"./USGS_one_meter_x42y372_CA_SoCal_Wildfires_B1_2018.tif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="eda" class="level2">
+<h2 class="anchored" data-anchor-id="eda">EDA</h2>
+<p>To better explore the data, lets begin by visualizing the elevation data with <code>rayshader</code> defaults to understand the topography that we are working with. Before we can render this visual, we need to transform the <strong>laguna</strong> data object (assigned above) to a matrix. For faster rendering and prototyping, you can also resize the matrix using <code>rayshader::resize_matrix()</code>. This resizing will downscale your full dataset using bilinear interpolation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the spatial data structure into a regular R matrix</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>laguna_mat <span class="ot">&lt;-</span> rayshader<span class="sc">::</span><span class="fu">raster_to_matrix</span>(laguna)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create small version of matrix for quick visual prototyping</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>laguna_small <span class="ot">&lt;-</span> rayshader<span class="sc">::</span><span class="fu">resize_matrix</span>(laguna_mat, <span class="fl">0.1</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot base map using basic color defaults</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>laguna_small <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">height_shade</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/laguna_lidar.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">USGS Laguna Canyon LIDAR</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="cropping" class="level2">
+<h2 class="anchored" data-anchor-id="cropping">Cropping</h2>
+<p>I wanted to focus on downtown Laguna Beach but this only represents a small fraction of the raw LIDAR. To get the desired lat-long range of downtown Laguna Beach, I used Google Maps to get the endpoints of my desired box. To accomplish this cropping, below, we relied on a custom cropping function that TMW shared on the <code>rayshader</code> site.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop to fit desired box around downtown Laguna Beach</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>lat_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">33.541370925562376</span>, <span class="fl">33.55945552155357</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>long_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.79622401045448</span>, <span class="sc">-</span><span class="fl">117.77493476466955</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>convert_coords <span class="ot">&lt;-</span> <span class="cf">function</span>(lat, long, <span class="at">from =</span> <span class="fu">CRS</span>(<span class="st">"+init=epsg:4326"</span>), to) {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">long =</span> long, <span class="at">lat =</span> lat)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  sp<span class="sc">::</span><span class="fu">coordinates</span>(data) <span class="ot">&lt;-</span> <span class="er">~</span> long <span class="sc">+</span> lat</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  sp<span class="sc">::</span><span class="fu">proj4string</span>(data) <span class="ot">=</span> from</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert to coordinate system specified by EPSG code</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  xy <span class="ot">=</span> <span class="fu">data.frame</span>(sp<span class="sc">::</span><span class="fu">spTransform</span>(data, to))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(xy) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"x"</span>,<span class="st">"y"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">unlist</span>(xy))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>raster<span class="sc">::</span><span class="fu">crs</span>(laguna)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>utm_bbox <span class="ot">&lt;-</span> <span class="fu">convert_coords</span>(<span class="at">lat =</span> lat_range,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                           <span class="at">long =</span> long_range,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                           <span class="at">to =</span> <span class="fu">crs</span>(laguna))</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>raster<span class="sc">::</span><span class="fu">extent</span>(laguna)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>extent_zoomed <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">extent</span>(utm_bbox[<span class="dv">1</span>], utm_bbox[<span class="dv">2</span>], </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                                utm_bbox[<span class="dv">3</span>], utm_bbox[<span class="dv">4</span>])h</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>laguna_zoom <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">crop</span>(laguna, extent_zoomed)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>laguna_zoom_mat <span class="ot">&lt;-</span> rayshader<span class="sc">::</span><span class="fu">raster_to_matrix</span>(laguna_zoom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="d-map" class="level1">
+<h1>2D Map</h1>
+<section id="base-map" class="level2">
+<h2 class="anchored" data-anchor-id="base-map">Base Map</h2>
+<p>I was inspired by the relief shading work of Eduard Imhof, Swiss cartographer and mapping visionary. In particular, I loved the blueish-pink palette that Imhof popularized. When you get to this step, try adjusting the settings below to your liking. We will continue to build on top of this initial base map layer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>base_map <span class="ot">&lt;-</span> laguna_zoom_mat <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">height_shade</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">sphere_shade</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      laguna_zoom_mat, </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">texture =</span> rayshader<span class="sc">::</span><span class="fu">create_texture</span>(<span class="st">"#f5dfca"</span>,<span class="st">"#63372c"</span>,<span class="st">"#dfa283"</span>,<span class="st">"#195f67"</span>,<span class="st">"#c2d1cf"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">cornercolors =</span> <span class="fu">c</span>(<span class="st">"#ffc500"</span>, <span class="st">"#387642"</span>, <span class="st">"#d27441"</span>,<span class="st">"#296176"</span>)),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">sunangle =</span> <span class="dv">0</span>, </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">colorintensity =</span> <span class="dv">5</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_shadow</span>(rayshader<span class="sc">::</span><span class="fu">lamb_shade</span>(laguna_zoom_mat), <span class="fl">0.2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">generate_altitude_overlay</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      rayshader<span class="sc">::</span><span class="fu">height_shade</span>(laguna_zoom_mat, <span class="at">texture =</span> <span class="st">"#91aaba"</span>),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      laguna_zoom_mat,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">start_transition =</span> <span class="fu">min</span>(laguna_zoom_mat)<span class="sc">-</span><span class="dv">200</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">end_transition =</span> <span class="fu">max</span>(laguna_zoom_mat)))</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>rayshader<span class="sc">::</span><span class="fu">plot_map</span>(base_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/base_map.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Laguna Beach base map a la Eduard Imhof</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="openstreetmap" class="level2">
+<h2 class="anchored" data-anchor-id="openstreetmap">OpenStreetMap</h2>
+<p>OpenStreetMap (OSM) offers an open-source, editable geographic database of the world and the underlying data includes details for roads, buildings, hiking paths, rivers, etc. We’ll leverage the <code>osmdata</code> package for R to import OSM data (and utilizing the <code>overpass</code> API). The <code>osmdata</code> package processes routines in C++ for fast construction and loading into R. We’ll first load several layers of OSM details. Subsequently, we’ll convert those <code>sf</code> objects to the coordinate system we’re working with for this <code>rayshader</code> project.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>osm_bbox <span class="ot">=</span> <span class="fu">c</span>(long_range[<span class="dv">1</span>],lat_range[<span class="dv">1</span>], long_range[<span class="dv">2</span>],lat_range[<span class="dv">2</span>])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>laguna_highway <span class="ot">&lt;-</span> osmdata<span class="sc">::</span><span class="fu">opq</span>(osm_bbox) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">add_osm_feature</span>(<span class="st">"highway"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">osmdata_sf</span>() </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform coordinates to new projection</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>laguna_lines <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_transform</span>(laguna_highway<span class="sc">$</span>osm_lines,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">crs =</span> raster<span class="sc">::</span><span class="fu">crs</span>(laguna))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># View streets as a ggplot2 render </span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(laguna_lines, <span class="fu">aes</span>(<span class="at">color =</span> osm_id)) <span class="sc">+</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Open Street Map `highway` attribute in Laguna Beach"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/OSM_ggplot2_render.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">OSM render of Laguna Beach roads and highways using ggplot2</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="layering" class="level2">
+<h2 class="anchored" data-anchor-id="layering">Layering</h2>
+<p>To begin, lets simply layer all the “highway” OSM attributes on top of our base map using white lines to represent the lines.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform sf LINESTRING geometry and create semi-transparent overlay</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>base_map <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">generate_line_overlay</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      laguna_lines, <span class="at">extent =</span> extent_zoomed,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">heightmap =</span> laguna_zoom_mat)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/base_map_layer1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Base Map Layer 1</figcaption><p></p>
+</figure>
+</div>
+<p>I want different styles for different OSM lines so let’s continue by creating several groups of OSM lines.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset layers of laguna_lines</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>laguna_trails <span class="ot">&lt;-</span> laguna_lines <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(highway <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"path"</span>, <span class="st">"bridleway"</span>, <span class="st">"steps"</span>, <span class="st">"track"</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>laguna_footpaths <span class="ot">&lt;-</span> laguna_lines <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(highway <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"footway"</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>laguna_roads <span class="ot">&lt;-</span> laguna_lines <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(highway <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"unclassified"</span>, <span class="st">"primary"</span>, </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"primary_link"</span>, <span class="st">"secondary"</span>, </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"tertiary"</span>, <span class="st">"residential"</span>, <span class="st">"service"</span>))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create one encompassing layer with independent element styling</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>trails_layer <span class="ot">&lt;-</span> </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">generate_line_overlay</span>(</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pink footpaths</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    laguna_footpaths, <span class="at">extent =</span> extent_zoomed,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">"pink"</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">heightmap =</span> laguna_zoom_mat) <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Note: While barely visible in the final outputs, the following</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># code adds an offset black shadow to the white dashed lines to</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># represent the hiking trails around Laguna Beach </span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">generate_line_overlay</span>(</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>      laguna_trails, <span class="at">extent =</span> extent_zoomed,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">offset =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="sc">-</span><span class="dv">2</span>),</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">heightmap =</span> laguna_zoom_mat)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">generate_line_overlay</span>(</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>      laguna_trails, <span class="at">extent =</span> extent_zoomed,</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">lty =</span> <span class="dv">3</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">heightmap =</span> laguna_zoom_mat)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># White roads</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">generate_line_overlay</span>(</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>      laguna_roads, <span class="at">extent =</span> extent_zoomed,</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">heightmap =</span> laguna_zoom_mat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We’ll create some additional projections of OSM layers.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>laguna_parking <span class="ot">&lt;-</span> osmdata<span class="sc">::</span><span class="fu">opq</span>(osm_bbox) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">add_osm_feature</span>(<span class="st">"parking"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">osmdata_sf</span>() </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>laguna_building <span class="ot">&lt;-</span> osmdata<span class="sc">::</span><span class="fu">opq</span>(osm_bbox) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">add_osm_feature</span>(<span class="st">"building"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">osmdata_sf</span>()</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>laguna_parking_poly <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(laguna_parking<span class="sc">$</span>osm_polygons, <span class="at">crs =</span> <span class="fu">crs</span>(laguna))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>laguna_building_poly <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(laguna_building<span class="sc">$</span>osm_polygons, <span class="at">crs =</span> <span class="fu">crs</span>(laguna))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="final-touches" class="level2">
+<h2 class="anchored" data-anchor-id="final-touches">Final Touches</h2>
+<p>Now we’re ready to build upon our base map and see the 2D visual in action. Let’s create a polygon layer of the parking and building features, and adding the styled <strong>trails_layer</strong> on top of that.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>polygon_layer <span class="ot">&lt;-</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">generate_polygon_overlay</span>(laguna_parking_poly, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">extent =</span> extent_zoomed,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">heightmap =</span> laguna_zoom_mat, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">palette =</span> <span class="st">"grey30"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">generate_polygon_overlay</span>(laguna_building_poly, </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">extent =</span> extent_zoomed,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">heightmap =</span> laguna_zoom_mat, </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">palette =</span> <span class="st">"lightgrey"</span>))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>base_map <span class="sc">%&gt;%</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(polygon_layer) <span class="sc">%&gt;%</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(trails_layer) <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/2D_render.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">2D render of Laguna Beach… Success!</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="d-map-1" class="level1">
+<h1>3D Map</h1>
+<section id="features" class="level2">
+<h2 class="anchored" data-anchor-id="features">Features</h2>
+<p>To render a 3D map, we follow a very similar pipeline to the 2D map but utilizing <code>rayshader::plot_3d()</code>. This function introduces new arguments and I spent much more time than I had anticipated in adjusting the zscale, zoom, rotation, pitch, and water specifications.</p>
+<p>To exaggerate the elevation details in this area, I decided on a <code>zscale</code> &lt; 1 that would still resemble the reality and beauty of the Laguna Beach hills. Too low of a <code>zscale</code>, e.g., <code>zscale = 0.25</code>, was too exaggerated for my liking. Once the 3D viewer renders your visual, enter <code>rayshader::render_snapshot()</code> into your console to take a flat snapshot of your 3D rendering, saving your snapshot if desired.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>base_map <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(polygon_layer) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(trails_layer) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_3d</span>(<span class="at">heightmap =</span> laguna_zoom_mat, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">zscale =</span> <span class="fl">0.75</span>, <span class="at">fov =</span> <span class="dv">0</span>, </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">theta =</span> <span class="sc">-</span><span class="dv">45</span>, <span class="at">zoom =</span> <span class="fl">0.75</span>, <span class="at">phi =</span> <span class="dv">45</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">water =</span> <span class="cn">TRUE</span>, <span class="at">waterdepth =</span> <span class="dv">4</span>, </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">wateralpha =</span> <span class="fl">0.4</span>, <span class="at">watercolor =</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">waterlinecolor =</span> <span class="st">"white"</span>, <span class="at">waterlinealpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">background =</span> <span class="st">"white"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create 2D snapshot of 3D rendering</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>rayshader<span class="sc">::</span><span class="fu">render_snapshot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/3D_render.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">3D render of Laguna Beach</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
+<p>I’ve seen some neat examples where developers add 3D polygons to their maps to represent residential housing, commercial properties, and public facilities. I recently read about methods for rendering much higher-resolution maps (this would be great for printing). Creating 3D flyovers with <code>rayshader</code> also looks surprisingly high-end for open-source software. These are all things I hope to revisit at some point in the near future. TMW knocked it out of the park with his package and tutorials, so I hope you find his content as useful as I did.</p>
+</section>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">4</span>.<span class="fl">1.1</span> (<span class="dv">2021-08-10</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">20</span>.<span class="fl">04.3</span> LTS</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>blas<span class="sc">/</span>libblas.so.<span class="dv">3</span>.<span class="fl">9.0</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>usr<span class="sc">/</span>lib<span class="sc">/</span>x86_64<span class="sc">-</span>linux<span class="sc">-</span>gnu<span class="sc">/</span>lapack<span class="sc">/</span>liblapack.so.<span class="dv">3</span>.<span class="fl">9.0</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] LC_CTYPE<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>       LC_NUMERIC<span class="ot">=</span>C              </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a> [<span class="dv">3</span>] LC_TIME<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>        LC_COLLATE<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>    </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] LC_MONETARY<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>    LC_MESSAGES<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>   </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] LC_PAPER<span class="ot">=</span>en_US.UTF<span class="dv">-8</span>       LC_NAME<span class="ot">=</span>C                 </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] LC_ADDRESS<span class="ot">=</span>C               LC_TELEPHONE<span class="ot">=</span>C            </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] LC_MEASUREMENT<span class="ot">=</span>en_US.UTF<span class="dv">-8</span> LC_IDENTIFICATION<span class="ot">=</span>C       </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] ggplot2_3.<span class="fl">3.5</span>    dplyr_1.<span class="fl">0.7</span>      sf_1<span class="fl">.0</span><span class="dv">-2</span>         osmdata_0.<span class="fl">1.6</span>   </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">5</span>] raster_3<span class="fl">.4</span><span class="dv">-13</span>    sp_1<span class="fl">.4</span><span class="dv">-5</span>         rayshader_0.<span class="fl">26.1</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] rgl_0.<span class="fl">107.14</span>       Rcpp_1.<span class="fl">0.7</span>         lubridate_1.<span class="fl">7.10</span>   lattice_0<span class="fl">.20</span><span class="dv">-44</span>   </span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] png_0<span class="fl">.1</span><span class="dv">-7</span>          prettyunits_1.<span class="fl">1.1</span>  class_7<span class="fl">.3</span><span class="dv">-19</span>       ps_1.<span class="fl">6.0</span>          </span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] assertthat_0.<span class="fl">2.1</span>   rprojroot_2.<span class="fl">0.2</span>    digest_0.<span class="fl">6.27</span>      foreach_1.<span class="fl">5.1</span>     </span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] utf8_1.<span class="fl">2.2</span>         R6_2.<span class="fl">5.1</span>           e1071_1<span class="fl">.7</span><span class="dv">-8</span>        httr_1.<span class="fl">4.2</span>        </span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">17</span>] pillar_1.<span class="fl">6.2</span>       rlang_0.<span class="fl">4.11</span>       progress_1.<span class="fl">2.2</span>     curl_4.<span class="fl">3.2</span>        </span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] callr_3.<span class="fl">7.0</span>        magick_2.<span class="fl">7.3</span>       pkgdown_1.<span class="fl">6.1</span>      desc_1.<span class="fl">3.0</span>        </span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] devtools_2.<span class="fl">4.2</span>     rgdal_1<span class="fl">.5</span><span class="dv">-23</span>       htmlwidgets_1.<span class="fl">5.3</span>  munsell_0.<span class="fl">5.0</span>     </span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">29</span>] proxy_0<span class="fl">.4</span><span class="dv">-26</span>       compiler_4.<span class="fl">1.1</span>     xfun_0<span class="fl">.25</span>          pkgconfig_2.<span class="fl">0.3</span>   </span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">33</span>] pkgbuild_1.<span class="fl">2.0</span>     htmltools_0.<span class="fl">5.2</span>    tidyselect_1.<span class="fl">1.1</span>   tibble_3.<span class="fl">1.4</span>      </span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] codetools_0<span class="fl">.2</span><span class="dv">-18</span>   fansi_0.<span class="fl">5.0</span>        crayon_1.<span class="fl">4.1</span>       withr_2.<span class="fl">4.2</span>       </span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">41</span>] grid_4.<span class="fl">1.1</span>         gtable_0.<span class="fl">3.0</span>       jsonlite_1.<span class="fl">7.2</span>     lifecycle_1.<span class="fl">0.0</span>   </span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">45</span>] DBI_1.<span class="fl">1.1</span>          magrittr_2.<span class="fl">0.1</span>     scales_1.<span class="fl">1.1</span>       units_0<span class="fl">.7</span><span class="dv">-2</span>       </span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] KernSmooth_2<span class="fl">.23</span><span class="dv">-20</span> cli_3.<span class="fl">0.1</span>          cachem_1.<span class="fl">0.6</span>       farver_2.<span class="fl">1.0</span>      </span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>[<span class="dv">53</span>] fs_1.<span class="fl">5.0</span>           remotes_2.<span class="fl">4.0</span>      doParallel_1.<span class="fl">0.16</span>  testthat_3.<span class="fl">0.4</span>    </span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>[<span class="dv">57</span>] xml2_1.<span class="fl">3.2</span>         ellipsis_0.<span class="fl">3.2</span>     generics_0.<span class="fl">1.0</span>     vctrs_0.<span class="fl">3.8</span>       </span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">61</span>] iterators_1.<span class="fl">0.13</span>   tools_4.<span class="fl">1.1</span>        rayimage_0.<span class="fl">6.2</span>     glue_1.<span class="fl">4.2</span>        </span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">65</span>] purrr_0.<span class="fl">3.4</span>        hms_1.<span class="fl">1.0</span>          processx_3.<span class="fl">5.2</span>     pkgload_1.<span class="fl">2.1</span>     </span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">69</span>] parallel_4.<span class="fl">1.1</span>     fastmap_1.<span class="fl">1.0</span>      colorspace_2<span class="fl">.0</span><span class="dv">-2</span>   sessioninfo_1.<span class="fl">1.1</span> </span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] classInt_0<span class="fl">.4</span><span class="dv">-3</span>     rvest_1.<span class="fl">0.1</span>        memoise_2.<span class="fl">0.0</span>      knitr_1<span class="fl">.33</span>        </span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">77</span>] usethis_2.<span class="fl">0.1</span>     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<ul>
+<li>rayshader: <a href="https://www.rayshader.com/">https://www.rayshader.com/</a></li>
+<li>rayrender: <a href="http://www.rayrender.net/">http://www.rayrender.net/</a></li>
+<li>Tyler Morgan-Wall, PhD: <a href="https://www.tylermw.com/">https://www.tylermw.com/</a></li>
+</ul>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

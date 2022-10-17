@@ -1,0 +1,23 @@
+---
+title: "DT: An R Interface to the JavaScript library DataTables"
+description: "The R package DT provides an R interface to the JavaScript library DataTables. R data objects (matrices or data frames) can be displayed as tables on HTML pages, and DataTables provides filtering, pagination, sorting, interactivity with Shiny, and many other features."
+date: 05-03-2021
+categories: [RStudio, Packages, R, DT]
+image: images/DT_Shiny.png
+---
+
+The [DT package](https://rstudio.github.io/DT/) for R is a powerful integration of the JavaScript library _DataTables_. One of the things that I enjoy with `DT` is enhancing my Shiny apps by rendering interactive tables with `DT`. The `DT` documentation, written by [RStudio PBC](https://www.rstudio.com/) and the `DT` devs, is incredibly well-written and you'll learn a lot about how you can use these tables in the development of robust R web apps. And the available Options.... Endless in a good way!
+
+If you're a Shiny dev, check out the live demos sourced below.
+
+![](images/DT_Shiny.png)
+
+Source:
+
+* [DT on GitHub](https://github.com/rstudio/DT)
+
+* [DT site](https://rstudio.github.io/DT/)
+
+* [Live Shiny demo: DT Selections Ex. 1](https://yihui.shinyapps.io/DT-selection/)
+
+* [Live Shiny demo: DT Selection Ex. 2](https://yihui.shinyapps.io/DT-rows/)

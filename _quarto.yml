@@ -1,0 +1,35 @@
+project:
+  type: website
+
+website:
+  title: "Javier Orraca-Deatcu"
+  description: "Personal data science website rebuilt as a Quarto blog."
+  site-url: https://www.javierorraca.com
+  google-analytics: "UA-127790709-3"
+  cookie-consent: false
+  twitter-card: 
+    image: Javier_Profile.jpg
+    card-style: summary_large_image
+    creator: "@JavierOrraca"
+  navbar:
+    right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/orraca
+      - icon: twitter
+        href: https://twitter.com/JavierOrraca
+      - icon: spotify
+        href: https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw
+      - icon: github
+        href: https://github.com/JavOrraca
+      - text: "Blog"
+        href: blog.qmd
+      - text: "Resources"
+        href: resources.qmd
+      - text: "About"
+        href: about.qmd
+format:
+  html:
+    theme: theme.scss
+
+editor: visual
+

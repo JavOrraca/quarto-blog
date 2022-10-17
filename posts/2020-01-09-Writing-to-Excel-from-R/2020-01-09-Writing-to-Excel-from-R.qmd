@@ -1,0 +1,25 @@
+---
+title: "Writing to Excel from R"
+description: "Spending your days R but working closely with analysts and leadership that live in Excel? Get familiar with openxlsx."
+date: 01-09-2020
+categories: [R, Packages, Quick Tips]
+image: images/openxlsx.png
+---
+
+`openxlsx` is an awesome package for writing multiple datasets to multiple sheets of an Excel workbook, and allows for robust styling and cell formatting. I found a tutorial on RPubs written by [Ezekiel Adebayo Ogundepo](https://www.linkedin.com/in/ezekiel-ogundepo/) covering this package that I often use at work. Definitely bookmark worthy.
+
+Here is a high-level code example:
+```r
+library(openxlsx)
+
+# Name the Excel worksheets where you want to export data to
+list_of_datasets <- list("Overall Summary" = df_1, "LOB Summary" = df_2, "Details" = df_3)
+
+# Save the Excel workbook to your wd with your worksheet list and name the Excel file
+write.xlsx(list_of_datasets, "Excel_Workbook_2017.01.20.xlsx")
+```
+
+Links:
+
+* Ezekiel's [openxlsx tutorial on RPubs](https://rpubs.com/gbganalyst/RdatatoExcelworkbook)
+* openxlsx [repository on GitHub](https://github.com/awalker89/openxlsx)

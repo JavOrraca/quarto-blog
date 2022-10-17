@@ -1,0 +1,30 @@
+---
+title: "California Consumer Privacy Act"
+description: "The California Consumer Privacy Act is set to go into effect on January 1, 2020. The CCPA, similar in nature to GDPR, will provide California residents with new consumer data rights."
+date: 01-04-2020
+categories: [Privacy]
+image: images/CCPA.jpg
+---
+
+![](./images/CCPA.jpg)
+
+The California Consumer Privacy Act ("CCPA") data rights include, but are not limited to, the following:
+
+-   the right to know,
+-   the right to delete,
+-   the right to opt-out of personal data sale, and
+-   the right to non-discrimination when a consumer exercises a privacy right under CCPA.
+
+CCPA will only apply to businesses that meet one or more of these three criteria:
+
+1)  have annual revenues greater than \$25 million USD,
+2)  businesses that buy / receive / sell personal information of 50k+ consumers, or
+3)  businesses that derive 50% or more of annual revenues from selling consumers' personal information
+
+CCPA exempt businesses include HIPAA-compliant health insurers and providers, certain financial institutions, and credit reporting agencies.
+
+The expected fine per unintentional and intentional violation is \$2,500 and \$7,500, respectively. Fines make sense, but I hope that the California Department of Justice can establish clear reporting and audit requirements to enforce these new regulations.
+
+Source:
+
+-   CNET's [oveview of CCPA](https://www.cnet.com/news/ccpa-is-here-californias-privacy-law-gives-you-new-rights/)

@@ -1,0 +1,20 @@
+---
+title: "Torch for R + luz"
+description: "The ‘torch for R’ ecosystem is a collection of extensions for torch, an R framework for machine learning and artificial intelligence based on PyTorch."
+date: 10-22-2021
+categories: [torch, luz]
+image: images/torch_and_luz.png
+---
+
+Torch for R... wow! 🔥🔥🔥 I was recently having a discussion with a coworker about the benefits of Torch, especially the power of training one global model capable of hierarchical projections (awesome for time series) and predicting multiple group-specific regressions. I went down a Googling rabbit hole last weekend and came across some amazing articles by Sigrid Keydana (see links below) introducing `torch` to the R community and also recently releasing `luz`, a high-level R interface to Torch ("`luz` is to `torch` what `Keras` is to `TensorFlow`").
+
+RStudio's MLVerse team is doing really exciting things for the R machine learning and AI community. With `torch`, I no longer need to launch a conda environment for complex NNs (although having Python on your system is always handy 😅). And even better, "`torch` for R is built directly on top of `libtorch`, a C++ library that provides the tensor-computation and automatic-differentiation capabilities essential to building neural networks." If you're looking for fast NNs and deep learning solutions within the **#rstats** framework, give these packages a try. Happy Friday and happy learning! 🤓📚
+
+## Sources
+
+- Torch for R: [https://torch.mlverse.org/](https://torch.mlverse.org/)
+- Intro to Torch: [Torch for R](https://blogs.rstudio.com/ai/posts/2020-09-29-introducing-torch-for-r/)
+- Intro to Luz: [Que haja luz: More light for torch!](https://blogs.rstudio.com/ai/posts/2021-06-17-luz/)
+- Intro to TabNet: [TabNet for Tabular Data with Torch](https://blogs.rstudio.com/ai/posts/2021-02-11-tabnet/)
+- Intro to Time Series with Torch: [Introductory Time-Series Forecasting with Torch](https://blogs.rstudio.com/ai/posts/2021-03-10-forecasting-time-series-with-torch_1/)
+- Sigrid Keydana: [Sigrid on LinkedIn](https://www.linkedin.com/in/sigrid-keydana-9a16b410/?originalSubdomain=de)

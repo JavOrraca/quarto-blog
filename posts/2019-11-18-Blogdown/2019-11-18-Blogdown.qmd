@@ -1,0 +1,24 @@
+---
+title: "Building a Website with Blogdown"
+description: "Learn how to build and deploy a website with R, blogdown, GitHub, Hugo, and Netlify."
+date: 11-18-2019
+categories: [Development, Packages, R, blogdown]
+image: images/blogdown.jpg
+---
+
+![](./images/blogdown.jpg)
+
+[Pablo Barajas](https://www.linkedin.com/in/pabloibarajas/), a recent graduate at UC Irvine and friend of Scatter Podcast, led a presentation on how to build a website using R, RStudio, and Blogdown.
+
+For anyone wanting to _fairly easily_ build an online portfolio or blog that looks professional, I highly recommend Blogdown. I used this process to build this website, as did Pablo for his personal website, and I can help if you have any questions. Here's the process in short: RStudio site build with Blogdown -> Commit to GitHub -> Apply Hugo theme -> Netlify for CI/CD
+
+This event was hosted by the Orange County R Users Group ("OCRUG") and UCI's Merage Analytics Club ("MAC"). If you're in Orange County and looking to network and learn with local data science practitioners and students, I highly recommend attending OCRUG events, R-Ladies Irvine events, or public MAC events. Great learning opportunities here!
+
+
+Links:
+
+* Pablo's presentation on [his Blogdown site](https://pbarajas.rbind.io/posts/website-tutorial/)
+* Blogdown [overview from RStudio](https://blog.rstudio.com/2017/09/11/announcing-blogdown/)
+* OCRUG's [homepage](https://ocrug.org)
+* R-Ladies [Irvine chapter](https://www.rladiesirvine.org)
+* Merage Analytics Club [website](https://sites.uci.edu/merageaa/)

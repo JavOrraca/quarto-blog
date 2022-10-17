@@ -1,0 +1,22 @@
+---
+title: "Preparing for 2021 Goals with a Raspberry Pi"
+description: "I have been planning my 2021 goals and the Raspberry Pi 4 will help me kill a few birds with one stone."
+date: 12-31-2020
+categories: [Julia, Linux, Raspberry Pi]
+image: images/Pi-banner.png
+---
+
+Killing a few birds with one stone and getting ready for 2021...
+<br><br>1) Getting better at Linux / shell commands, <br>
+2) Learning Julia (see my Resources tab for some great Julia starter links!), <br>
+3) Doing it all on a Raspberry Pi 😜  Happy holidays and Happy New Years to all!
+
+Below are some pics of my current progress.
+
+![Raspberry Pi 4, Model B, 8GB RAM, & Super Cute Tiny Heat Sinks](./images/Pi1.jpg)
+
+![Enclosing the Pi 4 in a CanaKit case + fan](./images/Pi2.jpg)
+
+![Raspberry Pi OS, a Debian distro for the Pi](./images/Pi3.jpg)
+
+![Jupyter Lab server on the Pi set up w/ Python, R, and Julia](./images/Pi4.jpeg)

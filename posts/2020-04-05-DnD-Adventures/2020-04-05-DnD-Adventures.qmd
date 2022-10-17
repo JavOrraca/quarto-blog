@@ -1,0 +1,16 @@
+---
+title: "D&D Adventures + blogdown"
+description: "It's an incredible time to be creative! I've recently been re-learning Dungeons & Dragons with a group of friends and having so much fun in the process."
+date: 04-05-2020
+categories: [Gaming, blogdown]
+image: images/Dnd.png
+---
+
+Wizards of the Coast have developed such an incredible tabletop, fantasy, RPG with the 5th edition of D&D... I wish I would have re-discovered this game years back. For context, I haven't touched D&D since 1997!
+
+If you know of good resources for newbies and new D&D Dungeon Masters ("DMs"), I'd love to know about your favorite resources. For data science folks out there, this site was built with R using `blogdown`, Hugo themes, and deployed for free using GitHub and Netlify.
+
+![D&D dragon looking for trouble](./images/Dnd.png)
+
+Reference: <br>
+* Javier's [D&D Adventures](https://flamboyant-brahmagupta-3caca6.netlify.app/)

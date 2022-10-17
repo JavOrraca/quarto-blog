@@ -1,0 +1,15 @@
+---
+title: "Analyzing Earthquakes in Puerto Rico"
+description: "Puerto Rico has been experiencing atypical seismic activity since November 2019." 
+date: 01-20-2020
+categories: [Statistics, ggplot2, Earthquakes]
+image: images/Earthquakes_PR.jpg
+---
+
+My mother's hometown, Ponce, has been hit badly by the recent earthquakes. A cousin asked me to "play with some data" and turns out that the USGS maintains great data on seismic activity in the Caribbean. I focused on coordinates close to PR to produce the attached visual. I'll revisit this visualization in a few months when more data becomes available!
+
+![](./images/Earthquakes_PR.jpg)
+
+Links:
+
+* U.S. Geologival Survey: [https://www.usgs.gov/](https://www.usgs.gov/)

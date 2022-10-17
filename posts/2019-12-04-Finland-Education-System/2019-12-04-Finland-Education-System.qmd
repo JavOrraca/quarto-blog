@@ -1,0 +1,18 @@
+---
+title: "Education Reform and Lessons from Finland"
+description: "Quartz and Google's Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning."
+date: 12-04-2019
+categories: [Education]
+image: images/Finland.jpg
+---
+
+![](./images/Finland.jpg)
+
+Despite Finnish students spending the least time per week learning (and starting school later, and having much less homework), their students have some of the highest reading test scores.
+
+Not captured in this study, but I'd be curious to see how external factors impact these results. We have to assume American parents spend a lot less time helping their kids learn (imagine having parents that work 2 or 3 jobs to make ends meet). Or how does average classroom size differ from country to country? Or distance traveled from home to school? Or distance to local libraries? Either way, the Finnish are doing something right here.
+
+Links:
+
+* _Finland has the most efficient education system in the world_ [on Quartz](https://qz.com/1759598/finland-has-the-most-efficient-education-system-in-the-world/)
+* Google's Avinash Kaushik's post [on LinkedIn](https://www.linkedin.com/posts/akaushik_education-reform-is-a-huge-underappreciated-activity-6608081280791912448-bZ_T)

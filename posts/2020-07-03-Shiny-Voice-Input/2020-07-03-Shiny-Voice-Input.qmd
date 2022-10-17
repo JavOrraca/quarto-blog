@@ -1,0 +1,16 @@
+---
+title: "Shiny Voice-Activated input"
+description: "Want to make your Shiny apps voice-interactive? Now it's possible."
+date: 07-03-2020
+categories: [Shiny, R, Packages]
+image: images/shiny_logo.png
+---
+
+Hey R Shiny users, want to make your Shiny apps voice-interactive? For example, "Click on Product Toy-2A and then drill-down by Region." Ummm, yes please. Pretty neat stuff made possible with the `heyshiny` package. "The `heyshiny` package provides a new Shiny input, the `speechInput()`. This new input allows your Shiny app to listen to the microphone, recognize the speech, and return it as text."
+
+The main caveat with this package is that it is based on the annyang JavaScript library and therefore requires that 1) you're online and 2) using a browser that supports speech recognition (I tried this on Chrome and works fine). It's not on CRAN but check out the GitHub page, below. Here's an example if you're getting set up, pulled from their GitHub repo:
+
+![](./images/heyshiny_code.png)
+
+Source:<br>
+* [heyshiny on GitHub](https://github.com/jcrodriguez1989/heyshiny)

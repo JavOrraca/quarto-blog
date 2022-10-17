@@ -1,0 +1,27 @@
+# freeze computational output
+## Source: https://quarto.org/docs/projects/code-execution.html#freeze
+freeze: true
+
+# Enable banner style title blocks
+title-block-banner: true
+
+# Enable CC licence appendix
+license: "CC BY"
+
+# Default knitr options
+execute:
+  echo: true
+  message: false
+  warning: false
+
+# Default for table of contents
+toc: true
+toc-title: "Table of Contents"
+toc-location: left
+
+# Default author
+author:
+  - name: Javier Orraca-Deatcu
+    url: https://www.javierorraca.com/
+    affiliation: Scatter Podcast
+    affiliation-url: https://soundcloud.com/scatterpodcast
