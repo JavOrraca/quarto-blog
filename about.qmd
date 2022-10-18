@@ -2,36 +2,32 @@
 title: "About Me"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
-
 ![Tulum, Quintana Roo, Mexico - The second happiest place on Earth, after Disneyland](./images/Javier_Tulum.jpg)
 
 My name is Javier Orraca and I'm a data scientist. I enjoy building predictive models, developing web applications, cooking, reading, and playing board games. For a living, I get to solve puzzles with data - Life is good.
 
 ## Professional
 
-My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Health Net, and [Bloomreach](https://bloomreach.com/). At Bloomreach, my team applies data science techniques to empower decision makers with descriptive and prescriptive analytics. I help our business develop and deploy automation solutions, predictive algorithms, and interactive web apps for our internal leaders, Operations, Product, Marketing, and Sales teams. 
+My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Health Net, and [Bloomreach](https://bloomreach.com/). At Bloomreach, my team applies data science techniques to empower decision makers with descriptive and prescriptive analytics. I help our business develop and deploy automation solutions, predictive algorithms, and interactive web apps for our internal leaders, Operations, Product, Marketing, and Sales teams.
 
 ## Scatter Podcast
 
-In 2019, I launched [Scatter Podcast](https://soundcloud.com/scatterpodcast) to share career tips and insights from data science leaders for students, business managers, and professionals looking to pivot into data science. It was a fun and incredibly rewarding side project but after 30 episodes, I started to feel fatigued with the amount of time it took to plan, record, edit, market, etc. The podcast is on hold _but not dead!_
+In 2019, I launched [Scatter Podcast](https://soundcloud.com/scatterpodcast) to share career tips and insights from data science leaders for students, business managers, and professionals looking to pivot into data science. It was a fun and incredibly rewarding side project but after 30 episodes, I started to feel fatigued with the amount of time it took to plan, record, edit, market, etc. The podcast is on hold *but not dead!*
 
 ## Programming & Analytics Skills
 
-* **R**: RStudio pro tools, R Markdown, Shiny, tidyverse, tidymodels, distill, plotly, leaflet, fable, feasts, Facebook's Prophet & NeuralProphet R implementations, and many more
-* **Other Analytics & Programming Platforms**: JupyterHub, Jupyter Lab, GitLab, GitHub, RStudio Connect, Julia, NetBase, SQL, SAP Business Objects, Hugo, Netlify, Quest Analytics
-* **Microsoft**: Expert-level MS Access and Excel user with experience creating pivot tables, nested IF statements, INDEX / MATCH functions, VLOOKUP / HLOOKUP functions, Solver (for optimization and simulations... yes... in Excel!), macros for data manipulation pipelines, ODBC integration, query design (joins, crosstab, make-table, etc.), reports, and forms
+-   **R**: RStudio pro tools, R Markdown, Shiny, tidyverse, tidymodels, distill, plotly, leaflet, fable, feasts, Facebook's Prophet & NeuralProphet R implementations, and many more
+-   **Other Analytics & Programming Platforms**: JupyterHub, Jupyter Lab, GitLab, GitHub, RStudio Connect, Julia, NetBase, SQL, SAP Business Objects, Hugo, Netlify, Quest Analytics
+-   **Microsoft**: Expert-level MS Access and Excel user with experience creating pivot tables, nested IF statements, INDEX / MATCH functions, VLOOKUP / HLOOKUP functions, Solver (for optimization and simulations... yes... in Excel!), macros for data manipulation pipelines, ODBC integration, query design (joins, crosstab, make-table, etc.), reports, and forms
 
 ## Media Appearances
 
-* UC Irvine's inaugural Latinx Initiative Conference (2021/10/15): [https://merage.uci.edu/events/2021/10/2021-lxi-conference.html](https://merage.uci.edu/events/2021/10/2021-lxi-conference.html)
-* Data Points virtual conference hosted by Grid Dynamics (2021/06/09): [https://datapoints.griddynamics.com/events/data-points-virtual-summit-healthcare-finance-06-09-2021/](https://datapoints.griddynamics.com/events/data-points-virtual-summit-healthcare-finance-06-09-2021/)
-* Scatter Podcast mention on Forbes: [https://forbes.com/how-to-get-your-data-scientist-career-started](https://forbes.com/sites/louiscolumbus/2019/04/14/how-to-get-your-data-scientist-career-started)
-* Scatter Podcast on UC Irvine News: [https://merage.uci.edu/news/2019/06/scatterpodcast](https://merage.uci.edu/news/2019/06/podcast-launched-by-merage-student-navigates-complex-field-of-data-analytics-and-science.html)
-* Orange County Predictive Modeling Hackathon Winner: [https://twitter.com/oc_rug/status/oc-r-users-group-hackathon-best-model](https://twitter.com/oc_rug/status/1130553620456300544?s=20)
-* UC Irvine Student Profile: [https://merage.uci.edu/programs/masters/master-science-business-analytics](https://merage.uci.edu/programs/masters/master-science-business-analytics/curriculum.html)
+-   UC Irvine's inaugural Latinx Initiative Conference (2021/10/15): <https://merage.uci.edu/events/2021/10/2021-lxi-conference.html>
+-   Data Points virtual conference hosted by Grid Dynamics (2021/06/09): <https://datapoints.griddynamics.com/events/data-points-virtual-summit-healthcare-finance-06-09-2021/>
+-   Scatter Podcast mention on Forbes: [https://forbes.com/how-to-get-your-data-scientist-career-started](https://forbes.com/sites/louiscolumbus/2019/04/14/how-to-get-your-data-scientist-career-started)
+-   Scatter Podcast on UC Irvine News: [https://merage.uci.edu/news/2019/06/scatterpodcast](https://merage.uci.edu/news/2019/06/podcast-launched-by-merage-student-navigates-complex-field-of-data-analytics-and-science.html)
+-   Orange County Predictive Modeling Hackathon Winner: [https://twitter.com/oc_rug/status/oc-r-users-group-hackathon-best-model](https://twitter.com/oc_rug/status/1130553620456300544?s=20)
+-   UC Irvine Student Profile: [https://merage.uci.edu/programs/masters/master-science-business-analytics](https://merage.uci.edu/programs/masters/master-science-business-analytics/curriculum.html)
 
 ## Full Stack Web Development
 
@@ -39,10 +35,10 @@ While not my primary professional focus, I am a proficient full stack web develo
 
 Shiny allows me to build apps with clean UIs, advanced [modules](https://mastering-shiny.org/scaling-modules.html#scaling-modules), and I can easily inject [HTML](https://shiny.rstudio.com/articles/tag-glossary.html), [CSS](https://engineering-shiny.org/css.html), and [JavaScript](https://deanattali.com/shinyjs/) for front-end customization. Recently, I've been learning the [Julia](https://julialang.org/) programming language and [Genie](https://genieframework.com/) web framework to augment my data science and app development workflows.
 
-This website was built with [Distill](https://rstudio.github.io/distill/), an R web publishing framework that feels intuitive and easy to use if you're already familiar with R Markdown and `blogdown`. I host this site for free on GitHub, deploy using Netlify, and I pay $15/year for the domain name. Open-source tools are fast, flexible, fun, and the future of data science.
+This website was built with [Distill](https://rstudio.github.io/distill/), an R web publishing framework that feels intuitive and easy to use if you're already familiar with R Markdown and `blogdown`. I host this site for free on GitHub, deploy using Netlify, and I pay \$15/year for the domain name. Open-source tools are fast, flexible, fun, and the future of data science.
 
 ## Contact Info and Social
 
-* LinkedIn: [https://www.linkedin.com/in/orraca/](https://www.linkedin.com/in/orraca/)
-* Scatter Podcast on SoundCloud: [https://soundcloud.com/scatterpodcast](https://soundcloud.com/scatterpodcast)
-* GitHub: [https://github.com/JavOrraca](https://github.com/JavOrraca)
+-   LinkedIn: <https://www.linkedin.com/in/orraca/>
+-   Scatter Podcast on SoundCloud: <https://soundcloud.com/scatterpodcast>
+-   GitHub: <https://github.com/JavOrraca>

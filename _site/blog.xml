@@ -1,0 +1,1163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Javier Orraca-Deatcu</title>
+<link>https://www.javierorracadeatcu.com/blog.html</link>
+<atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
+<description>Personal data science website rebuilt as a Quarto blog.</description>
+<generator>quarto-1.1.251</generator>
+<lastBuildDate>Fri, 22 Oct 2021 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Torch for R + luz</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/2021-10-21-torch-for-r.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Torch for R… wow! 🔥🔥🔥 I was recently having a discussion with a coworker about the benefits of Torch, especially the power of training one global model capable of hierarchical projections (awesome for time series) and predicting multiple group-specific regressions. I went down a Googling rabbit hole last weekend and came across some amazing articles by Sigrid Keydana (see links below) introducing <code>torch</code> to the R community and also recently releasing <code>luz</code>, a high-level R interface to Torch (“<code>luz</code> is to <code>torch</code> what <code>Keras</code> is to <code>TensorFlow</code>”).</p>
+<p>RStudio’s MLVerse team is doing really exciting things for the R machine learning and AI community. With <code>torch</code>, I no longer need to launch a conda environment for complex NNs (although having Python on your system is always handy 😅). And even better, “<code>torch</code> for R is built directly on top of <code>libtorch</code>, a C++ library that provides the tensor-computation and automatic-differentiation capabilities essential to building neural networks.” If you’re looking for fast NNs and deep learning solutions within the <strong>#rstats</strong> framework, give these packages a try. Happy Friday and happy learning! 🤓📚</p>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
+<ul>
+<li>Torch for R: <a href="https://torch.mlverse.org/">https://torch.mlverse.org/</a></li>
+<li>Intro to Torch: <a href="https://blogs.rstudio.com/ai/posts/2020-09-29-introducing-torch-for-r/">Torch for R</a></li>
+<li>Intro to Luz: <a href="https://blogs.rstudio.com/ai/posts/2021-06-17-luz/">Que haja luz: More light for torch!</a></li>
+<li>Intro to TabNet: <a href="https://blogs.rstudio.com/ai/posts/2021-02-11-tabnet/">TabNet for Tabular Data with Torch</a></li>
+<li>Intro to Time Series with Torch: <a href="https://blogs.rstudio.com/ai/posts/2021-03-10-forecasting-time-series-with-torch_1/">Introductory Time-Series Forecasting with Torch</a></li>
+<li>Sigrid Keydana: <a href="https://www.linkedin.com/in/sigrid-keydana-9a16b410/?originalSubdomain=de">Sigrid on LinkedIn</a></li>
+</ul>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>torch</category>
+  <category>luz</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/2021-10-21-torch-for-r.html</guid>
+  <pubDate>Fri, 22 Oct 2021 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/images/torch_and_luz.png" medium="image" type="image/png" height="91" width="144"/>
+</item>
+<item>
+  <title>Beautiful Maps with Rayshader</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>R, <code>rayshader</code>, OpenStreetMap… Lots of amazing learning to be had with these mapping tools. I’m following Tyler Morgan-Wall PhD’s <a href="https://www.tylermw.com/adding-open-street-map-data-to-rayshader-maps-in-r/">Adding Open Street Map Data to Rayshader Maps in R</a> tutorial and learning a lot about the development of beautiful maps with R. Laguna Beach is one of my favorite cities in the USA (<em>and the world!</em>) so I applied the concepts from this tutorial to building 2D and 3D maps of Laguna Beach. My work-in-progress and screen captures are below.</p>
+<p>Tyler Morgan-Wall PhD (TMW) authored the <code>rayshader</code> package and his step-by-step tutorial is both easy to follow and incredibly informative. If you get stuck (<em>more like, “when you get stuck”</em>), you can almost always find an answer on the <code>rayshader</code> website or GitHub repo (excellent technical documentation and code examples).</p>
+<p>One last caveat before I dive into my code - Finding high-quality LIDAR or Digital Elevation Models (DEMs) for United States cities is <em>not easy</em>. To apply the steps below to your location of choice, you’ll have to get creative about cropping LIDAR/DEMs to zoom into the geography that you want to model (more info on cropping in the sections below).</p>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>Where do you start? Find yourself a high-resolution DEM or LIDAR capture of a location that you love. The team at <a href="https://shadedrelief.com/">Shaded Relief</a> has some high-res DEMs for public consumption: <a href="http://shadedrelief.com/SampleElevationModels/">http://shadedrelief.com/SampleElevationModels/</a></p>
+<p>My starting point was a LIDAR capture of Laguna Canyon in California. This geo-data, made available by the United States Geological Survey’s <a href="https://ngmdb.usgs.gov/topoView/">National Geologic Map Database</a>, was captured in 2018 as part of a study on Southern California wildfires. The LIDAR image (captured as a TIF file) includes three variables per observation: latitude, longitude, and elevation. This Laguna Canyon LIDAR image captures these data points in one meter increments (hence the 257 MB file size). You can download this TIF from my Google Drive here: <a href="https://drive.google.com/file/d/1IfdYa0nYYk7_n1McV5IRhgk-rXJtLA9P/view?usp=sharing">https://drive.google.com/Javier/USGS_TIF</a></p>
+<p>Start by installing the development versions of the <code>rayshader</code> and <code>rayimage</code> packages, and loading several others packages used in this project. I run Ubuntu and experienced some dependency issues, at least initially. If you can Google Search, you can figure out the additional Linux libraries that you might need (my apologies for not documenting this better! - I worked on this code in March but just now getting around to documenting my workflow… <em>in September!</em>).</p>
+<section id="libraries" class="level2">
+<h2 class="anchored" data-anchor-id="libraries">Libraries</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;"># Install dev packages</span></span>
+<span id="cb1-2">devtools<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">install_github</span>(<span class="st" style="color: #20794D;">"tylermorganwall/rayshader"</span>)</span>
+<span id="cb1-3">devtools<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">install_github</span>(<span class="st" style="color: #20794D;">"tylermorganwall/rayimage"</span>)</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;"># Load libraries</span></span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;">library</span>(rayshader)</span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;">library</span>(raster)</span>
+<span id="cb1-8"><span class="fu" style="color: #4758AB;">library</span>(osmdata)</span>
+<span id="cb1-9"><span class="fu" style="color: #4758AB;">library</span>(sf)</span>
+<span id="cb1-10"><span class="fu" style="color: #4758AB;">library</span>(dplyr)</span>
+<span id="cb1-11"><span class="fu" style="color: #4758AB;">library</span>(ggplot2)</span>
+<span id="cb1-12"></span>
+<span id="cb1-13"><span class="co" style="color: #5E5E5E;"># Source elevation data</span></span>
+<span id="cb1-14">laguna <span class="ot" style="color: #003B4F;">&lt;-</span> raster<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">raster</span>(<span class="st" style="color: #20794D;">"./USGS_one_meter_x42y372_CA_SoCal_Wildfires_B1_2018.tif"</span>)</span></code></pre></div>
+</div>
+</section>
+<section id="eda" class="level2">
+<h2 class="anchored" data-anchor-id="eda">EDA</h2>
+<p>To better explore the data, lets begin by visualizing the elevation data with <code>rayshader</code> defaults to understand the topography that we are working with. Before we can render this visual, we need to transform the <strong>laguna</strong> data object (assigned above) to a matrix. For faster rendering and prototyping, you can also resize the matrix using <code>rayshader::resize_matrix()</code>. This resizing will downscale your full dataset using bilinear interpolation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;"># Transform the spatial data structure into a regular R matrix</span></span>
+<span id="cb2-2">laguna_mat <span class="ot" style="color: #003B4F;">&lt;-</span> rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">raster_to_matrix</span>(laguna)</span>
+<span id="cb2-3"></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;"># Create small version of matrix for quick visual prototyping</span></span>
+<span id="cb2-5">laguna_small <span class="ot" style="color: #003B4F;">&lt;-</span> rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">resize_matrix</span>(laguna_mat, <span class="fl" style="color: #AD0000;">0.1</span>)</span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;"># Plot base map using basic color defaults</span></span>
+<span id="cb2-8">laguna_small <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb2-9">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">height_shade</span>() <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb2-10">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">plot_map</span>()</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/laguna_lidar.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">USGS Laguna Canyon LIDAR</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="cropping" class="level2">
+<h2 class="anchored" data-anchor-id="cropping">Cropping</h2>
+<p>I wanted to focus on downtown Laguna Beach but this only represents a small fraction of the raw LIDAR. To get the desired lat-long range of downtown Laguna Beach, I used Google Maps to get the endpoints of my desired box. To accomplish this cropping, below, we relied on a custom cropping function that TMW shared on the <code>rayshader</code> site.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># Crop to fit desired box around downtown Laguna Beach</span></span>
+<span id="cb3-2">lat_range <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="fl" style="color: #AD0000;">33.541370925562376</span>, <span class="fl" style="color: #AD0000;">33.55945552155357</span>)</span>
+<span id="cb3-3">long_range <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="fl" style="color: #AD0000;">117.79622401045448</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="fl" style="color: #AD0000;">117.77493476466955</span>)</span>
+<span id="cb3-4"></span>
+<span id="cb3-5">convert_coords <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(lat, long, <span class="at" style="color: #657422;">from =</span> <span class="fu" style="color: #4758AB;">CRS</span>(<span class="st" style="color: #20794D;">"+init=epsg:4326"</span>), to) {</span>
+<span id="cb3-6">  data <span class="ot" style="color: #003B4F;">=</span> <span class="fu" style="color: #4758AB;">data.frame</span>(<span class="at" style="color: #657422;">long =</span> long, <span class="at" style="color: #657422;">lat =</span> lat)</span>
+<span id="cb3-7">  sp<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">coordinates</span>(data) <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="er" style="color: #AD0000;">~</span> long <span class="sc" style="color: #5E5E5E;">+</span> lat</span>
+<span id="cb3-8">  sp<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">proj4string</span>(data) <span class="ot" style="color: #003B4F;">=</span> from</span>
+<span id="cb3-9">  <span class="co" style="color: #5E5E5E;"># Convert to coordinate system specified by EPSG code</span></span>
+<span id="cb3-10">  xy <span class="ot" style="color: #003B4F;">=</span> <span class="fu" style="color: #4758AB;">data.frame</span>(sp<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">spTransform</span>(data, to))</span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;">colnames</span>(xy) <span class="ot" style="color: #003B4F;">=</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"x"</span>,<span class="st" style="color: #20794D;">"y"</span>)</span>
+<span id="cb3-12">  <span class="fu" style="color: #4758AB;">return</span>(<span class="fu" style="color: #4758AB;">unlist</span>(xy))</span>
+<span id="cb3-13">}</span>
+<span id="cb3-14"></span>
+<span id="cb3-15">raster<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">crs</span>(laguna)</span>
+<span id="cb3-16"></span>
+<span id="cb3-17">utm_bbox <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">convert_coords</span>(<span class="at" style="color: #657422;">lat =</span> lat_range,</span>
+<span id="cb3-18">                           <span class="at" style="color: #657422;">long =</span> long_range,</span>
+<span id="cb3-19">                           <span class="at" style="color: #657422;">to =</span> <span class="fu" style="color: #4758AB;">crs</span>(laguna))</span>
+<span id="cb3-20"></span>
+<span id="cb3-21">raster<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">extent</span>(laguna)</span>
+<span id="cb3-22"></span>
+<span id="cb3-23">extent_zoomed <span class="ot" style="color: #003B4F;">&lt;-</span> raster<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">extent</span>(utm_bbox[<span class="dv" style="color: #AD0000;">1</span>], utm_bbox[<span class="dv" style="color: #AD0000;">2</span>], </span>
+<span id="cb3-24">                                utm_bbox[<span class="dv" style="color: #AD0000;">3</span>], utm_bbox[<span class="dv" style="color: #AD0000;">4</span>])h</span>
+<span id="cb3-25"></span>
+<span id="cb3-26">laguna_zoom <span class="ot" style="color: #003B4F;">&lt;-</span> raster<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">crop</span>(laguna, extent_zoomed)</span>
+<span id="cb3-27"></span>
+<span id="cb3-28">laguna_zoom_mat <span class="ot" style="color: #003B4F;">&lt;-</span> rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">raster_to_matrix</span>(laguna_zoom)</span></code></pre></div>
+</div>
+</section>
+</section>
+<section id="d-map" class="level1">
+<h1>2D Map</h1>
+<section id="base-map" class="level2">
+<h2 class="anchored" data-anchor-id="base-map">Base Map</h2>
+<p>I was inspired by the relief shading work of Eduard Imhof, Swiss cartographer and mapping visionary. In particular, I loved the blueish-pink palette that Imhof popularized. When you get to this step, try adjusting the settings below to your liking. We will continue to build on top of this initial base map layer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">base_map <span class="ot" style="color: #003B4F;">&lt;-</span> laguna_zoom_mat <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb4-2">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">height_shade</span>() <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb4-3">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(</span>
+<span id="cb4-4">    rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">sphere_shade</span>(</span>
+<span id="cb4-5">      laguna_zoom_mat, </span>
+<span id="cb4-6">      <span class="at" style="color: #657422;">texture =</span> rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">create_texture</span>(<span class="st" style="color: #20794D;">"#f5dfca"</span>,<span class="st" style="color: #20794D;">"#63372c"</span>,<span class="st" style="color: #20794D;">"#dfa283"</span>,<span class="st" style="color: #20794D;">"#195f67"</span>,<span class="st" style="color: #20794D;">"#c2d1cf"</span>,</span>
+<span id="cb4-7">                                          <span class="at" style="color: #657422;">cornercolors =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"#ffc500"</span>, <span class="st" style="color: #20794D;">"#387642"</span>, <span class="st" style="color: #20794D;">"#d27441"</span>,<span class="st" style="color: #20794D;">"#296176"</span>)),</span>
+<span id="cb4-8">      <span class="at" style="color: #657422;">sunangle =</span> <span class="dv" style="color: #AD0000;">0</span>, </span>
+<span id="cb4-9">      <span class="at" style="color: #657422;">colorintensity =</span> <span class="dv" style="color: #AD0000;">5</span>)) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb4-10">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_shadow</span>(rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">lamb_shade</span>(laguna_zoom_mat), <span class="fl" style="color: #AD0000;">0.2</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb4-11">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(</span>
+<span id="cb4-12">    rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">generate_altitude_overlay</span>(</span>
+<span id="cb4-13">      rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">height_shade</span>(laguna_zoom_mat, <span class="at" style="color: #657422;">texture =</span> <span class="st" style="color: #20794D;">"#91aaba"</span>),</span>
+<span id="cb4-14">      laguna_zoom_mat,</span>
+<span id="cb4-15">      <span class="at" style="color: #657422;">start_transition =</span> <span class="fu" style="color: #4758AB;">min</span>(laguna_zoom_mat)<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">200</span>,</span>
+<span id="cb4-16">      <span class="at" style="color: #657422;">end_transition =</span> <span class="fu" style="color: #4758AB;">max</span>(laguna_zoom_mat)))</span>
+<span id="cb4-17"></span>
+<span id="cb4-18">rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">plot_map</span>(base_map)</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/base_map.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Laguna Beach base map a la Eduard Imhof</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="openstreetmap" class="level2">
+<h2 class="anchored" data-anchor-id="openstreetmap">OpenStreetMap</h2>
+<p>OpenStreetMap (OSM) offers an open-source, editable geographic database of the world and the underlying data includes details for roads, buildings, hiking paths, rivers, etc. We’ll leverage the <code>osmdata</code> package for R to import OSM data (and utilizing the <code>overpass</code> API). The <code>osmdata</code> package processes routines in C++ for fast construction and loading into R. We’ll first load several layers of OSM details. Subsequently, we’ll convert those <code>sf</code> objects to the coordinate system we’re working with for this <code>rayshader</code> project.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">osm_bbox <span class="ot" style="color: #003B4F;">=</span> <span class="fu" style="color: #4758AB;">c</span>(long_range[<span class="dv" style="color: #AD0000;">1</span>],lat_range[<span class="dv" style="color: #AD0000;">1</span>], long_range[<span class="dv" style="color: #AD0000;">2</span>],lat_range[<span class="dv" style="color: #AD0000;">2</span>])</span>
+<span id="cb5-2"></span>
+<span id="cb5-3">laguna_highway <span class="ot" style="color: #003B4F;">&lt;-</span> osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">opq</span>(osm_bbox) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-4">  osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_osm_feature</span>(<span class="st" style="color: #20794D;">"highway"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-5">  osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">osmdata_sf</span>() </span>
+<span id="cb5-6"></span>
+<span id="cb5-7"><span class="co" style="color: #5E5E5E;"># Transform coordinates to new projection</span></span>
+<span id="cb5-8">laguna_lines <span class="ot" style="color: #003B4F;">&lt;-</span> sf<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">st_transform</span>(laguna_highway<span class="sc" style="color: #5E5E5E;">$</span>osm_lines,</span>
+<span id="cb5-9">                                 <span class="at" style="color: #657422;">crs =</span> raster<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">crs</span>(laguna))</span>
+<span id="cb5-10"></span>
+<span id="cb5-11"><span class="co" style="color: #5E5E5E;"># View streets as a ggplot2 render </span></span>
+<span id="cb5-12"><span class="fu" style="color: #4758AB;">ggplot</span>(laguna_lines, <span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">color =</span> osm_id)) <span class="sc" style="color: #5E5E5E;">+</span> </span>
+<span id="cb5-13">  <span class="fu" style="color: #4758AB;">geom_sf</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb5-14">  <span class="fu" style="color: #4758AB;">theme</span>(<span class="at" style="color: #657422;">legend.position =</span> <span class="st" style="color: #20794D;">"none"</span>) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb5-15">  <span class="fu" style="color: #4758AB;">labs</span>(<span class="at" style="color: #657422;">title =</span> <span class="st" style="color: #20794D;">"Open Street Map `highway` attribute in Laguna Beach"</span>)</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/OSM_ggplot2_render.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">OSM render of Laguna Beach roads and highways using ggplot2</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="layering" class="level2">
+<h2 class="anchored" data-anchor-id="layering">Layering</h2>
+<p>To begin, lets simply layer all the “highway” OSM attributes on top of our base map using white lines to represent the lines.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="co" style="color: #5E5E5E;"># Transform sf LINESTRING geometry and create semi-transparent overlay</span></span>
+<span id="cb6-2">base_map <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb6-3">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(</span>
+<span id="cb6-4">    rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">generate_line_overlay</span>(</span>
+<span id="cb6-5">      laguna_lines, <span class="at" style="color: #657422;">extent =</span> extent_zoomed,</span>
+<span id="cb6-6">      <span class="at" style="color: #657422;">linewidth =</span> <span class="dv" style="color: #AD0000;">3</span>, <span class="at" style="color: #657422;">color =</span> <span class="st" style="color: #20794D;">"white"</span>,</span>
+<span id="cb6-7">      <span class="at" style="color: #657422;">heightmap =</span> laguna_zoom_mat)) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb6-8">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">plot_map</span>()</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/base_map_layer1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Base Map Layer 1</figcaption><p></p>
+</figure>
+</div>
+<p>I want different styles for different OSM lines so let’s continue by creating several groups of OSM lines.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="co" style="color: #5E5E5E;"># Subset layers of laguna_lines</span></span>
+<span id="cb7-2">laguna_trails <span class="ot" style="color: #003B4F;">&lt;-</span> laguna_lines <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb7-3">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(highway <span class="sc" style="color: #5E5E5E;">%in%</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"path"</span>, <span class="st" style="color: #20794D;">"bridleway"</span>, <span class="st" style="color: #20794D;">"steps"</span>, <span class="st" style="color: #20794D;">"track"</span>))</span>
+<span id="cb7-4"></span>
+<span id="cb7-5">laguna_footpaths <span class="ot" style="color: #003B4F;">&lt;-</span> laguna_lines <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb7-6">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(highway <span class="sc" style="color: #5E5E5E;">%in%</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"footway"</span>))</span>
+<span id="cb7-7"></span>
+<span id="cb7-8">laguna_roads <span class="ot" style="color: #003B4F;">&lt;-</span> laguna_lines <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb7-9">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(highway <span class="sc" style="color: #5E5E5E;">%in%</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"unclassified"</span>, <span class="st" style="color: #20794D;">"primary"</span>, </span>
+<span id="cb7-10">                               <span class="st" style="color: #20794D;">"primary_link"</span>, <span class="st" style="color: #20794D;">"secondary"</span>, </span>
+<span id="cb7-11">                               <span class="st" style="color: #20794D;">"tertiary"</span>, <span class="st" style="color: #20794D;">"residential"</span>, <span class="st" style="color: #20794D;">"service"</span>))</span>
+<span id="cb7-12"></span>
+<span id="cb7-13"><span class="co" style="color: #5E5E5E;"># Create one encompassing layer with independent element styling</span></span>
+<span id="cb7-14">trails_layer <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb7-15">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">generate_line_overlay</span>(</span>
+<span id="cb7-16">    </span>
+<span id="cb7-17">    <span class="co" style="color: #5E5E5E;"># Pink footpaths</span></span>
+<span id="cb7-18">    laguna_footpaths, <span class="at" style="color: #657422;">extent =</span> extent_zoomed,</span>
+<span id="cb7-19">    <span class="at" style="color: #657422;">linewidth =</span> <span class="dv" style="color: #AD0000;">4</span>, <span class="at" style="color: #657422;">color =</span> <span class="st" style="color: #20794D;">"pink"</span>,</span>
+<span id="cb7-20">    <span class="at" style="color: #657422;">heightmap =</span> laguna_zoom_mat) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb7-21">  </span>
+<span id="cb7-22">  <span class="co" style="color: #5E5E5E;"># Note: While barely visible in the final outputs, the following</span></span>
+<span id="cb7-23">  <span class="co" style="color: #5E5E5E;"># code adds an offset black shadow to the white dashed lines to</span></span>
+<span id="cb7-24">  <span class="co" style="color: #5E5E5E;"># represent the hiking trails around Laguna Beach </span></span>
+<span id="cb7-25">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(</span>
+<span id="cb7-26">    rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">generate_line_overlay</span>(</span>
+<span id="cb7-27">      laguna_trails, <span class="at" style="color: #657422;">extent =</span> extent_zoomed,</span>
+<span id="cb7-28">      <span class="at" style="color: #657422;">linewidth =</span> <span class="dv" style="color: #AD0000;">4</span>, <span class="at" style="color: #657422;">color =</span> <span class="st" style="color: #20794D;">"black"</span>, <span class="at" style="color: #657422;">lty =</span> <span class="dv" style="color: #AD0000;">3</span>, <span class="at" style="color: #657422;">offset =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">2</span>,<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">2</span>),</span>
+<span id="cb7-29">      <span class="at" style="color: #657422;">heightmap =</span> laguna_zoom_mat)) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb7-30">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(</span>
+<span id="cb7-31">    rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">generate_line_overlay</span>(</span>
+<span id="cb7-32">      laguna_trails, <span class="at" style="color: #657422;">extent =</span> extent_zoomed,</span>
+<span id="cb7-33">      <span class="at" style="color: #657422;">linewidth =</span> <span class="dv" style="color: #AD0000;">4</span>, <span class="at" style="color: #657422;">color =</span> <span class="st" style="color: #20794D;">"white"</span>, <span class="at" style="color: #657422;">lty =</span> <span class="dv" style="color: #AD0000;">3</span>,</span>
+<span id="cb7-34">      <span class="at" style="color: #657422;">heightmap =</span> laguna_zoom_mat)) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb7-35">  </span>
+<span id="cb7-36">  <span class="co" style="color: #5E5E5E;"># White roads</span></span>
+<span id="cb7-37">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(</span>
+<span id="cb7-38">    rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">generate_line_overlay</span>(</span>
+<span id="cb7-39">      laguna_roads, <span class="at" style="color: #657422;">extent =</span> extent_zoomed,</span>
+<span id="cb7-40">      <span class="at" style="color: #657422;">linewidth =</span> <span class="dv" style="color: #AD0000;">3</span>, <span class="at" style="color: #657422;">color =</span> <span class="st" style="color: #20794D;">"white"</span>,</span>
+<span id="cb7-41">      <span class="at" style="color: #657422;">heightmap =</span> laguna_zoom_mat))</span></code></pre></div>
+</div>
+<p>We’ll create some additional projections of OSM layers.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">laguna_parking <span class="ot" style="color: #003B4F;">&lt;-</span> osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">opq</span>(osm_bbox) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb8-2">  osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_osm_feature</span>(<span class="st" style="color: #20794D;">"parking"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb8-3">  osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">osmdata_sf</span>() </span>
+<span id="cb8-4"></span>
+<span id="cb8-5">laguna_building <span class="ot" style="color: #003B4F;">&lt;-</span> osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">opq</span>(osm_bbox) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb8-6">  osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_osm_feature</span>(<span class="st" style="color: #20794D;">"building"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb8-7">  osmdata<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">osmdata_sf</span>()</span>
+<span id="cb8-8"></span>
+<span id="cb8-9">laguna_parking_poly <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">st_transform</span>(laguna_parking<span class="sc" style="color: #5E5E5E;">$</span>osm_polygons, <span class="at" style="color: #657422;">crs =</span> <span class="fu" style="color: #4758AB;">crs</span>(laguna))</span>
+<span id="cb8-10">laguna_building_poly <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">st_transform</span>(laguna_building<span class="sc" style="color: #5E5E5E;">$</span>osm_polygons, <span class="at" style="color: #657422;">crs =</span> <span class="fu" style="color: #4758AB;">crs</span>(laguna))</span></code></pre></div>
+</div>
+</section>
+<section id="final-touches" class="level2">
+<h2 class="anchored" data-anchor-id="final-touches">Final Touches</h2>
+<p>Now we’re ready to build upon our base map and see the 2D visual in action. Let’s create a polygon layer of the parking and building features, and adding the styled <strong>trails_layer</strong> on top of that.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">polygon_layer <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb9-2">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">generate_polygon_overlay</span>(laguna_parking_poly, </span>
+<span id="cb9-3">                                      <span class="at" style="color: #657422;">extent =</span> extent_zoomed,</span>
+<span id="cb9-4">                                      <span class="at" style="color: #657422;">heightmap =</span> laguna_zoom_mat, </span>
+<span id="cb9-5">                                      <span class="at" style="color: #657422;">palette =</span> <span class="st" style="color: #20794D;">"grey30"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb9-6">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(</span>
+<span id="cb9-7">    rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">generate_polygon_overlay</span>(laguna_building_poly, </span>
+<span id="cb9-8">                                        <span class="at" style="color: #657422;">extent =</span> extent_zoomed,</span>
+<span id="cb9-9">                                        <span class="at" style="color: #657422;">heightmap =</span> laguna_zoom_mat, </span>
+<span id="cb9-10">                                        <span class="at" style="color: #657422;">palette =</span> <span class="st" style="color: #20794D;">"lightgrey"</span>))</span>
+<span id="cb9-11"></span>
+<span id="cb9-12">base_map <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb9-13">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(polygon_layer) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb9-14">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(trails_layer) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb9-15">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">plot_map</span>()</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/2D_render.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">2D render of Laguna Beach… Success!</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="d-map-1" class="level1">
+<h1>3D Map</h1>
+<section id="features" class="level2">
+<h2 class="anchored" data-anchor-id="features">Features</h2>
+<p>To render a 3D map, we follow a very similar pipeline to the 2D map but utilizing <code>rayshader::plot_3d()</code>. This function introduces new arguments and I spent much more time than I had anticipated in adjusting the zscale, zoom, rotation, pitch, and water specifications.</p>
+<p>To exaggerate the elevation details in this area, I decided on a <code>zscale</code> &lt; 1 that would still resemble the reality and beauty of the Laguna Beach hills. Too low of a <code>zscale</code>, e.g., <code>zscale = 0.25</code>, was too exaggerated for my liking. Once the 3D viewer renders your visual, enter <code>rayshader::render_snapshot()</code> into your console to take a flat snapshot of your 3D rendering, saving your snapshot if desired.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">base_map <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb10-2">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(polygon_layer) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb10-3">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">add_overlay</span>(trails_layer) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb10-4">  rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">plot_3d</span>(<span class="at" style="color: #657422;">heightmap =</span> laguna_zoom_mat, </span>
+<span id="cb10-5">                     <span class="at" style="color: #657422;">zscale =</span> <span class="fl" style="color: #AD0000;">0.75</span>, <span class="at" style="color: #657422;">fov =</span> <span class="dv" style="color: #AD0000;">0</span>, </span>
+<span id="cb10-6">                     <span class="at" style="color: #657422;">theta =</span> <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">45</span>, <span class="at" style="color: #657422;">zoom =</span> <span class="fl" style="color: #AD0000;">0.75</span>, <span class="at" style="color: #657422;">phi =</span> <span class="dv" style="color: #AD0000;">45</span>,</span>
+<span id="cb10-7">                     <span class="at" style="color: #657422;">water =</span> <span class="cn" style="color: #8f5902;">TRUE</span>, <span class="at" style="color: #657422;">waterdepth =</span> <span class="dv" style="color: #AD0000;">4</span>, </span>
+<span id="cb10-8">                     <span class="at" style="color: #657422;">wateralpha =</span> <span class="fl" style="color: #AD0000;">0.4</span>, <span class="at" style="color: #657422;">watercolor =</span> <span class="st" style="color: #20794D;">"lightblue"</span>,</span>
+<span id="cb10-9">                     <span class="at" style="color: #657422;">waterlinecolor =</span> <span class="st" style="color: #20794D;">"white"</span>, <span class="at" style="color: #657422;">waterlinealpha =</span> <span class="fl" style="color: #AD0000;">0.5</span>,</span>
+<span id="cb10-10">                     <span class="at" style="color: #657422;">background =</span> <span class="st" style="color: #20794D;">"white"</span>)</span>
+<span id="cb10-11"></span>
+<span id="cb10-12"><span class="co" style="color: #5E5E5E;"># Create 2D snapshot of 3D rendering</span></span>
+<span id="cb10-13">rayshader<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">render_snapshot</span>()</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/3D_render.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">3D render of Laguna Beach</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
+<p>I’ve seen some neat examples where developers add 3D polygons to their maps to represent residential housing, commercial properties, and public facilities. I recently read about methods for rendering much higher-resolution maps (this would be great for printing). Creating 3D flyovers with <code>rayshader</code> also looks surprisingly high-end for open-source software. These are all things I hope to revisit at some point in the near future. TMW knocked it out of the park with his package and tutorials, so I hope you find his content as useful as I did.</p>
+</section>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">R version <span class="dv" style="color: #AD0000;">4</span>.<span class="fl" style="color: #AD0000;">1.1</span> (<span class="dv" style="color: #AD0000;">2021-08-10</span>)</span>
+<span id="cb11-2">Platform<span class="sc" style="color: #5E5E5E;">:</span> x86_64<span class="sc" style="color: #5E5E5E;">-</span>pc<span class="sc" style="color: #5E5E5E;">-</span>linux<span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">gnu</span> (<span class="dv" style="color: #AD0000;">64</span><span class="sc" style="color: #5E5E5E;">-</span>bit)</span>
+<span id="cb11-3">Running under<span class="sc" style="color: #5E5E5E;">:</span> Ubuntu <span class="dv" style="color: #AD0000;">20</span>.<span class="fl" style="color: #AD0000;">04.3</span> LTS</span>
+<span id="cb11-4"></span>
+<span id="cb11-5">Matrix products<span class="sc" style="color: #5E5E5E;">:</span> default</span>
+<span id="cb11-6">BLAS<span class="sc" style="color: #5E5E5E;">:</span>   <span class="er" style="color: #AD0000;">/</span>usr<span class="sc" style="color: #5E5E5E;">/</span>lib<span class="sc" style="color: #5E5E5E;">/</span>x86_64<span class="sc" style="color: #5E5E5E;">-</span>linux<span class="sc" style="color: #5E5E5E;">-</span>gnu<span class="sc" style="color: #5E5E5E;">/</span>blas<span class="sc" style="color: #5E5E5E;">/</span>libblas.so.<span class="dv" style="color: #AD0000;">3</span>.<span class="fl" style="color: #AD0000;">9.0</span></span>
+<span id="cb11-7">LAPACK<span class="sc" style="color: #5E5E5E;">:</span> <span class="er" style="color: #AD0000;">/</span>usr<span class="sc" style="color: #5E5E5E;">/</span>lib<span class="sc" style="color: #5E5E5E;">/</span>x86_64<span class="sc" style="color: #5E5E5E;">-</span>linux<span class="sc" style="color: #5E5E5E;">-</span>gnu<span class="sc" style="color: #5E5E5E;">/</span>lapack<span class="sc" style="color: #5E5E5E;">/</span>liblapack.so.<span class="dv" style="color: #AD0000;">3</span>.<span class="fl" style="color: #AD0000;">9.0</span></span>
+<span id="cb11-8"></span>
+<span id="cb11-9">locale<span class="sc" style="color: #5E5E5E;">:</span></span>
+<span id="cb11-10"> [<span class="dv" style="color: #AD0000;">1</span>] LC_CTYPE<span class="ot" style="color: #003B4F;">=</span>en_US.UTF<span class="dv" style="color: #AD0000;">-8</span>       LC_NUMERIC<span class="ot" style="color: #003B4F;">=</span>C              </span>
+<span id="cb11-11"> [<span class="dv" style="color: #AD0000;">3</span>] LC_TIME<span class="ot" style="color: #003B4F;">=</span>en_US.UTF<span class="dv" style="color: #AD0000;">-8</span>        LC_COLLATE<span class="ot" style="color: #003B4F;">=</span>en_US.UTF<span class="dv" style="color: #AD0000;">-8</span>    </span>
+<span id="cb11-12"> [<span class="dv" style="color: #AD0000;">5</span>] LC_MONETARY<span class="ot" style="color: #003B4F;">=</span>en_US.UTF<span class="dv" style="color: #AD0000;">-8</span>    LC_MESSAGES<span class="ot" style="color: #003B4F;">=</span>en_US.UTF<span class="dv" style="color: #AD0000;">-8</span>   </span>
+<span id="cb11-13"> [<span class="dv" style="color: #AD0000;">7</span>] LC_PAPER<span class="ot" style="color: #003B4F;">=</span>en_US.UTF<span class="dv" style="color: #AD0000;">-8</span>       LC_NAME<span class="ot" style="color: #003B4F;">=</span>C                 </span>
+<span id="cb11-14"> [<span class="dv" style="color: #AD0000;">9</span>] LC_ADDRESS<span class="ot" style="color: #003B4F;">=</span>C               LC_TELEPHONE<span class="ot" style="color: #003B4F;">=</span>C            </span>
+<span id="cb11-15">[<span class="dv" style="color: #AD0000;">11</span>] LC_MEASUREMENT<span class="ot" style="color: #003B4F;">=</span>en_US.UTF<span class="dv" style="color: #AD0000;">-8</span> LC_IDENTIFICATION<span class="ot" style="color: #003B4F;">=</span>C       </span>
+<span id="cb11-16"></span>
+<span id="cb11-17">attached base packages<span class="sc" style="color: #5E5E5E;">:</span></span>
+<span id="cb11-18">[<span class="dv" style="color: #AD0000;">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb11-19"></span>
+<span id="cb11-20">other attached packages<span class="sc" style="color: #5E5E5E;">:</span></span>
+<span id="cb11-21">[<span class="dv" style="color: #AD0000;">1</span>] ggplot2_3.<span class="fl" style="color: #AD0000;">3.5</span>    dplyr_1.<span class="fl" style="color: #AD0000;">0.7</span>      sf_1<span class="fl" style="color: #AD0000;">.0</span><span class="dv" style="color: #AD0000;">-2</span>         osmdata_0.<span class="fl" style="color: #AD0000;">1.6</span>   </span>
+<span id="cb11-22">[<span class="dv" style="color: #AD0000;">5</span>] raster_3<span class="fl" style="color: #AD0000;">.4</span><span class="dv" style="color: #AD0000;">-13</span>    sp_1<span class="fl" style="color: #AD0000;">.4</span><span class="dv" style="color: #AD0000;">-5</span>         rayshader_0.<span class="fl" style="color: #AD0000;">26.1</span></span>
+<span id="cb11-23"></span>
+<span id="cb11-24">loaded via a <span class="fu" style="color: #4758AB;">namespace</span> (and not attached)<span class="sc" style="color: #5E5E5E;">:</span></span>
+<span id="cb11-25"> [<span class="dv" style="color: #AD0000;">1</span>] rgl_0.<span class="fl" style="color: #AD0000;">107.14</span>       Rcpp_1.<span class="fl" style="color: #AD0000;">0.7</span>         lubridate_1.<span class="fl" style="color: #AD0000;">7.10</span>   lattice_0<span class="fl" style="color: #AD0000;">.20</span><span class="dv" style="color: #AD0000;">-44</span>   </span>
+<span id="cb11-26"> [<span class="dv" style="color: #AD0000;">5</span>] png_0<span class="fl" style="color: #AD0000;">.1</span><span class="dv" style="color: #AD0000;">-7</span>          prettyunits_1.<span class="fl" style="color: #AD0000;">1.1</span>  class_7<span class="fl" style="color: #AD0000;">.3</span><span class="dv" style="color: #AD0000;">-19</span>       ps_1.<span class="fl" style="color: #AD0000;">6.0</span>          </span>
+<span id="cb11-27"> [<span class="dv" style="color: #AD0000;">9</span>] assertthat_0.<span class="fl" style="color: #AD0000;">2.1</span>   rprojroot_2.<span class="fl" style="color: #AD0000;">0.2</span>    digest_0.<span class="fl" style="color: #AD0000;">6.27</span>      foreach_1.<span class="fl" style="color: #AD0000;">5.1</span>     </span>
+<span id="cb11-28">[<span class="dv" style="color: #AD0000;">13</span>] utf8_1.<span class="fl" style="color: #AD0000;">2.2</span>         R6_2.<span class="fl" style="color: #AD0000;">5.1</span>           e1071_1<span class="fl" style="color: #AD0000;">.7</span><span class="dv" style="color: #AD0000;">-8</span>        httr_1.<span class="fl" style="color: #AD0000;">4.2</span>        </span>
+<span id="cb11-29">[<span class="dv" style="color: #AD0000;">17</span>] pillar_1.<span class="fl" style="color: #AD0000;">6.2</span>       rlang_0.<span class="fl" style="color: #AD0000;">4.11</span>       progress_1.<span class="fl" style="color: #AD0000;">2.2</span>     curl_4.<span class="fl" style="color: #AD0000;">3.2</span>        </span>
+<span id="cb11-30">[<span class="dv" style="color: #AD0000;">21</span>] callr_3.<span class="fl" style="color: #AD0000;">7.0</span>        magick_2.<span class="fl" style="color: #AD0000;">7.3</span>       pkgdown_1.<span class="fl" style="color: #AD0000;">6.1</span>      desc_1.<span class="fl" style="color: #AD0000;">3.0</span>        </span>
+<span id="cb11-31">[<span class="dv" style="color: #AD0000;">25</span>] devtools_2.<span class="fl" style="color: #AD0000;">4.2</span>     rgdal_1<span class="fl" style="color: #AD0000;">.5</span><span class="dv" style="color: #AD0000;">-23</span>       htmlwidgets_1.<span class="fl" style="color: #AD0000;">5.3</span>  munsell_0.<span class="fl" style="color: #AD0000;">5.0</span>     </span>
+<span id="cb11-32">[<span class="dv" style="color: #AD0000;">29</span>] proxy_0<span class="fl" style="color: #AD0000;">.4</span><span class="dv" style="color: #AD0000;">-26</span>       compiler_4.<span class="fl" style="color: #AD0000;">1.1</span>     xfun_0<span class="fl" style="color: #AD0000;">.25</span>          pkgconfig_2.<span class="fl" style="color: #AD0000;">0.3</span>   </span>
+<span id="cb11-33">[<span class="dv" style="color: #AD0000;">33</span>] pkgbuild_1.<span class="fl" style="color: #AD0000;">2.0</span>     htmltools_0.<span class="fl" style="color: #AD0000;">5.2</span>    tidyselect_1.<span class="fl" style="color: #AD0000;">1.1</span>   tibble_3.<span class="fl" style="color: #AD0000;">1.4</span>      </span>
+<span id="cb11-34">[<span class="dv" style="color: #AD0000;">37</span>] codetools_0<span class="fl" style="color: #AD0000;">.2</span><span class="dv" style="color: #AD0000;">-18</span>   fansi_0.<span class="fl" style="color: #AD0000;">5.0</span>        crayon_1.<span class="fl" style="color: #AD0000;">4.1</span>       withr_2.<span class="fl" style="color: #AD0000;">4.2</span>       </span>
+<span id="cb11-35">[<span class="dv" style="color: #AD0000;">41</span>] grid_4.<span class="fl" style="color: #AD0000;">1.1</span>         gtable_0.<span class="fl" style="color: #AD0000;">3.0</span>       jsonlite_1.<span class="fl" style="color: #AD0000;">7.2</span>     lifecycle_1.<span class="fl" style="color: #AD0000;">0.0</span>   </span>
+<span id="cb11-36">[<span class="dv" style="color: #AD0000;">45</span>] DBI_1.<span class="fl" style="color: #AD0000;">1.1</span>          magrittr_2.<span class="fl" style="color: #AD0000;">0.1</span>     scales_1.<span class="fl" style="color: #AD0000;">1.1</span>       units_0<span class="fl" style="color: #AD0000;">.7</span><span class="dv" style="color: #AD0000;">-2</span>       </span>
+<span id="cb11-37">[<span class="dv" style="color: #AD0000;">49</span>] KernSmooth_2<span class="fl" style="color: #AD0000;">.23</span><span class="dv" style="color: #AD0000;">-20</span> cli_3.<span class="fl" style="color: #AD0000;">0.1</span>          cachem_1.<span class="fl" style="color: #AD0000;">0.6</span>       farver_2.<span class="fl" style="color: #AD0000;">1.0</span>      </span>
+<span id="cb11-38">[<span class="dv" style="color: #AD0000;">53</span>] fs_1.<span class="fl" style="color: #AD0000;">5.0</span>           remotes_2.<span class="fl" style="color: #AD0000;">4.0</span>      doParallel_1.<span class="fl" style="color: #AD0000;">0.16</span>  testthat_3.<span class="fl" style="color: #AD0000;">0.4</span>    </span>
+<span id="cb11-39">[<span class="dv" style="color: #AD0000;">57</span>] xml2_1.<span class="fl" style="color: #AD0000;">3.2</span>         ellipsis_0.<span class="fl" style="color: #AD0000;">3.2</span>     generics_0.<span class="fl" style="color: #AD0000;">1.0</span>     vctrs_0.<span class="fl" style="color: #AD0000;">3.8</span>       </span>
+<span id="cb11-40">[<span class="dv" style="color: #AD0000;">61</span>] iterators_1.<span class="fl" style="color: #AD0000;">0.13</span>   tools_4.<span class="fl" style="color: #AD0000;">1.1</span>        rayimage_0.<span class="fl" style="color: #AD0000;">6.2</span>     glue_1.<span class="fl" style="color: #AD0000;">4.2</span>        </span>
+<span id="cb11-41">[<span class="dv" style="color: #AD0000;">65</span>] purrr_0.<span class="fl" style="color: #AD0000;">3.4</span>        hms_1.<span class="fl" style="color: #AD0000;">1.0</span>          processx_3.<span class="fl" style="color: #AD0000;">5.2</span>     pkgload_1.<span class="fl" style="color: #AD0000;">2.1</span>     </span>
+<span id="cb11-42">[<span class="dv" style="color: #AD0000;">69</span>] parallel_4.<span class="fl" style="color: #AD0000;">1.1</span>     fastmap_1.<span class="fl" style="color: #AD0000;">1.0</span>      colorspace_2<span class="fl" style="color: #AD0000;">.0</span><span class="dv" style="color: #AD0000;">-2</span>   sessioninfo_1.<span class="fl" style="color: #AD0000;">1.1</span> </span>
+<span id="cb11-43">[<span class="dv" style="color: #AD0000;">73</span>] classInt_0<span class="fl" style="color: #AD0000;">.4</span><span class="dv" style="color: #AD0000;">-3</span>     rvest_1.<span class="fl" style="color: #AD0000;">0.1</span>        memoise_2.<span class="fl" style="color: #AD0000;">0.0</span>      knitr_1<span class="fl" style="color: #AD0000;">.33</span>        </span>
+<span id="cb11-44">[<span class="dv" style="color: #AD0000;">77</span>] usethis_2.<span class="fl" style="color: #AD0000;">0.1</span>     </span></code></pre></div>
+</div>
+</section>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<ul>
+<li>rayshader: <a href="https://www.rayshader.com/">https://www.rayshader.com/</a></li>
+<li>rayrender: <a href="http://www.rayrender.net/">http://www.rayrender.net/</a></li>
+<li>Tyler Morgan-Wall, PhD: <a href="https://www.tylermw.com/">https://www.tylermw.com/</a></li>
+</ul>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>rayshader</category>
+  <category>raster</category>
+  <category>osmdata</category>
+  <category>sf</category>
+  <category>ggplot2</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</guid>
+  <pubDate>Tue, 07 Sep 2021 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/smallhobart.gif" medium="image" type="image/gif"/>
+</item>
+<item>
+  <title>A Brief History of the Dataframe</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/2021-05-24-dataframe.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>This is quite the insightful read on the history of the dataframe. From its origins in the S programming language, to R, to the <code>pandas</code> library for Python (to the <code>tibble</code> for R!)… I couldn’t imagine doing my work without this fundamental data structure, but will it really be defined out of existence? See below link for an excellent overview by <a href="https://devin-petersohn.medium.com/">Devin Petersohn</a>:</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/images/dataframe.jpeg" class="img-fluid"></p>
+<p>Source:</p>
+<ul>
+<li><p><a href="https://towardsdatascience.com/preventing-the-death-of-the-dataframe-8bca1c0f83c8">Towards Data Science: Preventing the Death of the Dataframe</a></p></li>
+<li><p><a href="https://pandas.pydata.org/">pandas for Python</a></p></li>
+<li><p><a href="https://tibble.tidyverse.org/">tibble for R</a></p></li>
+</ul>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Python</category>
+  <category>tibble</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/2021-05-24-dataframe.html</guid>
+  <pubDate>Mon, 24 May 2021 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/images/dataframe.jpeg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>DT: An R Interface to the JavaScript library DataTables</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2021-05-03-DT/2021-05-03-DT.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>The <a href="https://rstudio.github.io/DT/">DT package</a> for R is a powerful integration of the JavaScript library <em>DataTables</em>. One of the things that I enjoy with <code>DT</code> is enhancing my Shiny apps by rendering interactive tables with <code>DT</code>. The <code>DT</code> documentation, written by <a href="https://www.rstudio.com/">RStudio PBC</a> and the <code>DT</code> devs, is incredibly well-written and you’ll learn a lot about how you can use these tables in the development of robust R web apps. And the available Options…. Endless in a good way!</p>
+<p>If you’re a Shiny dev, check out the live demos sourced below.</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-05-03-DT/images/DT_Shiny.png" class="img-fluid"></p>
+<p>Source:</p>
+<ul>
+<li><p><a href="https://github.com/rstudio/DT">DT on GitHub</a></p></li>
+<li><p><a href="https://rstudio.github.io/DT/">DT site</a></p></li>
+<li><p><a href="https://yihui.shinyapps.io/DT-selection/">Live Shiny demo: DT Selections Ex. 1</a></p></li>
+<li><p><a href="https://yihui.shinyapps.io/DT-rows/">Live Shiny demo: DT Selection Ex. 2</a></p></li>
+</ul>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>RStudio</category>
+  <category>Packages</category>
+  <category>R</category>
+  <category>DT</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2021-05-03-DT/2021-05-03-DT.html</guid>
+  <pubDate>Mon, 03 May 2021 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2021-05-03-DT/images/DT_Shiny.png" medium="image" type="image/png" height="84" width="144"/>
+</item>
+<item>
+  <title>rstudio::global tips, tricks, and more</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/2021-01-24-rstudio-global.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I attended several sessions throughout rstudio::global and below are my favorite reminders, takeaways, and new concepts that I learned. You’ll gain the most from this article if you are comfortable with predictive analytics with R and have been exposed to the <code>tidyverse</code> and <code>tidymodels</code> collections of packages. If you missed the conference, all of the presentations and slides will be made available on RStudio’s website soon. Some philosophical, some technical.<br><br> <img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/global-logo-dark.jpg" class="img-fluid" alt="rstudio::global(2021) conference"></p>
+<section id="fostering-positive-thinking" class="level1">
+<h1>Fostering Positive Thinking</h1>
+<p>The opening keynote presentation with RStudio’s Chief Data Scientist, Hadley Wickham, was super refreshing and very encouraging to hear. In short, Wickham encouraged analysts and data scientists to change the way you approach challenges when programming or maintaining code.</p>
+<p>Below are several reminders that Wickham discussed… If you’re your harshest critic, revisit these. I know that I will:</p>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Automatic Thoughts</th>
+<th>Balanced Alternatives</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>I must be a moron if I can’t perform this “simple” task.</td>
+<td>This isn’t something I do very often so it’s unreasonable to expect that I’d automatically be an expert at it.</td>
+</tr>
+<tr class="even">
+<td>The documentation is useless and doesn’t help me at all.</td>
+<td>It’s not possible to document every possible existing situation, but I can still read the docs and learn something.</td>
+</tr>
+<tr class="odd">
+<td>This was a total waste of time. I’ll never get those four hours back again.</td>
+<td>Maybe I didn’t succeed in my original goal, but I made some progress, and I gained valuable insights for the next time that I try.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tidymodels" class="level1">
+<h1>Tidymodels</h1>
+<section id="what-is-it" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-it">What is it?</h3>
+<p>Coming from a converted <code>caret</code>-ista, it wasn’t an easy transition to the full <code>tidymodels</code> framework. I liked the way <code>caret</code> <em>felt</em>, and I did almost everything with it from resampling, modeling, tuning, to model evaluation. Enter <code>tidymodels</code>, a framework that feels like a deconstructed <code>caret</code> - Each major <code>caret</code> feature has been enhanced and wrapped into its own package. I’ve been using this framework for roughly one year and the rate at which this ecosystem has evolved has been impressive.</p>
+<p><code>tidymodels</code> is a collection of tidy-friendly packages written with a consistent vocabulary for reproducible machine learning workflows. Its core packages include the following:</p>
+<ul>
+<li><p><a href="https://rsample.tidymodels.org/">rsample</a>: provides infrastructure for efficient data splitting and resampling</p></li>
+<li><p><a href="https://parsnip.tidymodels.org/">parsnip</a>: a tidy, unified interface to models that can be used to try a range of models without getting bogged down in the syntactical minutiae of the underlying packages</p></li>
+<li><p><a href="https://recipes.tidymodels.org/">recipes</a>: a tidy interface to data pre-processing tools for feature engineering</p></li>
+<li><p><a href="https://workflows.tidymodels.org/">workflows</a>: expands the traditional model-only recipe to a much more holistic blueprint for pre-processing, modeling, post-processing, and evaluation</p></li>
+<li><p><a href="https://tune.tidymodels.org/">tune</a>: helps you optimize the hyperparameters of your model and pre-processing steps</p></li>
+<li><p><a href="https://yardstick.tidymodels.org/">yardstick</a>: measures the effectiveness of models using performance metrics</p></li>
+<li><p><a href="https://broom.tidymodels.org/">broom</a>: converts the information in common statistical R objects into user-friendly, predictable formats</p></li>
+<li><p><a href="https://dials.tidymodels.org/">dials</a>: creates and manages tuning parameters and parameter grids</p></li>
+<li><p><a href="https://usemodels.tidymodels.org/">usemodels</a>: a helpful way to quickly create code snippets to fit models using the tidymodels framework</p>
+<ul>
+<li>At the time of writing this, <code>usemodels</code> is still in very early development (version 0.1.0.). This package follows the <code>usethis</code> philosophy of automating repetitive project development tasks but with a focus on modeling. <code>usemodels</code> helped me fully transition from the <code>caret</code> meta-engine to <code>parsnip</code> + <code>tune</code> + <code>dials</code> + more of the <code>tidymodels</code> framework.</li>
+</ul></li>
+<li><p><a href="https://stacks.tidymodels.org/">stacks</a>: similar to <code>usemodels</code>, this is an early-stage package for model stacking, an ensembling method that takes the outputs of many models and combines them to generate a new model that generates predictions informed by each of its members</p></li>
+</ul>
+</section>
+<section id="irregular-grid-searches" class="level2">
+<h2 class="anchored" data-anchor-id="irregular-grid-searches">Irregular Grid Searches</h2>
+<p>Irregular grid searches help you tune your models by cycling through randomized hyperparameters in an effort to yield the best (or at least better) performance. I’ve been using the <code>dials</code> package to create Latin hypercubes which is explained below, highlighting the benefits of this space-filling design vs a purely randomized irregular grid search. Max Kuhn’s <em>“New in tidymodels”</em> rstudio::global event provided me with a fresh reminder about <em>why</em> these methods are beneficial and <em>how</em> they actually optimize performance.</p>
+<p>The documentation below was copied almost entirely from Chapter 13 of Max Kuhn and Julia Silge’s <a href="https://www.tmwr.org/"><em>Tidy Modeling with R</em></a> (“TMWR”). I’ve deleted certain bits and added minimal helper comments in brackets. If you find yourself statistically programming, bootstrapping / resampling, improving model performance through grid searches, maybe even ensemble stacking, I’d highly recommend that you bookmark the TMWR book.</p>
+<section id="random-grid-search" class="level3">
+<h3 class="anchored" data-anchor-id="random-grid-search">Random Grid Search</h3>
+<p>There a several options for creating non-regular grids. The first is to use random sampling across the range of parameters. The <code>grid_random()</code> function [of the <code>dials</code> package] generates independent uniform random numbers across the parameter ranges. If the parameter object has an associated transformation (such as we have for <code>penalty</code>), the random numbers are generated on the transformed scale. For example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">set.seed</span>(<span class="dv" style="color: #AD0000;">10</span>)</span>
+<span id="cb1-2">mlp_param <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb1-3">  <span class="fu" style="color: #4758AB;">grid_random</span>(<span class="at" style="color: #657422;">size =</span> <span class="dv" style="color: #AD0000;">1000</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> <span class="co" style="color: #5E5E5E;"># 'size' is the number of combinations</span></span>
+<span id="cb1-4">  <span class="fu" style="color: #4758AB;">summary</span>()</span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;">#&gt;   hidden_units      penalty           epochs    </span></span>
+<span id="cb1-6"><span class="co" style="color: #5E5E5E;">#&gt;  Min.   : 1.00   Min.   :0.0000   Min.   :  10  </span></span>
+<span id="cb1-7"><span class="co" style="color: #5E5E5E;">#&gt;  1st Qu.: 3.00   1st Qu.:0.0000   1st Qu.: 259  </span></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;">#&gt;  Median : 6.00   Median :0.0000   Median : 480  </span></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;">#&gt;  Mean   : 5.58   Mean   :0.0432   Mean   : 496  </span></span>
+<span id="cb1-10"><span class="co" style="color: #5E5E5E;">#&gt;  3rd Qu.: 8.00   3rd Qu.:0.0050   3rd Qu.: 738  </span></span>
+<span id="cb1-11"><span class="co" style="color: #5E5E5E;">#&gt;  Max.   :10.00   Max.   :0.9932   Max.   :1000</span></span></code></pre></div>
+</div>
+<p>For <code>penalty</code>, the random numbers are uniform on the log (base 10) scale but the values in the grid are in the natural units.</p>
+<p>The issue with random grids is that, with small-to-medium grids, random values can result in overlapping parameter combinations. Also, the random grid needs to cover the whole parameter space but the likelihood of good coverage increases with the number of grid values. Even for a sample of 15 candidate points, this plot shows some overlap between points for our example multilayer perceptron:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;">library</span>(ggforce)</span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;">set.seed</span>(<span class="dv" style="color: #AD0000;">200</span>)</span>
+<span id="cb2-3">mlp_param <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb2-4">  <span class="co" style="color: #5E5E5E;"># The 'original = FALSE' option keeps penalty in log10 units</span></span>
+<span id="cb2-5">  <span class="fu" style="color: #4758AB;">grid_random</span>(<span class="at" style="color: #657422;">size =</span> <span class="dv" style="color: #AD0000;">15</span>, <span class="at" style="color: #657422;">original =</span> <span class="cn" style="color: #8f5902;">FALSE</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb2-6">  <span class="fu" style="color: #4758AB;">ggplot</span>(<span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> .panel_x, <span class="at" style="color: #657422;">y =</span> .panel_y)) <span class="sc" style="color: #5E5E5E;">+</span> </span>
+<span id="cb2-7">  <span class="fu" style="color: #4758AB;">geom_point</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb2-8">  <span class="fu" style="color: #4758AB;">geom_blank</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb2-9">  <span class="fu" style="color: #4758AB;">facet_matrix</span>(<span class="fu" style="color: #4758AB;">vars</span>(hidden_units, penalty, epochs), <span class="at" style="color: #657422;">layer.diag =</span> <span class="dv" style="color: #AD0000;">2</span>) <span class="sc" style="color: #5E5E5E;">+</span> </span>
+<span id="cb2-10">  <span class="fu" style="color: #4758AB;">labs</span>(<span class="at" style="color: #657422;">title =</span> <span class="st" style="color: #20794D;">"Random design with 15 candidates"</span>)</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/grid-random-matrix-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Random grid search using dials::grid_random()</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="space-filling-designs" class="level3">
+<h3 class="anchored" data-anchor-id="space-filling-designs">Space-Filling Designs</h3>
+<p>A much better approach is to use a set of experimental designs called space-filling designs. While different design methods have slightly different goals, they generally find a configuration of points that cover the parameter space with the smallest chance of overlapping or redundant values. See <a href="https://www.asc.ohio-state.edu/santner.1/TJS-BJW-WIN/master-driver.pdf">Santner et al.&nbsp;(2003)</a> for an overview of space-filling designs.</p>
+<p>The <code>dials</code> package contains functions for Latin hypercube and maximum entropy designs. As with <code>dials::grid_random()</code>, the primary inputs are the number of parameter combinations and a parameter object. Let’s compare the above random design with a Latin hypercube design for 15 candidate parameter values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;">set.seed</span>(<span class="dv" style="color: #AD0000;">200</span>)</span>
+<span id="cb3-2">mlp_param <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-3">  <span class="fu" style="color: #4758AB;">grid_latin_hypercube</span>(<span class="at" style="color: #657422;">size =</span> <span class="dv" style="color: #AD0000;">15</span>, <span class="at" style="color: #657422;">original =</span> <span class="cn" style="color: #8f5902;">FALSE</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb3-4">  <span class="fu" style="color: #4758AB;">ggplot</span>(<span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> .panel_x, <span class="at" style="color: #657422;">y =</span> .panel_y)) <span class="sc" style="color: #5E5E5E;">+</span> </span>
+<span id="cb3-5">  <span class="fu" style="color: #4758AB;">geom_point</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb3-6">  <span class="fu" style="color: #4758AB;">geom_blank</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb3-7">  <span class="fu" style="color: #4758AB;">facet_matrix</span>(<span class="fu" style="color: #4758AB;">vars</span>(hidden_units, penalty, epochs), <span class="at" style="color: #657422;">layer.diag =</span> <span class="dv" style="color: #AD0000;">2</span>) <span class="sc" style="color: #5E5E5E;">+</span> </span>
+<span id="cb3-8">  <span class="fu" style="color: #4758AB;">labs</span>(<span class="at" style="color: #657422;">title =</span> <span class="st" style="color: #20794D;">"Latin Hypercube design with 15 candidates"</span>)</span></code></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/grid-sfd-compare-1.svg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Latin hypercube designed using the dials::grid_latin_hypercube() helper</figcaption><p></p>
+</figure>
+</div>
+<p>While not perfect, this design spaces the points further away from one another.</p>
+<p>Space-filling designs can be very effective at representing the parameter space. The default design used by the <code>tune</code> package is the maximum entropy design. These tend to produce grids that cover the candidate space well and drastically increase the chances of finding good results.</p>
+<p>To learn more about advanced <em>iterative search</em> methods such as Bayesian optimization and simulated annealing, please visit <a href="https://www.tmwr.org/iterative-search.html">Chapter 14 of TMWR</a>. Max Kuhn covered these advanced techniques during his <code>tidymodels</code> rstudio::global event and I haven’t had a chance to try these iterative search methods.</p>
+</section>
+</section>
+<section id="usemodels" class="level2">
+<h2 class="anchored" data-anchor-id="usemodels">usemodels</h2>
+<p>In the spirit of sharing useful tips, tricks, and packages, I’d like to introduce you to Max Kuhn’s <code>usemodels</code> package. If you’re on the fence about adopting the <code>tidymodels</code> framework, this package is definitely for you. Even for experienced users, <code>usemodels</code> is an excellent way to quickly generate boilerplate code snippets that are algorithm-specific. This package is not yet on CRAN, so install it using the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;"># Installing usemodels from its GitHub repo</span></span>
+<span id="cb4-2">devtools<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">install_github</span>(<span class="st" style="color: #20794D;">"tidymodels/usemodels"</span>)</span></code></pre></div>
+</div>
+<p>Given a simple formula and a data set, the <code>use_*</code> functions can create code that is appropriate for the data (given the model). [Note: The model formula will be in the form of <code>y ~ a + b + c</code> or <code>y ~ .</code> if you plan on including all available variables in your model.]</p>
+<p>For example, using the <code>palmerpenguins</code> data with a <code>glmnet</code> model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;">library</span>(usemodels)</span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;">library</span>(palmerpenguins)</span>
+<span id="cb5-3"><span class="fu" style="color: #4758AB;">data</span>(penguins)</span>
+<span id="cb5-4"><span class="fu" style="color: #4758AB;">use_glmnet</span>(body_mass_g <span class="sc" style="color: #5E5E5E;">~</span> ., <span class="at" style="color: #657422;">data =</span> penguins)</span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="co" style="color: #5E5E5E;"># </span><span class="al" style="color: #AD0000;">NOTE</span><span class="co" style="color: #5E5E5E;">: The below will be printed in your console with your model recipe and tailored</span></span>
+<span id="cb5-7"><span class="co" style="color: #5E5E5E;"># with the required pre-processing steps given your algorithm of choice (in this case,</span></span>
+<span id="cb5-8"><span class="co" style="color: #5E5E5E;"># glmnet). The `usemodels` output also provides the code structure for a reproducible </span></span>
+<span id="cb5-9"><span class="co" style="color: #5E5E5E;"># workflow, made possible with the `workflows` package. Should you choose to tune</span></span>
+<span id="cb5-10"><span class="co" style="color: #5E5E5E;"># your model, `usemodels` also provides code snippets for producing a grid of parameter</span></span>
+<span id="cb5-11"><span class="co" style="color: #5E5E5E;"># combinations to use with your hyperparameter tuning grid search.</span></span>
+<span id="cb5-12"></span>
+<span id="cb5-13">glmnet_recipe <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb5-14">  <span class="fu" style="color: #4758AB;">recipe</span>(<span class="at" style="color: #657422;">formula =</span> body_mass_g <span class="sc" style="color: #5E5E5E;">~</span> ., <span class="at" style="color: #657422;">data =</span> penguins) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-15">  <span class="fu" style="color: #4758AB;">step_novel</span>(<span class="fu" style="color: #4758AB;">all_nominal</span>(), <span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">all_outcomes</span>()) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-16">  <span class="fu" style="color: #4758AB;">step_dummy</span>(<span class="fu" style="color: #4758AB;">all_nominal</span>(), <span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">all_outcomes</span>()) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-17">  <span class="fu" style="color: #4758AB;">step_zv</span>(<span class="fu" style="color: #4758AB;">all_predictors</span>()) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-18">  <span class="fu" style="color: #4758AB;">step_normalize</span>(<span class="fu" style="color: #4758AB;">all_predictors</span>(), <span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">all_nominal</span>()) </span>
+<span id="cb5-19"></span>
+<span id="cb5-20">glmnet_spec <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb5-21">  <span class="fu" style="color: #4758AB;">linear_reg</span>(<span class="at" style="color: #657422;">penalty =</span> <span class="fu" style="color: #4758AB;">tune</span>(), <span class="at" style="color: #657422;">mixture =</span> <span class="fu" style="color: #4758AB;">tune</span>()) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-22">  <span class="fu" style="color: #4758AB;">set_mode</span>(<span class="st" style="color: #20794D;">"regression"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-23">  <span class="fu" style="color: #4758AB;">set_engine</span>(<span class="st" style="color: #20794D;">"glmnet"</span>) </span>
+<span id="cb5-24"></span>
+<span id="cb5-25">glmnet_workflow <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb5-26">  <span class="fu" style="color: #4758AB;">workflow</span>() <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-27">  <span class="fu" style="color: #4758AB;">add_recipe</span>(glmnet_recipe) <span class="sc" style="color: #5E5E5E;">%&gt;%</span> </span>
+<span id="cb5-28">  <span class="fu" style="color: #4758AB;">add_model</span>(glmnet_spec) </span>
+<span id="cb5-29"></span>
+<span id="cb5-30">glmnet_grid <span class="ot" style="color: #003B4F;">&lt;-</span> tidyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">crossing</span>(<span class="at" style="color: #657422;">penalty =</span> <span class="dv" style="color: #AD0000;">10</span><span class="sc" style="color: #5E5E5E;">^</span><span class="fu" style="color: #4758AB;">seq</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">6</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="at" style="color: #657422;">length.out =</span> <span class="dv" style="color: #AD0000;">20</span>), <span class="at" style="color: #657422;">mixture =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="fl" style="color: #AD0000;">0.05</span>, </span>
+<span id="cb5-31">    <span class="fl" style="color: #AD0000;">0.2</span>, <span class="fl" style="color: #AD0000;">0.4</span>, <span class="fl" style="color: #AD0000;">0.6</span>, <span class="fl" style="color: #AD0000;">0.8</span>, <span class="dv" style="color: #AD0000;">1</span>)) </span>
+<span id="cb5-32"></span>
+<span id="cb5-33">glmnet_tune <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb5-34">  <span class="fu" style="color: #4758AB;">tune_grid</span>(glmnet_workflow, <span class="at" style="color: #657422;">resamples =</span> <span class="fu" style="color: #4758AB;">stop</span>(<span class="st" style="color: #20794D;">"add your rsample object"</span>), <span class="at" style="color: #657422;">grid =</span> glmnet_grid)</span></code></pre></div>
+</div>
+<p>As of today’s date, this package includes templates available with the following code: <code>use_cubist</code>, <code>use_earth</code>, <code>use_glmnet</code>, <code>use_kknn</code>, <code>use_ranger</code>, and <code>use_xgboost</code></p>
+</section>
+<section id="stacks" class="level2">
+<h2 class="anchored" data-anchor-id="stacks">stacks</h2>
+<section id="ensemble-models" class="level3">
+<h3 class="anchored" data-anchor-id="ensemble-models">Ensemble Models</h3>
+<p>Similar to <code>usemodels</code>, this is a very early-stage package that you should start following. There are already several AI tools for producing “model stacks” or “ensemble models” such as <a href="http://h2o-release.s3.amazonaws.com/h2o/master/1735/docs-website/Ruser/Rinstall.html">H2O.ai</a>, <a href="https://community.datarobot.com/t5/resources/welcome-to-using-r-with-datarobot/ta-p/1770">DataRobot</a>, and a few others, however, <code>stacks</code> is the first purpose-built for use with <code>tidymodels</code>. The following narrative is copied almost directly from the <a href="https://stacks.tidymodels.org/">stacks website</a>.</p>
+<p><code>stacks</code> is an R package for model stacking that aligns with the <code>tidymodels</code>. Model stacking is an ensembling method that takes the outputs of many models and combines them to generate a new model - <em>referred to as an ensemble in this package</em> - that generates predictions informed by each of its members.</p>
+<p>The process goes something like this:</p>
+<ol type="1">
+<li><p>Define candidate ensemble members using functionality from rsample, parsnip, workflows, recipes, and tune</p></li>
+<li><p>Initialize a data_stack object with stacks()</p></li>
+<li><p>Iteratively add candidate ensemble members to the data_stack with add_candidates()</p></li>
+<li><p>Evaluate how to combine their predictions with blend_predictions()</p></li>
+<li><p>Fit candidate ensemble members with non-zero stacking coefficients with fit_members()</p></li>
+<li><p>Predict on new data with predict()</p></li>
+</ol>
+</section>
+<section id="stacks-grammar" class="level3">
+<h3 class="anchored" data-anchor-id="stacks-grammar">stacks Grammar</h3>
+<p>At the highest level, ensembles are formed from model definitions. In this package, model definitions are an instance of a minimal workflow, containing a model specification (as defined in the parsnip package) and, optionally, a preprocessor (as defined in the recipes package). Model definitions specify the form of candidate ensemble members.</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/model_defs.png" class="img-fluid"></p>
+<p>To be used in the same ensemble, each of these model definitions must share the same resample. This rsample rset object, when paired with the model definitions, can be used to generate the tuning/fitting results objects for the candidate ensemble members with tune.</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/candidates.png" class="img-fluid"></p>
+<p>Candidate members first come together in a data_stack object through the add_candidates() function. Principally, these objects are just tibbles, where the first column gives the true outcome in the assessment set (the portion of the training set used for model validation), and the remaining columns give the predictions from each candidate ensemble member. (When the outcome is numeric, there’s only one column per candidate ensemble member. Classification requires as many columns per candidate as there are levels in the outcome variable.) They also bring along a few extra attributes to keep track of model definitions.</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/data_stack.png" class="img-fluid"></p>
+<p>Then, the data stack can be evaluated using blend_predictions() to determine to how best to combine the outputs from each of the candidate members. In the stacking literature, this process is commonly called meta-learning.</p>
+<p>The outputs of each member are likely highly correlated. Thus, depending on the degree of regularization you choose, the coefficients for the inputs of (possibly) many of the members will zero out—their predictions will have no influence on the final output, and those terms will thus be thrown out.</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/coefs.png" class="img-fluid"></p>
+<p>These stacking coefficients determine which candidate ensemble members will become ensemble members. Candidates with non-zero stacking coefficients are then fitted on the whole training set, altogether making up a <code>model_stack</code> object.</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/class_model_stack.png" class="img-fluid"></p>
+<p>This model stack object, outputted from <code>fit_members()</code>, is ready to predict on new data! The trained ensemble members are often referred to as base models in the stacking literature. To learn more about how to use <code>stacks</code>, check out the following excellent vignettes from the <code>tidymodels</code> team:</p>
+<ul>
+<li><p><a href="https://stacks.tidymodels.org/articles/basics.html">Getting Started with stacks</a></p></li>
+<li><p><a href="https://stacks.tidymodels.org/articles/classification.html">Classification Models with stacks</a></p></li>
+</ul>
+<p>Sources:</p>
+<ul>
+<li><p><a href="https://rstudio.com/conference/">rstudio::global(2021)</a></p></li>
+<li><p><a href="https://www.tmwr.org/">Tidy Modeling with R</a></p></li>
+<li><p><a href="https://www.tidymodels.org/">tidymodels</a></p></li>
+<li><p><a href="https://usemodels.tidymodels.org/">usemodels</a></p></li>
+<li><p><a href="https://stacks.tidymodels.org/">stacks</a></p></li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>RStudio</category>
+  <category>Conference</category>
+  <category>tidymodels</category>
+  <category>R</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/2021-01-24-rstudio-global.html</guid>
+  <pubDate>Sun, 24 Jan 2021 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/rstudio-global-2021.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>rsthemes: Customizing your RStudio IDE</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/2021-01-19-rsthemes.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Feel like freshening up your RStudio IDE? Check out the <code>rsthemes</code> package by <a href="https://www.linkedin.com/in/garrick-aden-buie/">Garrick Aden-Buie</a> to explore and apply different themes. For the last year or so, I’ve been enjoying the “base16 Ashes” theme at work and home. I prefer the “One Dark” theme on Atom / Juno for my Julia setup, But I’m starting to feel like I should use “One Dark” across the board. 🤓</p>
+<p>This package is not yet on CRAN, so you’ll have to install via <code>devtools::install_github()</code>. See installation and usage code below, pulled from the <code>rsthemes</code> GitHub:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="do" style="color: #5E5E5E;
+font-style: italic;">## INSTALLATION</span></span>
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;"># Instructions assume devtools is installed)</span></span>
+<span id="cb1-3">devtools<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">install_github</span>(<span class="st" style="color: #20794D;">"gadenbuie/rsthemes"</span>)</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;"># Install custom themes + additional set of base16-based themes</span></span>
+<span id="cb1-6">rsthemes<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">install_rsthemes</span>(<span class="at" style="color: #657422;">include_base16 =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="do" style="color: #5E5E5E;
+font-style: italic;">## USAGE</span></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;"># list installed themes</span></span>
+<span id="cb1-10">rsthemes<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">list_rsthemes</span>()</span>
+<span id="cb1-11"></span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;"># Try all themes</span></span>
+<span id="cb1-13">rsthemes<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">try_rsthemes</span>()</span>
+<span id="cb1-14"></span>
+<span id="cb1-15"><span class="co" style="color: #5E5E5E;"># Try just the light, dark, or base16 themes, e.g.</span></span>
+<span id="cb1-16">rsthemes<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">try_rsthemes</span>(<span class="st" style="color: #20794D;">"light"</span>)</span>
+<span id="cb1-17"></span>
+<span id="cb1-18"><span class="co" style="color: #5E5E5E;"># Use a theme</span></span>
+<span id="cb1-19">rstudioapi<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">applyTheme</span>(<span class="st" style="color: #20794D;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
+</div>
+<p>Source:</p>
+<ul>
+<li><p><a href="https://github.com/gadenbuie/rsthemes">rsthemes on GitHub</a></p></li>
+<li><p><a href="http://chriskempson.com/projects/base16/">base16 themes</a></p></li>
+</ul>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>RStudio</category>
+  <category>Packages</category>
+  <category>rsthemes</category>
+  <category>R</category>
+  <category>Quick Tips</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/2021-01-19-rsthemes.html</guid>
+  <pubDate>Tue, 19 Jan 2021 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/images/rsthemes.gif" medium="image" type="image/gif"/>
+</item>
+<item>
+  <title>Preparing for 2021 Goals with a Raspberry Pi</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Killing a few birds with one stone and getting ready for 2021… <br><br>1) Getting better at Linux / shell commands, <br> 2) Learning Julia (see my Resources tab for some great Julia starter links!), <br> 3) Doing it all on a Raspberry Pi 😜 Happy holidays and Happy New Years to all!</p>
+<p>Below are some pics of my current progress.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi1.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Raspberry Pi 4, Model B, 8GB RAM, &amp; Super Cute Tiny Heat Sinks</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi2.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Enclosing the Pi 4 in a CanaKit case + fan</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi3.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Raspberry Pi OS, a Debian distro for the Pi</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi4.jpeg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Jupyter Lab server on the Pi set up w/ Python, R, and Julia</figcaption><p></p>
+</figure>
+</div>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Julia</category>
+  <category>Linux</category>
+  <category>Raspberry Pi</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</guid>
+  <pubDate>Thu, 31 Dec 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi-banner.png" medium="image" type="image/png" height="76" width="144"/>
+</item>
+<item>
+  <title>One-Hour R Package Development Tutorial by Shannon Pileggi, PhD</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/2020-12-19-R-Package-One-Hour-Tutorial.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Package development should be on every R programmer’s radar in 2021, especially with all the free information available online! Here’s an excellent, concise, ultra-bookmark-worthy tutorial by Shannon Pileggi, PhD, titled “Your first R package in 1 hour”. Folks, she wasn’t lying either. I followed her tutorial and built an R package in roughly 45 minutes (note: I assume you have experience with the R language and understand the basics of <code>devtools</code>, <code>usethis</code>, <code>roxygen2</code>, and <code>rmarkdown</code>).</p>
+<p>Using functions from just the <code>devtools</code> and <code>usethis</code> packages, the whole process is much more streamlined than what I would have thought. Check out the rest of Shannon’s <em>Piping Hot Data</em> website as well… It’s a great resource for R programmers and researchers, and she built it with the newly reintroduced <code>distill</code> package, just like this site. :-)</p>
+<p>Source: <br>* Shannon’s <em>Piping Hot Data</em> <a href="https://www.pipinghotdata.com/posts/2020-10-25-your-first-r-package-in-1-hour/">“Your first R package in 1 hour” post</a> <br>* Shannon’s <a href="https://www.linkedin.com/in/shannon-m-pileggi/">LinkedIn</a></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Packages</category>
+  <category>Tutorial</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/2020-12-19-R-Package-One-Hour-Tutorial.html</guid>
+  <pubDate>Sat, 19 Dec 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/images/package_workshop.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>What’s New in dbplyr 2.0.0</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><code>dbplyr</code> 2.0.0 comes loaded with improvements including the translation of <code>dplyr</code>’s new <code>across()</code> function. If you aren’t familiar with this library, <code>dbplyr</code> translates your <code>dplyr</code> syntax to SQL. I regularly connect to enterprise databases using R and have almost completely transitioned from SQL. Yes, SQL is awesome. Yes, using <code>dplyr</code> is a lot more fun!</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/images/dbplyr.jpeg" class="img-fluid"></p>
+<p>Source:<br> * tidyverse blog’s <a href="https://www.tidyverse.org/blog/2020/11/dbplyr-2-0-0/">dbplyr 2.0.0 Official Announcement</a></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>tidyverse</category>
+  <category>Packages</category>
+  <category>R</category>
+  <category>SQL</category>
+  <category>dbplyr</category>
+  <category>dplyr</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</guid>
+  <pubDate>Wed, 04 Nov 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/images/dbplyr_what_is_new.jpg_large" medium="image"/>
+</item>
+<item>
+  <title>Detailed R Package Development Tutorial from Method Bites</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’ll keep this short since all credit should go towards the amazing Cosima Meyer and Dennis Hammerschmidton… They compressed some of the most valuable steps for creating and deploying a package. This duo’s work was published for the MZES Social Science Data Lab. If you want a detailed and easy-to-follow how-to for R package development, bookmark this step-by-step guide!</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/package_dev.png" class="img-fluid"></p>
+<p>Source:<br> * Methods Bites: <a href="https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/">How to write your own R package and publish it on CRAN</a></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Packages</category>
+  <category>R</category>
+  <category>Tutorial</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</guid>
+  <pubDate>Sun, 13 Sep 2020 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/methods_bites.png" medium="image" type="image/png" height="167" width="144"/>
+</item>
+<item>
+  <title>Shiny Voice-Activated input</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Hey R Shiny users, want to make your Shiny apps voice-interactive? For example, “Click on Product Toy-2A and then drill-down by Region.” Ummm, yes please. Pretty neat stuff made possible with the <code>heyshiny</code> package. “The <code>heyshiny</code> package provides a new Shiny input, the <code>speechInput()</code>. This new input allows your Shiny app to listen to the microphone, recognize the speech, and return it as text.”</p>
+<p>The main caveat with this package is that it is based on the annyang JavaScript library and therefore requires that 1) you’re online and 2) using a browser that supports speech recognition (I tried this on Chrome and works fine). It’s not on CRAN but check out the GitHub page, below. Here’s an example if you’re getting set up, pulled from their GitHub repo:</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/images/heyshiny_code.png" class="img-fluid"></p>
+<p>Source:<br> * <a href="https://github.com/jcrodriguez1989/heyshiny">heyshiny on GitHub</a></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Shiny</category>
+  <category>R</category>
+  <category>Packages</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</guid>
+  <pubDate>Fri, 03 Jul 2020 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/images/shiny_logo.png" medium="image" type="image/png" height="69" width="144"/>
+</item>
+<item>
+  <title>Testing dplyr 1.0.0</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/2020-06-20-dplyr-1.0.0.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I had read about the new <code>across()</code> function hype and now I get it… No more <code>mutate_at()</code> or <code>summarise_at()</code> with the cryptic list-lambdas. As the dplyr documentation states, “<code>across()</code> supersedes the family of”scoped variants” like <code>summarise_at()</code>, <code>summarise_if()</code>, and <code>summarise_all()</code>.”</p>
+<p>Below is an example highlighting the new <code>across()</code> syntax meant to be used within a <code>mutate()</code> function. I tried this on a few columns of the mtcars data set with dplyr’s <code>case_when()</code> a la SQL CASE_WHEN (as opposed to nesting multiple <code>if_else()</code> statements to the point of confusion!). The dplyr changes are subtle but will definitely streamline my data wrangling.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/images/dplyr_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">dplyr 1.0.0’s new across() function</figcaption><p></p>
+</figure>
+</div>
+<p>Source:<br> * <a href="https://dplyr.tidyverse.org/">dplyr, a core tidyverse package</a></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Packages</category>
+  <category>R</category>
+  <category>tidyverse</category>
+  <category>dplyr</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/2020-06-20-dplyr-1.0.0.html</guid>
+  <pubDate>Sat, 20 Jun 2020 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/images/dplyr.jpeg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Lying with Statistics</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Lets explore four plots and see how we can #LieWithStatistics…</p>
+<p><strong>Plot 1</strong>: Police killings by date, by race <br>General observation: Police kill more white people than black people<br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg" class="img-fluid" alt="Police Killings, Plot 1, made with R’s ggplot2"></p>
+<p><strong>Plot 2</strong>: Police killing boxplot showing murder rates, by race, by police department <br><strong>General explanation and takeaway</strong>: The dots on each boxplot show the statistical outliers, box plot lines extend out to the “min” and “max”, and the box lines (from bottom to top of each box) represent the first quartile (25th percentile), median (50th percentile), and third quartile (75th percentile)<br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_2.jpeg" class="img-fluid" alt="Police Killings, Plot 2, made with R’s ggplot2"></p>
+<p><strong>Plot 3</strong>: Police killing boxplot, now log-transforming the murder rates to more easily identify statistical differences, by race <br><strong>General explanation and takeaway</strong>: Log-transforming data points for visualization or modeling purposes is a technique by which you can <em>smooth</em> observed data making it more robust (or resistant) to outliers. I effectively re-wrote the murder rates to show exponential relativity. <br><strong>Important caveat</strong>: Are Native Americans more likely to die by police than other races? Sure looks like it… <em>but see Plot 4 for more thoughts</em><br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_3.jpeg" class="img-fluid" alt="Police Killings, Plot 3, made with R’s ggplot2"></p>
+<p><strong>Plot 4</strong>: Police killing boxplot, now log-transforming the murder rates using a log base 10 (easier interpretability) and “fixing” the Native American data points causing a misleading assumption in Plot 3, i.e., Native American death rates appeared much higher than others in Plot 3 given the fact that log(0) = 1. <br><strong>General takeaway</strong>: There were such few Native American data points that log-transforming all of the zeroes was unintentionally bastardizing the analysis. It would appear black people are almost an order of magnitude more likely to be killed by police than white people.<br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_3_modified.png" class="img-fluid" alt="Police Killings, Plot 4, made with R’s ggplot2"></p>
+<p>I do not seek to answer questions of “why” systemic injustice exists in the US, but I wanted to analyze police killing data and share these dialectical investigations.</p>
+<p>Source:<br> * <a href="https://mappingpoliceviolence.org/">Samuel Sinyangwe &amp; the Mapping Police Violence team</a></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Statistics</category>
+  <category>ggplot2</category>
+  <category>Visualizations</category>
+  <category>R</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</guid>
+  <pubDate>Sun, 19 Apr 2020 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>D&D Adventures + blogdown</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/2020-04-05-DnD-Adventures.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Wizards of the Coast have developed such an incredible tabletop, fantasy, RPG with the 5th edition of D&amp;D… I wish I would have re-discovered this game years back. For context, I haven’t touched D&amp;D since 1997!</p>
+<p>If you know of good resources for newbies and new D&amp;D Dungeon Masters (“DMs”), I’d love to know about your favorite resources. For data science folks out there, this site was built with R using <code>blogdown</code>, Hugo themes, and deployed for free using GitHub and Netlify.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/images/Dnd.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">D&amp;D dragon looking for trouble</figcaption><p></p>
+</figure>
+</div>
+<p>Reference: <br> * Javier’s <a href="https://flamboyant-brahmagupta-3caca6.netlify.app/">D&amp;D Adventures</a></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Gaming</category>
+  <category>blogdown</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/2020-04-05-DnD-Adventures.html</guid>
+  <pubDate>Sun, 05 Apr 2020 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/images/Dnd.png" medium="image" type="image/png" height="61" width="144"/>
+</item>
+<item>
+  <title>themis: Extra Steps for tidymodels + recipes</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Working with unbalanced data sets? Remember that accuracy, alone, is not the best performance metric (especially when dealing with unbalanced data). Instead, place more importance on Cohen’s kappa coefficient, F1 harmonic mean, or focus on improving your model’s specificity or sensitivity, etc.</p>
+<p>I’ve been transitioning a lot of my workflows to the tidymodels framework and I am super excited about the future of tidymodels (recipes + parsnip + dials + tune + workflow + more 😭✊🙌). If you’re using recipes often like me, a new library called {themis}, by <a href="https://www.hvitfeldt.me/">Emil Hvitfeldt</a> expands the {recipes} pre-processing steps for working with unbalanced data sets (it adds functionality for under- and hybrid-sampling techniques). I love me some smote, and now I can incorporate this sampling technique into my recipes with <code>themis::step_smote()</code>!</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;"># Installation</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;">install.packages</span>(<span class="st" style="color: #20794D;">"themis"</span>)</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;"># Example workflow</span></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;">library</span>(recipes)</span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;">library</span>(modeldata)</span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;">library</span>(themis)</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="fu" style="color: #4758AB;">data</span>(okc)</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="fu" style="color: #4758AB;">sort</span>(<span class="fu" style="color: #4758AB;">table</span>(okc<span class="sc" style="color: #5E5E5E;">$</span>Class, <span class="at" style="color: #657422;">useNA =</span> <span class="st" style="color: #20794D;">"always"</span>))</span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;">#&gt; </span></span>
+<span id="cb1-13"><span class="co" style="color: #5E5E5E;">#&gt;  &lt;NA&gt;  stem other </span></span>
+<span id="cb1-14"><span class="co" style="color: #5E5E5E;">#&gt;     0  9539 50316</span></span>
+<span id="cb1-15"></span>
+<span id="cb1-16">ds_rec <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">recipe</span>(Class <span class="sc" style="color: #5E5E5E;">~</span> age <span class="sc" style="color: #5E5E5E;">+</span> height, <span class="at" style="color: #657422;">data =</span> okc) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-17">  <span class="fu" style="color: #4758AB;">step_meanimpute</span>(<span class="fu" style="color: #4758AB;">all_predictors</span>()) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-18">  <span class="fu" style="color: #4758AB;">step_smote</span>(Class) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-19">  <span class="fu" style="color: #4758AB;">prep</span>()</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="fu" style="color: #4758AB;">sort</span>(<span class="fu" style="color: #4758AB;">table</span>(<span class="fu" style="color: #4758AB;">bake</span>(ds_rec, <span class="at" style="color: #657422;">new_data =</span> <span class="cn" style="color: #8f5902;">NULL</span>)<span class="sc" style="color: #5E5E5E;">$</span>Class, <span class="at" style="color: #657422;">useNA =</span> <span class="st" style="color: #20794D;">"always"</span>))</span>
+<span id="cb1-22"><span class="co" style="color: #5E5E5E;">#&gt; </span></span>
+<span id="cb1-23"><span class="co" style="color: #5E5E5E;">#&gt;  &lt;NA&gt;  stem other </span></span>
+<span id="cb1-24"><span class="co" style="color: #5E5E5E;">#&gt;     0 50316 50316</span></span></code></pre></div>
+<p>Source:<br> * <a href="https://themis.tidymodels.org/">themis</a><br> * <a href="https://github.com/tidymodels/themis">themis on GitHub</a></p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>R</category>
+  <category>tidymodels</category>
+  <category>Packages</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</guid>
+  <pubDate>Thu, 20 Feb 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/images/themis.png" medium="image" type="image/png" height="126" width="144"/>
+</item>
+<item>
+  <title>Copy R Objects to Clipboard</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/2020-02-08-R-write-table.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>You learn something new every day, even basics! For R users on Windows (I’m assuming the same holds true for Mac and Linux users), do you ever find yourself needing to quickly export a dataframe or tibble to Excel or a text editor? I recently discovered base R’s <code>write.table</code> function and have used it much more often than I anticipated.</p>
+<p>See below syntax as an example:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/images/carbon.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">base R’s write.table</figcaption><p></p>
+</figure>
+</div>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Quick Tips</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/2020-02-08-R-write-table.html</guid>
+  <pubDate>Sat, 08 Feb 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/images/carbon.png" medium="image" type="image/png" height="105" width="144"/>
+</item>
+<item>
+  <title>Hadley Wickham on SuperDataScience Podcast</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/2020-02-04-Hadley-Wickham-on-SDS-Podcast.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Hands down, he was the inspiration for me starting my own podcast and I still listen to SDS weekly. Being a massive fan of RStudio, I’m super excited about this most recent SDS episode featuring Hadley Wickham, RStudio’s Chief Data Scientist and creator of ggplot2, dplyr, author, professor… he’s a research and data science genius!.</p>
+<p>This episode is a great listen as he explores RStudio Python and R integration and the future of data science.</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/images/SDS_Wickham.jpg" class="img-fluid"></p>
+<p>Source:</p>
+<ul>
+<li>SuperDataScience ep.337 with <a href="https://www.superdatascience.com/podcast/hadley-wickham-talks-integration-and-future-of-python-and-r">Hadley Wickham</a></li>
+</ul>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>RStudio</category>
+  <category>R</category>
+  <category>Python</category>
+  <category>SuperDataScience</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/2020-02-04-Hadley-Wickham-on-SDS-Podcast.html</guid>
+  <pubDate>Tue, 04 Feb 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/images/SDS_Wickham.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Resampling with k-fold Cross Validation</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/2020-02-01-k-fold-cross-validation.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>k-fold “randomly divides the training data into k groups (or folds) of approximate size [with the model being] fit on k-1 folds and the remaining fold used to compute model performance.” I use k=5 or k=10 given that this is typical industry practice without really questioning “why?”</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/images/kfold.jpg" class="img-fluid"></p>
+<p>In reading through Hands-On Machine Learning with R by Brad Boehmke, Ph.D.&nbsp;and Brandon Greenwell, I was surprised to learn that studies have shown that k=10 performs similarly to leave-one-out cross validation where k=n.</p>
+<p>Without realizing it, sometimes I get carried away optimizing code and drifting from statistics and the core “science” in data science… k-fold CV is a technique used by many and is agnostic to your statistical programming language of choice but if you’re an #R user, I can’t recommend this book enough (free in full online, link below)!</p>
+<p>Source:</p>
+<ul>
+<li>Hands-On Machine Learning with R <a href="https://bradleyboehmke.github.io/HOML/process.html#resampling">Chapter 2.4 Resampling Methods</a></li>
+</ul>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Statistics</category>
+  <category>Machine Learning</category>
+  <category>R</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/2020-02-01-k-fold-cross-validation.html</guid>
+  <pubDate>Sat, 01 Feb 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/images/kfold.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>An Algorithm for Better Espresso</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/2020-01-22-Systematically-Improving-Coffee.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I upgraded my espresso machine over the holidays and have been pleasantly surprised by the need to recalibrate my machine’s settings with every new batch of coffee (and of course, fresh roasted is best). Glad to see some math support my observations. :-)</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/images/espresso.jpg" class="img-fluid"></p>
+<p>Source:</p>
+<ul>
+<li>Systematically Improving Espresso: <a href="https://www.cell.com/matter/fulltext/S2590-2385(19)30410-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2590238519304102%3Fshowall%3Dtrue">Insights from Mathematical Modeling and Experiment</a></li>
+</ul>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Statistics</category>
+  <category>Coffee</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/2020-01-22-Systematically-Improving-Coffee.html</guid>
+  <pubDate>Wed, 22 Jan 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/images/espresso_extraction.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Analyzing Earthquakes in Puerto Rico</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-01-20-Puerto-Rico-Earthquakes/2020-01-20-Puerto-Rico-Earthquakes.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>My mother’s hometown, Ponce, has been hit badly by the recent earthquakes. A cousin asked me to “play with some data” and turns out that the USGS maintains great data on seismic activity in the Caribbean. I focused on coordinates close to PR to produce the attached visual. I’ll revisit this visualization in a few months when more data becomes available!</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-01-20-Puerto-Rico-Earthquakes/images/Earthquakes_PR.jpg" class="img-fluid"></p>
+<p>Links:</p>
+<ul>
+<li>U.S. Geologival Survey: <a href="https://www.usgs.gov/">https://www.usgs.gov/</a></li>
+</ul>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>Statistics</category>
+  <category>ggplot2</category>
+  <category>Earthquakes</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-01-20-Puerto-Rico-Earthquakes/2020-01-20-Puerto-Rico-Earthquakes.html</guid>
+  <pubDate>Mon, 20 Jan 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-01-20-Puerto-Rico-Earthquakes/images/Earthquakes_PR.jpg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>

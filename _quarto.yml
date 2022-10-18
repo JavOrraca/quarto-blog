@@ -4,7 +4,7 @@ project:
 website:
   title: "Javier Orraca-Deatcu"
   description: "Personal data science website rebuilt as a Quarto blog."
-  site-url: https://www.javierorraca.com
+  site-url: https://www.javierorracadeatcu.com
   google-analytics: "UA-127790709-3"
   cookie-consent: false
   twitter-card: 
@@ -21,10 +21,20 @@ website:
         href: https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw
       - icon: github
         href: https://github.com/JavOrraca
-      - text: "Blog"
+      - text: Blog
         href: blog.qmd
-      - text: "Resources"
-        href: resources.qmd
+      - text: Resources
+        menu:
+          - text: "Jav's Resources"
+            href: resources.qmd
+          - text: R for Data Science
+            href: https://r4ds.had.co.nz/index.html
+          - text: Tidyverse
+            href: https://www.tidyverse.org/
+          - text: Tidymodels
+            href: https://www.tidymodels.org/
+          - text: Tidyverse Style Guide
+            href: https://www.tidyverse.org/blog/
       - text: "About"
         href: about.qmd
 format:
