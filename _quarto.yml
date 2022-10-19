@@ -2,13 +2,12 @@ project:
   type: website
 
 website:
-  title: "Javier Orraca-Deatcu"
-  description: "Personal data science website rebuilt as a Quarto blog."
+  title: "Data Science Bytes"
+  description: "Javier Orraca-Deatcu's data science website built with R and Quarto"
   site-url: https://www.javierorracadeatcu.com
   google-analytics: "UA-127790709-3"
-  cookie-consent: false
   twitter-card: 
-    image: Javier_Profile.jpg
+    image: ./images/Javier_Profile.jpg
     card-style: summary_large_image
     creator: "@JavierOrraca"
   navbar:
@@ -21,6 +20,8 @@ website:
         href: https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw
       - icon: github
         href: https://github.com/JavOrraca
+      - icon: stack-overflow
+        href: https://stackoverflow.com/users/17282384/javier-orraca-deatcu
       - text: Blog
         href: blog.qmd
       - text: Resources
@@ -35,11 +36,11 @@ website:
             href: https://www.tidymodels.org/
           - text: Tidyverse Style Guide
             href: https://www.tidyverse.org/blog/
-      - text: "About"
+      - text: About
         href: about.qmd
 format:
   html:
-    theme: theme.scss
-
-editor: visual
-
+    theme:
+      light: [flatly, theme-light.scss]
+      dark: [darkly, theme-dark.scss]
+    code-copy: true

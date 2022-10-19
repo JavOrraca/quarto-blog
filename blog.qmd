@@ -1,5 +1,5 @@
 ---
-title: "Javier Orraca-Deatcu"
+title: "Blog"
 listing:
   contents: posts
   sort: "date desc"

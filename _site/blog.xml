@@ -5,10 +5,10 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>Javier Orraca-Deatcu</title>
+<title>Data Science Bytes</title>
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
-<description>Personal data science website rebuilt as a Quarto blog.</description>
+<description>Javier Orraca-Deatcu's data science website built with R and Quarto</description>
 <generator>quarto-1.1.251</generator>
 <lastBuildDate>Fri, 22 Oct 2021 07:00:00 GMT</lastBuildDate>
 <item>

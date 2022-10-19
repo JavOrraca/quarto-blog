@@ -2,17 +2,37 @@
 title: "Javier Orraca-Deatcu"
 image: ./images/Javier_Profile.jpg
 about:
-  template: jolla
+  template: trestles
+  image-width: 5em
+  image-shape: round
   links:
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
+      href: https://www.linkedin.com/in/orraca/
     - icon: twitter
       text: Twitter
-      href: https://twitter.com
+      href: https://twitter.com/JavierOrraca
     - icon: github
       text: GitHub
-      href: https://github.com
+      href: https://github.com/JavOrraca
+      
 ---
 
-TBD UNDER CONSTRUCTION
+**I get to solve puzzles with data... Life is good!** I'm a data scientist and super passionate about learning and helping others. I have over 15 years of experience in business analytics, financial modeling, web app development, and deploying reproducible machine learning workflows.
+<br><br>
+I primarily code in R to develop and deploy software including R packages, APIs, interactive web app, and websites (I built this site with [Quarto](https://quarto.org/) for free).
+<br><br>
+My engine of choice for enterprise-grade web apps is [Shiny](https://shiny.rstudio.com/). Shiny allows me to build clean UIs on top of [Bootstrap 5](https://getbootstrap.com/) and I can easily inject HTML, [Sass](https://sass-lang.com/), CSS, and JavaScript for endless front-end customization.
+
+## Experience
+
+**Bloomreach** | Senior Manager | Data Ops & Analytics<br>
+**Centene** | Data Scientist III | Strategic Insights<br>
+**KPMG** | Senior Manager | Economics & Valuation<br>
+**PG&E** | Supervisor | Capital Recovery & Analysis<br>
+**EY** | Manager | Valuation, Modeling, & Economics<br>
+
+## Education
+
+**University of California** | MS in Business Analytics<br>
+**Georgia Institute of Technology** | BS in Management
