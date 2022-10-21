@@ -1,0 +1,29 @@
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+
+/*-- scss:defaults --*/
+$navbar-bg: #3A3B3C;
+
+// Naming Custom Font Sass Variables
+$dracula: 'Pirata One', cursive;
+
+/*-- scss:rules --*/
+#title-block-header.quarto-title-block.default .quarto-title .title {
+  /*font-family: 'Pirata One', cursive;*/
+  font-family: $dracula;
+  font-size: $font-size-base * 5;
+}
+
+p.subtitle.lead {
+  font-family: $dracula;
+  font-size: $font-size-base * 3.5;
+  margin-top: -20px;
+  margin-bottom: 0px;
+  padding-top: 0px !important;
+}
+
+/* .navbar-brand {
+  font-family: $dracula;
+  font-size: $font-size-base * 1.5;
+  
+} */

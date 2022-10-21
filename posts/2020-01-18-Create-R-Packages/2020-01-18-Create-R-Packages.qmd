@@ -1,0 +1,17 @@
+---
+title: "Create Your Own R Package"
+description: "If you are interested in developing your own R packages, this thorough A-to-Z tutorial resource is one to bookmark." 
+date: 01-18-2020
+categories: [R, Packages, Development]
+image: images/R_Packages.jpg
+---
+
+"This book espouses our philosophy of package development: anything that can be automated, should be automated. Do as little as possible by hand. Do as much as possible with functions." Great quote by Hadley Wickham and Jenny Bryan in their book "R Packages: Organize, Test, Document and Share Your Code," also available online (link below).
+
+A coworker sent me this link and I'm super excited to start developing some packages. Great timing as one of my 2020 resolutions is to write my own package(s)!
+
+![](./images/R_Packages.jpg)
+
+Links:
+
+* R Packages [by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/index.html)

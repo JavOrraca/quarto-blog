@@ -1,0 +1,14 @@
+---
+title: "Holiday Expectations vs Reality"
+description: "Holiday expectations..."
+date: 01-01-2020
+categories: [Gaming]
+image: images/Zelda.jpg
+---
+
+![](./images/Zelda.jpg)
+Holiday expectation: Going to finish a few books, an online class that's been lingering, research...
+
+Holiday reality: Make a million espressos, eat loads of chocolate and cake, play more 'The Legend of Zelda: Link's Awakening' than I thought was humanly possible...
+
+Life is good folks, Merry Christmas and I hope that you got to enjoy some time with family and friends this holiday season!

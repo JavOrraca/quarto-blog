@@ -1,0 +1,38 @@
+---
+title: "javier"
+subtitle: "orraca-deatcu"
+image: ./images/Javier_Profile.jpg
+about:
+  template: trestles
+  image-width: 5em
+  image-shape: round
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/orraca/
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/JavierOrraca
+    - icon: github
+      text: GitHub
+      href: https://github.com/JavOrraca
+comments: false
+---
+
+I'm a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data... **Life is good!** 🧑‍💻🚀
+
+## Programming
+
+I use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with R + [Quarto](https://quarto.org/)). My daily toolkit also includes Python but I prefer R.
+
+## Web App Development
+
+My framework of choice for web app development is R + [Shiny](https://shiny.rstudio.com/) . With Shiny, I can build enterprise-grade UIs on top of [Bootstrap 5](https://getbootstrap.com/) that can be infinitely styled with HTML, [Sass](https://sass-lang.com/), CSS, JavaScript, and more.
+
+## Community Building
+
+There are a plethora of online and in-person data science communities to learn from and share your own experiences. The open-source communities for data science are incredibly welcoming and below are my favorites:
+
+-   [SoCal R Users Group](https://www.meetup.com/socal-rug/ "SoCal RUG")
+-   [Data Science Hangout](https://www.rstudio.com/data-science-hangout/live-calls/ "Data Science Hangout hosted by RStudio's Rachael Dempsey, Thursdays at 12pm ET")
+-   [R-Ladies Global](https://rladies.org/)

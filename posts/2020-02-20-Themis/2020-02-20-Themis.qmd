@@ -1,0 +1,42 @@
+---
+title: "themis: Extra Steps for tidymodels + recipes"
+description: "themis contain extra steps for the recipes package for dealing with unbalanced data. The name themis is that of the ancient Greek goddess who is typically depicted with a balance." 
+date: 02-20-2020
+categories: [R, tidymodels, Packages]
+image: images/themis.png
+---
+
+Working with unbalanced data sets? Remember that accuracy, alone, is not the best performance metric (especially when dealing with unbalanced data). Instead, place more importance on Cohen's kappa coefficient, F1 harmonic mean, or focus on improving your model's specificity or sensitivity, etc.
+
+I've been transitioning a lot of my workflows to the tidymodels framework and I am super excited about the future of tidymodels (recipes + parsnip + dials + tune + workflow + more 😭✊🙌). If you're using recipes often like me, a new library called {themis}, by [Emil Hvitfeldt](https://www.hvitfeldt.me/) expands the {recipes} pre-processing steps for working with unbalanced data sets (it adds functionality for under- and hybrid-sampling techniques). I love me some smote, and now I can incorporate this sampling technique into my recipes with `themis::step_smote()`!
+
+```r
+# Installation
+install.packages("themis")
+
+# Example workflow
+library(recipes)
+library(modeldata)
+library(themis)
+
+data(okc)
+
+sort(table(okc$Class, useNA = "always"))
+#> 
+#>  <NA>  stem other 
+#>     0  9539 50316
+
+ds_rec <- recipe(Class ~ age + height, data = okc) %>%
+  step_meanimpute(all_predictors()) %>%
+  step_smote(Class) %>%
+  prep()
+
+sort(table(bake(ds_rec, new_data = NULL)$Class, useNA = "always"))
+#> 
+#>  <NA>  stem other 
+#>     0 50316 50316
+```
+
+Source:<br>
+* [themis](https://themis.tidymodels.org/)<br>
+* [themis on GitHub](https://github.com/tidymodels/themis)

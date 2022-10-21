@@ -1,0 +1,19 @@
+---
+title: "A Brief History of the Dataframe"
+description: "Insightful read sourced from Towards Data Science on the history of the dataframe - From its origins in the S programming language, to R, to pandas for Python (to the tibble for R)."
+date: 05-24-2021
+categories: [R, Python, tibble]
+image: images/dataframe.jpeg
+---
+
+This is quite the insightful read on the history of the dataframe. From its origins in the S programming language, to R, to the `pandas` library for Python (to the `tibble` for R!)... I couldn't imagine doing my work without this fundamental data structure, but will it really be defined out of existence? See below link for an excellent overview by [Devin Petersohn](https://devin-petersohn.medium.com/):
+
+![](images/dataframe.jpeg)
+
+Source:
+
+* [Towards Data Science: Preventing the Death of the Dataframe](https://towardsdatascience.com/preventing-the-death-of-the-dataframe-8bca1c0f83c8)
+
+* [pandas for Python](https://pandas.pydata.org/)
+
+* [tibble for R](https://tibble.tidyverse.org/)

@@ -1,0 +1,15 @@
+---
+title: "15 Tips for Making Better Use of R"
+description: "If you are an R user not using R Markdown, these tricks could be helpful for you."
+date: 11-11-2019
+categories: [R, R Markdown]
+image: images/RStudio-Webinar.jpg
+---
+
+![](./images/RStudio-Webinar.jpg)
+
+It's such a great way to make reports come to life. I've been using it more in the last month than I have in the last year and can't believe how much more interactive I've made my deliverables (and even my own data exploration). Really excited to see what new tricks I can learn from RStudio's webinar on Friday, November 15!
+
+Links:
+
+* RStudio Webinar Signup [on Eventbrite](https://www.eventbrite.com/e/15-tips-on-making-better-use-of-r-markdown-tickets-78458805399?utm_content=bufferbcabf&utm_medium=social&utm_source=linkedin&utm_campaign=buffer)

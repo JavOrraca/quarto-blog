@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Science Bytes - R Resources (maybe more)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-127790709-3', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+<meta name="twitter:title" content="Data Science Bytes - R Resources (maybe more)">
+<meta name="twitter:description" content="In the past, I lost track of reality trying to track a gazillion links covering every data-science-friendly programming language under the sun. **shakes head** Bad idea.">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/images/Javier_Profile.jpg">
+<meta name="twitter:creator" content="@JavierOrraca">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Data Science Bytes</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/orraca"><i class="bi bi-linkedin" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/JavierOrraca"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw"><i class="bi bi-spotify" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JavOrraca"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://stackoverflow.com/users/17282384/javier-orraca-deatcu"><i class="bi bi-stack-overflow" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./blog.html">Blog</a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="./resources.html">
+ <span class="dropdown-text">Jav’s Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://r4ds.had.co.nz/index.html">
+ <span class="dropdown-text">R for Data Science</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidyverse.org/">
+ <span class="dropdown-text">Tidyverse</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidymodels.org/">
+ <span class="dropdown-text">Tidymodels</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidyverse.org/blog/">
+ <span class="dropdown-text">Tidyverse Style Guide</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">About</a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">R Resources (maybe more)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>In the past, I lost track of reality trying to track a gazillion links covering every data-science-friendly programming language under the sun. <code>**shakes head**</code> Bad idea. Since I program in R daily, I like to keep track of R and RStudio developments. I’m mostly going to share R resources and some other miscellaneous resources that I find useful for analytics, statistical programming, machine learning, data science workflows, and web app development. I’m enjoying the Julia programming language recently, so I’ll share resources that I find bookmark worthy as well.<br><br></p>
+<p>R and Julia are open-source programming languages for statistical computing and graphics. R has an open and friendly community devoted to using R for data science and making business analytics easy to attain. One of the things that I like most about R is the thousands of packages available making <em>almost everything</em> in R a little easier from ETL, to method chaining, to developing interactive web apps. Julia is a newer programming language (newer to me) recommended by a coworker. Unlike interpreter languages such as R and Python, Julia has significant performance advantages for numerical computations. Julia is a multi-threaded programming language (native parallel processing and designed for distributed computing), it compiles (it doesn’t interpret lower-level languages like C or C++), and there is a growing body of scientists and developers finding unique ways to use the language. I certainly welcome any suggestions that you might have for the lists below!</p>
+<p><strong>R Classics</strong></p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/">R for Data Science</a>: Phenomenal introduction to R, the RStudio IDE, and the <code>tidyverse</code> collection of packages</li>
+<li><a href="https://adv-r.hadley.nz/">Advanced R</a>: Covers concepts, methods, and advanced object-oriented structures for R</li>
+<li><a href="https://mastering-shiny.org/">Mastering Shiny</a>: Designed to teach the foundations of Shiny for web development and more advanced concepts such as the introduction of modules to the Shiny framework</li>
+<li><a href="https://r-pkgs.org/">R Packages</a>: The definitive reference point for R package development “covering workflow and process, alongside the presentation of all the important moving parts that make up an R package”</li>
+</ul>
+<p><strong>R Applied Resources</strong></p>
+<ul>
+<li><a href="http://www.reproduciblefinance.com/start-here/">Reproducible Finance with R</a>: Code Flows and Shiny Apps for Portfolio Analysis</li>
+<li><a href="https://bradleyboehmke.github.io/HOML/">Hands-On Machine Learning with R</a>: I can’t recommend this resource enough and it’s one that I often have on my desk… Put best by the authors, “this book is meant to help R users learn to use the machine learning stack within R, which includes using various R packages such as glmnet, h2o, ranger, xgboost, lime, and others to effectively model and gain insight from your data.”</li>
+<li><a href="https://www.manning.com/books/deep-learning-with-r">Deep Learning with R</a>: In-depth introduction to artificial intelligence and deep learning applications with R using the Keras library</li>
+<li><a href="https://otexts.com/fpp3/">Forecasting Principles and Practice</a>: Said best by the author, “The book is written for three audiences: (1) people finding themselves doing forecasting in business when they may not have had any formal training in the area; (2) undergraduate students studying business; (3) MBA students doing a forecasting elective.”</li>
+<li><a href="https://www.cambridge.org/core/books/regression-and-other-stories/DD20DD6C9057118581076E54E40C372C">Regression and Other Studies</a>: Super applied textbook on advanced regression techniques, Bayesian inference, and causal inference</li>
+<li><a href="https://www.tmwr.org/">Tidy Modeling with R</a>: Over the last few months, I’ve learned a lot from this A to Z resource on predictive modeling workflows using the tidymodels framework</li>
+</ul>
+<p><strong>R Packages (my favorites)</strong></p>
+<ul>
+<li><a href="https://www.tidyverse.org/">tidyverse</a>: A collection of packages for data manipulation and functional programming (I use dplyr, stringr, and purrr on a daily basis)</li>
+<li><a href="https://www.tidymodels.org/">tidymodels</a>: Hands-down my preferred collection of packages for building reproducible machine learning recipes, workflows, model tuning, model stacking, and cross-validation</li>
+<li><a href="https://tidyverts.org/">tidyverts</a>: A collection of packages for time series analysis that comes out of Rob Hyndman’s lab</li>
+<li><a href="https://rstudio.github.io/DT/">DT</a>: This is an R implementation of the popular <code>DataTables</code> JavaScript library that lets you build polished, configurable tables for use in web reports, slides, and Shiny apps</li>
+<li><a href="https://bs4dash.rinterface.com/">bs4Dash</a>: This R Shiny framework brings Bootstrap 4 + AdminLTE v3.1 dependencies to Shiny (including 1:1 support for <code>shinydashboard</code> functions) and it’s my go-to for developing enterprise-grade Shiny apps</li>
+<li><a href="https://rstudio.github.io/leaflet/">leaflet</a>: R implementation of the popular Leaflet JavaScript library for developing interactive maps</li>
+<li><a href="https://plotly.com/r/">plotly</a>: An extensive graphic library for creating interactive visualizations and 3D (WebGL) charts</li>
+</ul>
+<p><strong>Julia</strong></p>
+<ul>
+<li><a href="https://docs.julialang.org/en/v1/manual/getting-started/">Official Manual</a>: I’m in the process of reading through this documentation to better understand the Julia methods, operators, functions, function-building, and modules</li>
+<li><a href="https://julialang.org/learning/">Learning Materials</a>: Many resources are listed here on the official Julia Lang site</li>
+<li><a href="https://junolab.org/">Juno</a>: An Atom-based flexible IDE for Julia</li>
+<li><a href="http://docs.junolab.org/latest/man/installation/">Installation Instructions</a>: Install Julia, Atom, and Juno</li>
+<li><a href="https://genieframework.com/">Genie</a>: This library is a full-stack web framework for modern web apps using Julia</li>
+<li>Medium articles on Julia that interested me:
+<ul>
+<li><a href="https://mdneuzerling.com/post/first-impressions-of-julia-from-an-r-user/">First Impressions of Julia from an R User</a></li>
+<li><a href="https://towardsdatascience.com/a-z-julia-endpoint-with-genie-a2e0c2f1c884">A-Z Julia Endpoint with Genie</a></li>
+</ul></li>
+<li><a href="https://juliaberry.github.io/">Installing Julia on a Raspberry Pi</a></li>
+</ul>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="JavOrraca/quarto-blog" data-repo-id="R_kgDOIOlJmA" data-category="General" data-category-id="DIC_kwDOIOlJmM4CSH8n" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

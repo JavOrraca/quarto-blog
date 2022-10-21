@@ -1,0 +1,22 @@
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+
+/*-- scss:defaults --*/
+
+// Naming Custom Font Sass Variables
+$retro: 'Monoton', cursive;
+
+/*-- scss:rules --*/
+#title-block-header.quarto-title-block.default .quarto-title .title {
+  /*font-family: 'Pirata One', cursive;*/
+  font-family: $retro;
+  font-size: $font-size-base * 4;
+}
+
+p.subtitle.lead {
+  font-family: $retro;
+  font-size: $font-size-base * 1.5;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px !important;
+}

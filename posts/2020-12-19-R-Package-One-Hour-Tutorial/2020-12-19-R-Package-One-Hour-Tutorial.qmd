@@ -1,0 +1,15 @@
+---
+title: "One-Hour R Package Development Tutorial by Shannon Pileggi, PhD"
+description: "I followed this tutorial and created a package successfully. It took 45 minutes. Follow, this, guide, my fellow R friends!"
+date: 12-19-2020
+categories: [R, Packages, Tutorial]
+image: images/package_workshop.jpg
+---
+
+Package development should be on every R programmer's radar in 2021, especially with all the free information available online! Here's an excellent, concise, ultra-bookmark-worthy tutorial by Shannon Pileggi, PhD, titled "Your first R package in 1 hour". Folks, she wasn't lying either. I followed her tutorial and built an R package in roughly 45 minutes (note: I assume you have experience with the R language and understand the basics of `devtools`, `usethis`, `roxygen2`, and `rmarkdown`).
+
+Using functions from just the `devtools` and `usethis` packages, the whole process is much more streamlined than what I would have thought. Check out the rest of Shannon's _Piping Hot Data_ website as well...  It's a great resource for R programmers and researchers, and she built it with the newly reintroduced `distill` package, just like this site. :-)
+
+Source:
+<br>* Shannon's _Piping Hot Data_ ["Your first R package in 1 hour" post](https://www.pipinghotdata.com/posts/2020-10-25-your-first-r-package-in-1-hour/)
+<br>* Shannon's [LinkedIn](https://www.linkedin.com/in/shannon-m-pileggi/)

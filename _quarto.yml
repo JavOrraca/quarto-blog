@@ -1,0 +1,50 @@
+project:
+  type: website
+
+website:
+  title: "Data Science Bytes"
+  description: "Javier Orraca-Deatcu's data science website built with R and Quarto"
+  site-url: https://www.javierorracadeatcu.com
+  google-analytics: "UA-127790709-3"
+  twitter-card: 
+    image: ./images/Javier_Profile.jpg
+    card-style: summary_large_image
+    creator: "@JavierOrraca"
+  navbar:
+    right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/orraca
+      - icon: twitter
+        href: https://twitter.com/JavierOrraca
+      - icon: spotify
+        href: https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw
+      - icon: github
+        href: https://github.com/JavOrraca
+      - icon: stack-overflow
+        href: https://stackoverflow.com/users/17282384/javier-orraca-deatcu
+      - text: Blog
+        href: blog.qmd
+      - text: Resources
+        menu:
+          - text: "Jav's Resources"
+            href: resources.qmd
+          - text: R for Data Science
+            href: https://r4ds.had.co.nz/index.html
+          - text: Tidyverse
+            href: https://www.tidyverse.org/
+          - text: Tidymodels
+            href: https://www.tidymodels.org/
+          - text: Tidyverse Style Guide
+            href: https://www.tidyverse.org/blog/
+      - text: About
+        href: about.qmd
+format:
+  html:
+    theme:
+      light: [flatly, theme-light.scss]
+      dark: [darkly, theme-dark.scss]
+    code-copy: true
+
+comments:
+  giscus:
+    repo: JavOrraca/quarto-blog

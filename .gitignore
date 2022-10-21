@@ -20,6 +20,7 @@
 # RStudio files
 .Rproj.user/
 *.Rproj
+.Renviron
 
 # produced vignettes
 vignettes/*.html
@@ -36,5 +37,6 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
-# R Environment Variables
-.Renviron
+# macOS files
+.DS_Store
+/.quarto/
