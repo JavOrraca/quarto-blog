@@ -338,37 +338,44 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Javier Orraca-Deatcu",
+    "title": "Javier",
     "section": "",
-    "text": "I get to solve puzzles with data… Life is good! I’m a data scientist and super passionate about learning and helping others. I have over 15 years of experience in business analytics, financial modeling, web app development, and deploying reproducible machine learning workflows.  I primarily code in R to develop and deploy software including R packages, APIs, interactive web app, and websites (I built this site with Quarto for free).  My engine of choice for enterprise-grade web apps is Shiny. Shiny allows me to build clean UIs on top of Bootstrap 5 and I can easily inject HTML, Sass, CSS, and JavaScript for endless front-end customization."
+    "text": "I’m a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data… Life is good! 🧑‍💻🚀"
   },
   {
-    "objectID": "index.html#experience",
-    "href": "index.html#experience",
-    "title": "Javier Orraca-Deatcu",
-    "section": "Experience",
-    "text": "Experience\nBloomreach | Senior Manager | Data Ops & Analytics Centene | Data Scientist III | Strategic Insights KPMG | Senior Manager | Economics & Valuation PG&E | Supervisor | Capital Recovery & Analysis EY | Manager | Valuation, Modeling, & Economics"
+    "objectID": "index.html#programming",
+    "href": "index.html#programming",
+    "title": "Javier",
+    "section": "Programming",
+    "text": "Programming\nI use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with R + Quarto). My daily toolkit also includes Python but I prefer R."
   },
   {
-    "objectID": "index.html#education",
-    "href": "index.html#education",
-    "title": "Javier Orraca-Deatcu",
-    "section": "Education",
-    "text": "Education\nUniversity of California | MS in Business Analytics Georgia Institute of Technology | BS in Management"
+    "objectID": "index.html#web-app-development",
+    "href": "index.html#web-app-development",
+    "title": "Javier",
+    "section": "Web App Development",
+    "text": "Web App Development\nMy framework of choice for web app development is R + Shiny . With Shiny, I can build enterprise-grade UIs on top of Bootstrap 5 that can be infinitely styled with HTML, Sass, CSS, JavaScript, and more."
+  },
+  {
+    "objectID": "index.html#community-building",
+    "href": "index.html#community-building",
+    "title": "Javier",
+    "section": "Community Building",
+    "text": "Community Building\nThere are a plethora of online and in-person data science communities to learn from and share your own experiences. The open-source communities for data science are incredibly welcoming and below are my favorites:\n\nSoCal R Users Group\nData Science Hangout\nR-Ladies Global"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About Me",
     "section": "",
-    "text": "Tulum, Quintana Roo, Mexico - The second happiest place on Earth, after Disneyland\nMy name is Javier Orraca-Deatcu and I’m a data scientist. I enjoy building predictive models, developing web applications, cooking, reading, and playing board games. For a living, I get to solve puzzles with data - Life is good."
+    "text": "Tulum, Quintana Roo, Mexico - The second happiest place on Earth, after Disneyland"
   },
   {
     "objectID": "about.html#professional",
     "href": "about.html#professional",
     "title": "About Me",
     "section": "Professional",
-    "text": "Professional\nMy career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Health Net, and Bloomreach. At Bloomreach, my team applies data science techniques to empower decision makers with descriptive and prescriptive analytics. I help our business develop and deploy automation solutions, predictive algorithms, and interactive web apps for our internal leaders, Operations, Product, Marketing, and Sales teams."
+    "text": "Professional\nMy career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. My teams apply data science techniques to empower decision makers with descriptive and prescriptive analytics. I help bridge the gap between business needs and IT to develop and deploy automation solutions, predictive algorithms, and interactive web apps."
   },
   {
     "objectID": "about.html#scatter-podcast",
@@ -382,7 +389,7 @@
     "href": "about.html#programming-analytics-skills",
     "title": "About Me",
     "section": "Programming & Analytics Skills",
-    "text": "Programming & Analytics Skills\n\nR: RStudio pro tools, R Markdown, Shiny, tidyverse, tidymodels, distill, plotly, leaflet, fable, feasts, Facebook’s Prophet & NeuralProphet R implementations, and many more\nOther Analytics & Programming Platforms: JupyterHub, Jupyter Lab, GitLab, GitHub, RStudio Connect, Julia, NetBase, SQL, SAP Business Objects, Hugo, Netlify, Quest Analytics\nMicrosoft: Expert-level MS Access and Excel user with experience creating pivot tables, nested IF statements, INDEX / MATCH functions, VLOOKUP / HLOOKUP functions, Solver (for optimization and simulations… yes… in Excel!), macros for data manipulation pipelines, ODBC integration, query design (joins, crosstab, make-table, etc.), reports, and forms"
+    "text": "Programming & Analytics Skills\n\nR: tidyverse, tidymodels, Quarto, Shiny, Plotly, Leaflet, Prophet, xaringan, XGBoost, Ranger, and many more\nOther Analytics & Programming Platforms: Python, Jupyter Notebooks, h2o, GitLab / GitHub, RStudio Connect, AWS S3, AWS Redshift, Google Cloud Platform, BigQuery, SQL, Netlify\nMicrosoft: Expert-level MS Access and Excel user with experience creating pivot tables, nested IF statements, INDEX / MATCH functions, VLOOKUP / HLOOKUP functions, Solver (for optimization and simulations… yes… in Excel!), macros for data manipulation pipelines, ODBC integration, query design (joins, crosstab, make-table, etc.), reports, and forms"
   },
   {
     "objectID": "about.html#media-appearances",

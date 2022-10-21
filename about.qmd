@@ -4,11 +4,9 @@ title: "About Me"
 
 ![Tulum, Quintana Roo, Mexico - The second happiest place on Earth, after Disneyland](./images/Javier_Tulum.jpg)
 
-My name is Javier Orraca-Deatcu and I'm a data scientist. I enjoy building predictive models, developing web applications, cooking, reading, and playing board games. For a living, I get to solve puzzles with data - Life is good.
-
 ## Professional
 
-My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Health Net, and [Bloomreach](https://bloomreach.com/). At Bloomreach, my team applies data science techniques to empower decision makers with descriptive and prescriptive analytics. I help our business develop and deploy automation solutions, predictive algorithms, and interactive web apps for our internal leaders, Operations, Product, Marketing, and Sales teams.
+My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. My teams apply data science techniques to empower decision makers with descriptive and prescriptive analytics. I help bridge the gap between business needs and IT to develop and deploy automation solutions, predictive algorithms, and interactive web apps.
 
 ## Scatter Podcast
 
@@ -16,8 +14,8 @@ In 2019, I launched [Scatter Podcast](https://soundcloud.com/scatterpodcast) to 
 
 ## Programming & Analytics Skills
 
--   **R**: RStudio pro tools, R Markdown, Shiny, tidyverse, tidymodels, distill, plotly, leaflet, fable, feasts, Facebook's Prophet & NeuralProphet R implementations, and many more
--   **Other Analytics & Programming Platforms**: JupyterHub, Jupyter Lab, GitLab, GitHub, RStudio Connect, Julia, NetBase, SQL, SAP Business Objects, Hugo, Netlify, Quest Analytics
+-   **R**: tidyverse, tidymodels, Quarto, Shiny, Plotly, Leaflet, Prophet, xaringan, XGBoost, Ranger, and many more
+-   **Other Analytics & Programming Platforms**: Python, Jupyter Notebooks, h2o, GitLab / GitHub, RStudio Connect, AWS S3, AWS Redshift, Google Cloud Platform, BigQuery, SQL, Netlify
 -   **Microsoft**: Expert-level MS Access and Excel user with experience creating pivot tables, nested IF statements, INDEX / MATCH functions, VLOOKUP / HLOOKUP functions, Solver (for optimization and simulations... yes... in Excel!), macros for data manipulation pipelines, ODBC integration, query design (joins, crosstab, make-table, etc.), reports, and forms
 
 ## Media Appearances

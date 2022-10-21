@@ -1,5 +1,6 @@
 ---
-title: "Javier Orraca-Deatcu"
+title: "Javier"
+subtitle: "Orraca-Deatcu"
 image: ./images/Javier_Profile.jpg
 about:
   template: trestles
@@ -15,24 +16,22 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/JavOrraca
-      
 ---
 
-**I get to solve puzzles with data... Life is good!** I'm a data scientist and super passionate about learning and helping others. I have over 15 years of experience in business analytics, financial modeling, web app development, and deploying reproducible machine learning workflows.
-<br><br>
-I primarily code in R to develop and deploy software including R packages, APIs, interactive web app, and websites (I built this site with [Quarto](https://quarto.org/) for free).
-<br><br>
-My engine of choice for enterprise-grade web apps is [Shiny](https://shiny.rstudio.com/). Shiny allows me to build clean UIs on top of [Bootstrap 5](https://getbootstrap.com/) and I can easily inject HTML, [Sass](https://sass-lang.com/), CSS, and JavaScript for endless front-end customization.
+I'm a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data... **Life is good!** 🧑‍💻🚀
 
-## Experience
+## Programming
 
-**Bloomreach** | Senior Manager | Data Ops & Analytics<br>
-**Centene** | Data Scientist III | Strategic Insights<br>
-**KPMG** | Senior Manager | Economics & Valuation<br>
-**PG&E** | Supervisor | Capital Recovery & Analysis<br>
-**EY** | Manager | Valuation, Modeling, & Economics<br>
+I use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with R + [Quarto](https://quarto.org/)). My daily toolkit also includes Python but I prefer R.
 
-## Education
+## Web App Development
 
-**University of California** | MS in Business Analytics<br>
-**Georgia Institute of Technology** | BS in Management
+My framework of choice for web app development is R + [Shiny](https://shiny.rstudio.com/) . With Shiny, I can build enterprise-grade UIs on top of [Bootstrap 5](https://getbootstrap.com/) that can be infinitely styled with HTML, [Sass](https://sass-lang.com/), CSS, JavaScript, and more.
+
+## Community Building
+
+There are a plethora of online and in-person data science communities to learn from and share your own experiences. The open-source communities for data science are incredibly welcoming and below are my favorites:
+
+-   [SoCal R Users Group](https://www.meetup.com/socal-rug/ "SoCal RUG")
+-   [Data Science Hangout](https://www.rstudio.com/data-science-hangout/live-calls/ "Data Science Hangout hosted by RStudio's Rachael Dempsey, Thursdays at 12pm ET")
+-   [R-Ladies Global](https://rladies.org/)
