@@ -44,3 +44,7 @@ format:
       light: [flatly, theme-light.scss]
       dark: [darkly, theme-dark.scss]
     code-copy: true
+
+comments:
+  giscus:
+    repo: JavOrraca/quarto-blog

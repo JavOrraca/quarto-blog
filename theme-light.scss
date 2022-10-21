@@ -10,12 +10,12 @@ $retro: 'Monoton', cursive;
 #title-block-header.quarto-title-block.default .quarto-title .title {
   /*font-family: 'Pirata One', cursive;*/
   font-family: $retro;
-  font-size: $font-size-base * 5;
+  font-size: $font-size-base * 4;
 }
 
 p.subtitle.lead {
   font-family: $retro;
-  font-size: $font-size-base * 1.95;
+  font-size: $font-size-base * 1.5;
   margin-top: 0px;
   margin-bottom: 0px;
   padding-top: 0px !important;

@@ -1,6 +1,6 @@
 ---
-title: "Javier"
-subtitle: "Orraca-Deatcu"
+title: "javier"
+subtitle: "orraca-deatcu"
 image: ./images/Javier_Profile.jpg
 about:
   template: trestles
@@ -16,6 +16,7 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/JavOrraca
+comments: false
 ---
 
 I'm a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data... **Life is good!** 🧑‍💻🚀

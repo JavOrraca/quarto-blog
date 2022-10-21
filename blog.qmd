@@ -10,4 +10,5 @@ listing:
   feed: true
 page-layout: full
 title-block-banner: true
+comments: false
 ---

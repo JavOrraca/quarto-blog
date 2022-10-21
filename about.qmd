@@ -1,5 +1,6 @@
 ---
 title: "About Me"
+comments: false
 ---
 
 ![Tulum, Quintana Roo, Mexico - The second happiest place on Earth, after Disneyland](./images/Javier_Tulum.jpg)
