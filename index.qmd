@@ -17,6 +17,7 @@ about:
       text: GitHub
       href: https://github.com/JavOrraca
 comments: false
+page-layout: full
 ---
 
 I'm a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data... **Life is good!** 🧑‍💻🚀
