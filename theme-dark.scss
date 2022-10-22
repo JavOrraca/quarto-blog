@@ -1,17 +1,17 @@
 // Google Fonts
 @import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat');
 
 /*-- scss:defaults --*/
 $navbar-bg: #3A3B3C;
-
-// Naming Custom Font Sass Variables
 $dracula: 'Pirata One', cursive;
+$font-family-base: 'Montserrat', sans-serif;
 
 /*-- scss:rules --*/
 #title-block-header.quarto-title-block.default .quarto-title .title {
-  /*font-family: 'Pirata One', cursive;*/
   font-family: $dracula;
   font-size: $font-size-base * 5;
+  text-shadow: 3px 3px 0 rgba(206, 32, 41, 1);
 }
 
 p.subtitle.lead {
@@ -20,10 +20,5 @@ p.subtitle.lead {
   margin-top: -20px;
   margin-bottom: 0px;
   padding-top: 0px !important;
+  text-shadow: 3px 3px 0 rgba(206, 32, 41, 1);
 }
-
-/* .navbar-brand {
-  font-family: $dracula;
-  font-size: $font-size-base * 1.5;
-  
-} */

@@ -24,16 +24,17 @@ I'm a data scientist with experiences in financial modeling, analytics, and mach
 
 ## Programming
 
-I use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with R + [Quarto](https://quarto.org/)). My daily toolkit also includes Python but I prefer R.
+I use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with [Quarto](https://quarto.org/)). My daily toolkit also includes Python but I prefer R.
 
 ## Web App Development
 
 My framework of choice for web app development is R + [Shiny](https://shiny.rstudio.com/) . With Shiny, I can build enterprise-grade UIs on top of [Bootstrap 5](https://getbootstrap.com/) that can be infinitely styled with HTML, [Sass](https://sass-lang.com/), CSS, JavaScript, and more.
 
-## Community Building
+## Data Science Communities
 
-There are a plethora of online and in-person data science communities to learn from and share your own experiences. The open-source communities for data science are incredibly welcoming and below are my favorites:
+There are a plethora of online and in-person data science communities to learn from and share your own experiences. Online communities for open-source languages and data science are incredibly welcoming and below are my favorites:
 
--   [SoCal R Users Group](https://www.meetup.com/socal-rug/ "SoCal RUG")
--   [Data Science Hangout](https://www.rstudio.com/data-science-hangout/live-calls/ "Data Science Hangout hosted by RStudio's Rachael Dempsey, Thursdays at 12pm ET")
--   [R-Ladies Global](https://rladies.org/)
+- [SoCal R Users Group](https://www.meetup.com/socal-rug/ "SoCal RUG meets on a monthly basis for online and in-person events")
+- [Data Science Hangout](https://www.rstudio.com/data-science-hangout/live-calls/ "Data Science Hangout hosted by RStudio's Rachael Dempsey, Thursdays at 12pm ET")
+- [R-Ladies Global](https://rladies.org/ "R-Ladies Is A World-Wide Organization To Promote Gender Diversity In The R Community")
+- [The Ravit Show](https://theravitshow.com/ "TRS, hosted by Ravit Jain, is a community for data science & AI practitioners")

@@ -347,7 +347,7 @@
     "href": "index.html#programming",
     "title": "javier",
     "section": "Programming",
-    "text": "Programming\nI use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with R + Quarto). My daily toolkit also includes Python but I prefer R."
+    "text": "Programming\nI use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with Quarto). My daily toolkit also includes Python but I prefer R."
   },
   {
     "objectID": "index.html#web-app-development",
@@ -357,11 +357,11 @@
     "text": "Web App Development\nMy framework of choice for web app development is R + Shiny . With Shiny, I can build enterprise-grade UIs on top of Bootstrap 5 that can be infinitely styled with HTML, Sass, CSS, JavaScript, and more."
   },
   {
-    "objectID": "index.html#community-building",
-    "href": "index.html#community-building",
+    "objectID": "index.html#data-science-communities",
+    "href": "index.html#data-science-communities",
     "title": "javier",
-    "section": "Community Building",
-    "text": "Community Building\nThere are a plethora of online and in-person data science communities to learn from and share your own experiences. The open-source communities for data science are incredibly welcoming and below are my favorites:\n\nSoCal R Users Group\nData Science Hangout\nR-Ladies Global"
+    "section": "Data Science Communities",
+    "text": "Data Science Communities\nThere are a plethora of online and in-person data science communities to learn from and share your own experiences. Online communities for open-source languages and data science are incredibly welcoming and below are my favorites:\n\nSoCal R Users Group\nData Science Hangout\nR-Ladies Global\nThe Ravit Show"
   },
   {
     "objectID": "about.html",
