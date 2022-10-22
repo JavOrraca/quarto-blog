@@ -6,6 +6,7 @@
 $navbar-bg: #3A3B3C;
 $dracula: 'Pirata One', cursive;
 $font-family-base: 'Montserrat', sans-serif;
+$success: #CE2029 !default;
 
 /*-- scss:rules --*/
 #title-block-header.quarto-title-block.default .quarto-title .title {
@@ -21,4 +22,12 @@ p.subtitle.lead {
   margin-bottom: 0px;
   padding-top: 0px !important;
   text-shadow: 3px 3px 0 rgba(206, 32, 41, 1);
+}
+
+code {
+  color: #EA776A;
+}
+
+.about-image {
+  margin-top: 1.5em;
 }

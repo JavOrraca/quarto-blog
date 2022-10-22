@@ -1,5 +1,6 @@
 ---
 title: "R Resources (maybe more)"
+title-block-banner: false
 ---
 
 In the past, I lost track of reality trying to track a gazillion links covering every data-science-friendly programming language under the sun. `**shakes head**` Bad idea. Since I program in R daily, I like to keep track of R and RStudio developments. I'm mostly going to share R resources and some other miscellaneous resources that I find useful for analytics, statistical programming, machine learning, data science workflows, and web app development. I'm enjoying the Julia programming language recently, so I'll share resources that I find bookmark worthy as well.<br><br>

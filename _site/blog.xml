@@ -19,7 +19,6 @@
 
 
 
-
 <p>Torch for R… wow! 🔥🔥🔥 I was recently having a discussion with a coworker about the benefits of Torch, especially the power of training one global model capable of hierarchical projections (awesome for time series) and predicting multiple group-specific regressions. I went down a Googling rabbit hole last weekend and came across some amazing articles by Sigrid Keydana (see links below) introducing <code>torch</code> to the R community and also recently releasing <code>luz</code>, a high-level R interface to Torch (“<code>luz</code> is to <code>torch</code> what <code>Keras</code> is to <code>TensorFlow</code>”).</p>
 <p>RStudio’s MLVerse team is doing really exciting things for the R machine learning and AI community. With <code>torch</code>, I no longer need to launch a conda environment for complex NNs (although having Python on your system is always handy 😅). And even better, “<code>torch</code> for R is built directly on top of <code>libtorch</code>, a C++ library that provides the tensor-computation and automatic-differentiation capabilities essential to building neural networks.” If you’re looking for fast NNs and deep learning solutions within the <strong>#rstats</strong> framework, give these packages a try. Happy Friday and happy learning! 🤓📚</p>
 <section id="sources" class="level2">
@@ -48,7 +47,6 @@
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -414,7 +412,6 @@
 
 
 
-
 <p>This is quite the insightful read on the history of the dataframe. From its origins in the S programming language, to R, to the <code>pandas</code> library for Python (to the <code>tibble</code> for R!)… I couldn’t imagine doing my work without this fundamental data structure, but will it really be defined out of existence? See below link for an excellent overview by <a href="https://devin-petersohn.medium.com/">Devin Petersohn</a>:</p>
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/images/dataframe.jpeg" class="img-fluid"></p>
 <p>Source:</p>
@@ -439,7 +436,6 @@
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-05-03-DT/2021-05-03-DT.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -470,7 +466,6 @@
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/2021-01-24-rstudio-global.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -706,7 +701,6 @@
 
 
 
-
 <p>Feel like freshening up your RStudio IDE? Check out the <code>rsthemes</code> package by <a href="https://www.linkedin.com/in/garrick-aden-buie/">Garrick Aden-Buie</a> to explore and apply different themes. For the last year or so, I’ve been enjoying the “base16 Ashes” theme at work and home. I prefer the “One Dark” theme on Atom / Juno for my Julia setup, But I’m starting to feel like I should use “One Dark” across the board. 🤓</p>
 <p>This package is not yet on CRAN, so you’ll have to install via <code>devtools::install_github()</code>. See installation and usage code below, pulled from the <code>rsthemes</code> GitHub:</p>
 <div class="cell">
@@ -758,7 +752,6 @@ font-style: italic;">## USAGE</span></span>
 
 
 
-
 <p>Killing a few birds with one stone and getting ready for 2021… <br><br>1) Getting better at Linux / shell commands, <br> 2) Learning Julia (see my Resources tab for some great Julia starter links!), <br> 3) Doing it all on a Raspberry Pi 😜 Happy holidays and Happy New Years to all!</p>
 <p>Below are some pics of my current progress.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -804,7 +797,6 @@ font-style: italic;">## USAGE</span></span>
 
 
 
-
 <p>Package development should be on every R programmer’s radar in 2021, especially with all the free information available online! Here’s an excellent, concise, ultra-bookmark-worthy tutorial by Shannon Pileggi, PhD, titled “Your first R package in 1 hour”. Folks, she wasn’t lying either. I followed her tutorial and built an R package in roughly 45 minutes (note: I assume you have experience with the R language and understand the basics of <code>devtools</code>, <code>usethis</code>, <code>roxygen2</code>, and <code>rmarkdown</code>).</p>
 <p>Using functions from just the <code>devtools</code> and <code>usethis</code> packages, the whole process is much more streamlined than what I would have thought. Check out the rest of Shannon’s <em>Piping Hot Data</em> website as well… It’s a great resource for R programmers and researchers, and she built it with the newly reintroduced <code>distill</code> package, just like this site. :-)</p>
 <p>Source: <br>* Shannon’s <em>Piping Hot Data</em> <a href="https://www.pipinghotdata.com/posts/2020-10-25-your-first-r-package-in-1-hour/">“Your first R package in 1 hour” post</a> <br>* Shannon’s <a href="https://www.linkedin.com/in/shannon-m-pileggi/">LinkedIn</a></p>
@@ -824,7 +816,6 @@ font-style: italic;">## USAGE</span></span>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -853,7 +844,6 @@ font-style: italic;">## USAGE</span></span>
 
 
 
-
 <p>I’ll keep this short since all credit should go towards the amazing Cosima Meyer and Dennis Hammerschmidton… They compressed some of the most valuable steps for creating and deploying a package. This duo’s work was published for the MZES Social Science Data Lab. If you want a detailed and easy-to-follow how-to for R package development, bookmark this step-by-step guide!</p>
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/package_dev.png" class="img-fluid"></p>
 <p>Source:<br> * Methods Bites: <a href="https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/">How to write your own R package and publish it on CRAN</a></p>
@@ -873,7 +863,6 @@ font-style: italic;">## USAGE</span></span>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -897,7 +886,6 @@ font-style: italic;">## USAGE</span></span>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/2020-06-20-dplyr-1.0.0.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -930,7 +918,6 @@ font-style: italic;">## USAGE</span></span>
 
 
 
-
 <p>Lets explore four plots and see how we can #LieWithStatistics…</p>
 <p><strong>Plot 1</strong>: Police killings by date, by race <br>General observation: Police kill more white people than black people<br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg" class="img-fluid" alt="Police Killings, Plot 1, made with R’s ggplot2"></p>
 <p><strong>Plot 2</strong>: Police killing boxplot showing murder rates, by race, by police department <br><strong>General explanation and takeaway</strong>: The dots on each boxplot show the statistical outliers, box plot lines extend out to the “min” and “max”, and the box lines (from bottom to top of each box) represent the first quartile (25th percentile), median (50th percentile), and third quartile (75th percentile)<br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_2.jpeg" class="img-fluid" alt="Police Killings, Plot 2, made with R’s ggplot2"></p>
@@ -958,7 +945,6 @@ font-style: italic;">## USAGE</span></span>
 
 
 
-
 <p>Wizards of the Coast have developed such an incredible tabletop, fantasy, RPG with the 5th edition of D&amp;D… I wish I would have re-discovered this game years back. For context, I haven’t touched D&amp;D since 1997!</p>
 <p>If you know of good resources for newbies and new D&amp;D Dungeon Masters (“DMs”), I’d love to know about your favorite resources. For data science folks out there, this site was built with R using <code>blogdown</code>, Hugo themes, and deployed for free using GitHub and Netlify.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -983,7 +969,6 @@ font-style: italic;">## USAGE</span></span>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -1033,7 +1018,6 @@ font-style: italic;">## USAGE</span></span>
 
 
 
-
 <p>You learn something new every day, even basics! For R users on Windows (I’m assuming the same holds true for Mac and Linux users), do you ever find yourself needing to quickly export a dataframe or tibble to Excel or a text editor? I recently discovered base R’s <code>write.table</code> function and have used it much more often than I anticipated.</p>
 <p>See below syntax as an example:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1057,7 +1041,6 @@ font-style: italic;">## USAGE</span></span>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/2020-02-04-Hadley-Wickham-on-SDS-Podcast.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -1088,7 +1071,6 @@ font-style: italic;">## USAGE</span></span>
 
 
 
-
 <p>k-fold “randomly divides the training data into k groups (or folds) of approximate size [with the model being] fit on k-1 folds and the remaining fold used to compute model performance.” I use k=5 or k=10 given that this is typical industry practice without really questioning “why?”</p>
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/images/kfold.jpg" class="img-fluid"></p>
 <p>In reading through Hands-On Machine Learning with R by Brad Boehmke, Ph.D.&nbsp;and Brandon Greenwell, I was surprised to learn that studies have shown that k=10 performs similarly to leave-one-out cross validation where k=n.</p>
@@ -1116,7 +1098,6 @@ font-style: italic;">## USAGE</span></span>
 
 
 
-
 <p>I upgraded my espresso machine over the holidays and have been pleasantly surprised by the need to recalibrate my machine’s settings with every new batch of coffee (and of course, fresh roasted is best). Glad to see some math support my observations. :-)</p>
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/images/espresso.jpg" class="img-fluid"></p>
 <p>Source:</p>
@@ -1138,7 +1119,6 @@ font-style: italic;">## USAGE</span></span>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-01-20-Puerto-Rico-Earthquakes/2020-01-20-Puerto-Rico-Earthquakes.html</link>
   <description><![CDATA[ 
-
 
 
 
