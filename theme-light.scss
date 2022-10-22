@@ -1,22 +1,24 @@
 // Google Fonts
 @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat');
 
 /*-- scss:defaults --*/
 
-// Naming Custom Font Sass Variables
 $retro: 'Monoton', cursive;
+$font-family-base: 'Montserrat', sans-serif;
 
 /*-- scss:rules --*/
 #title-block-header.quarto-title-block.default .quarto-title .title {
-  /*font-family: 'Pirata One', cursive;*/
   font-family: $retro;
   font-size: $font-size-base * 4;
+  text-shadow: 2px 2px 0 rgba(31, 81, 255, .3);
 }
 
 p.subtitle.lead {
   font-family: $retro;
-  font-size: $font-size-base * 1.5;
+  font-size: $font-size-base * 1.75;
   margin-top: 0px;
   margin-bottom: 0px;
   padding-top: 0px !important;
+  text-shadow: 2px 2px 0 rgba(176, 38, 255, .3);
 }
