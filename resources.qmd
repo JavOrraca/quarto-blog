@@ -1,6 +1,9 @@
 ---
 title: "Resources"
 title-block-banner: false
+toc: true
+toc-title: "Table of Contents"
+toc-location: left
 ---
 
 In the past, I lost track of reality trying to track a gazillion links covering every data-science-friendly programming language under the sun. `**shakes head**` Bad idea. Since I program in R daily, I like to keep track of R and Posit / RStudio developments. I'm mostly going to share R resources that I find useful for analytics, statistical programming, machine learning, data science workflows, and web app development. I'm enjoying Python a lot more recently so I'll slowly build up this resources page with Python sub-topics that I find bookmark worthy.
