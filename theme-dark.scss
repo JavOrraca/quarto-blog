@@ -4,9 +4,11 @@
 
 /*-- scss:defaults --*/
 $navbar-bg: #3A3B3C;
-$dracula: 'Pirata One', cursive;
 $font-family-base: 'Montserrat', sans-serif;
 $success: #CE2029 !default;
+
+// Custom Variables
+$dracula: 'Pirata One', cursive;
 
 /*-- scss:rules --*/
 #title-block-header.quarto-title-block.default .quarto-title .title {

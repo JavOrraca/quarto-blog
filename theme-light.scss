@@ -3,9 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat');
 
 /*-- scss:defaults --*/
-
-$retro: 'Monoton', cursive;
 $font-family-base: 'Montserrat', sans-serif;
+
+// Custom Variables
+$retro: 'Monoton', cursive;
 
 /*-- scss:rules --*/
 #title-block-header.quarto-title-block.default .quarto-title .title {

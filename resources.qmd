@@ -1,11 +1,11 @@
 ---
-title: "R Resources (maybe more)"
+title: "Resources"
 title-block-banner: false
 ---
 
-In the past, I lost track of reality trying to track a gazillion links covering every data-science-friendly programming language under the sun. `**shakes head**` Bad idea. Since I program in R daily, I like to keep track of R and RStudio developments. I'm mostly going to share R resources and some other miscellaneous resources that I find useful for analytics, statistical programming, machine learning, data science workflows, and web app development. I'm enjoying the Julia programming language recently, so I'll share resources that I find bookmark worthy as well.<br><br>
+In the past, I lost track of reality trying to track a gazillion links covering every data-science-friendly programming language under the sun. `**shakes head**` Bad idea. Since I program in R daily, I like to keep track of R and Posit (formerly RStudio) developments. I'm mostly going to share R resources and some other miscellaneous resources that I find useful for analytics, statistical programming, machine learning, data science workflows, and web app development. I'm enjoying Python a lot more recently so I'll slowly build up this resources page with helpful Python resources that I find bookmark worthy.<br><br>
 
-R and Julia are open-source programming languages for statistical computing and graphics. R has an open and friendly community devoted to using R for data science and making business analytics easy to attain. One of the things that I like most about R is the thousands of packages available making *almost everything* in R a little easier from ETL, to method chaining, to developing interactive web apps. Julia is a newer programming language (newer to me) recommended by a coworker. Unlike interpreter languages such as R and Python, Julia has significant performance advantages for numerical computations. Julia is a multi-threaded programming language (native parallel processing and designed for distributed computing), it compiles (it doesn't interpret lower-level languages like C or C++), and there is a growing body of scientists and developers finding unique ways to use the language. I certainly welcome any suggestions that you might have for the lists below!
+R is an open-source programming languages for statistical computing and graphics. R has an open and friendly community devoted to using R for data science and making business analytics easy to attain. One of the things that I like most about R is the thousands of packages available making *almost everything* in R a little easier from ETL, to method chaining, to developing predictive models and interactive web apps. I certainly welcome any suggestions that you might have for the lists below!
 
 **R Classics**
 
@@ -16,12 +16,12 @@ R and Julia are open-source programming languages for statistical computing and 
 
 **R Applied Resources**
 
--   [Reproducible Finance with R](http://www.reproduciblefinance.com/start-here/): Code Flows and Shiny Apps for Portfolio Analysis
--   [Hands-On Machine Learning with R](https://bradleyboehmke.github.io/HOML/): I can't recommend this resource enough and it's one that I often have on my desk... Put best by the authors, "this book is meant to help R users learn to use the machine learning stack within R, which includes using various R packages such as glmnet, h2o, ranger, xgboost, lime, and others to effectively model and gain insight from your data."
--   [Deep Learning with R](https://www.manning.com/books/deep-learning-with-r): In-depth introduction to artificial intelligence and deep learning applications with R using the Keras library
--   [Forecasting Principles and Practice](https://otexts.com/fpp3/): Said best by the author, "The book is written for three audiences: (1) people finding themselves doing forecasting in business when they may not have had any formal training in the area; (2) undergraduate students studying business; (3) MBA students doing a forecasting elective."
--   [Regression and Other Studies](https://www.cambridge.org/core/books/regression-and-other-stories/DD20DD6C9057118581076E54E40C372C): Super applied textbook on advanced regression techniques, Bayesian inference, and causal inference
 -   [Tidy Modeling with R](https://www.tmwr.org/): Over the last few months, I've learned a lot from this A to Z resource on predictive modeling workflows using the tidymodels framework
+-   [Hands-On Machine Learning with R](https://bradleyboehmke.github.io/HOML/): I can't recommend this resource enough and it's one that I often have on my desk... Put best by the authors, "this book is meant to help R users learn to use the machine learning stack within R, which includes using various R packages such as glmnet, h2o, ranger, xgboost, lime, and others to effectively model and gain insight from your data."
+-   [Deep Learning with R, Second Edition](https://www.manning.com/books/deep-learning-with-r-second-edition): In-depth introduction to artificial intelligence and deep learning applications with R using the Keras library
+-   [Forecasting Principles and Practice, Third Edition](https://otexts.com/fpp3/): Said best by the author, "The book is written for three audiences: (1) people finding themselves doing forecasting in business when they may not have had any formal training in the area; (2) undergraduate students studying business; (3) MBA students doing a forecasting elective."
+-   [Regression and Other Studies](https://www.cambridge.org/core/books/regression-and-other-stories/DD20DD6C9057118581076E54E40C372C): Super applied textbook on advanced regression techniques, Bayesian inference, and causal inference
+-   [Supervised Machine Learning for Text Analysis in R](https://smltar.com/): Written by two Posit software engineers and incredible additions to their tidymodels team, Emil Hvitfeldt and Julia Silge, this book is a masterclass in natural language processing taking you from the basics of NLP to real-life applications including inference and prediction
 
 **R Packages (my favorites)**
 
@@ -32,15 +32,3 @@ R and Julia are open-source programming languages for statistical computing and 
 -   [bs4Dash](https://bs4dash.rinterface.com/): This R Shiny framework brings Bootstrap 4 + AdminLTE v3.1 dependencies to Shiny (including 1:1 support for `shinydashboard` functions) and it's my go-to for developing enterprise-grade Shiny apps
 -   [leaflet](https://rstudio.github.io/leaflet/): R implementation of the popular Leaflet JavaScript library for developing interactive maps
 -   [plotly](https://plotly.com/r/): An extensive graphic library for creating interactive visualizations and 3D (WebGL) charts
-
-**Julia**
-
--   [Official Manual](https://docs.julialang.org/en/v1/manual/getting-started/): I'm in the process of reading through this documentation to better understand the Julia methods, operators, functions, function-building, and modules
--   [Learning Materials](https://julialang.org/learning/): Many resources are listed here on the official Julia Lang site
--   [Juno](https://junolab.org/): An Atom-based flexible IDE for Julia
--   [Installation Instructions](http://docs.junolab.org/latest/man/installation/): Install Julia, Atom, and Juno
--   [Genie](https://genieframework.com/): This library is a full-stack web framework for modern web apps using Julia
--   Medium articles on Julia that interested me:
-    -   [First Impressions of Julia from an R User](https://mdneuzerling.com/post/first-impressions-of-julia-from-an-r-user/)
-    -   [A-Z Julia Endpoint with Genie](https://towardsdatascience.com/a-z-julia-endpoint-with-genie-a2e0c2f1c884)
--   [Installing Julia on a Raspberry Pi](https://juliaberry.github.io/)
