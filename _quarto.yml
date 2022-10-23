@@ -27,7 +27,7 @@ website:
         href: blog.qmd
       - text: Resources
         menu:
-          - text: "Jav's Resources"
+          - text: "Javi's Resources"
             href: resources.qmd
           - text: R for Data Science
             href: https://r4ds.had.co.nz/index.html
