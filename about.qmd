@@ -8,7 +8,7 @@ title-block-banner: false
 
 ## Professional
 
-My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. My teams apply data science techniques to empower decision makers with descriptive and prescriptive analytics. I help bridge the gap between business needs and IT to develop and deploy automation solutions, predictive algorithms, and interactive web apps.
+My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive analytics. I help bridge the gap between business needs and IT to develop and deploy automation solutions, predictive algorithms, and interactive web apps.
 
 ## Scatter Podcast
 
