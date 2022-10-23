@@ -8,7 +8,7 @@ title-block-banner: false
 
 ## Professional
 
-My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive analytics. I help bridge the gap between business needs and IT to develop and deploy automation solutions, predictive algorithms, and interactive web apps.
+My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. I use the R and Python programming languages on a daily basis but am much more advanced with my R work. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive analytics. I help bridge the gap between business needs and IT to develop and deploy automation solutions, predictive algorithms, and interactive web apps.
 
 ## Scatter Podcast
 
@@ -18,14 +18,13 @@ In 2019, I launched [Scatter Podcast](https://soundcloud.com/scatterpodcast) to 
 
 -   **R**: tidyverse, tidymodels, Quarto, Shiny, Plotly, Leaflet, Prophet, xaringan, XGBoost, Ranger, and many more
 -   **Other Analytics & Programming Platforms**: Python, Jupyter Notebooks, h2o, GitLab / GitHub, RStudio Connect, AWS S3, AWS Redshift, Google Cloud Platform, BigQuery, SQL, Netlify
--   **Microsoft**: Expert-level MS Access and Excel user with experience creating pivot tables, nested IF statements, INDEX / MATCH functions, VLOOKUP / HLOOKUP functions, Solver (for optimization and simulations... yes... in Excel!), macros for data manipulation pipelines, ODBC integration, query design (joins, crosstab, make-table, etc.), reports, and forms
+-   **Microsoft**: Expert-level Excel financial modeler with experiences including nested formulas, XLOOKUPs, Solver for optimization and simulations (yes... in Excel!), macros for psuedo-automated data manipulation, add-in integrations, and more
 
 ## Media Appearances
 
--   UC Irvine's inaugural Latinx Initiative Conference (2021/10/15): <https://merage.uci.edu/events/2021/10/2021-lxi-conference.html>
--   Data Points virtual conference hosted by Grid Dynamics (2021/06/09): <https://datapoints.griddynamics.com/events/data-points-virtual-summit-healthcare-finance-06-09-2021/>
--   Scatter Podcast mention on Forbes: [https://forbes.com/how-to-get-your-data-scientist-career-started](https://forbes.com/sites/louiscolumbus/2019/04/14/how-to-get-your-data-scientist-career-started)
--   Scatter Podcast on UC Irvine News: [https://merage.uci.edu/news/2019/06/scatterpodcast](https://merage.uci.edu/news/2019/06/podcast-launched-by-merage-student-navigates-complex-field-of-data-analytics-and-science.html)
--   Orange County Predictive Modeling Hackathon Winner: [https://twitter.com/oc_rug/status/oc-r-users-group-hackathon-best-model](https://twitter.com/oc_rug/status/1130553620456300544?s=20)
--   UC Irvine Student Profile: [https://merage.uci.edu/programs/masters/master-science-business-analytics](https://merage.uci.edu/programs/masters/master-science-business-analytics/curriculum.html)
-
+* UC Irvine's inaugural [Latinx Initiative Conference](https://merage.uci.edu/events/2021/10/2021-lxi-conference.html) (2021-10-15)
+* [Data Points: Healthcare and Finance](https://datapoints.griddynamics.com/events/data-points-virtual-summit-healthcare-finance-06-09-2021/) virtual conference hosted by Grid Dynamics (2021-06-09)
+  * Watch my presentation [Healthcare Finance Beyond Excel: R for Automation, Time Series Forecasting, and Interactive Reporting](https://youtu.be/LMaPvd4qMQk)
+* Scatter Podcast on [UC Irvine News](https://merage.uci.edu/news/2019/06/podcast-launched-by-merage-student-navigates-complex-field-of-data-analytics-and-science.html) (2019-06-13)
+* Winner of the [Orange County Predictive Modeling Hackathon](https://twitter.com/oc_rug/status/1130553620456300544?s=20) (2019-05-20)
+* Scatter Podcast mention on [Forbes](https://forbes.com/sites/louiscolumbus/2019/04/14/how-to-get-your-data-scientist-career-started) (2019-04-14)
