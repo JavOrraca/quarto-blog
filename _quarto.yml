@@ -8,7 +8,7 @@ website:
   google-analytics: "UA-127790709-3"
   cookie-consent: true
   twitter-card: 
-    image: ./images/Javier_Profile.jpg
+    image: images/Javier_Profile.jpg
     card-style: summary_large_image
     creator: "@JavierOrraca"
   navbar:
