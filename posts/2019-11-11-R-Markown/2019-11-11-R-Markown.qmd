@@ -2,7 +2,7 @@
 title: "15 Tips for Making Better Use of R"
 description: "If you are an R user not using R Markdown, these tricks could be helpful for you."
 date: 11-11-2019
-categories: [R, R Markdown]
+categories: [rmarkdown]
 image: images/RStudio-Webinar.jpg
 ---
 

@@ -2,7 +2,7 @@
 title: "Shiny Developer Expert Course"
 description: "Matt Dancho and Business Science introduce a new R Shiny Expert Developer course."
 date: 11-05-2019
-categories: [Shiny, R]
+categories: [shiny]
 image: images/business-science.jpg
 ---
 

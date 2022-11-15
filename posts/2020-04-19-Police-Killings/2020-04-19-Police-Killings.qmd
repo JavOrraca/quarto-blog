@@ -2,7 +2,7 @@
 title: "Lying with Statistics"
 description: "It's quite easy to manipulate raw data in a manner that 'proves' your point. For the sake of exploring this topic further, I'll analyze police killing data and present it in three different ways." 
 date: 04-19-2020
-categories: [Statistics, ggplot2, Visualizations, R]
+categories: [statistics, ggplot2, visualizations]
 image: images/Police_Killings_1.jpeg
 ---
 

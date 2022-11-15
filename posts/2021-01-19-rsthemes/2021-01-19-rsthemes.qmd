@@ -2,7 +2,7 @@
 title: "rsthemes: Customizing your RStudio IDE"
 description: "Change up your editor theme with {rsthemes}, a collection of themes to freshen up the RStudio IDE aesthetics."
 date: 01-19-2021
-categories: [RStudio, Packages, rsthemes, R, Quick Tips]
+categories: [quick tips]
 image: images/rsthemes.gif
 ---
 

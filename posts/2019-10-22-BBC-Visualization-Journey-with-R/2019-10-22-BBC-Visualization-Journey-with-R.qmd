@@ -2,7 +2,7 @@
 title: "Visual & Data Journalism at BBC"
 description: "The BBC News data science and visualization team published this great overview on their analytics and visualizations lessons learned over the course of 1.5 years."
 date: 10-22-2019
-categories: [ggplot2, R, Visualizations]
+categories: [ggplot2, visualizations]
 image: images/BBC.jpg
 ---
 

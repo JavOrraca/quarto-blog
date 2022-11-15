@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html",
       "/posts/2021-10-21-torch-for-r/2021-10-21-torch-for-r.html",
       "/posts/2021-09-07-rayshader/2021-09-07-rayshader.html",
       "/posts/2021-05-24-dataframe/2021-05-24-dataframe.html",

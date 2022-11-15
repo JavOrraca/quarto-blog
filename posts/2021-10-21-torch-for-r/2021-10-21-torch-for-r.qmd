@@ -2,7 +2,7 @@
 title: "Torch for R + luz"
 description: "The ‘torch for R’ ecosystem is a collection of extensions for torch, an R framework for machine learning and artificial intelligence based on PyTorch."
 date: 10-22-2021
-categories: [torch, luz]
+categories: [machine learning]
 image: images/torch_and_luz.png
 ---
 

@@ -2,7 +2,7 @@
 title: "Analyzing Earthquakes in Puerto Rico"
 description: "Puerto Rico has been experiencing atypical seismic activity since November 2019." 
 date: 01-20-2020
-categories: [Statistics, ggplot2, Earthquakes]
+categories: [statistics, ggplot2, visualizations]
 image: images/Earthquakes_PR.jpg
 ---
 

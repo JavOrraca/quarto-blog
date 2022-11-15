@@ -2,7 +2,7 @@
 title: "DT: An R Interface to the JavaScript library DataTables"
 description: "The R package DT provides an R interface to the JavaScript library DataTables. R data objects (matrices or data frames) can be displayed as tables on HTML pages, and DataTables provides filtering, pagination, sorting, interactivity with Shiny, and many other features."
 date: 05-03-2021
-categories: [RStudio, Packages, R, DT]
+categories: [dt]
 image: images/DT_Shiny.png
 ---
 

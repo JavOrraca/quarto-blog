@@ -2,7 +2,7 @@
 title: "Education Reform and Lessons from Finland"
 description: "Quartz and Google's Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning."
 date: 12-04-2019
-categories: [Education]
+categories: [statistics]
 image: images/Finland.jpg
 ---
 
