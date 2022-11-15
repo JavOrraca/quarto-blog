@@ -2,7 +2,7 @@
 title: "rstudio::global tips, tricks, and more"
 description: "RStudio's annual conference saw roughly 17,000 attendees for their first global, all-virtual, 24-hour event. I attended several sessions throughout the day and I'll highlight my favorite data bytes learned that day. I'll also share relatable content for better modeling with R."
 date: 01-24-2021
-categories: [RStudio, Conference, tidymodels, R]
+categories: [tidymodels]
 image: images/rstudio-global-2021.jpg
 ---
 

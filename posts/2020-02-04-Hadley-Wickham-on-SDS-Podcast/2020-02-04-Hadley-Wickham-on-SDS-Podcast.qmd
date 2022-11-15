@@ -2,7 +2,7 @@
 title: "Hadley Wickham on SuperDataScience Podcast"
 description: "My eyes were opened to the world of analytics and data science in part through Kirill Eremenko and his amazing SuperDataScience podcast."
 date: 02-04-2020
-categories: [RStudio, R, Python, SuperDataScience]
+categories: [podcast]
 image: images/SDS_Wickham.jpg
 ---
 

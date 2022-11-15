@@ -2,7 +2,7 @@
 title: "Copy R Objects to Clipboard"
 description: "I was today years old when I learned that you could easily copy/paste R objects to your clipboard." 
 date: 02-08-2020
-categories: [R, Quick Tips]
+categories: [quick tips]
 image: images/carbon.png
 ---
 

@@ -2,7 +2,7 @@
 title: "Testing dplyr 1.0.0"
 description: "Finally getting around to trying out dplyr 1.0.0... Love it!"
 date: 06-20-2020
-categories: [Packages, R, tidyverse, dplyr]
+categories: [tidyverse, dplyr]
 image: images/dplyr.jpeg
 ---
 

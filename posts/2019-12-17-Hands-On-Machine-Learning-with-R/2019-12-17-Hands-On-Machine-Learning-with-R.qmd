@@ -2,7 +2,7 @@
 title: "Book Rec: Hands-On Machine Learning with R"
 description: "Digging into Hands-On Machine Learning with R by Brad Boehmke, PhD, and Brandon Greenwell."
 date: 12-17-2019
-categories: [Machine Learning, R, Packages]
+categories: [machine learning]
 image: images/HOMLR.jpg
 ---
 

@@ -2,7 +2,7 @@
 title: "themis: Extra Steps for tidymodels + recipes"
 description: "themis contain extra steps for the recipes package for dealing with unbalanced data. The name themis is that of the ancient Greek goddess who is typically depicted with a balance." 
 date: 02-20-2020
-categories: [R, tidymodels, Packages]
+categories: [tidymodels]
 image: images/themis.png
 ---
 

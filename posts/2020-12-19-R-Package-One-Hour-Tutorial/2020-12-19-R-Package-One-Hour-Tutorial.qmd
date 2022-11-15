@@ -2,7 +2,7 @@
 title: "One-Hour R Package Development Tutorial by Shannon Pileggi, PhD"
 description: "I followed this tutorial and created a package successfully. It took 45 minutes. Follow, this, guide, my fellow R friends!"
 date: 12-19-2020
-categories: [R, Packages, Tutorial]
+categories: [packages]
 image: images/package_workshop.jpg
 ---
 

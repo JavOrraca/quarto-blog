@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Javier Orraca-Deatcu">
+<meta name="dcterms.date" content="2022-11-15">
+<meta name="description" content="During my interview process with Bloomreach, I developed an interactive Shiny app styled with the Bloomreach branding and color scheme. This tutorial will help you do the same to demo the power of Shiny to prospective employers.">
+
+<title>Data Science Bytes - Build a Shiny App Demo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-127790709-3', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  });
+});
+</script> 
+  
+
+
+<meta name="twitter:title" content="Data Science Bytes - Build a Shiny App Demo">
+<meta name="twitter:description" content="During my interview process with Bloomreach, I developed an interactive Shiny app styled with the Bloomreach branding and color scheme.">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/images/Javier_Profile.jpg">
+<meta name="twitter:creator" content="@JavierOrraca">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Data Science Bytes</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/orraca"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/JavierOrraca"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw"><i class="bi bi-spotify" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JavOrraca"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://stackoverflow.com/users/17282384/javier-orraca-deatcu"><i class="bi bi-stack-overflow" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../resources.html">
+ <span class="dropdown-text">Javi’s Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://r4ds.had.co.nz/index.html">
+ <span class="dropdown-text">R for Data Science</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidyverse.org/">
+ <span class="dropdown-text">Tidyverse</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidymodels.org/">
+ <span class="dropdown-text">Tidymodels</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidyverse.org/blog/">
+ <span class="dropdown-text">Tidyverse Style Guide</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#steps-to-edit-the-app" id="toc-steps-to-edit-the-app" class="nav-link" data-scroll-target="#steps-to-edit-the-app">Steps to Edit the App</a>
+  <ul class="collapse">
+  <li><a href="#clone-repo" id="toc-clone-repo" class="nav-link" data-scroll-target="#clone-repo">1: Clone Repo</a></li>
+  <li><a href="#install-packages" id="toc-install-packages" class="nav-link" data-scroll-target="#install-packages">2: Install Packages</a></li>
+  <li><a href="#app-customization" id="toc-app-customization" class="nav-link" data-scroll-target="#app-customization">3: App Customization</a>
+  <ul class="collapse">
+  <li><a href="#helperscustom_theme.r" id="toc-helperscustom_theme.r" class="nav-link" data-scroll-target="#helperscustom_theme.r"><code>helpers/custom_theme.R</code></a></li>
+  <li><a href="#helpersfooter.r" id="toc-helpersfooter.r" class="nav-link" data-scroll-target="#helpersfooter.r"><code>helpers/footer.R</code></a></li>
+  <li><a href="#helpersnavbar.r" id="toc-helpersnavbar.r" class="nav-link" data-scroll-target="#helpersnavbar.r"><code>helpers/navbar.R</code></a></li>
+  <li><a href="#modulesabout.r" id="toc-modulesabout.r" class="nav-link" data-scroll-target="#modulesabout.r"><code>modules/About.R</code></a></li>
+  </ul></li>
+  <li><a href="#example-tweaks" id="toc-example-tweaks" class="nav-link" data-scroll-target="#example-tweaks">4: Example Tweaks</a></li>
+  <li><a href="#app-deployment" id="toc-app-deployment" class="nav-link" data-scroll-target="#app-deployment">5: App Deployment</a></li>
+  <li><a href="#git-commit-push" id="toc-git-commit-push" class="nav-link" data-scroll-target="#git-commit-push">6: Git Commit &amp; Push</a></li>
+  </ul></li>
+  <li><a href="#recap-next-steps" id="toc-recap-next-steps" class="nav-link" data-scroll-target="#recap-next-steps">Recap &amp; Next Steps</a></li>
+  <li><a href="#shiny-session-info" id="toc-shiny-session-info" class="nav-link" data-scroll-target="#shiny-session-info">Shiny Session Info</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Shiny App Styling</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">shiny</div>
+    <div class="quarto-category">github</div>
+    <div class="quarto-category">bslib</div>
+    <div class="quarto-category">docker</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    During my interview process with Bloomreach, I developed an interactive Shiny app styled with the Bloomreach branding and color scheme. This tutorial will help you do the same to demo the power of Shiny to prospective employers.
+  </div>
+</div>
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <a href="https://www.javierorraca.com/">Javier Orraca-Deatcu</a> 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://soundcloud.com/scatterpodcast">
+            Scatter Podcast
+            </a>
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 15, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>If you Google Search “applying for jobs is,” you see auto-completion suggestions that feel about right…<img src="./images/google_auto_suggestions.png" class="img-fluid"></p>
+<p>Applying for jobs is both exhausting <em>and</em> a full-time job. Data scientists are expected to stay on top of their statistical education, have robust GitHub repositories, and they’re expected to know how to apply ever-changing technologies for DevOps and reproducible machine learning… And all this in addition to the endless resume and cover letter tweaks you’re probably making for each job (as you should).</p>
+<p>If you’re an academic wanting to pivot to industry or a data scientist looking for a job change, I propose a simple (<em>or simple-ish</em>) solution to standing out from the crowd in a meaningful way: Build an easy-to-access web application for your future employers.</p>
+<p>In July 2022, <a href="https://www.linkedin.com/in/travisgerke/">Travis Gerke</a> held a presentation at rstudio::conf(2022) titled <a href="https://www.rstudio.com/conference/2022/talks/wtf-teach-you-industry/"><em>What They Forgot to Teach You About Industry Transitions from Academia</em></a> (or “WTF-AITA” 😬). Travis presented my Shiny app as a “cover letter accessory” and it motivated me to write this tutorial such that anybody familiar with R, GitHub, and the RStudio IDE could deploy their own demo Shiny app for prospective employers.</p>
+</section>
+<section id="steps-to-edit-the-app" class="level1">
+<h1>Steps to Edit the App</h1>
+<p>To ensure a smooth installation, I recommend installing the latest version of R (4.2.2) and the latest version of the RStudio IDE. The underlying R scripts used on this Shiny app rely on the native pipe operator (<code>|&gt;</code>) introduced in base R 4.1.0. If you do not have access to the native pipe, you will not be able to run the app without additional code tweaks, i.e., replacing all instances of the native pipe (<code>|&gt;</code>) with the <code>magrittr</code> pipe (<code>%&gt;%</code>).</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Git for the R User
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The next steps assume that you’re familiar with GitHub, you’ve installed R + <a href="https://github.com/git-guides/install-git">Git</a> + the <a href="https://posit.co/download/rstudio-desktop/">RStudio IDE</a>, and you’ve connected RStudio to GitHub. Jenny Bryan’s <a href="https://happygitwithr.com/rstudio-git-github.html"><em>Happy Git and GitHub for the useR</em></a> is a great resource if you’re stuck on any of these topics.</p>
+</div>
+</div>
+<section id="clone-repo" class="level2">
+<h2 class="anchored" data-anchor-id="clone-repo">1: Clone Repo</h2>
+<p>We’ll start by forking this GitHub repo into your repository to allow you to experiment with my code without actually changing anything in my original project repo. To do this, navigate to my GitHub repo ( <a href="https://github.com/JavOrraca/bslib_demo_shiny">JavOrraca/bslib_demo_shiny</a>) and click on the <code>Fork</code> button in the top-right of the repo. This will prompt you to “Create a new fork” - Typically, I like to keep all of the defaults intact. When you’re ready to create the new fork, simply hit the <code>Create fork</code> button on the bottom of the screen.</p>
+<p>Assuming you kept the original repository name, you should see a newly created repo titled “bslib_demo_shiny” in your GitHub repositories. It contains a full copy of all files and folders found in my original project repo.</p>
+<p>Next, you’ll want to clone this repo to your local machine. Using the RStudio IDE, navigate to its menu bar and click on <code>File</code> -&gt; <code>New Project</code> -&gt; <code>Version Control</code> -&gt; <code>Git</code>, copy/paste your repo’s clone URL, choose your local project directory path of choice, and click on <code>Create Project</code>.</p>
+<p>RStudio IDE’s <em>New Project Wizard</em> will launcn in a popup window after selecting <code>New Project</code> from the file menu. You should expect the following:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/clone_git_repo.gif" class="img-fluid figure-img" style="width:65.0%"></p>
+</figure>
+</div>
+<p>This process will create a local clone of all files and folders found on your remote GitHub repo. Once all files are downloaded for this project, the files and folder structure will look like this:</p>
+<p>├── Dockerfile <br>├── LICENSE <br>├── README.md <br>├── bslib_demo_shiny.Rproj <br>├── global.R <br>├── helpers <br>│ ├── custom_theme.R <br>│ ├── footer.R <br>│ └── navbar.R <br>├── modules <br>│ ├── mod_About.R <br>│ ├── mod_Mapping.R <br>│ ├── mod_Overview.R <br>│ └── mod_Reports.R <br>├── renv <br>│ ├── activate.R <br>│ ├── library <br>│ │ └── R-4.2 <br>│ ├── sandbox <br>│ │ └── R-4.2 <br>│ ├── settings.dcf <br>│ └── staging <br>├── renv.lock <br>├── server.R <br>├── ui.R <br>├── www <br>│ ├── Shiny_Demo_Preview.png <br>│ ├── blr_logo-primary.png <br>│ └── styles.scss</p>
+</section>
+<section id="install-packages" class="level2">
+<h2 class="anchored" data-anchor-id="install-packages">2: Install Packages</h2>
+<p>It’s important to make note of the <code>renv</code> folder. This Shiny app relies on the <a href="https://rstudio.github.io/renv/articles/renv.html"><code>renv</code></a> package to manage project-package dependencies. If the Shiny app requires different package versions than those installed on your system’s main R library path, this approach will install the necessary packages in the <code>renv</code> directory.</p>
+<p>To install the required R packages for this app, follow the instructions presented in your RStudio IDE Console immediately after cloning the GitHub repo or execute the command <code>renv::restore()</code>. This process will restore the package state as recorded in the <code>renv.lock</code> file - This “lockfile” records all of the R package names and versions required to run this specific Shiny app.</p>
+<p>Once the project-package dependencies are installed, test launch the Shiny app by running <code>shiny::runApp()</code> in the Console or by clicking on the <code>Run App</code> button in the RStudio IDE. The <code>Run App</code> button only appears if you’re inside the <code>global.R</code>, <code>ui.R</code>, and <code>server.R</code> files - These three filenames are unique to Shiny and the RStudio IDE recognizes them as such.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/run_app.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="app-customization" class="level2">
+<h2 class="anchored" data-anchor-id="app-customization">3: App Customization</h2>
+<p>While there are many ways to configure a Shiny app, the global aesthetics of this app have been configured using the <a href="https://rstudio.github.io/bslib/"><code>bslib</code></a> and <a href="https://rstudio.github.io/thematic/"><code>thematic</code></a> packages. These packages provide tools for customizing Bootstrap themes and they introduce Sass variables to Shiny (in my opinion, making the customization process much more unified).</p>
+<p>The default Bootstrap version for <code>bslib</code> is version 5, however, this app was designed using Bootstrap 4. The <code>thematic</code> package provides a centralized approach to certain R visualizations such as those generated from <code>ggplot2</code>.</p>
+<p>To fully customize the appearance of the app to your liking, make revisions to the following files that are sourced at runtime:</p>
+<section id="helperscustom_theme.r" class="level3">
+<h3 class="anchored" data-anchor-id="helperscustom_theme.r"><code>helpers/custom_theme.R</code></h3>
+<p>This helper file creates two functions (<code>fn_custom_theme()</code> and <code>fn_thematic_theme()</code>) that are loaded into your global environment at runtime. Here you can specify base fonts, background (<code>bg</code>) and foreground (<code>fg</code>) colors, and other accent colors used throughout the Shiny app. The <code>fn_custom_theme()</code> function is called in line 3 of <code>ui.R</code> (in the app’s root directory) and the <code>fn_thematic_theme()</code> function is called in line 56 of <code>modules/mod_Overview.R</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Overarching bslib theme</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>fn_custom_theme <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  bslib<span class="sc">::</span><span class="fu">bs_theme</span>(</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    <span class="at">version =</span> <span class="st">"4"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="at">base_font =</span> sass<span class="sc">::</span><span class="fu">font_google</span>(<span class="st">"Open Sans"</span>),</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="at">bg =</span> <span class="st">"#ffffff"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    <span class="at">fg =</span> <span class="st">"#1d2d42"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    <span class="at">primary =</span> <span class="st">"#f3d436"</span>, </span>
+<span id="cb1-9"><a href="#cb1-9"></a>    <span class="at">secondary =</span> <span class="st">"#1d2d42"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10"></a>    <span class="at">success =</span> <span class="st">"#1d2d42"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-11"><a href="#cb1-11"></a>    <span class="fu">bs_add_variables</span>(<span class="st">"border-bottom-width"</span> <span class="ot">=</span> <span class="st">"6px"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12"></a>                     <span class="st">"border-color"</span> <span class="ot">=</span> <span class="st">"$primary"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13"></a>                     <span class="at">.where =</span> <span class="st">"declarations"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-14"><a href="#cb1-14"></a>    <span class="fu">bs_add_rules</span>(sass<span class="sc">::</span><span class="fu">sass_file</span>(<span class="st">"www/styles.scss"</span>))</span>
+<span id="cb1-15"><a href="#cb1-15"></a>}</span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co"># Thematic theme for ggplot2 outputs</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a>fn_thematic_theme <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb1-19"><a href="#cb1-19"></a>  thematic<span class="sc">::</span><span class="fu">thematic_theme</span>(</span>
+<span id="cb1-20"><a href="#cb1-20"></a>    <span class="at">bg =</span> <span class="st">"#ffffff"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21"></a>    <span class="at">fg =</span> <span class="st">"#1d2d42"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22"></a>    <span class="at">accent =</span> <span class="st">"#f3d436"</span>,</span>
+<span id="cb1-23"><a href="#cb1-23"></a>    <span class="at">font =</span> <span class="fu">font_spec</span>(sass<span class="sc">::</span><span class="fu">font_google</span>(<span class="st">"Open Sans"</span>), <span class="at">scale =</span> <span class="fl">1.75</span>)</span>
+<span id="cb1-24"><a href="#cb1-24"></a>  )</span>
+<span id="cb1-25"><a href="#cb1-25"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="helpersfooter.r" class="level3">
+<h3 class="anchored" data-anchor-id="helpersfooter.r"><code>helpers/footer.R</code></h3>
+<p>This file creates the <code>fn_footer()</code> helper function that powers the Shiny app’s footer. The <code>fn_footer()</code> function uses Shiny <code>tags</code> in conjunction with <code>htmltools::HTML()</code> (exported to the <code>shiny</code> package) to create an HTML footer tag that can process raw HTML. I’ve used it to include my name and website in the footer and the <code>fn_footer()</code> function is called in line 7 of <code>ui.R</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>fn_footer <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  tags<span class="sc">$</span><span class="fu">footer</span>(</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="fu">HTML</span>(</span>
+<span id="cb2-4"><a href="#cb2-4"></a>      <span class="st">"This web app demo was developed by &lt;a href='https://www.javierorracadeatcu.com'&gt;Javier Orraca-Deatcu&lt;/a&gt; with R + Shiny"</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    )</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  )</span>
+<span id="cb2-7"><a href="#cb2-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="helpersnavbar.r" class="level3">
+<h3 class="anchored" data-anchor-id="helpersnavbar.r"><code>helpers/navbar.R</code></h3>
+<p>This script sets the navigation bar’s branding (logo and hyperlink) and wraps it into the helper function <code>fn_navbar()</code>. This function is passed to the <code>title</code> argument on line 5 of <code>ui.R</code> and it creates an HTML <code>div</code> with a custom <code>class</code> attribute (<code>bloomreach_logo</code>) that can be further styled with CSS in the <code>www/styles.scss</code> “Sassy CSS” file.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+About Shiny’s www folder
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The image path in line 5, below, does not specify a full path despite this image existing in the <code>www</code> folder. In Shiny projects, the <code>www</code> directory is used for storing elements that will be rendered in the web browser and not from script outputs. We do not need to include the full path on line 5 of <code>helpers/navbar.R</code> as Shiny knows to look for <code>blr_logo-primary.png</code> in the <code>www</code> folder.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>fn_navbar <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">div</span>(</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="at">class =</span> <span class="st">"bloomreach_logo"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="fu">a</span>(<span class="at">href =</span> <span class="st">"https://www.bloomreach.com/"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5"></a>      <span class="fu">img</span>(<span class="at">src =</span> <span class="st">"blr_logo-primary.png"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6"></a>          <span class="at">title =</span> <span class="st">"Bloomreach"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>    )</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  )</span>
+<span id="cb3-9"><a href="#cb3-9"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modulesabout.r" class="level3">
+<h3 class="anchored" data-anchor-id="modulesabout.r"><code>modules/About.R</code></h3>
+<p>This script defines the UI and Server functions used to render the <em>About</em> page on the Shiny app. Technically, the <em>Overview</em>, <em>Mapping</em>, <em>Reports</em>, and <em>About</em> pages of the Shiny app are tabs toggled with <code>shiny::tabPanel()</code>. Now that you’ve had some exposure to <code>htmltools::HTML()</code>, you should be able to revise the raw HTML in this script to build your own <em>About</em> page. It’s fairly straightforward so I won’t show this module in a code chunk - Please reach out to me directly or in the comments section you have any questions.</p>
+</section>
+</section>
+<section id="example-tweaks" class="level2">
+<h2 class="anchored" data-anchor-id="example-tweaks">4: Example Tweaks</h2>
+<p>Now that we’ve covered the files in your Shiny project that need to be updated if you want to deploy your own custom-styled demo Shiny app, let’s pivot to a real world example. Let’s say our name is Steve Wozniak and we want to design a Shiny app that invokes a retro Apple feel… After finding a decent logo to use and saving it to <code>www/retro_apple_logo.png</code>, below are the steps that we would need to follow to update our app:</p>
+<ul>
+<li><code>helpers/custom_theme.R</code>
+<ul>
+<li>Line 5: <code>base_font = sass::font_google("Press Start 2P", local = FALSE, display = "swap"),</code></li>
+<li>Line 8: <code>primary = "#01c700",</code></li>
+<li>Line 22: <code>accent = "#01c700",</code></li>
+</ul></li>
+<li><code>helpers/footer.R</code>
+<ul>
+<li>Line 4: <code>"This web app demo was developed by &lt;a href='http://www.woz.org/'&gt;Steve Wozniak&lt;/a&gt; with R + Shiny"</code></li>
+</ul></li>
+<li><code>helpers/navbar.R</code>
+<ul>
+<li>Line 3: <code>class = "retro_apple",</code></li>
+<li>Line 4: <code>a(href = "http://www.apple.com/",</code></li>
+<li>Line 5: <code>img(src = "retro_apple_logo.png",</code></li>
+<li>Line 6: <code>title = "Apple")</code></li>
+</ul></li>
+</ul>
+<p>Let’s give this app a test run and see how it changed the appearance:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/run_revised_app.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<p>So far, so good! We’ve got a retro logo (re-sized to fit in the top-left of the navbar), a retro font (pulled from Google Fonts), and the primary and accent colors have been updated from yellow to neon green. There are several additional edits we <em>could</em> make but for now, I like it.</p>
+</section>
+<section id="app-deployment" class="level2">
+<h2 class="anchored" data-anchor-id="app-deployment">5: App Deployment</h2>
+<p>Now we’re ready to publish your newly revised Shiny app. We’ll use the <a href="https://www.shinyapps.io/">shinyapps.io</a> platform by Posit to push-button deploy our app from the RStudio IDE. For our needs, a free account will suffice as the free tier allows up to 5 Shiny app deployments with a combined 25 monthly active hours of usage. It’s important to note that if someone launches your app and keeps it running in a tab, this is considered “active” runtime, so encourage your shinyapps.io users to close the browser window when they’re done using your app.</p>
+<p>If you do not have a shinyapps.io account or you have not synced your RStudio IDE to shinyapps.io via security token, please review the shinyapps.io <a href="https://docs.posit.co/shinyapps.io/getting-started.html#working-with-shiny-for-r">Getting Started</a> documentation. Once you’re set up, it will be a breeze to publish your app. If you’re stuck, again feel free to reach out to me directly.</p>
+<p>Similar to the way that the <code>Run App</code> button will present itself if you’re inside the <code>global.R</code>, <code>ui.R</code>, or <code>server.R</code> files, you’ll also see a blue sync-looking button that gives you the power of push-button deployment from within the RStudio IDE:</p>
+<p><img src="./images/publish_button.png" class="img-fluid"> <br>Clicking that button will open a new window to help you publish your app to the shinyapps.io servers. The title you select will be the name of the application on your shinyapps.io dashboard and it will also be included in the URL of your app. For example, I named my app “Bloomreach_Shiny_App” so the URL to visit my app is <a href="https://javierorraca.shinyapps.io/Bloomreach_Shiny_App/">https://javierorraca.shinyapps.io/Bloomreach_Shiny_App/</a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/publish_to_server.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+<p>If you use a title that already exists in your shinyapps.io dashboard, you will force overwrite the prior app with the same name, so take caution when publishing. More often than not, it’s desired to overwrite an app so that you can regularly push updates to production to the same URL, however, there are instances where this behavior would not be desired. Regardless of your publishing intention, RStudio IDE will provide a warning to confirm that you want to write over a shinyapps.io application with the same name.</p>
+<p>Since the <code>Dockerfile</code> is not relevant to this project deployment, I recommend unchecking <code>Dockerfile</code> from the list of file from which to publish. Once you’re ready, click on <code>Publish</code> and a new tab, <em>Deploy</em>, will be visible in the bottom-left of your RStudio IDE. This process takes several minutes since shinyapps.io will 1) install an R image with all the project-package dependencies needed to run your Shiny app, and 2) build and deploy the Shiny app itself. Once publishing is complete, you should see something like this:</p>
+<p><img src="./images/deploy_pane.png" class="img-fluid" style="width:85.0%" data-fig-align="center"> <br></p>
+</section>
+<section id="git-commit-push" class="level2">
+<h2 class="anchored" data-anchor-id="git-commit-push">6: Git Commit &amp; Push</h2>
+<p>Now that you’ve successfully published your application from the RStudio IDE, wrap up your changes and commit / push them back to your GitHub repo. There are several ways to do this (GitHub Desktop app, Terminal, Windows Powershell, etc.) but I’ve found the easiest to be within the RStudio IDE. First, you’ll want to commit (or save) a local snapshot of the edits you’ve made from the remote GitHub repo. Since this commit is saved locally, you’ll also need to push this commit back to your GitHub repo.</p>
+<p>Under the <em>Git</em> pane, click on <code>Commit</code> to open a window that allows you to inspect the files that were modified, added, deleted, etc. The quickest way to stage all files for commit is to click on any of the filenames you editted in the top-left pane of the commit popup window, select all files using the <em>Select All</em> keystroke (Ctrl+A on Windows or Cmd+A on Mac), then click on the <code>Stage</code> button. Write a message in the blank top-right message box for this commit - Keep it succinct about the file(s) changes that you’ve made. Click on the <code>Commit</code> button under the message box and this saves a local snapshot of the changes you’ve made.</p>
+<p>To push the changes back to GitHub, click on the green <code>Push</code> button in the top-right of the commit window and this will push your locally committed changes to your remote GitHub repo. Now, in addition to the live app that you’ve deployed, you’ll also be able to direct end users to your GitHub repo with your app’s source code.</p>
+</section>
+</section>
+<section id="recap-next-steps" class="level1">
+<h1>Recap &amp; Next Steps</h1>
+<p>It didn’t feel like it but if you’re newer to Shiny, we did a lot! Let’s recap everything we ran through in this tutorial:</p>
+<ol type="1">
+<li>From GitHub, you forked my original project repo to your account</li>
+<li>You cloned your remote GitHub repo to your local machine using the RStudio IDE</li>
+<li>You used the <code>renv</code> package to install specific package versions as recorded on the <code>renv.lock</code> lockfile</li>
+<li>You customized the Shiny app by tweaking files in the <code>helpers/</code> and <code>modules/</code> folders</li>
+<li>You deployed your app to shinyapps.io from the RStudio IDE</li>
+<li>You pushed your changes back to your public GitHub repo so others can easily review your source code</li>
+</ol>
+<p>You’ve done a lot! If you’re stuck on any of the above, please do reach out either on LinkedIn, or Twitter, or by using the Comments section below this post. I won’t go into details of Docker on this blog post but in the future, I’d like to make a follow-up post to show you how to build your own Docker image from the <code>Dockerfile</code> and push it to a public Docker Hub repo… With this approach, you have many more options for deploying your Shiny apps on</p>
+</section>
+<section id="shiny-session-info" class="level1">
+<h1>Shiny Session Info</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">4</span>.<span class="fl">2.2</span> (<span class="dv">2022-10-31</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> aarch64<span class="sc">-</span>apple<span class="sc">-</span><span class="fu">darwin20</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> macOS Ventura <span class="dv">13</span>.<span class="fl">0.1</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>Library<span class="sc">/</span>Frameworks<span class="sc">/</span>R.framework<span class="sc">/</span>Versions<span class="sc">/</span><span class="fl">4.2</span><span class="sc">-</span>arm64<span class="sc">/</span>Resources<span class="sc">/</span>lib<span class="sc">/</span>libRlapack.dylib</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] en_US.UTF<span class="dv">-8</span><span class="sc">/</span>en_US.UTF<span class="dv">-8</span><span class="sc">/</span>en_US.UTF<span class="dv">-8</span><span class="sc">/</span>C<span class="sc">/</span>en_US.UTF<span class="dv">-8</span><span class="sc">/</span>en_US.UTF<span class="dv">-8</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] stats     graphics  grDevices datasets  utils     methods   base     </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] rsconnect_0.<span class="fl">8.28</span>   leaflet_2.<span class="fl">1.1</span>      DT_0<span class="fl">.26</span>            thematic_0.<span class="dv">1</span>.<span class="fl">2.1</span>  </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a> [<span class="dv">5</span>] bslib_0.<span class="fl">4.1</span>        shinyWidgets_0.<span class="fl">7.4</span> scales_1.<span class="fl">2.1</span>       showtext_0<span class="fl">.9</span><span class="dv">-5</span>    </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a> [<span class="dv">9</span>] showtextdb_3<span class="fl">.0</span>     sysfonts_0.<span class="fl">8.8</span>     ggplot2_3.<span class="fl">3.6</span>      purrr_0.<span class="fl">3.5</span>       </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] dplyr_1.<span class="fl">0.10</span>       rlang_1.<span class="fl">0.6</span>        shiny_1.<span class="fl">7.3</span>       </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a> [<span class="dv">1</span>] tidyselect_1.<span class="fl">2.0</span>        splines_4.<span class="fl">2.2</span>           lattice_0<span class="fl">.20</span><span class="dv">-45</span>        </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a> [<span class="dv">4</span>] leaflet.providers_1.<span class="fl">9.0</span> colorspace_2<span class="fl">.0</span><span class="dv">-3</span>        vctrs_0.<span class="fl">5.0</span>            </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a> [<span class="dv">7</span>] generics_0.<span class="fl">1.3</span>          htmltools_0.<span class="fl">5.3</span>         yaml_2.<span class="fl">3.6</span>             </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>[<span class="dv">10</span>] mgcv_1<span class="fl">.8</span><span class="dv">-41</span>             utf8_1.<span class="fl">2.2</span>              later_1.<span class="fl">3.0</span>            </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">13</span>] pillar_1.<span class="fl">8.1</span>            jquerylib_0.<span class="fl">1.4</span>         glue_1.<span class="fl">6.2</span>             </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] withr_2.<span class="fl">5.0</span>             lifecycle_1.<span class="fl">0.3</span>         munsell_0.<span class="fl">5.0</span>          </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">19</span>] gtable_0.<span class="fl">3.1</span>            fontawesome_0.<span class="fl">4.0</span>       htmlwidgets_1.<span class="fl">5.4</span>      </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>[<span class="dv">22</span>] memoise_2.<span class="fl">0.1</span>           labeling_0.<span class="fl">4.2</span>          fastmap_1.<span class="fl">1.0</span>          </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">25</span>] httpuv_1.<span class="fl">6.6</span>            crosstalk_1.<span class="fl">2.0</span>         fansi_1.<span class="fl">0.3</span>            </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>[<span class="dv">28</span>] Rcpp_1.<span class="fl">0.9</span>              xtable_1<span class="fl">.8</span><span class="dv">-4</span>            renv_0.<span class="fl">16.0</span>            </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>[<span class="dv">31</span>] promises_1.<span class="dv">2</span>.<span class="fl">0.1</span>        cachem_1.<span class="fl">0.6</span>            jsonlite_1.<span class="fl">8.3</span>         </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>[<span class="dv">34</span>] mime_0<span class="fl">.12</span>               farver_2.<span class="fl">1.1</span>            fs_1.<span class="fl">5.2</span>               </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>[<span class="dv">37</span>] digest_0.<span class="fl">6.30</span>           grid_4.<span class="fl">2.2</span>              cli_3.<span class="fl">4.1</span>              </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>[<span class="dv">40</span>] tools_4.<span class="fl">2.2</span>             magrittr_2.<span class="fl">0.3</span>          sass_0.<span class="fl">4.2</span>             </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>[<span class="dv">43</span>] tibble_3.<span class="fl">1.8</span>            pkgconfig_2.<span class="fl">0.3</span>         Matrix_1<span class="fl">.5</span><span class="dv">-1</span>           </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>[<span class="dv">46</span>] ellipsis_0.<span class="fl">3.2</span>          rstudioapi_0<span class="fl">.14</span>         R6_2.<span class="fl">5.1</span>               </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>[<span class="dv">49</span>] nlme_3<span class="fl">.1</span><span class="dv">-160</span>            compiler_4.<span class="fl">2.2</span>              </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/https:\/\/www\.javierorracadeatcu\.com/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="JavOrraca/quarto-blog" data-repo-id="R_kgDOIOlJmA" data-category="General" data-category-id="DIC_kwDOIOlJmM4CSH8n" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center"><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+  </div>
+</footer>
+
+
+
+</body></html>

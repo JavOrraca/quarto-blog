@@ -2,7 +2,7 @@
 title: "Preparing for 2021 Goals with a Raspberry Pi"
 description: "I have been planning my 2021 goals and the Raspberry Pi 4 will help me kill a few birds with one stone."
 date: 12-31-2020
-categories: [Julia, Linux, Raspberry Pi]
+categories: [linux]
 image: images/Pi-banner.png
 ---
 

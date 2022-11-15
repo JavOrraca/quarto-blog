@@ -2,7 +2,7 @@
 title: "Ubuntu Update to 19.10"
 description: "Things not to do with Linux, learned the hard way, as we approach the end of 2019..."
 date: 12-31-2019
-categories: [Linux, Ubuntu]
+categories: [linux]
 image: images/Ubuntu.jpg
 ---
 

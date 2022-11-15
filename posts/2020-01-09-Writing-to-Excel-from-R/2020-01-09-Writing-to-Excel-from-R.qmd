@@ -2,7 +2,7 @@
 title: "Writing to Excel from R"
 description: "Spending your days R but working closely with analysts and leadership that live in Excel? Get familiar with openxlsx."
 date: 01-09-2020
-categories: [R, Packages, Quick Tips]
+categories: [quick tips]
 image: images/openxlsx.png
 ---
 

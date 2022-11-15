@@ -2,7 +2,7 @@
 title: "An Algorithm for Better Espresso"
 description: "Coffee lovers... You might find this study fascinating. Finally, a model for the perfect cup of espresso!" 
 date: 01-22-2020
-categories: [Statistics, Coffee]
+categories: [statistics]
 image: images/espresso_extraction.jpg
 ---
 

@@ -2,7 +2,7 @@
 title: "Shiny Voice-Activated input"
 description: "Want to make your Shiny apps voice-interactive? Now it's possible."
 date: 07-03-2020
-categories: [Shiny, R, Packages]
+categories: [shiny]
 image: images/shiny_logo.png
 ---
 

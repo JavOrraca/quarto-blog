@@ -2,7 +2,7 @@
 title: "Create Your Own R Package"
 description: "If you are interested in developing your own R packages, this thorough A-to-Z tutorial resource is one to bookmark." 
 date: 01-18-2020
-categories: [R, Packages, Development]
+categories: [packages]
 image: images/R_Packages.jpg
 ---
 

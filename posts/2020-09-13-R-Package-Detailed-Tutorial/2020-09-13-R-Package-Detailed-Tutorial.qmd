@@ -2,7 +2,7 @@
 title: "Detailed R Package Development Tutorial from Method Bites"
 description: "This is one of the best, most detailed, how-to guides for developing your own R package from A-to-Z"
 date: 09-13-2020
-categories: [Packages, R, Tutorial]
+categories: [packages]
 image: images/methods_bites.png
 ---
 

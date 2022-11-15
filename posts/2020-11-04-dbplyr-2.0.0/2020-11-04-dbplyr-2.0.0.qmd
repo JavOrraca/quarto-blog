@@ -2,7 +2,7 @@
 title: "What's New in dbplyr 2.0.0"
 description: "dbplyr, a database backend for dplyr, just released v2.0.0 today... Awesome stuff here!" 
 date: 11-04-2020
-categories: [tidyverse, Packages, R, SQL, dbplyr, dplyr]
+categories: [tidyverse, dplyr]
 image: images/dbplyr_what_is_new.jpg_large
 ---
 

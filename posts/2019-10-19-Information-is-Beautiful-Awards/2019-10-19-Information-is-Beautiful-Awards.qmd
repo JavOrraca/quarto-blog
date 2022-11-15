@@ -2,7 +2,7 @@
 title: "Information is Beautiful 2019 Awards"
 description: "Visualization professionals present their best at the annual Information is Beautiful Awards show."
 date: 10-19-2019
-categories: [Visualizations]
+categories: [visualizations]
 image: images/EarthquakeRisk.jpg
 ---
 

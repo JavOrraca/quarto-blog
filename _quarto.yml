@@ -44,7 +44,10 @@ format:
     theme:
       light: [flatly, theme-light.scss]
       dark: [darkly, theme-dark.scss]
+    fontsize: 1.0em
     code-copy: true
+    code-overflow: wrap
+    link-external-newwindow: true
 
 comments:
   giscus:

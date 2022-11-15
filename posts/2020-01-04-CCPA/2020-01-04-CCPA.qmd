@@ -2,7 +2,7 @@
 title: "California Consumer Privacy Act"
 description: "The California Consumer Privacy Act is set to go into effect on January 1, 2020. The CCPA, similar in nature to GDPR, will provide California residents with new consumer data rights."
 date: 01-04-2020
-categories: [Privacy]
+categories: [privacy]
 image: images/CCPA.jpg
 ---
 

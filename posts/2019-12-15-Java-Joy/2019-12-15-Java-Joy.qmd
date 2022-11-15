@@ -2,7 +2,7 @@
 title: "Spreading Joy with Java Joy"
 description: "Bay Area friends... Next time your organization needs coffee for an event, quarterly meeting, all-hands, or lunch and learn, reach out to Java Joy!"
 date: 12-15-2019
-categories: [Social Good]
+categories: [social good]
 image: images/Java_Joy.jpg
 ---
 

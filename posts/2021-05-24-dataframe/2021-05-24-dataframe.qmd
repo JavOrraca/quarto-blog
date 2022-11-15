@@ -2,7 +2,7 @@
 title: "A Brief History of the Dataframe"
 description: "Insightful read sourced from Towards Data Science on the history of the dataframe - From its origins in the S programming language, to R, to pandas for Python (to the tibble for R)."
 date: 05-24-2021
-categories: [R, Python, tibble]
+categories: [tibble]
 image: images/dataframe.jpeg
 ---
 
