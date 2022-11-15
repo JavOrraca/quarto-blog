@@ -3,7 +3,7 @@ title: "Build a Shiny App Demo"
 description: "During my interview process with Bloomreach, I developed an interactive Shiny app styled with the Bloomreach branding and color scheme. This tutorial will help you do the same to demo the power of Shiny to prospective employers."
 date: 11-15-2022
 categories: [shiny, github, bslib, docker]
-image: images/run_revised_app.gif
+image: images/Shiny_Demo_Preview.png
 ---
 
 # Background
