@@ -212,7 +212,7 @@ About Shiny’s www folder
 <li>You deployed your app to shinyapps.io from the RStudio IDE</li>
 <li>You pushed your changes back to your public GitHub repo so others can easily review your source code</li>
 </ol>
-<p>You’ve done a lot! If you’re stuck on any of the above, please do reach out either on LinkedIn, or Twitter, or by using the Comments section below this post. I won’t go into details of Docker on this blog post but in the future, I’d like to make a follow-up post to show you how to build your own Docker image from the <code>Dockerfile</code> and push it to a public Docker Hub repo… With this approach, you have many more options for deploying your Shiny apps on</p>
+<p>You’ve done a lot! If you’re stuck on any of the above, please do reach out either on LinkedIn, or Twitter, or by using the Comments section below this post. I won’t go into details of Docker on this blog post but in the future, I’d like to make a follow-up post to show you how to build your own Docker image from the <code>Dockerfile</code> and push it to a public Docker Hub repo… With this approach, you have many more options for deploying your Shiny apps on your server or virtual machines of choice.</p>
 </section>
 <section id="shiny-session-info" class="level1">
 <h1>Shiny Session Info</h1>
