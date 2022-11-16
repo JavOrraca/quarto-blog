@@ -34,7 +34,7 @@ Assuming you kept the original repository name, you should see a newly created r
 
 Next, you'll want to clone this repo to your local machine. Using the RStudio IDE, navigate to its menu bar and click on `File` -> `New Project` -> `Version Control` -> `Git`, copy/paste your repo's clone URL, choose your local project directory path of choice, and click on `Create Project`.
 
-RStudio IDE's *New Project Wizard* will launcn in a popup window after selecting `New Project` from the file menu. You should expect the following:
+RStudio IDE's *New Project Wizard* will launch in a popup window after selecting `New Project` from the file menu. You should expect the following:
 
 ![](./images/clone_git_repo.gif){fig-align="center" width="65%"}
 
@@ -206,7 +206,7 @@ Similar to the way that the `Run App` button will present itself if you're insid
 
 If you use a title that already exists in your shinyapps.io dashboard, you will force overwrite the prior app with the same name, so take caution when publishing. More often than not, it's desired to overwrite an app so that you can regularly push updates to production to the same URL, however, there are instances where this behavior would not be desired. Regardless of your publishing intention, RStudio IDE will provide a warning to confirm that you want to write over a shinyapps.io application with the same name.
 
-Since the `Dockerfile` is not relevant to this project deployment, I recommend unchecking `Dockerfile` from the list of file from which to publish. Once you're ready, click on `Publish` and a new tab, *Deploy*, will be visible in the bottom-left of your RStudio IDE. This process takes several minutes since shinyapps.io will 1) install an R image with all the project-package dependencies needed to run your Shiny app, and 2) build and deploy the Shiny app itself. Once publishing is complete, you should see something like this:
+Since the `Dockerfile` is not relevant to this project deployment, I recommend un-checking `Dockerfile` from the list of file from which to publish. Once you're ready, click on `Publish` and a new tab, *Deploy*, will be visible in the bottom-left of your RStudio IDE. This process takes several minutes since shinyapps.io will 1) install an R image with all the project-package dependencies needed to run your Shiny app, and 2) build and deploy the Shiny app itself. Once publishing is complete, you should see something like this:
 
 ![](./images/deploy_pane.png){fig-align="center" width="85%"} <br>
 
@@ -214,7 +214,7 @@ Since the `Dockerfile` is not relevant to this project deployment, I recommend u
 
 Now that you've successfully published your application from the RStudio IDE, wrap up your changes and commit / push them back to your GitHub repo. There are several ways to do this (GitHub Desktop app, Terminal, Windows Powershell, etc.) but I've found the easiest to be within the RStudio IDE. First, you'll want to commit (or save) a local snapshot of the edits you've made from the remote GitHub repo. Since this commit is saved locally, you'll also need to push this commit back to your GitHub repo.
 
-Under the *Git* pane, click on `Commit` to open a window that allows you to inspect the files that were modified, added, deleted, etc. The quickest way to stage all files for commit is to click on any of the filenames you editted in the top-left pane of the commit popup window, select all files using the *Select All* keystroke (Ctrl+A on Windows or Cmd+A on Mac), then click on the `Stage` button. Write a message in the blank top-right message box for this commit - Keep it succinct about the file(s) changes that you've made. Click on the `Commit` button under the message box and this saves a local snapshot of the changes you've made.
+Under the *Git* pane, click on `Commit` to open a window that allows you to inspect the files that were modified, added, deleted, etc. The quickest way to stage all files for commit is to click on any of the filenames you edited in the top-left pane of the commit popup window, select all files using the *Select All* keystroke (Ctrl+A on Windows or Cmd+A on Mac), then click on the `Stage` button. Write a message in the blank top-right message box for this commit - Keep it succinct about the file(s) changes that you've made. Click on the `Commit` button under the message box and this saves a local snapshot of the changes you've made.
 
 To push the changes back to GitHub, click on the green `Push` button in the top-right of the commit window and this will push your locally committed changes to your remote GitHub repo. Now, in addition to the live app that you've deployed, you'll also be able to direct end users to your GitHub repo with your app's source code.
 

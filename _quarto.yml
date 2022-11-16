@@ -3,8 +3,8 @@ project:
 
 website:
   title: "Data Science Bytes"
-  description: "Javier Orraca-Deatcu's data science website built with R and Quarto"
   site-url: https://www.javierorracadeatcu.com
+  description: "Javier Orraca-Deatcu's data science website built with R and Quarto"
   google-analytics: "UA-127790709-3"
   cookie-consent: true
   twitter-card: 
@@ -13,6 +13,8 @@ website:
     creator: "@JavierOrraca"
   navbar:
     right:
+      - icon: rss
+        href: blog.xml
       - icon: linkedin
         href: https://www.linkedin.com/in/orraca
       - icon: twitter
