@@ -167,7 +167,7 @@ fn_navbar <- function(){
 
 ### `modules/About.R`
 
-This script defines the UI and Server functions used to render the *About* page on the Shiny app. Technically, the *Overview*, *Mapping*, *Reports*, and *About* pages of the Shiny app are tabs toggled with `shiny::tabPanel()`. Now that you've had some exposure to `htmltools::HTML()`, you should be able to revise the raw HTML in this script to build your own *About* page. It's fairly straightforward so I won't show this module in a code chunk - Please reach out to me directly or in the comments section you have any questions.
+This script defines the UI and Server functions used to render the *About* page on the Shiny app. Technically, the *Overview*, *Mapping*, *Reports*, and *About* pages of the Shiny app are tabs toggled with `shiny::tabPanel()`. Now that you've had some exposure to `htmltools::HTML()`, you should be able to revise the raw HTML in this script to build your own *About* page. It's fairly straightforward so I won't show this module in a code chunk - Please reach out to me directly or in the comments section if you have any questions.
 
 ## 4: Example Tweaks
 
