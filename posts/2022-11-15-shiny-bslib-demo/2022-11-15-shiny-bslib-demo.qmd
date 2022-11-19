@@ -84,9 +84,9 @@ Once the project-package dependencies are installed, test launch the Shiny app b
 
 While there are many ways to configure a Shiny app, the global aesthetics of this app have been configured using the [`bslib`](https://rstudio.github.io/bslib/) and [`thematic`](https://rstudio.github.io/thematic/) packages. These packages provide tools for customizing Bootstrap themes and they introduce Sass variables to Shiny (in my opinion, making the customization process much more unified).
 
-The default Bootstrap version for `bslib` is version 5, however, this app was designed using Bootstrap 4. The `thematic` package provides a centralized approach to certain R visualizations such as those generated from `ggplot2`.
+The default Bootstrap version for `bslib` is version 5, however, this app was designed using Bootstrap 4. The `thematic` package provides a centralized approach to styling certain R visualizations such as those generated from `ggplot2`.
 
-To fully customize the appearance of the app to your liking, make revisions to the following files that are sourced at runtime:
+To fully customize the color scheme and overall theme of the app to your liking, make revisions to the following files that are sourced at runtime:
 
 ### `helpers/custom_theme.R`
 
