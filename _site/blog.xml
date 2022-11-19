@@ -70,8 +70,8 @@ Git for the R User
 <section id="app-customization" class="level2">
 <h2 class="anchored" data-anchor-id="app-customization">3: App Customization</h2>
 <p>While there are many ways to configure a Shiny app, the global aesthetics of this app have been configured using the <a href="https://rstudio.github.io/bslib/"><code>bslib</code></a> and <a href="https://rstudio.github.io/thematic/"><code>thematic</code></a> packages. These packages provide tools for customizing Bootstrap themes and they introduce Sass variables to Shiny (in my opinion, making the customization process much more unified).</p>
-<p>The default Bootstrap version for <code>bslib</code> is version 5, however, this app was designed using Bootstrap 4. The <code>thematic</code> package provides a centralized approach to certain R visualizations such as those generated from <code>ggplot2</code>.</p>
-<p>To fully customize the appearance of the app to your liking, make revisions to the following files that are sourced at runtime:</p>
+<p>The default Bootstrap version for <code>bslib</code> is version 5, however, this app was designed using Bootstrap 4. The <code>thematic</code> package provides a centralized approach to styling certain R visualizations such as those generated from <code>ggplot2</code>.</p>
+<p>To fully customize the color scheme and overall theme of the app to your liking, make revisions to the following files that are sourced at runtime:</p>
 <section id="helperscustom_theme.r" class="level3">
 <h3 class="anchored" data-anchor-id="helperscustom_theme.r"><code>helpers/custom_theme.R</code></h3>
 <p>This helper file creates two functions (<code>fn_custom_theme()</code> and <code>fn_thematic_theme()</code>) that are loaded into your global environment at runtime. Here you can specify base fonts, background (<code>bg</code>) and foreground (<code>fg</code>) colors, and other accent colors used throughout the Shiny app. The <code>fn_custom_theme()</code> function is called in line 3 of <code>ui.R</code> (in the app’s root directory) and the <code>fn_thematic_theme()</code> function is called in line 56 of <code>modules/mod_Overview.R</code>.</p>
@@ -146,7 +146,7 @@ About Shiny’s www folder
 </section>
 <section id="modulesabout.r" class="level3">
 <h3 class="anchored" data-anchor-id="modulesabout.r"><code>modules/About.R</code></h3>
-<p>This script defines the UI and Server functions used to render the <em>About</em> page on the Shiny app. Technically, the <em>Overview</em>, <em>Mapping</em>, <em>Reports</em>, and <em>About</em> pages of the Shiny app are tabs toggled with <code>shiny::tabPanel()</code>. Now that you’ve had some exposure to <code>htmltools::HTML()</code>, you should be able to revise the raw HTML in this script to build your own <em>About</em> page. It’s fairly straightforward so I won’t show this module in a code chunk - Please reach out to me directly or in the comments section you have any questions.</p>
+<p>This script defines the UI and Server functions used to render the <em>About</em> page on the Shiny app. Technically, the <em>Overview</em>, <em>Mapping</em>, <em>Reports</em>, and <em>About</em> pages of the Shiny app are tabs toggled with <code>shiny::tabPanel()</code>. Now that you’ve had some exposure to <code>htmltools::HTML()</code>, you should be able to revise the raw HTML in this script to build your own <em>About</em> page. It’s fairly straightforward so I won’t show this module in a code chunk - Please reach out to me directly or in the comments section if you have any questions.</p>
 </section>
 </section>
 <section id="example-tweaks" class="level2">
