@@ -1,0 +1,19 @@
+---
+title: "Data Science Hangout"
+description: "I was recently a guest on Posit's Data Science Hangout, hosted by Rachael Dempsey, and I had a blast. This is the recording where I talked about my transition from Excel-based financial modeling to machine learning at scale with R."
+date: 01-01-2023
+categories: [tidyverse, shiny, machine learning, tidymodels]
+image: images/Posit_Data_Science_Hangout.png
+---
+
+# Background
+
+I've been attending Posit's weekly [Data Science Hangout](https://posit.co/data-science-hangout/) since 2021 and it's been one of my favorite standing weekly meetings. This is a great platform to hear how data science leaders are using R to drive business results and the host, Rachael Dempsey, does an excellent job fostering an inclusive and open culture. I was thrilled to be the guest several weeks ago in Dec 2022. 🚀
+
+I talked about my transition to data science from a career in financial modeling and consulting, talked about my love for Shiny and the R community, and gave some tips on how to start your own data science community. I also said "you know" an inordinate number of times, please forgive me in advance. 🙃  
+
+Whether you're a data science practitioner, student, looking to make a career pivot, or simply wanting to network, the Data Science Hangout has something for all. If you haven't already, I highly encourage you to attend Posit's Data Science Hangout live sometime in the future.
+
+# Watch on YouTube
+
+{{< video https://youtu.be/-mm5tHQVPY8 title="From Excel to Lead Machine Learning Engineer" >}}   

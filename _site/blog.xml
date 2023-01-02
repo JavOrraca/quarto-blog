@@ -9,8 +9,38 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.2.269</generator>
-<lastBuildDate>Tue, 15 Nov 2022 08:00:00 GMT</lastBuildDate>
+<generator>quarto-1.2.280</generator>
+<lastBuildDate>Sun, 01 Jan 2023 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Data Science Hangout</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/2023-01-01-data-science-hangout.html</link>
+  <description><![CDATA[ 
+
+
+
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>I’ve been attending Posit’s weekly <a href="https://posit.co/data-science-hangout/">Data Science Hangout</a> since 2021 and it’s been one of my favorite standing weekly meetings. This is a great platform to hear how data science leaders are using R to drive business results and the host, Rachael Dempsey, does an excellent job fostering an inclusive and open culture. I was thrilled to be the guest several weeks ago in Dec 2022. 🚀</p>
+<p>I talked about my transition to data science from a career in financial modeling and consulting, talked about my love for Shiny and the R community, and gave some tips on how to start your own data science community. I also said “you know” an inordinate number of times, please forgive me in advance. 🙃</p>
+<p>Whether you’re a data science practitioner, student, looking to make a career pivot, or simply wanting to network, the Data Science Hangout has something for all. If you haven’t already, I highly encourage you to attend Posit’s Data Science Hangout live sometime in the future.</p>
+</section>
+<section id="watch-on-youtube" class="level1">
+<h1>Watch on YouTube</h1>
+<div class="quarto-video ratio ratio-16x9"><iframe src="https://www.youtube.com/embed/-mm5tHQVPY8" title="From Excel to Lead Machine Learning Engineer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>tidyverse</category>
+  <category>shiny</category>
+  <category>machine learning</category>
+  <category>tidymodels</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/2023-01-01-data-science-hangout.html</guid>
+  <pubDate>Sun, 01 Jan 2023 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/images/Posit_Data_Science_Hangout.png" medium="image" type="image/png" height="78" width="144"/>
+</item>
 <item>
   <title>Build a Shiny App Demo</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -1309,29 +1339,6 @@ font-style: italic;">## USAGE</span></span>
   <guid>https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/2020-02-01-k-fold-cross-validation.html</guid>
   <pubDate>Sat, 01 Feb 2020 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/images/kfold.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>An Algorithm for Better Espresso</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/2020-01-22-Systematically-Improving-Coffee.html</link>
-  <description><![CDATA[ 
-
-
-
-<p>I upgraded my espresso machine over the holidays and have been pleasantly surprised by the need to recalibrate my machine’s settings with every new batch of coffee (and of course, fresh roasted is best). Glad to see some math support my observations. :-)</p>
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/images/espresso.jpg" class="img-fluid"></p>
-<p>Source:</p>
-<ul>
-<li>Systematically Improving Espresso: <a href="https://www.cell.com/matter/fulltext/S2590-2385(19)30410-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2590238519304102%3Fshowall%3Dtrue">Insights from Mathematical Modeling and Experiment</a></li>
-</ul>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
-  <category>statistics</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/2020-01-22-Systematically-Improving-Coffee.html</guid>
-  <pubDate>Wed, 22 Jan 2020 08:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/images/espresso_extraction.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
