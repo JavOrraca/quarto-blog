@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Javier Orraca-Deatcu">
+<meta name="dcterms.date" content="2023-01-15">
+<meta name="description" content="Despite all of the noise of AI-generated art and ChatGPT, 2022 was a great year for data science. These are some of my favorite tricks that I will continue to explore in 2023.">
+
+<title>Data Science Bytes - R Goodies for 2023</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-127790709-3', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  });
+});
+</script> 
+  
+
+
+<meta name="twitter:title" content="Data Science Bytes - R Goodies for 2023">
+<meta name="twitter:description" content="Despite all of the noise of AI-generated art and ChatGPT, 2022 was a great year for data science. These are some of my favorite tricks that I will continue to explore in 2023.">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/images/Javier_Profile.jpg">
+<meta name="twitter:creator" content="@JavierOrraca">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Data Science Bytes</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../blog.xml"><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/orraca"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/JavierOrraca"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw"><i class="bi bi-spotify" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JavOrraca"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://stackoverflow.com/users/17282384/javier-orraca-deatcu"><i class="bi bi-stack-overflow" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../resources.html">
+ <span class="dropdown-text">Javi’s Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://r4ds.had.co.nz/index.html">
+ <span class="dropdown-text">R for Data Science</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidyverse.org/">
+ <span class="dropdown-text">Tidyverse</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidymodels.org/">
+ <span class="dropdown-text">Tidymodels</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidyverse.org/blog/">
+ <span class="dropdown-text">Tidyverse Style Guide</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#probably" id="toc-probably" class="nav-link" data-scroll-target="#probably">1. Probably</a></li>
+  <li><a href="#arrow-duckdb" id="toc-arrow-duckdb" class="nav-link" data-scroll-target="#arrow-duckdb">2. Arrow + DuckDB</a>
+  <ul class="collapse">
+  <li><a href="#size-on-disk" id="toc-size-on-disk" class="nav-link" data-scroll-target="#size-on-disk">Size on Disk</a></li>
+  <li><a href="#query-performance" id="toc-query-performance" class="nav-link" data-scroll-target="#query-performance">Query Performance</a></li>
+  <li><a href="#size-vs-performance" id="toc-size-vs-performance" class="nav-link" data-scroll-target="#size-vs-performance">Size vs Performance</a></li>
+  </ul></li>
+  <li><a href="#encryption-with-r" id="toc-encryption-with-r" class="nav-link" data-scroll-target="#encryption-with-r">3. Encryption with R</a>
+  <ul class="collapse">
+  <li><a href="#intro-to-sodium" id="toc-intro-to-sodium" class="nav-link" data-scroll-target="#intro-to-sodium">Intro to Sodium</a></li>
+  <li><a href="#sodium-cyphr" id="toc-sodium-cyphr" class="nav-link" data-scroll-target="#sodium-cyphr">Sodium + Cyphr</a></li>
+  <li><a href="#step-3a-encrypt" id="toc-step-3a-encrypt" class="nav-link" data-scroll-target="#step-3a-encrypt">Step 3a: Encrypt</a></li>
+  <li><a href="#step-3b-decrypt" id="toc-step-3b-decrypt" class="nav-link" data-scroll-target="#step-3b-decrypt">Step 3b: Decrypt</a></li>
+  <li><a href="#step-3c-github-actions-yaml" id="toc-step-3c-github-actions-yaml" class="nav-link" data-scroll-target="#step-3c-github-actions-yaml">Step 3c: GitHub Actions YAML</a></li>
+  </ul></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">R Goodies for 2023</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">tidymodels</div>
+    <div class="quarto-category">probably</div>
+    <div class="quarto-category">arrow</div>
+    <div class="quarto-category">duckdb</div>
+    <div class="quarto-category">sodium</div>
+    <div class="quarto-category">cyphr</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Despite all of the noise of AI-generated art and ChatGPT, 2022 was a great year for data science. These are some of my favorite tricks that I will continue to explore in 2023.
+  </div>
+</div>
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <a href="https://www.javierorraca.com/">Javier Orraca-Deatcu</a> 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://soundcloud.com/scatterpodcast">
+            Scatter Podcast
+            </a>
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 15, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>Data science had an awesome year in 2022. The list below highlights some of my favorites that I hope you test drive in 2023 (<em>if you haven’t already!</em>). Happy belated New Year folks!</p>
+</section>
+<section id="probably" class="level1">
+<h1>1. Probably</h1>
+<p>The <a href="https://probably.tidymodels.org/index.html">probably</a> package, developed by Max Kuhn and Davis Vaughan at Posit, is in early stages of development and presents a new (at least, new to me) approach to assigning more realistic discrete class predictions. One initial question you might have is <em>Where exactly should I use <strong>probably</strong> in a modeling pipeline?</em> - <a href="https://probably.tidymodels.org/articles/where-to-use.html">Davis Vaughan addresses this in detail</a> and developed {probably} as a “post processing step <em>after</em> the model has been fit, but <em>before</em> the model performance has been calculated.”</p>
+<p>This package helps programmatically identify a more appropriate threshold / cutoff for class predictions using <a href="https://en.wikipedia.org/wiki/Youden%27s_J_statistic">Youden’s J statistic</a> (or “J-index”). The statistic is implemented in the {yardstick} package and can be accessed via <a href="https://yardstick.tidymodels.org/reference/j_index.html"><code>yardstick::j_index()</code></a>. So, what’s with the J statistic?</p>
+<ul>
+<li>J = sensitivity + specificity - 1</li>
+<li>The maximum value of J is 1 when there are no false positives and no false negatives</li>
+<li>This technique comes in handy when a threshold of 50% (or 0.5) may not be the most appropriate for assigning a binary classification, especially when class imbalances exist.</li>
+</ul>
+<p>Let’s create a basic tidymodels workflow to fit Lending Club loan data to a logistic regression and predict whether a loan is good or bad. The code below was pulled directly from the source example written by Davis Vaughan:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(parsnip)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(probably)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(rsample)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(modeldata)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">data</span>(<span class="st">"lending_club"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a>lending_club_modified <span class="ot">&lt;-</span> </span>
+<span id="cb1-10"><a href="#cb1-10"></a>  lending_club <span class="sc">|&gt;</span> </span>
+<span id="cb1-11"><a href="#cb1-11"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Class =</span> <span class="fu">relevel</span>(Class, <span class="st">"good"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-12"><a href="#cb1-12"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Class, annual_inc, verification_status, sub_grade)</span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-15"><a href="#cb1-15"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(lending_club_modified)</span>
+<span id="cb1-16"><a href="#cb1-16"></a>lending_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(split)</span>
+<span id="cb1-17"><a href="#cb1-17"></a>lending_test  <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
+<span id="cb1-18"><a href="#cb1-18"></a></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co"># Note: 7,008 records are "good" loans and 384 are "bad"</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a></span>
+<span id="cb1-21"><a href="#cb1-21"></a>logi_reg_fit <span class="ot">&lt;-</span> </span>
+<span id="cb1-22"><a href="#cb1-22"></a>  parsnip<span class="sc">::</span><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-23"><a href="#cb1-23"></a>  parsnip<span class="sc">::</span><span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-24"><a href="#cb1-24"></a>  parsnip<span class="sc">::</span><span class="fu">fit</span>(<span class="at">formula =</span> Class <span class="sc">~</span> ., <span class="at">data =</span> lending_train)</span>
+<span id="cb1-25"><a href="#cb1-25"></a></span>
+<span id="cb1-26"><a href="#cb1-26"></a>predictions <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(</span>
+<span id="cb1-27"><a href="#cb1-27"></a>  lending_test,</span>
+<span id="cb1-28"><a href="#cb1-28"></a>  <span class="fu">predict</span>(logi_reg_fit, <span class="at">new_data =</span> lending_test),</span>
+<span id="cb1-29"><a href="#cb1-29"></a>  <span class="fu">predict</span>(logi_reg_fit, <span class="at">new_data =</span> lending_test, <span class="at">type =</span> <span class="st">"prob"</span>))</span>
+<span id="cb1-30"><a href="#cb1-30"></a></span>
+<span id="cb1-31"><a href="#cb1-31"></a>threshold_data <span class="ot">&lt;-</span> predictions <span class="sc">|&gt;</span> </span>
+<span id="cb1-32"><a href="#cb1-32"></a>  probably<span class="sc">::</span><span class="fu">threshold_perf</span>(<span class="at">truth =</span> Class, <span class="at">estimate =</span> .pred_good, </span>
+<span id="cb1-33"><a href="#cb1-33"></a>                           <span class="at">thresholds =</span> <span class="fu">seq</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.0025</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-34"><a href="#cb1-34"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(.metric <span class="sc">!=</span> <span class="st">"distance"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-35"><a href="#cb1-35"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">group =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(.metric <span class="sc">==</span> <span class="st">"sens"</span> <span class="sc">~</span> <span class="st">"1"</span>,</span>
+<span id="cb1-36"><a href="#cb1-36"></a>                                         .metric <span class="sc">==</span> <span class="st">"spec"</span> <span class="sc">~</span> <span class="st">"1"</span>,</span>
+<span id="cb1-37"><a href="#cb1-37"></a>                                         <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"2"</span>))</span>
+<span id="cb1-38"><a href="#cb1-38"></a></span>
+<span id="cb1-39"><a href="#cb1-39"></a>max_j_index_threshold <span class="ot">&lt;-</span> threshold_data <span class="sc">|&gt;</span> </span>
+<span id="cb1-40"><a href="#cb1-40"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"j_index"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-41"><a href="#cb1-41"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(.estimate <span class="sc">==</span> <span class="fu">max</span>(.estimate)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-42"><a href="#cb1-42"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(.threshold)</span>
+<span id="cb1-43"><a href="#cb1-43"></a></span>
+<span id="cb1-44"><a href="#cb1-44"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(threshold_data, <span class="fu">aes</span>(<span class="at">x =</span> .threshold, <span class="at">y =</span> .estimate, </span>
+<span id="cb1-45"><a href="#cb1-45"></a>                                    <span class="at">color =</span> .metric, <span class="at">alpha =</span> group)) <span class="sc">+</span></span>
+<span id="cb1-46"><a href="#cb1-46"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb1-47"><a href="#cb1-47"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb1-48"><a href="#cb1-48"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_color_viridis_d</span>(<span class="at">end =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb1-49"><a href="#cb1-49"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_alpha_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(.<span class="dv">4</span>, <span class="dv">1</span>), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb1-50"><a href="#cb1-50"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> max_j_index_threshold, </span>
+<span id="cb1-51"><a href="#cb1-51"></a>                      <span class="at">alpha =</span> .<span class="dv">6</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
+<span id="cb1-52"><a href="#cb1-52"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(</span>
+<span id="cb1-53"><a href="#cb1-53"></a>    <span class="at">x =</span> <span class="st">"'Good' Threshold</span><span class="sc">\n</span><span class="st">(above this value is considered 'good')"</span>,</span>
+<span id="cb1-54"><a href="#cb1-54"></a>    <span class="at">y =</span> <span class="st">"Metric Estimate"</span>,</span>
+<span id="cb1-55"><a href="#cb1-55"></a>    <span class="at">title =</span> <span class="st">"Balancing performance by varying the threshold"</span>,</span>
+<span id="cb1-56"><a href="#cb1-56"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Sensitivity or specificity alone might not be"</span>,</span>
+<span id="cb1-57"><a href="#cb1-57"></a>                      <span class="st">" enough!</span><span class="sc">\n</span><span class="st">Vertical line = Max J-Index"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2023-01-15-r-goodies-for-2023_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The <code>max_j_index_threshold</code> has a value of 0.945 and the above viz helps supports the case for changing the discrete classification threshold from the baseline value of 0.5 (where a prediction probability above 0.5 indicates a “good”). Neat package with some other capabilities that I’m going to keep an eye out for.</p>
+</section>
+<section id="arrow-duckdb" class="level1">
+<h1>2. Arrow + DuckDB</h1>
+<p>Earlier in 2022, there was a lot of excitement on my Twitter feed with devs and data scientists discussing larger-than-memory data manipulation and ultra-fast ETL with <a href="https://duckdb.org/">DuckDB</a>, a new analytical data management system with bindings for Python and R. DuckDB offers a parallel vectorized execution engine for zero-copy query of <a href="https://arrow.apache.org/">Apache Arrow</a> data sets - Perfect for my world of <em>mostly</em> tabular data. DuckDB streams query results back to Arrow and this is possible via a SQL interface and API. As DuckDB puts it, they provide “an in-process SQL OLAP database management system.”</p>
+<p>Below are some of my favorite DuckDB overviews and tutorials:</p>
+<ol type="1">
+<li><a href="https://duckdb.org/2021/12/03/duck-arrow.html#Benchmark%20Comparison"><em>DuckDB quacks Arrow</em>, Pedro Holanda and Jonathan Keane</a></li>
+<li><a href="https://www.christophenicault.com/post/large_dataframe_arrow_duckdb/"><em>Manipulate big data with Arrow &amp; DuckDB</em>, Christophe Nicault</a></li>
+<li><a href="https://www.richpauloo.com/post/parquet/"><em>Parquet, SQL, DuckDB, arrow, dbplyr and R</em>, Rich Pauloo</a></li>
+</ol>
+<p>If the above don’t make it clear, using dplyr with Arrow and DuckDB is a breeze. I haven’t yet mentioned the <a href="https://parquet.apache.org/">Apache Parquet</a> file format since I find it secondary to the above, but Arrow and DuckDB provide an easy approach to working with Parquet (and other) file formats and filesize (compared to a CSV) can be slimmed by an order of magnitude. Let’s dive into some stats, below, benchmarked by Christophe Nicault. The benchmarks relate to an 8GB CSV file with 59 million observations:</p>
+<section id="size-on-disk" class="level2">
+<h2 class="anchored" data-anchor-id="size-on-disk">Size on Disk</h2>
+<p><img src="./images/size_on_disk.png" class="img-fluid"></p>
+</section>
+<section id="query-performance" class="level2">
+<h2 class="anchored" data-anchor-id="query-performance">Query Performance</h2>
+<p><img src="./images/performance_on_query.png" class="img-fluid"></p>
+</section>
+<section id="size-vs-performance" class="level2">
+<h2 class="anchored" data-anchor-id="size-vs-performance">Size vs Performance</h2>
+<p><img src="./images/size_vs_performance.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="encryption-with-r" class="level1">
+<h1>3. Encryption with R</h1>
+<p>R’s <a href="https://docs.ropensci.org/sodium/">sodium</a> package provides a binding to <a href="https://doc.libsodium.org/">libsodium</a> for higher-level cryptographic tooling. I first learned of {sodium} while working with Google BigQuery and learning about R’s <a href="https://gargle.r-lib.org/articles/managing-tokens-securely.html">gargle</a> package for securely managing access credentials. Another package I’d like to point attention to is <a href="https://docs.ropensci.org/cyphr/">cyphr</a>. I’ve used a combination of these packages for creating secure access to encrypted data objects.</p>
+<p>I’d like to walk through two examples using these encryption tools:</p>
+<ol type="1">
+<li>Intro to {sodium} for keypair generation, message encrypt / decrpyt</li>
+<li>Keypair gen with {sodium} + file encrypt / decrpt with {cyphr}</li>
+</ol>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Installation from source on macOS or Linux requires <a href="https://doc.libsodium.org/">libsodium</a>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>On macOS, install via homebrew: <code>brew install libsodium</code></li>
+<li>On Debian or Ubuntu: <code>sudo apt-get install -y libsodium-dev</code></li>
+<li>On Fedora: <code>sudo yum install libsodium-devel</code></li>
+<li>On CentOS / RHEL, install via EPEL:
+<ul>
+<li><code>sudo yum install epel-release</code></li>
+<li><code>sudo yum install libsodium-devel</code></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<section id="intro-to-sodium" class="level2">
+<h2 class="anchored" data-anchor-id="intro-to-sodium">Intro to Sodium</h2>
+<p>The following example uses {sodium} to generate a keypair and encrpt / decrypt a serialized message (representing the iris data set). One major benefit of encrypting objects like this is that you can publicly expose these encrypted objects since you alone hold the key to decrypt them. If you’re working with GitHub Actions, GitLab CI/CD, or another git-backed repository, you can save these encrypted messages in your public repo - If someone forks or clones your repository, they’ll be unable to decrypt the object without the hash key initially created in the keypair generation step.</p>
+<p>The example below was <a href="https://docs.ropensci.org/sodium/#hello-world">written by Jeroen Ooms on rOpenSci</a> and is part of the documentation for the {sodium} package. I added the last step to show how to <code>unserialize()</code> an object previously decrypted.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(sodium)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># Generate keypair:</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>key <span class="ot">&lt;-</span> sodium<span class="sc">::</span><span class="fu">keygen</span>()</span>
+<span id="cb2-5"><a href="#cb2-5"></a>pub <span class="ot">&lt;-</span> sodium<span class="sc">::</span><span class="fu">pubkey</span>(key)</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># Encrypt message with pubkey</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>msg <span class="ot">&lt;-</span> <span class="fu">serialize</span>(iris, <span class="cn">NULL</span>)</span>
+<span id="cb2-9"><a href="#cb2-9"></a>ciphertext <span class="ot">&lt;-</span> sodium<span class="sc">::</span><span class="fu">simple_encrypt</span>(msg, pub)</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co"># Decrypt message with private key</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>out <span class="ot">&lt;-</span> sodium<span class="sc">::</span><span class="fu">simple_decrypt</span>(ciphertext, key)</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co"># Unserialize the decrypted message &amp; assign iris data to new obj</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>iris_new <span class="ot">&lt;-</span> <span class="fu">unserialize</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sodium-cyphr" class="level2">
+<h2 class="anchored" data-anchor-id="sodium-cyphr">Sodium + Cyphr</h2>
+<p>Using the {sodium} and {cyphr} packages, the code snippets below showcase three key steps: 3a) data encryption, 3b) in-line decryption (to be used as a script intended to run with a GitHub Actions Workflow every six hours), and 3c) the GitHub Actions YAML file to configure the automation workflow.</p>
+<p>Using this approach, I can safely expose an encrypted RDS file on my public GitHub repo that contains secret API credentials for accessing Meetup.com and fetching new events that may have been posted. The encrypted RDS file can only be decrypted using the keypair hash saved with the <code>MEETUP_PWD</code> environment variable on my GitHub repo, a secret env var only visible to me.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+GitHub Actions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To learn how to use secrets for use with GitHub Actions, the official <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets">Actions/Encrypted Secrets</a> documentation is an excellent end-to-end resource. A generalized overview of how to configure your GitHub Actions Workflow is available on GitHub’s <a href="https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions">Actions/Workflow Syntax</a> documentation. A brief overview of major updates to GitHub Actions for R Users was published on the <a href="https://www.tidyverse.org/blog/2022/06/actions-2-0-0/">Tidyverse Blog in June 2022</a>, with the most complete resource for R related GitHub Actions being on <a href="https://github.com/r-lib/actions">r-lib/actions</a>.</p>
+</div>
+</div>
+<p>NOTE: For the purposes of GitHub Actions and the config YAML file covered in Step 3, this file lives in the following path on my GitHub repo: <code>~/.github/workflows/main.yml</code></p>
+</section>
+<section id="step-3a-encrypt" class="level2">
+<h2 class="anchored" data-anchor-id="step-3a-encrypt">Step 3a: Encrypt</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># The following is a one-time key encryption setup</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(sodium)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">library</span>(cyphr)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">library</span>(meetupr)</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># After doing a one-time interactive auth with {meetupr},</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># your Meetup token will be stored as an RDS file in the </span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co"># same path as your {meetupr} package:</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>token_path <span class="ot">&lt;-</span> </span>
+<span id="cb3-11"><a href="#cb3-11"></a>  <span class="fu">path.expand</span>(</span>
+<span id="cb3-12"><a href="#cb3-12"></a>    <span class="fu">file.path</span>(<span class="st">"~"</span>, <span class="st">"Library"</span>, <span class="st">"Application Support"</span>, </span>
+<span id="cb3-13"><a href="#cb3-13"></a>              <span class="st">"meetupr"</span>, <span class="st">"meetup_token.rds"</span>)</span>
+<span id="cb3-14"><a href="#cb3-14"></a>  )</span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a>meetupr<span class="sc">::</span><span class="fu">meetup_auth</span>(</span>
+<span id="cb3-17"><a href="#cb3-17"></a>  <span class="at">token =</span> <span class="cn">NULL</span>,</span>
+<span id="cb3-18"><a href="#cb3-18"></a>  <span class="at">cache =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-19"><a href="#cb3-19"></a>  <span class="at">use_appdir =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-20"><a href="#cb3-20"></a>  <span class="at">token_path =</span> token_path</span>
+<span id="cb3-21"><a href="#cb3-21"></a>)</span>
+<span id="cb3-22"><a href="#cb3-22"></a></span>
+<span id="cb3-23"><a href="#cb3-23"></a><span class="co"># Encrypt the existing token to safely save </span></span>
+<span id="cb3-24"><a href="#cb3-24"></a><span class="co"># meetupr_secret.rds in a public repo</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>sodium_key <span class="ot">&lt;-</span> sodium<span class="sc">::</span><span class="fu">keygen</span>()</span>
+<span id="cb3-26"><a href="#cb3-26"></a></span>
+<span id="cb3-27"><a href="#cb3-27"></a><span class="co"># In your working environment, save a secret env var called</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a><span class="co"># "MEETUPR_PWD" using the randomly generated sodium_key</span></span>
+<span id="cb3-29"><a href="#cb3-29"></a><span class="fu">Sys.setenv</span>(<span class="st">"MEETUPR_PWD"</span> <span class="ot">=</span> sodium<span class="sc">::</span><span class="fu">bin2hex</span>(sodium_key))</span>
+<span id="cb3-30"><a href="#cb3-30"></a></span>
+<span id="cb3-31"><a href="#cb3-31"></a><span class="co"># Create a key for use with {cyphr}</span></span>
+<span id="cb3-32"><a href="#cb3-32"></a>key <span class="ot">&lt;-</span> cyphr<span class="sc">::</span><span class="fu">key_sodium</span>(sodium<span class="sc">::</span><span class="fu">hex2bin</span>(<span class="fu">Sys.getenv</span>(<span class="st">"MEETUPR_PWD"</span>)))</span>
+<span id="cb3-33"><a href="#cb3-33"></a></span>
+<span id="cb3-34"><a href="#cb3-34"></a><span class="co"># Encrypt the RDS and save as meetupr_secret.rds</span></span>
+<span id="cb3-35"><a href="#cb3-35"></a><span class="co"># in the working environment</span></span>
+<span id="cb3-36"><a href="#cb3-36"></a>cyphr<span class="sc">::</span><span class="fu">encrypt_file</span>(</span>
+<span id="cb3-37"><a href="#cb3-37"></a>  token_path,</span>
+<span id="cb3-38"><a href="#cb3-38"></a>  <span class="at">key =</span> key,</span>
+<span id="cb3-39"><a href="#cb3-39"></a>  <span class="at">dest =</span> <span class="st">"meetupr_secret.rds"</span></span>
+<span id="cb3-40"><a href="#cb3-40"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-3b-decrypt" class="level2">
+<h2 class="anchored" data-anchor-id="step-3b-decrypt">Step 3b: Decrypt</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># This script was saved as "meetup_events.R" and it is run as part</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># of the GitHub Actions workflow on line 37 of the YAML file covered</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># in "Step 3: GitHub Actions YAML"</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="fu">library</span>(meetupr)</span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="fu">library</span>(cyphr)</span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co"># Generate Key with MEETUPR_PWD env var for MeetupR data CI/CD</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>key <span class="ot">&lt;-</span> cyphr<span class="sc">::</span><span class="fu">key_sodium</span>(sodium<span class="sc">::</span><span class="fu">hex2bin</span>(<span class="fu">Sys.getenv</span>(<span class="st">"MEETUPR_PWD"</span>)))</span>
+<span id="cb4-14"><a href="#cb4-14"></a></span>
+<span id="cb4-15"><a href="#cb4-15"></a>temptoken <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".rds"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16"></a></span>
+<span id="cb4-17"><a href="#cb4-17"></a>cyphr<span class="sc">::</span><span class="fu">decrypt_file</span>(<span class="st">"meetupr_secret.rds"</span>,</span>
+<span id="cb4-18"><a href="#cb4-18"></a>                    <span class="at">key =</span> key,</span>
+<span id="cb4-19"><a href="#cb4-19"></a>                    <span class="at">dest =</span> temptoken)</span>
+<span id="cb4-20"><a href="#cb4-20"></a></span>
+<span id="cb4-21"><a href="#cb4-21"></a>token <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(temptoken)[[<span class="dv">1</span>]]</span>
+<span id="cb4-22"><a href="#cb4-22"></a></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="co"># Non-Interactive Meetup Authorization</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>token <span class="ot">&lt;-</span> meetupr<span class="sc">::</span><span class="fu">meetup_auth</span>(</span>
+<span id="cb4-25"><a href="#cb4-25"></a>  <span class="at">token =</span> token,</span>
+<span id="cb4-26"><a href="#cb4-26"></a>  <span class="at">use_appdir =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb4-27"><a href="#cb4-27"></a>  <span class="at">cache =</span> <span class="cn">FALSE</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a>)</span>
+<span id="cb4-29"><a href="#cb4-29"></a></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="co"># Save a temporary, updated Meetup personal access token that will</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="co"># be used downstream with the meetupr::get_events() function</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="fu">Sys.setenv</span>(<span class="at">MEETUPR_PAT =</span> temptoken)</span>
+<span id="cb4-33"><a href="#cb4-33"></a></span>
+<span id="cb4-34"><a href="#cb4-34"></a><span class="co"># Create a character vector of the Meetup accounts for data collection</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a>socal_groups <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"SOCAL-RUG"</span>, </span>
+<span id="cb4-36"><a href="#cb4-36"></a>                  <span class="st">"Santa-Barbara-R-Users-Group"</span>, </span>
+<span id="cb4-37"><a href="#cb4-37"></a>                  <span class="st">"Real-Data-Science-USA-R-Meetup"</span>,</span>
+<span id="cb4-38"><a href="#cb4-38"></a>                  <span class="st">"useR-Group-in-San-Luis-Obispo-County"</span>, </span>
+<span id="cb4-39"><a href="#cb4-39"></a>                  <span class="st">"rladies-irvine"</span>,</span>
+<span id="cb4-40"><a href="#cb4-40"></a>                  <span class="st">"rladies-la"</span>,</span>
+<span id="cb4-41"><a href="#cb4-41"></a>                  <span class="st">"rladies-pasadena"</span>,</span>
+<span id="cb4-42"><a href="#cb4-42"></a>                  <span class="st">"rladies-riverside"</span>,</span>
+<span id="cb4-43"><a href="#cb4-43"></a>                  <span class="st">"rladies-santa-barbara"</span>,</span>
+<span id="cb4-44"><a href="#cb4-44"></a>                  <span class="st">"rladies-san-diego"</span>)</span>
+<span id="cb4-45"><a href="#cb4-45"></a></span>
+<span id="cb4-46"><a href="#cb4-46"></a><span class="co"># Create a function for getting upcoming and past Meetup events</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a>get_meetup_events <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb4-48"><a href="#cb4-48"></a>  <span class="cf">if</span> (<span class="fu">length</span>(meetupr<span class="sc">::</span><span class="fu">get_events</span>(<span class="at">urlname =</span> x)) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb4-49"><a href="#cb4-49"></a>    meetupr<span class="sc">::</span><span class="fu">get_events</span>(<span class="at">urlname =</span> x) <span class="sc">|&gt;</span> </span>
+<span id="cb4-50"><a href="#cb4-50"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">chapter =</span> x)</span>
+<span id="cb4-51"><a href="#cb4-51"></a>  }</span>
+<span id="cb4-52"><a href="#cb4-52"></a>}</span>
+<span id="cb4-53"><a href="#cb4-53"></a></span>
+<span id="cb4-54"><a href="#cb4-54"></a><span class="co"># Using purrr, iterate through each Meetup account, collect </span></span>
+<span id="cb4-55"><a href="#cb4-55"></a><span class="co"># event data, and row-bind the resulting event listings</span></span>
+<span id="cb4-56"><a href="#cb4-56"></a>events_raw <span class="ot">&lt;-</span> </span>
+<span id="cb4-57"><a href="#cb4-57"></a>  purrr<span class="sc">::</span><span class="fu">map_dfr</span>(<span class="at">.x =</span> socal_groups, <span class="at">.f =</span> get_meetup_events) <span class="sc">|&gt;</span> </span>
+<span id="cb4-58"><a href="#cb4-58"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(chapter, dplyr<span class="sc">::</span><span class="fu">everything</span>())</span>
+<span id="cb4-59"><a href="#cb4-59"></a></span>
+<span id="cb4-60"><a href="#cb4-60"></a><span class="co"># Data clean up</span></span>
+<span id="cb4-61"><a href="#cb4-61"></a>events <span class="ot">&lt;-</span> </span>
+<span id="cb4-62"><a href="#cb4-62"></a>  events_raw <span class="sc">|&gt;</span> </span>
+<span id="cb4-63"><a href="#cb4-63"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
+<span id="cb4-64"><a href="#cb4-64"></a>    status <span class="sc">!=</span> <span class="st">"draft"</span>,</span>
+<span id="cb4-65"><a href="#cb4-65"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(title, <span class="st">"Cross-post|cross-post"</span>),</span>
+<span id="cb4-66"><a href="#cb4-66"></a>    <span class="sc">!</span>stringr<span class="sc">::</span><span class="fu">str_detect</span>(description, <span class="st">"Cross-post|cross-post"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-67"><a href="#cb4-67"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-68"><a href="#cb4-68"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(dplyr<span class="sc">::</span><span class="fu">desc</span>(time)) <span class="sc">|&gt;</span></span>
+<span id="cb4-69"><a href="#cb4-69"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb4-70"><a href="#cb4-70"></a>    <span class="at">Upcoming =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(status <span class="sc">==</span> <span class="st">"published"</span>, <span class="st">"&amp;#x2713;"</span>, <span class="st">""</span>),</span>
+<span id="cb4-71"><a href="#cb4-71"></a>    <span class="at">Chapter =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb4-72"><a href="#cb4-72"></a>      chapter <span class="sc">==</span> <span class="st">"SOCAL-RUG"</span> <span class="sc">~</span> <span class="st">"SoCal RUG"</span>,</span>
+<span id="cb4-73"><a href="#cb4-73"></a>      chapter <span class="sc">==</span> <span class="st">"Santa-Barbara-R-Users-Group"</span> <span class="sc">~</span> <span class="st">"Santa Barbara RUG"</span>,</span>
+<span id="cb4-74"><a href="#cb4-74"></a>      chapter <span class="sc">==</span> <span class="st">"Real-Data-Science-USA-R-Meetup"</span> <span class="sc">~</span> <span class="st">"Los Angeles RUG"</span>,</span>
+<span id="cb4-75"><a href="#cb4-75"></a>      chapter <span class="sc">==</span> <span class="st">"useR-Group-in-San-Luis-Obispo-County"</span> <span class="sc">~</span> <span class="st">"SLO RUG"</span>,</span>
+<span id="cb4-76"><a href="#cb4-76"></a>      chapter <span class="sc">==</span> <span class="st">"rladies-irvine"</span> <span class="sc">~</span> <span class="st">"R-Ladies Irvine"</span>,</span>
+<span id="cb4-77"><a href="#cb4-77"></a>      chapter <span class="sc">==</span> <span class="st">"rladies-la"</span> <span class="sc">~</span> <span class="st">"R-Ladies Los Angeles"</span>,</span>
+<span id="cb4-78"><a href="#cb4-78"></a>      chapter <span class="sc">==</span> <span class="st">"rladies-pasadena"</span> <span class="sc">~</span> <span class="st">"R-Ladies Pasadena"</span>,</span>
+<span id="cb4-79"><a href="#cb4-79"></a>      chapter <span class="sc">==</span> <span class="st">"rladies-riverside"</span> <span class="sc">~</span> <span class="st">"R-Ladies Riverside"</span>,</span>
+<span id="cb4-80"><a href="#cb4-80"></a>      chapter <span class="sc">==</span> <span class="st">"rladies-santa-barbara"</span> <span class="sc">~</span> <span class="st">"R-Ladies Santa Barbara"</span>,</span>
+<span id="cb4-81"><a href="#cb4-81"></a>      chapter <span class="sc">==</span> <span class="st">"rladies-san-diego"</span> <span class="sc">~</span> <span class="st">"R-Ladies San Diego"</span>,</span>
+<span id="cb4-82"><a href="#cb4-82"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> chapter),</span>
+<span id="cb4-83"><a href="#cb4-83"></a>    <span class="at">Event =</span> <span class="fu">paste0</span>(<span class="st">'&lt;a href='</span>, <span class="st">'"'</span>, link, <span class="st">'"&gt;'</span>, title, <span class="st">'&lt;/a&gt;'</span>),</span>
+<span id="cb4-84"><a href="#cb4-84"></a>    <span class="at">Date =</span> lubridate<span class="sc">::</span><span class="fu">as_date</span>(time),</span>
+<span id="cb4-85"><a href="#cb4-85"></a>    <span class="at">Time =</span> <span class="fu">format.POSIXct</span>(time, <span class="at">format =</span> <span class="st">"%I:%M %p"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-86"><a href="#cb4-86"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Upcoming, Chapter, Event, Date, <span class="st">"Time (PST)"</span> <span class="ot">=</span> Time)</span>
+<span id="cb4-87"><a href="#cb4-87"></a></span>
+<span id="cb4-88"><a href="#cb4-88"></a><span class="fu">saveRDS</span>(events, <span class="at">file =</span> <span class="st">"events/events_past_and_upcoming.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-3c-github-actions-yaml" class="level2">
+<h2 class="anchored" data-anchor-id="step-3c-github-actions-yaml">Step 3c: GitHub Actions YAML</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">name:</span> Render and Deploy Quarto Blog</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="ex">on:</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="ex">pull_request:</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="ex">branches:</span> [ master ]</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="ex">push:</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="ex">branches:</span> [ master ]</span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="ex">schedule:</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="ex">-</span> cron:  <span class="st">'0 */6 * * *'</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="ex">jobs:</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>  <span class="ex">build:</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>    <span class="ex">runs-on:</span> ubuntu-latest</span>
+<span id="cb5-13"><a href="#cb5-13"></a>    <span class="ex">steps:</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>      <span class="ex">-</span> name: Checkout Repo</span>
+<span id="cb5-15"><a href="#cb5-15"></a>        <span class="ex">uses:</span> actions/checkout@v3</span>
+<span id="cb5-16"><a href="#cb5-16"></a>        <span class="ex">with:</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a>          <span class="ex">fetch-depth:</span> 0</span>
+<span id="cb5-18"><a href="#cb5-18"></a>          </span>
+<span id="cb5-19"><a href="#cb5-19"></a>      <span class="ex">-</span> name: Install libsodium</span>
+<span id="cb5-20"><a href="#cb5-20"></a>        <span class="ex">run:</span> sudo apt-get install <span class="at">-y</span> libsodium-dev</span>
+<span id="cb5-21"><a href="#cb5-21"></a></span>
+<span id="cb5-22"><a href="#cb5-22"></a>      <span class="ex">-</span> name: Setup Quarto CLI</span>
+<span id="cb5-23"><a href="#cb5-23"></a>        <span class="ex">uses:</span> quarto-dev/quarto-actions/setup@v2</span>
+<span id="cb5-24"><a href="#cb5-24"></a>        <span class="ex">with:</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>          <span class="ex">version:</span> 1.2.280</span>
+<span id="cb5-26"><a href="#cb5-26"></a></span>
+<span id="cb5-27"><a href="#cb5-27"></a>      <span class="ex">-</span> name: Setup R </span>
+<span id="cb5-28"><a href="#cb5-28"></a>        <span class="ex">uses:</span> r-lib/actions/setup-r@v2</span>
+<span id="cb5-29"><a href="#cb5-29"></a>        <span class="ex">with:</span></span>
+<span id="cb5-30"><a href="#cb5-30"></a>          <span class="ex">r-version:</span> <span class="st">'4.2.2'</span></span>
+<span id="cb5-31"><a href="#cb5-31"></a>          <span class="ex">use-public-rspm:</span> true</span>
+<span id="cb5-32"><a href="#cb5-32"></a>      </span>
+<span id="cb5-33"><a href="#cb5-33"></a>      <span class="ex">-</span> name: Setup renv</span>
+<span id="cb5-34"><a href="#cb5-34"></a>        <span class="ex">uses:</span> r-lib/actions/setup-renv@v2</span>
+<span id="cb5-35"><a href="#cb5-35"></a></span>
+<span id="cb5-36"><a href="#cb5-36"></a>      <span class="ex">-</span> name: Fetch Events from Meetup</span>
+<span id="cb5-37"><a href="#cb5-37"></a>        <span class="ex">run:</span> source<span class="er">(</span><span class="ex">here::here</span><span class="er">(</span><span class="st">"helpers"</span><span class="ex">,</span> <span class="st">"meetup_events.R"</span><span class="kw">))</span></span>
+<span id="cb5-38"><a href="#cb5-38"></a>        <span class="ex">env:</span></span>
+<span id="cb5-39"><a href="#cb5-39"></a>          <span class="ex">MEETUPR_PWD:</span> <span class="va">${</span><span class="er">{ secrets.MEETUPR_PWD </span><span class="va">}</span>}</span>
+<span id="cb5-40"><a href="#cb5-40"></a>        <span class="ex">shell:</span> Rscript {0}</span>
+<span id="cb5-41"><a href="#cb5-41"></a></span>
+<span id="cb5-42"><a href="#cb5-42"></a>      <span class="ex">-</span> name: Render and Publish to Netlify</span>
+<span id="cb5-43"><a href="#cb5-43"></a>        <span class="ex">uses:</span> quarto-dev/quarto-actions/publish@v2</span>
+<span id="cb5-44"><a href="#cb5-44"></a>        <span class="ex">with:</span></span>
+<span id="cb5-45"><a href="#cb5-45"></a>          <span class="ex">target:</span> netlify</span>
+<span id="cb5-46"><a href="#cb5-46"></a>          <span class="ex">NETLIFY_AUTH_TOKEN:</span> <span class="va">${</span><span class="er">{ secrets.NETLIFY_AUTH_TOKEN </span><span class="va">}</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="session-info" class="level1">
+<h1>Session Info</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> version 4.2.2 <span class="er">(</span><span class="ex">2022-10-31</span><span class="kw">)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Platform:</span> aarch64-apple-darwin20 <span class="er">(</span><span class="ex">64-bit</span><span class="kw">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Running</span> under: macOS Ventura 13.1</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Matrix</span> products: default</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">LAPACK:</span> /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">locale:</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[1]</span> en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ex">attached</span> base packages:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">[1]</span> stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ex">other</span> attached packages:</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">[1]</span> quarto_1.2          purrr_1.0.1         lubridate_1.9.0    </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">[4]</span> timechange_0.2.0    stringr_1.5.0       meetupr_0.2.99.9002</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a> <span class="ex">[7]</span> cyphr_1.1.4         sodium_1.2.1        ggplot2_3.4.0      </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ex">[10]</span> modeldata_1.0.1     rsample_1.1.1       dplyr_1.0.10       </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="ex">[13]</span> probably_0.1.0      parsnip_1.0.3      </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="ex">loaded</span> via a namespace <span class="er">(</span><span class="ex">and</span> not attached<span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a> <span class="ex">[1]</span> tidyselect_1.2.0  xfun_0.36         listenv_0.9.0    </span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a> <span class="ex">[4]</span> colorspace_2.0-3  vctrs_0.5.1       generics_0.1.3   </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a> <span class="ex">[7]</span> htmltools_0.5.4   yaml_2.3.6        utf8_1.2.2       </span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="ex">[10]</span> rlang_1.0.6       pillar_1.8.1      later_1.3.0      </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="ex">[13]</span> glue_1.6.2        withr_2.5.0       DBI_1.1.3        </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="ex">[16]</span> lifecycle_1.0.3   munsell_0.5.0     gtable_0.3.1     </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="ex">[19]</span> anytime_0.3.9     future_1.30.0     evaluate_0.19    </span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="ex">[22]</span> codetools_0.2-18  knitr_1.41        fastmap_1.1.0    </span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="ex">[25]</span> ps_1.7.2          parallel_4.2.2    fansi_1.0.3      </span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="ex">[28]</span> furrr_0.3.1       Rcpp_1.0.9        scales_1.2.1     </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="ex">[31]</span> jsonlite_1.8.4    parallelly_1.34.0 digest_0.6.31    </span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="ex">[34]</span> stringi_1.7.12    processx_3.8.0    grid_4.2.2       </span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="ex">[37]</span> hardhat_1.2.0     cli_3.6.0         tools_4.2.2      </span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="ex">[40]</span> magrittr_2.0.3    tibble_3.1.8      tidyr_1.2.1      </span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="ex">[43]</span> pkgconfig_2.0.3   rmarkdown_2.19    assertthat_0.2.1 </span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="ex">[46]</span> yardstick_1.1.0   rstudioapi_0.14   ratelimitr_0.4.1 </span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="ex">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4.2.2   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/https:\/\/www\.javierorracadeatcu\.com/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="JavOrraca/quarto-blog" data-repo-id="R_kgDOIOlJmA" data-category="General" data-category-id="DIC_kwDOIOlJmM4CSH8n" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center"><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+  </div>
+</footer>
+
+
+
+</body></html>

@@ -10,7 +10,434 @@
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
 <generator>quarto-1.2.280</generator>
-<lastBuildDate>Sun, 01 Jan 2023 08:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 15 Jan 2023 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>R Goodies for 2023</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023.html</link>
+  <description><![CDATA[ 
+
+
+
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>Data science had an awesome year in 2022. The list below highlights some of my favorites that I hope you test drive in 2023 (<em>if you haven’t already!</em>). Happy belated New Year folks!</p>
+</section>
+<section id="probably" class="level1">
+<h1>1. Probably</h1>
+<p>The <a href="https://probably.tidymodels.org/index.html">probably</a> package, developed by Max Kuhn and Davis Vaughan at Posit, is in early stages of development and presents a new (at least, new to me) approach to assigning more realistic discrete class predictions. One initial question you might have is <em>Where exactly should I use <strong>probably</strong> in a modeling pipeline?</em> - <a href="https://probably.tidymodels.org/articles/where-to-use.html">Davis Vaughan addresses this in detail</a> and developed {probably} as a “post processing step <em>after</em> the model has been fit, but <em>before</em> the model performance has been calculated.”</p>
+<p>This package helps programmatically identify a more appropriate threshold / cutoff for class predictions using <a href="https://en.wikipedia.org/wiki/Youden%27s_J_statistic">Youden’s J statistic</a> (or “J-index”). The statistic is implemented in the {yardstick} package and can be accessed via <a href="https://yardstick.tidymodels.org/reference/j_index.html"><code>yardstick::j_index()</code></a>. So, what’s with the J statistic?</p>
+<ul>
+<li>J = sensitivity + specificity - 1</li>
+<li>The maximum value of J is 1 when there are no false positives and no false negatives</li>
+<li>This technique comes in handy when a threshold of 50% (or 0.5) may not be the most appropriate for assigning a binary classification, especially when class imbalances exist.</li>
+</ul>
+<p>Let’s create a basic tidymodels workflow to fit Lending Club loan data to a logistic regression and predict whether a loan is good or bad. The code below was pulled directly from the source example written by Davis Vaughan:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">library</span>(parsnip)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;">library</span>(probably)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;">library</span>(dplyr)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;">library</span>(rsample)</span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;">library</span>(modeldata)</span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;">library</span>(ggplot2)</span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;">data</span>(<span class="st" style="color: #20794D;">"lending_club"</span>)</span>
+<span id="cb1-8"></span>
+<span id="cb1-9">lending_club_modified <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb1-10">  lending_club <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-11">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(<span class="at" style="color: #657422;">Class =</span> <span class="fu" style="color: #4758AB;">relevel</span>(Class, <span class="st" style="color: #20794D;">"good"</span>)) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-12">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(Class, annual_inc, verification_status, sub_grade)</span>
+<span id="cb1-13"></span>
+<span id="cb1-14"><span class="fu" style="color: #4758AB;">set.seed</span>(<span class="dv" style="color: #AD0000;">123</span>)</span>
+<span id="cb1-15">split <span class="ot" style="color: #003B4F;">&lt;-</span> rsample<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">initial_split</span>(lending_club_modified)</span>
+<span id="cb1-16">lending_train <span class="ot" style="color: #003B4F;">&lt;-</span> rsample<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">training</span>(split)</span>
+<span id="cb1-17">lending_test  <span class="ot" style="color: #003B4F;">&lt;-</span> rsample<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">testing</span>(split)</span>
+<span id="cb1-18"></span>
+<span id="cb1-19"><span class="co" style="color: #5E5E5E;"># Note: 7,008 records are "good" loans and 384 are "bad"</span></span>
+<span id="cb1-20"></span>
+<span id="cb1-21">logi_reg_fit <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb1-22">  parsnip<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">logistic_reg</span>() <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-23">  parsnip<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">set_engine</span>(<span class="st" style="color: #20794D;">"glm"</span>) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-24">  parsnip<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">fit</span>(<span class="at" style="color: #657422;">formula =</span> Class <span class="sc" style="color: #5E5E5E;">~</span> ., <span class="at" style="color: #657422;">data =</span> lending_train)</span>
+<span id="cb1-25"></span>
+<span id="cb1-26">predictions <span class="ot" style="color: #003B4F;">&lt;-</span> dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">bind_cols</span>(</span>
+<span id="cb1-27">  lending_test,</span>
+<span id="cb1-28">  <span class="fu" style="color: #4758AB;">predict</span>(logi_reg_fit, <span class="at" style="color: #657422;">new_data =</span> lending_test),</span>
+<span id="cb1-29">  <span class="fu" style="color: #4758AB;">predict</span>(logi_reg_fit, <span class="at" style="color: #657422;">new_data =</span> lending_test, <span class="at" style="color: #657422;">type =</span> <span class="st" style="color: #20794D;">"prob"</span>))</span>
+<span id="cb1-30"></span>
+<span id="cb1-31">threshold_data <span class="ot" style="color: #003B4F;">&lt;-</span> predictions <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-32">  probably<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">threshold_perf</span>(<span class="at" style="color: #657422;">truth =</span> Class, <span class="at" style="color: #657422;">estimate =</span> .pred_good, </span>
+<span id="cb1-33">                           <span class="at" style="color: #657422;">thresholds =</span> <span class="fu" style="color: #4758AB;">seq</span>(<span class="fl" style="color: #AD0000;">0.5</span>, <span class="dv" style="color: #AD0000;">1</span>, <span class="at" style="color: #657422;">by =</span> <span class="fl" style="color: #AD0000;">0.0025</span>)) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-34">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(.metric <span class="sc" style="color: #5E5E5E;">!=</span> <span class="st" style="color: #20794D;">"distance"</span>) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-35">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(<span class="at" style="color: #657422;">group =</span> dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">case_when</span>(.metric <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"sens"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"1"</span>,</span>
+<span id="cb1-36">                                         .metric <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"spec"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"1"</span>,</span>
+<span id="cb1-37">                                         <span class="cn" style="color: #8f5902;">TRUE</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"2"</span>))</span>
+<span id="cb1-38"></span>
+<span id="cb1-39">max_j_index_threshold <span class="ot" style="color: #003B4F;">&lt;-</span> threshold_data <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-40">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(.metric <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"j_index"</span>) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-41">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(.estimate <span class="sc" style="color: #5E5E5E;">==</span> <span class="fu" style="color: #4758AB;">max</span>(.estimate)) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb1-42">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">pull</span>(.threshold)</span>
+<span id="cb1-43"></span>
+<span id="cb1-44">ggplot2<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">ggplot</span>(threshold_data, <span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> .threshold, <span class="at" style="color: #657422;">y =</span> .estimate, </span>
+<span id="cb1-45">                                    <span class="at" style="color: #657422;">color =</span> .metric, <span class="at" style="color: #657422;">alpha =</span> group)) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-46">  ggplot2<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">geom_line</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-47">  ggplot2<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-48">  ggplot2<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">scale_color_viridis_d</span>(<span class="at" style="color: #657422;">end =</span> <span class="fl" style="color: #AD0000;">0.9</span>) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-49">  ggplot2<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">scale_alpha_manual</span>(<span class="at" style="color: #657422;">values =</span> <span class="fu" style="color: #4758AB;">c</span>(.<span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">1</span>), <span class="at" style="color: #657422;">guide =</span> <span class="st" style="color: #20794D;">"none"</span>) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-50">  ggplot2<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">geom_vline</span>(<span class="at" style="color: #657422;">xintercept =</span> max_j_index_threshold, </span>
+<span id="cb1-51">                      <span class="at" style="color: #657422;">alpha =</span> .<span class="dv" style="color: #AD0000;">6</span>, <span class="at" style="color: #657422;">color =</span> <span class="st" style="color: #20794D;">"grey30"</span>) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-52">  ggplot2<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">labs</span>(</span>
+<span id="cb1-53">    <span class="at" style="color: #657422;">x =</span> <span class="st" style="color: #20794D;">"'Good' Threshold</span><span class="sc" style="color: #5E5E5E;">\n</span><span class="st" style="color: #20794D;">(above this value is considered 'good')"</span>,</span>
+<span id="cb1-54">    <span class="at" style="color: #657422;">y =</span> <span class="st" style="color: #20794D;">"Metric Estimate"</span>,</span>
+<span id="cb1-55">    <span class="at" style="color: #657422;">title =</span> <span class="st" style="color: #20794D;">"Balancing performance by varying the threshold"</span>,</span>
+<span id="cb1-56">    <span class="at" style="color: #657422;">subtitle =</span> <span class="fu" style="color: #4758AB;">paste0</span>(<span class="st" style="color: #20794D;">"Sensitivity or specificity alone might not be"</span>,</span>
+<span id="cb1-57">                      <span class="st" style="color: #20794D;">" enough!</span><span class="sc" style="color: #5E5E5E;">\n</span><span class="st" style="color: #20794D;">Vertical line = Max J-Index"</span>))</span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The <code>max_j_index_threshold</code> has a value of 0.945 and the above viz helps supports the case for changing the discrete classification threshold from the baseline value of 0.5 (where a prediction probability above 0.5 indicates a “good”). Neat package with some other capabilities that I’m going to keep an eye out for.</p>
+</section>
+<section id="arrow-duckdb" class="level1">
+<h1>2. Arrow + DuckDB</h1>
+<p>Earlier in 2022, there was a lot of excitement on my Twitter feed with devs and data scientists discussing larger-than-memory data manipulation and ultra-fast ETL with <a href="https://duckdb.org/">DuckDB</a>, a new analytical data management system with bindings for Python and R. DuckDB offers a parallel vectorized execution engine for zero-copy query of <a href="https://arrow.apache.org/">Apache Arrow</a> data sets - Perfect for my world of <em>mostly</em> tabular data. DuckDB streams query results back to Arrow and this is possible via a SQL interface and API. As DuckDB puts it, they provide “an in-process SQL OLAP database management system.”</p>
+<p>Below are some of my favorite DuckDB overviews and tutorials:</p>
+<ol type="1">
+<li><a href="https://duckdb.org/2021/12/03/duck-arrow.html#Benchmark%20Comparison"><em>DuckDB quacks Arrow</em>, Pedro Holanda and Jonathan Keane</a></li>
+<li><a href="https://www.christophenicault.com/post/large_dataframe_arrow_duckdb/"><em>Manipulate big data with Arrow &amp; DuckDB</em>, Christophe Nicault</a></li>
+<li><a href="https://www.richpauloo.com/post/parquet/"><em>Parquet, SQL, DuckDB, arrow, dbplyr and R</em>, Rich Pauloo</a></li>
+</ol>
+<p>If the above don’t make it clear, using dplyr with Arrow and DuckDB is a breeze. I haven’t yet mentioned the <a href="https://parquet.apache.org/">Apache Parquet</a> file format since I find it secondary to the above, but Arrow and DuckDB provide an easy approach to working with Parquet (and other) file formats and filesize (compared to a CSV) can be slimmed by an order of magnitude. Let’s dive into some stats, below, benchmarked by Christophe Nicault. The benchmarks relate to an 8GB CSV file with 59 million observations:</p>
+<section id="size-on-disk" class="level2">
+<h2 class="anchored" data-anchor-id="size-on-disk">Size on Disk</h2>
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/images/size_on_disk.png" class="img-fluid"></p>
+</section>
+<section id="query-performance" class="level2">
+<h2 class="anchored" data-anchor-id="query-performance">Query Performance</h2>
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/images/performance_on_query.png" class="img-fluid"></p>
+</section>
+<section id="size-vs-performance" class="level2">
+<h2 class="anchored" data-anchor-id="size-vs-performance">Size vs Performance</h2>
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/images/size_vs_performance.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="encryption-with-r" class="level1">
+<h1>3. Encryption with R</h1>
+<p>R’s <a href="https://docs.ropensci.org/sodium/">sodium</a> package provides a binding to <a href="https://doc.libsodium.org/">libsodium</a> for higher-level cryptographic tooling. I first learned of {sodium} while working with Google BigQuery and learning about R’s <a href="https://gargle.r-lib.org/articles/managing-tokens-securely.html">gargle</a> package for securely managing access credentials. Another package I’d like to point attention to is <a href="https://docs.ropensci.org/cyphr/">cyphr</a>. I’ve used a combination of these packages for creating secure access to encrypted data objects.</p>
+<p>I’d like to walk through two examples using these encryption tools:</p>
+<ol type="1">
+<li>Intro to {sodium} for keypair generation, message encrypt / decrpyt</li>
+<li>Keypair gen with {sodium} + file encrypt / decrpt with {cyphr}</li>
+</ol>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Installation from source on macOS or Linux requires <a href="https://doc.libsodium.org/">libsodium</a>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>On macOS, install via homebrew: <code>brew install libsodium</code></li>
+<li>On Debian or Ubuntu: <code>sudo apt-get install -y libsodium-dev</code></li>
+<li>On Fedora: <code>sudo yum install libsodium-devel</code></li>
+<li>On CentOS / RHEL, install via EPEL:
+<ul>
+<li><code>sudo yum install epel-release</code></li>
+<li><code>sudo yum install libsodium-devel</code></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<section id="intro-to-sodium" class="level2">
+<h2 class="anchored" data-anchor-id="intro-to-sodium">Intro to Sodium</h2>
+<p>The following example uses {sodium} to generate a keypair and encrpt / decrypt a serialized message (representing the iris data set). One major benefit of encrypting objects like this is that you can publicly expose these encrypted objects since you alone hold the key to decrypt them. If you’re working with GitHub Actions, GitLab CI/CD, or another git-backed repository, you can save these encrypted messages in your public repo - If someone forks or clones your repository, they’ll be unable to decrypt the object without the hash key initially created in the keypair generation step.</p>
+<p>The example below was <a href="https://docs.ropensci.org/sodium/#hello-world">written by Jeroen Ooms on rOpenSci</a> and is part of the documentation for the {sodium} package. I added the last step to show how to <code>unserialize()</code> an object previously decrypted.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;">library</span>(sodium)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;"># Generate keypair:</span></span>
+<span id="cb2-4">key <span class="ot" style="color: #003B4F;">&lt;-</span> sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">keygen</span>()</span>
+<span id="cb2-5">pub <span class="ot" style="color: #003B4F;">&lt;-</span> sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">pubkey</span>(key)</span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;"># Encrypt message with pubkey</span></span>
+<span id="cb2-8">msg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">serialize</span>(iris, <span class="cn" style="color: #8f5902;">NULL</span>)</span>
+<span id="cb2-9">ciphertext <span class="ot" style="color: #003B4F;">&lt;-</span> sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">simple_encrypt</span>(msg, pub)</span>
+<span id="cb2-10"></span>
+<span id="cb2-11"><span class="co" style="color: #5E5E5E;"># Decrypt message with private key</span></span>
+<span id="cb2-12">out <span class="ot" style="color: #003B4F;">&lt;-</span> sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">simple_decrypt</span>(ciphertext, key)</span>
+<span id="cb2-13"></span>
+<span id="cb2-14"><span class="co" style="color: #5E5E5E;"># Unserialize the decrypted message &amp; assign iris data to new obj</span></span>
+<span id="cb2-15">iris_new <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">unserialize</span>(out)</span></code></pre></div>
+</div>
+</section>
+<section id="sodium-cyphr" class="level2">
+<h2 class="anchored" data-anchor-id="sodium-cyphr">Sodium + Cyphr</h2>
+<p>Using the {sodium} and {cyphr} packages, the code snippets below showcase three key steps: 3a) data encryption, 3b) in-line decryption (to be used as a script intended to run with a GitHub Actions Workflow every six hours), and 3c) the GitHub Actions YAML file to configure the automation workflow.</p>
+<p>Using this approach, I can safely expose an encrypted RDS file on my public GitHub repo that contains secret API credentials for accessing Meetup.com and fetching new events that may have been posted. The encrypted RDS file can only be decrypted using the keypair hash saved with the <code>MEETUP_PWD</code> environment variable on my GitHub repo, a secret env var only visible to me.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+GitHub Actions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To learn how to use secrets for use with GitHub Actions, the official <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets">Actions/Encrypted Secrets</a> documentation is an excellent end-to-end resource. A generalized overview of how to configure your GitHub Actions Workflow is available on GitHub’s <a href="https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions">Actions/Workflow Syntax</a> documentation. A brief overview of major updates to GitHub Actions for R Users was published on the <a href="https://www.tidyverse.org/blog/2022/06/actions-2-0-0/">Tidyverse Blog in June 2022</a>, with the most complete resource for R related GitHub Actions being on <a href="https://github.com/r-lib/actions">r-lib/actions</a>.</p>
+</div>
+</div>
+<p>NOTE: For the purposes of GitHub Actions and the config YAML file covered in Step 3, this file lives in the following path on my GitHub repo: <code>~/.github/workflows/main.yml</code></p>
+</section>
+<section id="step-3a-encrypt" class="level2">
+<h2 class="anchored" data-anchor-id="step-3a-encrypt">Step 3a: Encrypt</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># The following is a one-time key encryption setup</span></span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;">library</span>(sodium)</span>
+<span id="cb3-4"><span class="fu" style="color: #4758AB;">library</span>(cyphr)</span>
+<span id="cb3-5"><span class="fu" style="color: #4758AB;">library</span>(meetupr)</span>
+<span id="cb3-6"></span>
+<span id="cb3-7"><span class="co" style="color: #5E5E5E;"># After doing a one-time interactive auth with {meetupr},</span></span>
+<span id="cb3-8"><span class="co" style="color: #5E5E5E;"># your Meetup token will be stored as an RDS file in the </span></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;"># same path as your {meetupr} package:</span></span>
+<span id="cb3-10">token_path <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;">path.expand</span>(</span>
+<span id="cb3-12">    <span class="fu" style="color: #4758AB;">file.path</span>(<span class="st" style="color: #20794D;">"~"</span>, <span class="st" style="color: #20794D;">"Library"</span>, <span class="st" style="color: #20794D;">"Application Support"</span>, </span>
+<span id="cb3-13">              <span class="st" style="color: #20794D;">"meetupr"</span>, <span class="st" style="color: #20794D;">"meetup_token.rds"</span>)</span>
+<span id="cb3-14">  )</span>
+<span id="cb3-15"></span>
+<span id="cb3-16">meetupr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">meetup_auth</span>(</span>
+<span id="cb3-17">  <span class="at" style="color: #657422;">token =</span> <span class="cn" style="color: #8f5902;">NULL</span>,</span>
+<span id="cb3-18">  <span class="at" style="color: #657422;">cache =</span> <span class="cn" style="color: #8f5902;">TRUE</span>,</span>
+<span id="cb3-19">  <span class="at" style="color: #657422;">use_appdir =</span> <span class="cn" style="color: #8f5902;">FALSE</span>,</span>
+<span id="cb3-20">  <span class="at" style="color: #657422;">token_path =</span> token_path</span>
+<span id="cb3-21">)</span>
+<span id="cb3-22"></span>
+<span id="cb3-23"><span class="co" style="color: #5E5E5E;"># Encrypt the existing token to safely save </span></span>
+<span id="cb3-24"><span class="co" style="color: #5E5E5E;"># meetupr_secret.rds in a public repo</span></span>
+<span id="cb3-25">sodium_key <span class="ot" style="color: #003B4F;">&lt;-</span> sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">keygen</span>()</span>
+<span id="cb3-26"></span>
+<span id="cb3-27"><span class="co" style="color: #5E5E5E;"># In your working environment, save a secret env var called</span></span>
+<span id="cb3-28"><span class="co" style="color: #5E5E5E;"># "MEETUPR_PWD" using the randomly generated sodium_key</span></span>
+<span id="cb3-29"><span class="fu" style="color: #4758AB;">Sys.setenv</span>(<span class="st" style="color: #20794D;">"MEETUPR_PWD"</span> <span class="ot" style="color: #003B4F;">=</span> sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">bin2hex</span>(sodium_key))</span>
+<span id="cb3-30"></span>
+<span id="cb3-31"><span class="co" style="color: #5E5E5E;"># Create a key for use with {cyphr}</span></span>
+<span id="cb3-32">key <span class="ot" style="color: #003B4F;">&lt;-</span> cyphr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">key_sodium</span>(sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">hex2bin</span>(<span class="fu" style="color: #4758AB;">Sys.getenv</span>(<span class="st" style="color: #20794D;">"MEETUPR_PWD"</span>)))</span>
+<span id="cb3-33"></span>
+<span id="cb3-34"><span class="co" style="color: #5E5E5E;"># Encrypt the RDS and save as meetupr_secret.rds</span></span>
+<span id="cb3-35"><span class="co" style="color: #5E5E5E;"># in the working environment</span></span>
+<span id="cb3-36">cyphr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">encrypt_file</span>(</span>
+<span id="cb3-37">  token_path,</span>
+<span id="cb3-38">  <span class="at" style="color: #657422;">key =</span> key,</span>
+<span id="cb3-39">  <span class="at" style="color: #657422;">dest =</span> <span class="st" style="color: #20794D;">"meetupr_secret.rds"</span></span>
+<span id="cb3-40">)</span></code></pre></div>
+</div>
+</section>
+<section id="step-3b-decrypt" class="level2">
+<h2 class="anchored" data-anchor-id="step-3b-decrypt">Step 3b: Decrypt</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;"># This script was saved as "meetup_events.R" and it is run as part</span></span>
+<span id="cb4-2"><span class="co" style="color: #5E5E5E;"># of the GitHub Actions workflow on line 37 of the YAML file covered</span></span>
+<span id="cb4-3"><span class="co" style="color: #5E5E5E;"># in "Step 3: GitHub Actions YAML"</span></span>
+<span id="cb4-4"></span>
+<span id="cb4-5"><span class="fu" style="color: #4758AB;">library</span>(dplyr)</span>
+<span id="cb4-6"><span class="fu" style="color: #4758AB;">library</span>(stringr)</span>
+<span id="cb4-7"><span class="fu" style="color: #4758AB;">library</span>(lubridate)</span>
+<span id="cb4-8"><span class="fu" style="color: #4758AB;">library</span>(purrr)</span>
+<span id="cb4-9"><span class="fu" style="color: #4758AB;">library</span>(meetupr)</span>
+<span id="cb4-10"><span class="fu" style="color: #4758AB;">library</span>(cyphr)</span>
+<span id="cb4-11"></span>
+<span id="cb4-12"><span class="co" style="color: #5E5E5E;"># Generate Key with MEETUPR_PWD env var for MeetupR data CI/CD</span></span>
+<span id="cb4-13">key <span class="ot" style="color: #003B4F;">&lt;-</span> cyphr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">key_sodium</span>(sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">hex2bin</span>(<span class="fu" style="color: #4758AB;">Sys.getenv</span>(<span class="st" style="color: #20794D;">"MEETUPR_PWD"</span>)))</span>
+<span id="cb4-14"></span>
+<span id="cb4-15">temptoken <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">tempfile</span>(<span class="at" style="color: #657422;">fileext =</span> <span class="st" style="color: #20794D;">".rds"</span>)</span>
+<span id="cb4-16"></span>
+<span id="cb4-17">cyphr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">decrypt_file</span>(<span class="st" style="color: #20794D;">"meetupr_secret.rds"</span>,</span>
+<span id="cb4-18">                    <span class="at" style="color: #657422;">key =</span> key,</span>
+<span id="cb4-19">                    <span class="at" style="color: #657422;">dest =</span> temptoken)</span>
+<span id="cb4-20"></span>
+<span id="cb4-21">token <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">readRDS</span>(temptoken)[[<span class="dv" style="color: #AD0000;">1</span>]]</span>
+<span id="cb4-22"></span>
+<span id="cb4-23"><span class="co" style="color: #5E5E5E;"># Non-Interactive Meetup Authorization</span></span>
+<span id="cb4-24">token <span class="ot" style="color: #003B4F;">&lt;-</span> meetupr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">meetup_auth</span>(</span>
+<span id="cb4-25">  <span class="at" style="color: #657422;">token =</span> token,</span>
+<span id="cb4-26">  <span class="at" style="color: #657422;">use_appdir =</span> <span class="cn" style="color: #8f5902;">FALSE</span>,</span>
+<span id="cb4-27">  <span class="at" style="color: #657422;">cache =</span> <span class="cn" style="color: #8f5902;">FALSE</span></span>
+<span id="cb4-28">)</span>
+<span id="cb4-29"></span>
+<span id="cb4-30"><span class="co" style="color: #5E5E5E;"># Save a temporary, updated Meetup personal access token that will</span></span>
+<span id="cb4-31"><span class="co" style="color: #5E5E5E;"># be used downstream with the meetupr::get_events() function</span></span>
+<span id="cb4-32"><span class="fu" style="color: #4758AB;">Sys.setenv</span>(<span class="at" style="color: #657422;">MEETUPR_PAT =</span> temptoken)</span>
+<span id="cb4-33"></span>
+<span id="cb4-34"><span class="co" style="color: #5E5E5E;"># Create a character vector of the Meetup accounts for data collection</span></span>
+<span id="cb4-35">socal_groups <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">"SOCAL-RUG"</span>, </span>
+<span id="cb4-36">                  <span class="st" style="color: #20794D;">"Santa-Barbara-R-Users-Group"</span>, </span>
+<span id="cb4-37">                  <span class="st" style="color: #20794D;">"Real-Data-Science-USA-R-Meetup"</span>,</span>
+<span id="cb4-38">                  <span class="st" style="color: #20794D;">"useR-Group-in-San-Luis-Obispo-County"</span>, </span>
+<span id="cb4-39">                  <span class="st" style="color: #20794D;">"rladies-irvine"</span>,</span>
+<span id="cb4-40">                  <span class="st" style="color: #20794D;">"rladies-la"</span>,</span>
+<span id="cb4-41">                  <span class="st" style="color: #20794D;">"rladies-pasadena"</span>,</span>
+<span id="cb4-42">                  <span class="st" style="color: #20794D;">"rladies-riverside"</span>,</span>
+<span id="cb4-43">                  <span class="st" style="color: #20794D;">"rladies-santa-barbara"</span>,</span>
+<span id="cb4-44">                  <span class="st" style="color: #20794D;">"rladies-san-diego"</span>)</span>
+<span id="cb4-45"></span>
+<span id="cb4-46"><span class="co" style="color: #5E5E5E;"># Create a function for getting upcoming and past Meetup events</span></span>
+<span id="cb4-47">get_meetup_events <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x) {</span>
+<span id="cb4-48">  <span class="cf" style="color: #003B4F;">if</span> (<span class="fu" style="color: #4758AB;">length</span>(meetupr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">get_events</span>(<span class="at" style="color: #657422;">urlname =</span> x)) <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">0</span>) {</span>
+<span id="cb4-49">    meetupr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">get_events</span>(<span class="at" style="color: #657422;">urlname =</span> x) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-50">      dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(<span class="at" style="color: #657422;">chapter =</span> x)</span>
+<span id="cb4-51">  }</span>
+<span id="cb4-52">}</span>
+<span id="cb4-53"></span>
+<span id="cb4-54"><span class="co" style="color: #5E5E5E;"># Using purrr, iterate through each Meetup account, collect </span></span>
+<span id="cb4-55"><span class="co" style="color: #5E5E5E;"># event data, and row-bind the resulting event listings</span></span>
+<span id="cb4-56">events_raw <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb4-57">  purrr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">map_dfr</span>(<span class="at" style="color: #657422;">.x =</span> socal_groups, <span class="at" style="color: #657422;">.f =</span> get_meetup_events) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-58">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(chapter, dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">everything</span>())</span>
+<span id="cb4-59"></span>
+<span id="cb4-60"><span class="co" style="color: #5E5E5E;"># Data clean up</span></span>
+<span id="cb4-61">events <span class="ot" style="color: #003B4F;">&lt;-</span> </span>
+<span id="cb4-62">  events_raw <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-63">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">filter</span>(</span>
+<span id="cb4-64">    status <span class="sc" style="color: #5E5E5E;">!=</span> <span class="st" style="color: #20794D;">"draft"</span>,</span>
+<span id="cb4-65">    <span class="sc" style="color: #5E5E5E;">!</span>stringr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">str_detect</span>(title, <span class="st" style="color: #20794D;">"Cross-post|cross-post"</span>),</span>
+<span id="cb4-66">    <span class="sc" style="color: #5E5E5E;">!</span>stringr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">str_detect</span>(description, <span class="st" style="color: #20794D;">"Cross-post|cross-post"</span>)) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-67">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">distinct</span>() <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-68">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">arrange</span>(dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">desc</span>(time)) <span class="sc" style="color: #5E5E5E;">|&gt;</span></span>
+<span id="cb4-69">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb4-70">    <span class="at" style="color: #657422;">Upcoming =</span> dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">if_else</span>(status <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"published"</span>, <span class="st" style="color: #20794D;">"&amp;#x2713;"</span>, <span class="st" style="color: #20794D;">""</span>),</span>
+<span id="cb4-71">    <span class="at" style="color: #657422;">Chapter =</span> dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">case_when</span>(</span>
+<span id="cb4-72">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"SOCAL-RUG"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"SoCal RUG"</span>,</span>
+<span id="cb4-73">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"Santa-Barbara-R-Users-Group"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"Santa Barbara RUG"</span>,</span>
+<span id="cb4-74">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"Real-Data-Science-USA-R-Meetup"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"Los Angeles RUG"</span>,</span>
+<span id="cb4-75">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"useR-Group-in-San-Luis-Obispo-County"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"SLO RUG"</span>,</span>
+<span id="cb4-76">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"rladies-irvine"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"R-Ladies Irvine"</span>,</span>
+<span id="cb4-77">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"rladies-la"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"R-Ladies Los Angeles"</span>,</span>
+<span id="cb4-78">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"rladies-pasadena"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"R-Ladies Pasadena"</span>,</span>
+<span id="cb4-79">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"rladies-riverside"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"R-Ladies Riverside"</span>,</span>
+<span id="cb4-80">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"rladies-santa-barbara"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"R-Ladies Santa Barbara"</span>,</span>
+<span id="cb4-81">      chapter <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"rladies-san-diego"</span> <span class="sc" style="color: #5E5E5E;">~</span> <span class="st" style="color: #20794D;">"R-Ladies San Diego"</span>,</span>
+<span id="cb4-82">      <span class="cn" style="color: #8f5902;">TRUE</span> <span class="sc" style="color: #5E5E5E;">~</span> chapter),</span>
+<span id="cb4-83">    <span class="at" style="color: #657422;">Event =</span> <span class="fu" style="color: #4758AB;">paste0</span>(<span class="st" style="color: #20794D;">'&lt;a href='</span>, <span class="st" style="color: #20794D;">'"'</span>, link, <span class="st" style="color: #20794D;">'"&gt;'</span>, title, <span class="st" style="color: #20794D;">'&lt;/a&gt;'</span>),</span>
+<span id="cb4-84">    <span class="at" style="color: #657422;">Date =</span> lubridate<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">as_date</span>(time),</span>
+<span id="cb4-85">    <span class="at" style="color: #657422;">Time =</span> <span class="fu" style="color: #4758AB;">format.POSIXct</span>(time, <span class="at" style="color: #657422;">format =</span> <span class="st" style="color: #20794D;">"%I:%M %p"</span>)) <span class="sc" style="color: #5E5E5E;">|&gt;</span> </span>
+<span id="cb4-86">  dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">select</span>(Upcoming, Chapter, Event, Date, <span class="st" style="color: #20794D;">"Time (PST)"</span> <span class="ot" style="color: #003B4F;">=</span> Time)</span>
+<span id="cb4-87"></span>
+<span id="cb4-88"><span class="fu" style="color: #4758AB;">saveRDS</span>(events, <span class="at" style="color: #657422;">file =</span> <span class="st" style="color: #20794D;">"events/events_past_and_upcoming.rds"</span>)</span></code></pre></div>
+</div>
+</section>
+<section id="step-3c-github-actions-yaml" class="level2">
+<h2 class="anchored" data-anchor-id="step-3c-github-actions-yaml">Step 3c: GitHub Actions YAML</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">name:</span> Render and Deploy Quarto Blog</span>
+<span id="cb5-2"><span class="ex" style="color: null;">on:</span></span>
+<span id="cb5-3">  <span class="ex" style="color: null;">pull_request:</span></span>
+<span id="cb5-4">    <span class="ex" style="color: null;">branches:</span> [ master ]</span>
+<span id="cb5-5">  <span class="ex" style="color: null;">push:</span></span>
+<span id="cb5-6">    <span class="ex" style="color: null;">branches:</span> [ master ]</span>
+<span id="cb5-7">  <span class="ex" style="color: null;">schedule:</span></span>
+<span id="cb5-8">    <span class="ex" style="color: null;">-</span> cron:  <span class="st" style="color: #20794D;">'0 */6 * * *'</span></span>
+<span id="cb5-9"></span>
+<span id="cb5-10"><span class="ex" style="color: null;">jobs:</span></span>
+<span id="cb5-11">  <span class="ex" style="color: null;">build:</span></span>
+<span id="cb5-12">    <span class="ex" style="color: null;">runs-on:</span> ubuntu-latest</span>
+<span id="cb5-13">    <span class="ex" style="color: null;">steps:</span></span>
+<span id="cb5-14">      <span class="ex" style="color: null;">-</span> name: Checkout Repo</span>
+<span id="cb5-15">        <span class="ex" style="color: null;">uses:</span> actions/checkout@v3</span>
+<span id="cb5-16">        <span class="ex" style="color: null;">with:</span></span>
+<span id="cb5-17">          <span class="ex" style="color: null;">fetch-depth:</span> 0</span>
+<span id="cb5-18">          </span>
+<span id="cb5-19">      <span class="ex" style="color: null;">-</span> name: Install libsodium</span>
+<span id="cb5-20">        <span class="ex" style="color: null;">run:</span> sudo apt-get install <span class="at" style="color: #657422;">-y</span> libsodium-dev</span>
+<span id="cb5-21"></span>
+<span id="cb5-22">      <span class="ex" style="color: null;">-</span> name: Setup Quarto CLI</span>
+<span id="cb5-23">        <span class="ex" style="color: null;">uses:</span> quarto-dev/quarto-actions/setup@v2</span>
+<span id="cb5-24">        <span class="ex" style="color: null;">with:</span></span>
+<span id="cb5-25">          <span class="ex" style="color: null;">version:</span> 1.2.280</span>
+<span id="cb5-26"></span>
+<span id="cb5-27">      <span class="ex" style="color: null;">-</span> name: Setup R </span>
+<span id="cb5-28">        <span class="ex" style="color: null;">uses:</span> r-lib/actions/setup-r@v2</span>
+<span id="cb5-29">        <span class="ex" style="color: null;">with:</span></span>
+<span id="cb5-30">          <span class="ex" style="color: null;">r-version:</span> <span class="st" style="color: #20794D;">'4.2.2'</span></span>
+<span id="cb5-31">          <span class="ex" style="color: null;">use-public-rspm:</span> true</span>
+<span id="cb5-32">      </span>
+<span id="cb5-33">      <span class="ex" style="color: null;">-</span> name: Setup renv</span>
+<span id="cb5-34">        <span class="ex" style="color: null;">uses:</span> r-lib/actions/setup-renv@v2</span>
+<span id="cb5-35"></span>
+<span id="cb5-36">      <span class="ex" style="color: null;">-</span> name: Fetch Events from Meetup</span>
+<span id="cb5-37">        <span class="ex" style="color: null;">run:</span> source<span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">here::here</span><span class="er" style="color: #AD0000;">(</span><span class="st" style="color: #20794D;">"helpers"</span><span class="ex" style="color: null;">,</span> <span class="st" style="color: #20794D;">"meetup_events.R"</span><span class="kw" style="color: #003B4F;">))</span></span>
+<span id="cb5-38">        <span class="ex" style="color: null;">env:</span></span>
+<span id="cb5-39">          <span class="ex" style="color: null;">MEETUPR_PWD:</span> <span class="va" style="color: #111111;">${</span><span class="er" style="color: #AD0000;">{ secrets.MEETUPR_PWD </span><span class="va" style="color: #111111;">}</span>}</span>
+<span id="cb5-40">        <span class="ex" style="color: null;">shell:</span> Rscript {0}</span>
+<span id="cb5-41"></span>
+<span id="cb5-42">      <span class="ex" style="color: null;">-</span> name: Render and Publish to Netlify</span>
+<span id="cb5-43">        <span class="ex" style="color: null;">uses:</span> quarto-dev/quarto-actions/publish@v2</span>
+<span id="cb5-44">        <span class="ex" style="color: null;">with:</span></span>
+<span id="cb5-45">          <span class="ex" style="color: null;">target:</span> netlify</span>
+<span id="cb5-46">          <span class="ex" style="color: null;">NETLIFY_AUTH_TOKEN:</span> <span class="va" style="color: #111111;">${</span><span class="er" style="color: #AD0000;">{ secrets.NETLIFY_AUTH_TOKEN </span><span class="va" style="color: #111111;">}</span>}</span></code></pre></div>
+</div>
+</section>
+</section>
+<section id="session-info" class="level1">
+<h1>Session Info</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;">R</span> version 4.2.2 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">2022-10-31</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb6-2"><span class="ex" style="color: null;">Platform:</span> aarch64-apple-darwin20 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">64-bit</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb6-3"><span class="ex" style="color: null;">Running</span> under: macOS Ventura 13.1</span>
+<span id="cb6-4"></span>
+<span id="cb6-5"><span class="ex" style="color: null;">Matrix</span> products: default</span>
+<span id="cb6-6"><span class="ex" style="color: null;">LAPACK:</span> /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib</span>
+<span id="cb6-7"></span>
+<span id="cb6-8"><span class="ex" style="color: null;">locale:</span></span>
+<span id="cb6-9"><span class="ex" style="color: null;">[1]</span> en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span>
+<span id="cb6-10"></span>
+<span id="cb6-11"><span class="ex" style="color: null;">attached</span> base packages:</span>
+<span id="cb6-12"><span class="ex" style="color: null;">[1]</span> stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb6-13"></span>
+<span id="cb6-14"><span class="ex" style="color: null;">other</span> attached packages:</span>
+<span id="cb6-15"> <span class="ex" style="color: null;">[1]</span> quarto_1.2          purrr_1.0.1         lubridate_1.9.0    </span>
+<span id="cb6-16"> <span class="ex" style="color: null;">[4]</span> timechange_0.2.0    stringr_1.5.0       meetupr_0.2.99.9002</span>
+<span id="cb6-17"> <span class="ex" style="color: null;">[7]</span> cyphr_1.1.4         sodium_1.2.1        ggplot2_3.4.0      </span>
+<span id="cb6-18"><span class="ex" style="color: null;">[10]</span> modeldata_1.0.1     rsample_1.1.1       dplyr_1.0.10       </span>
+<span id="cb6-19"><span class="ex" style="color: null;">[13]</span> probably_0.1.0      parsnip_1.0.3      </span>
+<span id="cb6-20"></span>
+<span id="cb6-21"><span class="ex" style="color: null;">loaded</span> via a namespace <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">and</span> not attached<span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb6-22"> <span class="ex" style="color: null;">[1]</span> tidyselect_1.2.0  xfun_0.36         listenv_0.9.0    </span>
+<span id="cb6-23"> <span class="ex" style="color: null;">[4]</span> colorspace_2.0-3  vctrs_0.5.1       generics_0.1.3   </span>
+<span id="cb6-24"> <span class="ex" style="color: null;">[7]</span> htmltools_0.5.4   yaml_2.3.6        utf8_1.2.2       </span>
+<span id="cb6-25"><span class="ex" style="color: null;">[10]</span> rlang_1.0.6       pillar_1.8.1      later_1.3.0      </span>
+<span id="cb6-26"><span class="ex" style="color: null;">[13]</span> glue_1.6.2        withr_2.5.0       DBI_1.1.3        </span>
+<span id="cb6-27"><span class="ex" style="color: null;">[16]</span> lifecycle_1.0.3   munsell_0.5.0     gtable_0.3.1     </span>
+<span id="cb6-28"><span class="ex" style="color: null;">[19]</span> anytime_0.3.9     future_1.30.0     evaluate_0.19    </span>
+<span id="cb6-29"><span class="ex" style="color: null;">[22]</span> codetools_0.2-18  knitr_1.41        fastmap_1.1.0    </span>
+<span id="cb6-30"><span class="ex" style="color: null;">[25]</span> ps_1.7.2          parallel_4.2.2    fansi_1.0.3      </span>
+<span id="cb6-31"><span class="ex" style="color: null;">[28]</span> furrr_0.3.1       Rcpp_1.0.9        scales_1.2.1     </span>
+<span id="cb6-32"><span class="ex" style="color: null;">[31]</span> jsonlite_1.8.4    parallelly_1.34.0 digest_0.6.31    </span>
+<span id="cb6-33"><span class="ex" style="color: null;">[34]</span> stringi_1.7.12    processx_3.8.0    grid_4.2.2       </span>
+<span id="cb6-34"><span class="ex" style="color: null;">[37]</span> hardhat_1.2.0     cli_3.6.0         tools_4.2.2      </span>
+<span id="cb6-35"><span class="ex" style="color: null;">[40]</span> magrittr_2.0.3    tibble_3.1.8      tidyr_1.2.1      </span>
+<span id="cb6-36"><span class="ex" style="color: null;">[43]</span> pkgconfig_2.0.3   rmarkdown_2.19    assertthat_0.2.1 </span>
+<span id="cb6-37"><span class="ex" style="color: null;">[46]</span> yardstick_1.1.0   rstudioapi_0.14   ratelimitr_0.4.1 </span>
+<span id="cb6-38"><span class="ex" style="color: null;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4.2.2   </span></code></pre></div>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>tidymodels</category>
+  <category>probably</category>
+  <category>arrow</category>
+  <category>duckdb</category>
+  <category>sodium</category>
+  <category>cyphr</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023.html</guid>
+  <pubDate>Sun, 15 Jan 2023 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/images/apache_arrow.png" medium="image" type="image/png" height="65" width="144"/>
+</item>
 <item>
   <title>Data Science Hangout</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -1313,32 +1740,6 @@ font-style: italic;">## USAGE</span></span>
   <guid>https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/2020-02-04-Hadley-Wickham-on-SDS-Podcast.html</guid>
   <pubDate>Tue, 04 Feb 2020 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/images/SDS_Wickham.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Resampling with k-fold Cross Validation</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/2020-02-01-k-fold-cross-validation.html</link>
-  <description><![CDATA[ 
-
-
-
-<p>k-fold “randomly divides the training data into k groups (or folds) of approximate size [with the model being] fit on k-1 folds and the remaining fold used to compute model performance.” I use k=5 or k=10 given that this is typical industry practice without really questioning “why?”</p>
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/images/kfold.jpg" class="img-fluid"></p>
-<p>In reading through Hands-On Machine Learning with R by Brad Boehmke, Ph.D.&nbsp;and Brandon Greenwell, I was surprised to learn that studies have shown that k=10 performs similarly to leave-one-out cross validation where k=n.</p>
-<p>Without realizing it, sometimes I get carried away optimizing code and drifting from statistics and the core “science” in data science… k-fold CV is a technique used by many and is agnostic to your statistical programming language of choice but if you’re an #R user, I can’t recommend this book enough (free in full online, link below)!</p>
-<p>Source:</p>
-<ul>
-<li>Hands-On Machine Learning with R <a href="https://bradleyboehmke.github.io/HOML/process.html#resampling">Chapter 2.4 Resampling Methods</a></li>
-</ul>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
-  <category>statistics</category>
-  <category>machine learning</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/2020-02-01-k-fold-cross-validation.html</guid>
-  <pubDate>Sat, 01 Feb 2020 08:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/images/kfold.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

@@ -1,0 +1,408 @@
+---
+title: "R Goodies for 2023"
+description: "Despite all of the noise of AI-generated art and ChatGPT, 2022 was a great year for data science. These are some of my favorite tricks that I will continue to explore in 2023."
+date: 01-15-2023
+categories: [tidymodels, probably, arrow, duckdb, sodium, cyphr]
+image: images/apache_arrow.png
+---
+
+# Overview
+
+Data science had an awesome year in 2022. The list below highlights some of my favorites that I hope you test drive in 2023 (_if you haven't already!_). Happy belated New Year folks!
+
+# 1. Probably 
+
+The [probably](https://probably.tidymodels.org/index.html) package, developed by Max Kuhn and Davis Vaughan at Posit, is in early stages of development and presents a new (at least, new to me) approach to assigning more realistic discrete class predictions. One initial question you might have is _Where exactly should I use **probably** in a modeling pipeline?_ - [Davis Vaughan addresses this in detail](https://probably.tidymodels.org/articles/where-to-use.html) and developed {probably} as a "post processing step _after_ the model has been fit, but _before_ the model performance has been calculated."
+
+This package helps programmatically identify a more appropriate threshold / cutoff for class predictions using [Youden's J statistic](https://en.wikipedia.org/wiki/Youden%27s_J_statistic) (or "J-index"). The statistic is implemented in the {yardstick} package and can be accessed via [`yardstick::j_index()`](https://yardstick.tidymodels.org/reference/j_index.html). So, what's with the J statistic?
+
+* J = sensitivity + specificity - 1
+* The maximum value of J is 1 when there are no false positives and no false negatives
+* This technique comes in handy when a threshold of 50% (or 0.5) may not be the most appropriate for assigning a binary classification, especially when class imbalances exist.
+
+Let's create a basic tidymodels workflow to fit Lending Club loan data to a logistic regression and predict whether a loan is good or bad. The code below was pulled directly from the source example written by Davis Vaughan:
+
+```{r}
+#| eval: true
+#| code-line-numbers: true
+
+library(parsnip)
+library(probably)
+library(dplyr)
+library(rsample)
+library(modeldata)
+library(ggplot2)
+data("lending_club")
+
+lending_club_modified <- 
+  lending_club |> 
+  dplyr::mutate(Class = relevel(Class, "good")) |> 
+  dplyr::select(Class, annual_inc, verification_status, sub_grade)
+
+set.seed(123)
+split <- rsample::initial_split(lending_club_modified)
+lending_train <- rsample::training(split)
+lending_test  <- rsample::testing(split)
+
+# Note: 7,008 records are "good" loans and 384 are "bad"
+
+logi_reg_fit <- 
+  parsnip::logistic_reg() |> 
+  parsnip::set_engine("glm") |> 
+  parsnip::fit(formula = Class ~ ., data = lending_train)
+
+predictions <- dplyr::bind_cols(
+  lending_test,
+  predict(logi_reg_fit, new_data = lending_test),
+  predict(logi_reg_fit, new_data = lending_test, type = "prob"))
+
+threshold_data <- predictions |> 
+  probably::threshold_perf(truth = Class, estimate = .pred_good, 
+                           thresholds = seq(0.5, 1, by = 0.0025)) |> 
+  dplyr::filter(.metric != "distance") |> 
+  dplyr::mutate(group = dplyr::case_when(.metric == "sens" ~ "1",
+                                         .metric == "spec" ~ "1",
+                                         TRUE ~ "2"))
+
+max_j_index_threshold <- threshold_data |> 
+  dplyr::filter(.metric == "j_index") |> 
+  dplyr::filter(.estimate == max(.estimate)) |> 
+  dplyr::pull(.threshold)
+
+ggplot2::ggplot(threshold_data, aes(x = .threshold, y = .estimate, 
+                                    color = .metric, alpha = group)) +
+  ggplot2::geom_line() +
+  ggplot2::theme_minimal() +
+  ggplot2::scale_color_viridis_d(end = 0.9) +
+  ggplot2::scale_alpha_manual(values = c(.4, 1), guide = "none") +
+  ggplot2::geom_vline(xintercept = max_j_index_threshold, 
+                      alpha = .6, color = "grey30") +
+  ggplot2::labs(
+    x = "'Good' Threshold\n(above this value is considered 'good')",
+    y = "Metric Estimate",
+    title = "Balancing performance by varying the threshold",
+    subtitle = paste0("Sensitivity or specificity alone might not be",
+                      " enough!\nVertical line = Max J-Index"))
+```
+
+The `max_j_index_threshold` has a value of 0.945 and the above viz helps supports the case for changing the discrete classification threshold from the baseline value of 0.5 (where a prediction probability above 0.5 indicates a "good"). Neat package with some other capabilities that I'm going to keep an eye out for.
+
+# 2. Arrow + DuckDB
+
+Earlier in 2022, there was a lot of excitement on my Twitter feed with devs and data scientists discussing larger-than-memory data manipulation and ultra-fast ETL with [DuckDB](https://duckdb.org/), a new analytical data management system with bindings for Python and R. DuckDB offers a parallel vectorized execution engine for zero-copy query of [Apache Arrow](https://arrow.apache.org/) data sets - Perfect for my world of _mostly_ tabular data. DuckDB streams query results back to Arrow and this is possible via a SQL interface and API. As DuckDB puts it, they provide "an in-process
+SQL OLAP database management system."
+
+Below are some of my favorite DuckDB overviews and tutorials:
+
+1. [_DuckDB quacks Arrow_, Pedro Holanda and Jonathan Keane](https://duckdb.org/2021/12/03/duck-arrow.html#Benchmark%20Comparison)
+2. [_Manipulate big data with Arrow & DuckDB_, Christophe Nicault](https://www.christophenicault.com/post/large_dataframe_arrow_duckdb/)
+3. [_Parquet, SQL, DuckDB, arrow, dbplyr and R_, Rich Pauloo](https://www.richpauloo.com/post/parquet/)
+
+If the above don't make it clear, using dplyr with Arrow and DuckDB is a breeze. I haven't yet mentioned the [Apache Parquet](https://parquet.apache.org/) file format since I find it secondary to the above, but Arrow and DuckDB provide an easy approach to working with Parquet (and other) file formats and filesize (compared to a CSV) can be slimmed by an order of magnitude. Let's dive into some stats, below, benchmarked by Christophe Nicault. The benchmarks relate to an 8GB CSV file with 59 million observations:
+
+## Size on Disk
+![](./images/size_on_disk.png)
+
+## Query Performance
+![](./images/performance_on_query.png)
+
+## Size vs Performance
+![](./images/size_vs_performance.png)
+
+# 3. Encryption with R
+
+R's [sodium](https://docs.ropensci.org/sodium/) package provides a binding to [libsodium](https://doc.libsodium.org/) for higher-level cryptographic tooling. I first learned of {sodium} while working with Google BigQuery and learning about R's [gargle](https://gargle.r-lib.org/articles/managing-tokens-securely.html) package for securely managing access credentials. Another package I'd like to point attention to is [cyphr](https://docs.ropensci.org/cyphr/). I've used a combination of these packages for creating secure access to encrypted data objects.
+
+I'd like to walk through two examples using these encryption tools:
+
+1. Intro to {sodium} for keypair generation, message encrypt / decrpyt
+2. Keypair gen with {sodium} + file encrypt / decrpt with {cyphr} 
+
+::: callout-warning
+## Installation from source on macOS or Linux requires [libsodium](https://doc.libsodium.org/)
+* On macOS, install via homebrew: `brew install libsodium`
+* On Debian or Ubuntu: `sudo apt-get install -y libsodium-dev`
+* On Fedora: `sudo yum install libsodium-devel`
+* On CentOS / RHEL, install via EPEL: 
+  * `sudo yum install epel-release`
+  * `sudo yum install libsodium-devel`
+:::
+
+## Intro to Sodium
+
+The following example uses {sodium} to generate a keypair and encrpt / decrypt a serialized message (representing the iris data set). One major benefit of encrypting objects like this is that you can publicly expose these encrypted objects since you alone hold the key to decrypt them. If you're working with GitHub Actions, GitLab CI/CD, or another git-backed repository, you can save these encrypted messages in your public repo - If someone forks or clones your repository, they'll be unable to decrypt the object without the hash key initially created in the keypair generation step.
+
+The example below was [written by Jeroen Ooms on rOpenSci](https://docs.ropensci.org/sodium/#hello-world) and is part of the documentation for the {sodium} package. I added the last step to show how to `unserialize()` an object previously decrypted.
+
+```{r}
+#| eval: true
+#| code-line-numbers: true
+
+library(sodium)
+
+# Generate keypair:
+key <- sodium::keygen()
+pub <- sodium::pubkey(key)
+
+# Encrypt message with pubkey
+msg <- serialize(iris, NULL)
+ciphertext <- sodium::simple_encrypt(msg, pub)
+
+# Decrypt message with private key
+out <- sodium::simple_decrypt(ciphertext, key)
+
+# Unserialize the decrypted message & assign iris data to new obj
+iris_new <- unserialize(out)
+```
+
+## Sodium + Cyphr
+
+Using the {sodium} and {cyphr} packages, the code snippets below showcase three key steps: 3a) data encryption, 3b) in-line decryption (to be used as a script intended to run with a GitHub Actions Workflow every six hours), and 3c) the GitHub Actions YAML file to configure the automation workflow.
+
+Using this approach, I can safely expose an encrypted RDS file on my public GitHub repo that contains secret API credentials for accessing Meetup.com and fetching new events that may have been posted. The encrypted RDS file can only be decrypted using the keypair hash saved with the `MEETUP_PWD` environment variable on my GitHub repo, a secret env var only visible to me.
+
+::: callout-tip
+## GitHub Actions
+
+To learn how to use secrets for use with GitHub Actions, the official [Actions/Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) documentation is an excellent end-to-end resource. A generalized overview of how to configure your GitHub Actions Workflow is available on GitHub's [Actions/Workflow Syntax](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions) documentation. A brief overview of major updates to GitHub Actions for R Users was published on the [Tidyverse Blog in June 2022](https://www.tidyverse.org/blog/2022/06/actions-2-0-0/), with the most complete resource for R related GitHub Actions being on [r-lib/actions](https://github.com/r-lib/actions).
+:::
+
+NOTE: For the purposes of GitHub Actions and the config YAML file covered in Step 3, this file lives in the following path on my GitHub repo: `~/.github/workflows/main.yml`
+
+## Step 3a: Encrypt
+
+```{r}
+#| eval: false
+#| code-line-numbers: true
+# The following is a one-time key encryption setup
+
+library(sodium)
+library(cyphr)
+library(meetupr)
+
+# After doing a one-time interactive auth with {meetupr},
+# your Meetup token will be stored as an RDS file in the 
+# same path as your {meetupr} package:
+token_path <- 
+  path.expand(
+    file.path("~", "Library", "Application Support", 
+              "meetupr", "meetup_token.rds")
+  )
+
+meetupr::meetup_auth(
+  token = NULL,
+  cache = TRUE,
+  use_appdir = FALSE,
+  token_path = token_path
+)
+
+# Encrypt the existing token to safely save 
+# meetupr_secret.rds in a public repo
+sodium_key <- sodium::keygen()
+
+# In your working environment, save a secret env var called
+# "MEETUPR_PWD" using the randomly generated sodium_key
+Sys.setenv("MEETUPR_PWD" = sodium::bin2hex(sodium_key))
+
+# Create a key for use with {cyphr}
+key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
+
+# Encrypt the RDS and save as meetupr_secret.rds
+# in the working environment
+cyphr::encrypt_file(
+  token_path,
+  key = key,
+  dest = "meetupr_secret.rds"
+)
+```
+
+## Step 3b: Decrypt
+```{r}
+#| eval: false
+#| code-line-numbers: true
+# This script was saved as "meetup_events.R" and it is run as part
+# of the GitHub Actions workflow on line 37 of the YAML file covered
+# in "Step 3: GitHub Actions YAML"
+
+library(dplyr)
+library(stringr)
+library(lubridate)
+library(purrr)
+library(meetupr)
+library(cyphr)
+
+# Generate Key with MEETUPR_PWD env var for MeetupR data CI/CD
+key <- cyphr::key_sodium(sodium::hex2bin(Sys.getenv("MEETUPR_PWD")))
+
+temptoken <- tempfile(fileext = ".rds")
+
+cyphr::decrypt_file("meetupr_secret.rds",
+                    key = key,
+                    dest = temptoken)
+
+token <- readRDS(temptoken)[[1]]
+
+# Non-Interactive Meetup Authorization
+token <- meetupr::meetup_auth(
+  token = token,
+  use_appdir = FALSE,
+  cache = FALSE
+)
+
+# Save a temporary, updated Meetup personal access token that will
+# be used downstream with the meetupr::get_events() function
+Sys.setenv(MEETUPR_PAT = temptoken)
+
+# Create a character vector of the Meetup accounts for data collection
+socal_groups <- c("SOCAL-RUG", 
+                  "Santa-Barbara-R-Users-Group", 
+                  "Real-Data-Science-USA-R-Meetup",
+                  "useR-Group-in-San-Luis-Obispo-County", 
+                  "rladies-irvine",
+                  "rladies-la",
+                  "rladies-pasadena",
+                  "rladies-riverside",
+                  "rladies-santa-barbara",
+                  "rladies-san-diego")
+
+# Create a function for getting upcoming and past Meetup events
+get_meetup_events <- function(x) {
+  if (length(meetupr::get_events(urlname = x)) > 0) {
+    meetupr::get_events(urlname = x) |> 
+      dplyr::mutate(chapter = x)
+  }
+}
+
+# Using purrr, iterate through each Meetup account, collect 
+# event data, and row-bind the resulting event listings
+events_raw <- 
+  purrr::map_dfr(.x = socal_groups, .f = get_meetup_events) |> 
+  dplyr::select(chapter, dplyr::everything())
+
+# Data clean up
+events <- 
+  events_raw |> 
+  dplyr::filter(
+    status != "draft",
+    !stringr::str_detect(title, "Cross-post|cross-post"),
+    !stringr::str_detect(description, "Cross-post|cross-post")) |> 
+  dplyr::distinct() |> 
+  dplyr::arrange(dplyr::desc(time)) |>
+  dplyr::mutate(
+    Upcoming = dplyr::if_else(status == "published", "&#x2713;", ""),
+    Chapter = dplyr::case_when(
+      chapter == "SOCAL-RUG" ~ "SoCal RUG",
+      chapter == "Santa-Barbara-R-Users-Group" ~ "Santa Barbara RUG",
+      chapter == "Real-Data-Science-USA-R-Meetup" ~ "Los Angeles RUG",
+      chapter == "useR-Group-in-San-Luis-Obispo-County" ~ "SLO RUG",
+      chapter == "rladies-irvine" ~ "R-Ladies Irvine",
+      chapter == "rladies-la" ~ "R-Ladies Los Angeles",
+      chapter == "rladies-pasadena" ~ "R-Ladies Pasadena",
+      chapter == "rladies-riverside" ~ "R-Ladies Riverside",
+      chapter == "rladies-santa-barbara" ~ "R-Ladies Santa Barbara",
+      chapter == "rladies-san-diego" ~ "R-Ladies San Diego",
+      TRUE ~ chapter),
+    Event = paste0('<a href=', '"', link, '">', title, '</a>'),
+    Date = lubridate::as_date(time),
+    Time = format.POSIXct(time, format = "%I:%M %p")) |> 
+  dplyr::select(Upcoming, Chapter, Event, Date, "Time (PST)" = Time)
+
+saveRDS(events, file = "events/events_past_and_upcoming.rds")
+```
+
+## Step 3c: GitHub Actions YAML
+```{bash}
+#| eval: false
+#| code-line-numbers: true
+name: Render and Deploy Quarto Blog
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+  schedule:
+    - cron:  '0 */6 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Install libsodium
+        run: sudo apt-get install -y libsodium-dev
+
+      - name: Setup Quarto CLI
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.2.280
+
+      - name: Setup R 
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.2'
+          use-public-rspm: true
+      
+      - name: Setup renv
+        uses: r-lib/actions/setup-renv@v2
+
+      - name: Fetch Events from Meetup
+        run: source(here::here("helpers", "meetup_events.R"))
+        env:
+          MEETUPR_PWD: ${{ secrets.MEETUPR_PWD }}
+        shell: Rscript {0}
+
+      - name: Render and Publish to Netlify
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: netlify
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+```
+
+# Session Info
+
+```{bash}
+#| eval: false
+
+R version 4.2.2 (2022-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Ventura 13.1
+
+Matrix products: default
+LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] quarto_1.2          purrr_1.0.1         lubridate_1.9.0    
+ [4] timechange_0.2.0    stringr_1.5.0       meetupr_0.2.99.9002
+ [7] cyphr_1.1.4         sodium_1.2.1        ggplot2_3.4.0      
+[10] modeldata_1.0.1     rsample_1.1.1       dplyr_1.0.10       
+[13] probably_0.1.0      parsnip_1.0.3      
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.2.0  xfun_0.36         listenv_0.9.0    
+ [4] colorspace_2.0-3  vctrs_0.5.1       generics_0.1.3   
+ [7] htmltools_0.5.4   yaml_2.3.6        utf8_1.2.2       
+[10] rlang_1.0.6       pillar_1.8.1      later_1.3.0      
+[13] glue_1.6.2        withr_2.5.0       DBI_1.1.3        
+[16] lifecycle_1.0.3   munsell_0.5.0     gtable_0.3.1     
+[19] anytime_0.3.9     future_1.30.0     evaluate_0.19    
+[22] codetools_0.2-18  knitr_1.41        fastmap_1.1.0    
+[25] ps_1.7.2          parallel_4.2.2    fansi_1.0.3      
+[28] furrr_0.3.1       Rcpp_1.0.9        scales_1.2.1     
+[31] jsonlite_1.8.4    parallelly_1.34.0 digest_0.6.31    
+[34] stringi_1.7.12    processx_3.8.0    grid_4.2.2       
+[37] hardhat_1.2.0     cli_3.6.0         tools_4.2.2      
+[40] magrittr_2.0.3    tibble_3.1.8      tidyr_1.2.1      
+[43] pkgconfig_2.0.3   rmarkdown_2.19    assertthat_0.2.1 
+[46] yardstick_1.1.0   rstudioapi_0.14   ratelimitr_0.4.1 
+[49] R6_2.5.1          globals_0.16.2    compiler_4.2.2   
+```
