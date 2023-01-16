@@ -34,7 +34,7 @@
 </ul>
 <p>Let’s create a basic tidymodels workflow to fit Lending Club loan data to a logistic regression and predict whether a loan is good or bad. The code below was pulled directly from the source example written by Davis Vaughan:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">library</span>(parsnip)</span>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">library</span>(parsnip)</span>
 <span id="cb1-2"><span class="fu" style="color: #4758AB;">library</span>(probably)</span>
 <span id="cb1-3"><span class="fu" style="color: #4758AB;">library</span>(dplyr)</span>
 <span id="cb1-4"><span class="fu" style="color: #4758AB;">library</span>(rsample)</span>
@@ -155,7 +155,7 @@ Installation from source on macOS or Linux requires <a href="https://doc.libsodi
 <p>The following example uses {sodium} to generate a keypair and encrpt / decrypt a serialized message (representing the iris data set). One major benefit of encrypting objects like this is that you can publicly expose these encrypted objects since you alone hold the key to decrypt them. If you’re working with GitHub Actions, GitLab CI/CD, or another git-backed repository, you can save these encrypted messages in your public repo - If someone forks or clones your repository, they’ll be unable to decrypt the object without the hash key initially created in the keypair generation step.</p>
 <p>The example below was <a href="https://docs.ropensci.org/sodium/#hello-world">written by Jeroen Ooms on rOpenSci</a> and is part of the documentation for the {sodium} package. I added the last step to show how to <code>unserialize()</code> an object previously decrypted.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;">library</span>(sodium)</span>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;">library</span>(sodium)</span>
 <span id="cb2-2"></span>
 <span id="cb2-3"><span class="co" style="color: #5E5E5E;"># Generate keypair:</span></span>
 <span id="cb2-4">key <span class="ot" style="color: #003B4F;">&lt;-</span> sodium<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">keygen</span>()</span>
@@ -194,7 +194,7 @@ GitHub Actions
 <section id="step-3a-encrypt" class="level2">
 <h2 class="anchored" data-anchor-id="step-3a-encrypt">Step 3a: Encrypt</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># The following is a one-time key encryption setup</span></span>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># The following is a one-time key encryption setup</span></span>
 <span id="cb3-2"></span>
 <span id="cb3-3"><span class="fu" style="color: #4758AB;">library</span>(sodium)</span>
 <span id="cb3-4"><span class="fu" style="color: #4758AB;">library</span>(cyphr)</span>
@@ -239,7 +239,7 @@ GitHub Actions
 <section id="step-3b-decrypt" class="level2">
 <h2 class="anchored" data-anchor-id="step-3b-decrypt">Step 3b: Decrypt</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;"># This script was saved as "meetup_events.R" and it is run as part</span></span>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;"># This script was saved as "meetup_events.R" and it is run as part</span></span>
 <span id="cb4-2"><span class="co" style="color: #5E5E5E;"># of the GitHub Actions workflow on line 37 of the YAML file covered</span></span>
 <span id="cb4-3"><span class="co" style="color: #5E5E5E;"># in "Step 3: GitHub Actions YAML"</span></span>
 <span id="cb4-4"></span>
@@ -332,7 +332,7 @@ GitHub Actions
 <section id="step-3c-github-actions-yaml" class="level2">
 <h2 class="anchored" data-anchor-id="step-3c-github-actions-yaml">Step 3c: GitHub Actions YAML</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">name:</span> Render and Deploy Quarto Blog</span>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash code-overflow-scroll number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">name:</span> Render and Deploy Quarto Blog</span>
 <span id="cb5-2"><span class="ex" style="color: null;">on:</span></span>
 <span id="cb5-3">  <span class="ex" style="color: null;">pull_request:</span></span>
 <span id="cb5-4">    <span class="ex" style="color: null;">branches:</span> [ master ]</span>
@@ -384,7 +384,7 @@ GitHub Actions
 <section id="session-info" class="level1">
 <h1>Session Info</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;">R</span> version 4.2.2 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">2022-10-31</span><span class="kw" style="color: #003B4F;">)</span></span>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-scroll code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;">R</span> version 4.2.2 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">2022-10-31</span><span class="kw" style="color: #003B4F;">)</span></span>
 <span id="cb6-2"><span class="ex" style="color: null;">Platform:</span> aarch64-apple-darwin20 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">64-bit</span><span class="kw" style="color: #003B4F;">)</span></span>
 <span id="cb6-3"><span class="ex" style="color: null;">Running</span> under: macOS Ventura 13.1</span>
 <span id="cb6-4"></span>

@@ -25,6 +25,7 @@ Let's create a basic tidymodels workflow to fit Lending Club loan data to a logi
 ```{r}
 #| eval: true
 #| code-line-numbers: true
+#| code-overflow: scroll
 
 library(parsnip)
 library(probably)
@@ -137,6 +138,7 @@ The example below was [written by Jeroen Ooms on rOpenSci](https://docs.ropensci
 ```{r}
 #| eval: true
 #| code-line-numbers: true
+#| code-overflow: scroll
 
 library(sodium)
 
@@ -174,6 +176,7 @@ NOTE: For the purposes of GitHub Actions and the config YAML file covered in Ste
 ```{r}
 #| eval: false
 #| code-line-numbers: true
+#| code-overflow: scroll
 # The following is a one-time key encryption setup
 
 library(sodium)
@@ -220,6 +223,7 @@ cyphr::encrypt_file(
 ```{r}
 #| eval: false
 #| code-line-numbers: true
+#| code-overflow: scroll
 # This script was saved as "meetup_events.R" and it is run as part
 # of the GitHub Actions workflow on line 37 of the YAML file covered
 # in "Step 3: GitHub Actions YAML"
@@ -314,6 +318,7 @@ saveRDS(events, file = "events/events_past_and_upcoming.rds")
 ```{bash}
 #| eval: false
 #| code-line-numbers: true
+#| code-overflow: scroll
 name: Render and Deploy Quarto Blog
 on:
   pull_request:
@@ -366,6 +371,7 @@ jobs:
 
 ```{bash}
 #| eval: false
+#| code-overflow: scroll
 
 R version 4.2.2 (2022-10-31)
 Platform: aarch64-apple-darwin20 (64-bit)
