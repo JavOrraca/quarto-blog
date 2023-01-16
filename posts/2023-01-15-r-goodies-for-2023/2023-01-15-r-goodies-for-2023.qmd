@@ -167,7 +167,7 @@ Using this approach, I can safely expose an encrypted RDS file on my public GitH
 To learn how to use secrets for use with GitHub Actions, the official [Actions/Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) documentation is an excellent end-to-end resource. A generalized overview of how to configure your GitHub Actions Workflow is available on GitHub's [Actions/Workflow Syntax](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions) documentation. A brief overview of major updates to GitHub Actions for R Users was published on the [Tidyverse Blog in June 2022](https://www.tidyverse.org/blog/2022/06/actions-2-0-0/), with the most complete resource for R related GitHub Actions being on [r-lib/actions](https://github.com/r-lib/actions).
 :::
 
-NOTE: For the purposes of GitHub Actions and the config YAML file covered in Step 3, this file lives in the following path on my GitHub repo: `~/.github/workflows/main.yml`
+NOTE: For the purposes of GitHub Actions and the config YAML file covered in Step 3c, this file lives in the following path on my GitHub repo: `~/.github/workflows/main.yml`
 
 ## Step 3a: Encrypt
 
