@@ -226,7 +226,7 @@ cyphr::encrypt_file(
 #| code-overflow: scroll
 # This script was saved as "meetup_events.R" and it is run as part
 # of the GitHub Actions workflow on line 37 of the YAML file covered
-# in "Step 3: GitHub Actions YAML"
+# in "Step 3c: GitHub Actions YAML"
 
 library(dplyr)
 library(stringr)
