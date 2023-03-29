@@ -1,0 +1,56 @@
+---
+title: "Impressing Hiring Teams with a Shiny App Demo"
+description: "Last week, I presented to SoCal RUG on how to build a Shiny app demo as a resume or cover letter accessory. This 'accessory' will help impress hiring managers that you're interviewing with and also differentiate you from other data science applicants."
+date: 03-28-2023
+categories: [tidyverse, shiny, renv, bslib]
+image: images/presentation_cover_slide.png
+---
+
+# Background
+
+The Southern California R Users Group ("SoCal RUG") is one of my favorite organizations - Not only is there a lot to be learned from regularly attending our events, it's a great place to meet and network with other passionate data scientists in the community.
+
+Last week, I presented to SoCal RUG on how to build a Shiny app demo as a resume or cover letter accessory, an extension to the [_Build a Shiny App Demo_](https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html) blog post that I wrote in Nov 2022. Empowering yourself with this kind of 'accessory' ready to be demoed at your interviews will help impress data science hiring managers and also differentiate you from other applicants.
+
+# Watch on YouTube
+
+{{< video https://youtu.be/lNn4beRxnbk title="Build a Shiny App Demo as a Cover Letter Accessory" >}}
+
+# Presentation Materials
+
+* Slides from my SoCal RUG presentation: [2023-03-21 | Build_a_Shiny_App_Demo](https://github.com/socalrug/presentations/tree/master/2023-03-21_Build_a_Shiny_App_Demo)
+* Blog post: [2022-11-15 | Build a Shiny App Demo](https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html)
+* GitHub repo: [github.com/JavOrraca/bslib_demo_shiny](https://github.com/JavOrraca/bslib_demo_shiny)
+* Live Shiny app demo: [javierorraca.shinyapps.io/Bloomreach_Shiny_App/](https://javierorraca.shinyapps.io/Bloomreach_Shiny_App/)
+
+# Resources
+
+## Beginner Resources
+
+* Official Shiny website: [shiny.rstudio.com](https://shiny.rstudio.com)
+  * Includes example galleries for inspiration
+* Deploying your Shiny app to shinyapps.io: [shiny.rstudio.com/articles/shinyapps.html](https://shiny.rstudio.com/articles/shinyapps.html)
+* Shiny extension packages:
+  * [{bs4Dash}: How to start? (step-by-step)](https://rinterface.github.io/bs4Dash/articles/step-by-step.html)
+    * Brings Bootstrap 4 support to Shiny themes
+    * Relies on AdminLTE HTML template
+  * [{bslib}: Customizing "stock" Shiny apps](https://rstudio.github.io/bslib/articles/bslib.html)
+    * Globally style your Shiny Bootstrap themes
+    * Use Sass variables to further customize your apps with “Sassy CSS” (*.scss)
+
+## Advanced Resources
+
+* Hadley Wickham’s Mastering Shiny: [mastering-shiny.org/](https://mastering-shiny.org/)
+* {golem} for modularizing and packaging Shiny apps: [thinkr-open.github.io/golem/index.html](https://thinkr-open.github.io/golem/index.html)
+* Engineering Production-Grade Shiny Apps: [engineering-shiny.org/](https://engineering-shiny.org/)
+* Outstanding User Interfaces with Shiny: [unleash-shiny.rinterface.com/](https://unleash-shiny.rinterface.com/)
+* Automating Dockerfile creation for Shiny apps: [www.jumpingrivers.com/blog/shiny-auto-docker](https://www.jumpingrivers.com/blog/shiny-auto-docker)
+
+## Shiny Inspiration
+
+* Posit’s Shiny gallery: [shiny.rstudio.com/gallery/](https://shiny.rstudio.com/gallery/)
+* Appsilon’s Shiny demos: [demo.appsilon.com/](https://demo.appsilon.com/)
+* Shiny Contest submissions by Stefan Schliebs:
+  * 2021: [New Zealand Commute Explorer](https://nz-stefan.shinyapps.io/commute-explorer-2/)
+  * 2020: [R Blog Explorer](https://nz-stefan.shinyapps.io/blog-explorer/)
+  * 2019: [R Package Explorer](https://nz-stefan.shinyapps.io/cran-explorer/)

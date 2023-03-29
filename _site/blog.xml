@@ -9,8 +9,95 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.2.280</generator>
-<lastBuildDate>Sun, 15 Jan 2023 08:00:00 GMT</lastBuildDate>
+<generator>quarto-1.2.335</generator>
+<lastBuildDate>Tue, 28 Mar 2023 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Impressing Hiring Teams with a Shiny App Demo</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>The Southern California R Users Group (“SoCal RUG”) is one of my favorite organizations - Not only is there a lot to be learned from regularly attending our events, it’s a great place to meet and network with other passionate data scientists in the community.</p>
+<p>Last week, I presented to SoCal RUG on how to build a Shiny app demo as a resume or cover letter accessory, an extension to the <a href="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html"><em>Build a Shiny App Demo</em></a> blog post that I wrote in Nov 2022. Empowering yourself with this kind of ‘accessory’ ready to be demoed at your interviews will help impress data science hiring managers and also differentiate you from other applicants.</p>
+</section>
+<section id="watch-on-youtube" class="level1">
+<h1>Watch on YouTube</h1>
+<div class="quarto-video ratio ratio-16x9"><iframe src="https://www.youtube.com/embed/lNn4beRxnbk" title="Build a Shiny App Demo as a Cover Letter Accessory" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+</section>
+<section id="presentation-materials" class="level1">
+<h1>Presentation Materials</h1>
+<ul>
+<li>Slides from my SoCal RUG presentation: <a href="https://github.com/socalrug/presentations/tree/master/2023-03-21_Build_a_Shiny_App_Demo">2023-03-21 | Build_a_Shiny_App_Demo</a></li>
+<li>Blog post: <a href="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html">2022-11-15 | Build a Shiny App Demo</a></li>
+<li>GitHub repo: <a href="https://github.com/JavOrraca/bslib_demo_shiny">github.com/JavOrraca/bslib_demo_shiny</a></li>
+<li>Live Shiny app demo: <a href="https://javierorraca.shinyapps.io/Bloomreach_Shiny_App/">javierorraca.shinyapps.io/Bloomreach_Shiny_App/</a></li>
+</ul>
+</section>
+<section id="resources" class="level1">
+<h1>Resources</h1>
+<section id="beginner-resources" class="level2">
+<h2 class="anchored" data-anchor-id="beginner-resources">Beginner Resources</h2>
+<ul>
+<li>Official Shiny website: <a href="https://shiny.rstudio.com">shiny.rstudio.com</a>
+<ul>
+<li>Includes example galleries for inspiration</li>
+</ul></li>
+<li>Deploying your Shiny app to shinyapps.io: <a href="https://shiny.rstudio.com/articles/shinyapps.html">shiny.rstudio.com/articles/shinyapps.html</a></li>
+<li>Shiny extension packages:
+<ul>
+<li><a href="https://rinterface.github.io/bs4Dash/articles/step-by-step.html">{bs4Dash}: How to start? (step-by-step)</a>
+<ul>
+<li>Brings Bootstrap 4 support to Shiny themes</li>
+<li>Relies on AdminLTE HTML template</li>
+</ul></li>
+<li><a href="https://rstudio.github.io/bslib/articles/bslib.html">{bslib}: Customizing “stock” Shiny apps</a>
+<ul>
+<li>Globally style your Shiny Bootstrap themes</li>
+<li>Use Sass variables to further customize your apps with “Sassy CSS” (*.scss)</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="advanced-resources" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-resources">Advanced Resources</h2>
+<ul>
+<li>Hadley Wickham’s Mastering Shiny: <a href="https://mastering-shiny.org/">mastering-shiny.org/</a></li>
+<li>{golem} for modularizing and packaging Shiny apps: <a href="https://thinkr-open.github.io/golem/index.html">thinkr-open.github.io/golem/index.html</a></li>
+<li>Engineering Production-Grade Shiny Apps: <a href="https://engineering-shiny.org/">engineering-shiny.org/</a></li>
+<li>Outstanding User Interfaces with Shiny: <a href="https://unleash-shiny.rinterface.com/">unleash-shiny.rinterface.com/</a></li>
+<li>Automating Dockerfile creation for Shiny apps: <a href="https://www.jumpingrivers.com/blog/shiny-auto-docker">www.jumpingrivers.com/blog/shiny-auto-docker</a></li>
+</ul>
+</section>
+<section id="shiny-inspiration" class="level2">
+<h2 class="anchored" data-anchor-id="shiny-inspiration">Shiny Inspiration</h2>
+<ul>
+<li>Posit’s Shiny gallery: <a href="https://shiny.rstudio.com/gallery/">shiny.rstudio.com/gallery/</a></li>
+<li>Appsilon’s Shiny demos: <a href="https://demo.appsilon.com/">demo.appsilon.com/</a></li>
+<li>Shiny Contest submissions by Stefan Schliebs:
+<ul>
+<li>2021: <a href="https://nz-stefan.shinyapps.io/commute-explorer-2/">New Zealand Commute Explorer</a></li>
+<li>2020: <a href="https://nz-stefan.shinyapps.io/blog-explorer/">R Blog Explorer</a></li>
+<li>2019: <a href="https://nz-stefan.shinyapps.io/cran-explorer/">R Package Explorer</a></li>
+</ul></li>
+</ul>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
+  <category>tidyverse</category>
+  <category>shiny</category>
+  <category>renv</category>
+  <category>bslib</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/index.html</guid>
+  <pubDate>Tue, 28 Mar 2023 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/images/presentation_cover_slide.png" medium="image" type="image/png" height="80" width="144"/>
+</item>
 <item>
   <title>R Goodies for 2023</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -1716,30 +1803,6 @@ font-style: italic;">## USAGE</span></span>
   <guid>https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/2020-02-08-R-write-table.html</guid>
   <pubDate>Sat, 08 Feb 2020 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/images/carbon.png" medium="image" type="image/png" height="105" width="144"/>
-</item>
-<item>
-  <title>Hadley Wickham on SuperDataScience Podcast</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/2020-02-04-Hadley-Wickham-on-SDS-Podcast.html</link>
-  <description><![CDATA[ 
-
-
-
-<p>Hands down, he was the inspiration for me starting my own podcast and I still listen to SDS weekly. Being a massive fan of RStudio, I’m super excited about this most recent SDS episode featuring Hadley Wickham, RStudio’s Chief Data Scientist and creator of ggplot2, dplyr, author, professor… he’s a research and data science genius!.</p>
-<p>This episode is a great listen as he explores RStudio Python and R integration and the future of data science.</p>
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/images/SDS_Wickham.jpg" class="img-fluid"></p>
-<p>Source:</p>
-<ul>
-<li>SuperDataScience ep.337 with <a href="https://www.superdatascience.com/podcast/hadley-wickham-talks-integration-and-future-of-python-and-r">Hadley Wickham</a></li>
-</ul>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section></div> ]]></description>
-  <category>podcast</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/2020-02-04-Hadley-Wickham-on-SDS-Podcast.html</guid>
-  <pubDate>Tue, 04 Feb 2020 08:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/images/SDS_Wickham.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
