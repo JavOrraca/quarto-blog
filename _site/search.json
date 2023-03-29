@@ -70,29 +70,29 @@
     "text": "It’s such a great way to make reports come to life. I’ve been using it more in the last month than I have in the last year and can’t believe how much more interactive I’ve made my deliverables (and even my own data exploration). Really excited to see what new tricks I can learn from RStudio’s webinar on Friday, November 15!\nLinks:\n\nRStudio Webinar Signup on Eventbrite\n\n\n\n\nReusehttps://creativecommons.org/licenses/by/4.0/"
   },
   {
-    "objectID": "posts/2023-03-28-shiny-bslib-socal-rug/index.html",
-    "href": "posts/2023-03-28-shiny-bslib-socal-rug/index.html",
+    "objectID": "posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html",
+    "href": "posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html",
     "title": "Impressing Hiring Teams with a Shiny App Demo",
     "section": "",
     "text": "The Southern California R Users Group (“SoCal RUG”) is one of my favorite organizations - Not only is there a lot to be learned from regularly attending our events, it’s a great place to meet and network with other passionate data scientists in the community.\nLast week, I presented to SoCal RUG on how to build a Shiny app demo as a resume or cover letter accessory, an extension to the Build a Shiny App Demo blog post that I wrote in Nov 2022. Empowering yourself with this kind of ‘accessory’ ready to be demoed at your interviews will help impress data science hiring managers and also differentiate you from other applicants."
   },
   {
-    "objectID": "posts/2023-03-28-shiny-bslib-socal-rug/index.html#beginner-resources",
-    "href": "posts/2023-03-28-shiny-bslib-socal-rug/index.html#beginner-resources",
+    "objectID": "posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html#beginner-resources",
+    "href": "posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html#beginner-resources",
     "title": "Impressing Hiring Teams with a Shiny App Demo",
     "section": "Beginner Resources",
     "text": "Beginner Resources\n\nOfficial Shiny website: shiny.rstudio.com\n\nIncludes example galleries for inspiration\n\nDeploying your Shiny app to shinyapps.io: shiny.rstudio.com/articles/shinyapps.html\nShiny extension packages:\n\n{bs4Dash}: How to start? (step-by-step)\n\nBrings Bootstrap 4 support to Shiny themes\nRelies on AdminLTE HTML template\n\n{bslib}: Customizing “stock” Shiny apps\n\nGlobally style your Shiny Bootstrap themes\nUse Sass variables to further customize your apps with “Sassy CSS” (*.scss)"
   },
   {
-    "objectID": "posts/2023-03-28-shiny-bslib-socal-rug/index.html#advanced-resources",
-    "href": "posts/2023-03-28-shiny-bslib-socal-rug/index.html#advanced-resources",
+    "objectID": "posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html#advanced-resources",
+    "href": "posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html#advanced-resources",
     "title": "Impressing Hiring Teams with a Shiny App Demo",
     "section": "Advanced Resources",
     "text": "Advanced Resources\n\nHadley Wickham’s Mastering Shiny: mastering-shiny.org/\n{golem} for modularizing and packaging Shiny apps: thinkr-open.github.io/golem/index.html\nEngineering Production-Grade Shiny Apps: engineering-shiny.org/\nOutstanding User Interfaces with Shiny: unleash-shiny.rinterface.com/\nAutomating Dockerfile creation for Shiny apps: www.jumpingrivers.com/blog/shiny-auto-docker"
   },
   {
-    "objectID": "posts/2023-03-28-shiny-bslib-socal-rug/index.html#shiny-inspiration",
-    "href": "posts/2023-03-28-shiny-bslib-socal-rug/index.html#shiny-inspiration",
+    "objectID": "posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html#shiny-inspiration",
+    "href": "posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html#shiny-inspiration",
     "title": "Impressing Hiring Teams with a Shiny App Demo",
     "section": "Shiny Inspiration",
     "text": "Shiny Inspiration\n\nPosit’s Shiny gallery: shiny.rstudio.com/gallery/\nAppsilon’s Shiny demos: demo.appsilon.com/\nShiny Contest submissions by Stefan Schliebs:\n\n2021: New Zealand Commute Explorer\n2020: R Blog Explorer\n2019: R Package Explorer"
