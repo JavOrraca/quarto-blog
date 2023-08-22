@@ -5,7 +5,7 @@ website:
   title: "Data Science Bytes"
   site-url: https://www.javierorracadeatcu.com
   description: "Javier Orraca-Deatcu's data science website built with R and Quarto"
-  google-analytics: "UA-127790709-3"
+  google-analytics: "387217041"
   cookie-consent: true
   twitter-card: 
     image: images/Javier_Profile.jpg
@@ -17,14 +17,19 @@ website:
         href: blog.xml
       - icon: linkedin
         href: https://www.linkedin.com/in/orraca
+        target: _blank
       - icon: twitter
         href: https://twitter.com/JavierOrraca
+        target: _blank
       - icon: spotify
         href: https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw
+        target: _blank
       - icon: github
         href: https://github.com/JavOrraca
+        target: _blank
       - icon: stack-overflow
         href: https://stackoverflow.com/users/17282384/javier-orraca-deatcu
+        target: _blank
       - text: Blog
         href: blog.qmd
       - text: Resources
@@ -33,19 +38,23 @@ website:
             href: resources.qmd
           - text: R for Data Science
             href: https://r4ds.had.co.nz/index.html
+            target: _blank
           - text: Tidyverse
             href: https://www.tidyverse.org/
+            target: _blank
           - text: Tidymodels
             href: https://www.tidymodels.org/
+            target: _blank
           - text: Tidyverse Style Guide
-            href: https://www.tidyverse.org/blog/
+            href: https://style.tidyverse.org/
+            target: _blank
       - text: About
         href: about.qmd
 format:
   html:
     theme:
-      light: [flatly, theme-light.scss]
       dark: [darkly, theme-dark.scss]
+      light: [flatly, theme-light.scss]
     fontsize: 1.0em
     code-copy: true
     code-overflow: wrap
