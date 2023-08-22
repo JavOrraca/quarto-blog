@@ -10,47 +10,7 @@
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
 <generator>quarto-1.3.450</generator>
-<lastBuildDate>Mon, 21 Aug 2023 07:00:00 GMT</lastBuildDate>
-<item>
-  <title>webR via Quarto Extensions</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2023-08-21-webr-via-quarto-extensions/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<section id="webassembly" class="level1">
-<h1>WebAssembly</h1>
-<p>Imagine you’ve written a program in R. It’s simple and does exactly what you want but now, you wish to make it available for many people on the web, allowing them to run it within their web browsers. The challenge is that web browsers don’t natively understand R code.</p>
-<p>Traditionally, web browsers understand JavaScript as the primary language to run any dynamic operations. If you wanted to run code in a browser, you’d need to rewrite it in JavaScript. Re-writing code for every language to JavaScript is tedious and not efficient. This is where <a href="https://webassembly.org/">WebAssembly</a> (or “wasm”) comes into play.</p>
-<p>WebAssembly introduces a new type of code that can be run in modern web browsers. It is designed as a low-level virtual machine that runs code at near-native speed. What’s fascinating about WebAssembly is that it isn’t written by hand; instead, other languages (like C, C++, Rust, Python, R, and more) can be compiled to WebAssembly.</p>
-<p>In essence, WebAssembly allows you to take code from languages other than JavaScript, compile it into a format that the browser can understand, and then run it efficiently.</p>
-</section>
-<section id="webr" class="level1">
-<h1>webR</h1>
-<p>Compiling R to wasm was hypothetical even just a few years ago but is now possible via <a href="https://docs.r-wasm.org/webr/latest/">webR</a>. Being able to run R functions within a web browser without the need for an R interpreter on the user’s end feels game changing.</p>
-<blockquote class="blockquote">
-<p>Being able to run R functions within a web browser without the need for an R interpreter on the user’s end feels game changing.</p>
-</blockquote>
-<p>webR is enabling R developers to bring their applications, algorithms, and visualizations to broader audiences via the web. R + wasm is definitely in the early stages of development and new use cases are being released daily by the data science and web development communities. For now, I’m just enjoying learning the basics and thinking about potential use cases.</p>
-</section>
-<section id="demo" class="level1">
-<h1>Demo</h1>
-<p>For the examples below, I’m running webR via a Quarto extension. I’m following James Balamuta’s documentation on GitHub to learn how to use his <a href="https://github.com/coatless/quarto-webr">webR Code Extension for Quarto</a> before I dive deeper into the internals of webR. I’m basically using a plug-and-play implementation of webR for Quarto 🚀. My goal is to start here but eventually dive deeper into the core webR package and framework.</p>
-<p>This is a webr-enabled code cell in a Quarto HTML document.</p>
-<pre class="{webr-r}"><code>fit = lm(mpg ~ am, data = mtcars)
-summary(fit)</code></pre>
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
-  <category>tidyverse</category>
-  <category>webR</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2023-08-21-webr-via-quarto-extensions/index.html</guid>
-  <pubDate>Mon, 21 Aug 2023 07:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2023-08-21-webr-via-quarto-extensions/images/webR.png" medium="image" type="image/png" height="143" width="144"/>
-</item>
+<lastBuildDate>Tue, 28 Mar 2023 07:00:00 GMT</lastBuildDate>
 <item>
   <title>Impressing Hiring Teams with a Shiny App Demo</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -4820,6 +4780,31 @@ font-style: inherit;">#&gt;     0 50316 50316</span></span></code></pre></div>
   <guid>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</guid>
   <pubDate>Thu, 20 Feb 2020 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/images/themis.png" medium="image" type="image/png" height="126" width="144"/>
+</item>
+<item>
+  <title>Copy R Objects to Clipboard</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/2020-02-08-R-write-table.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>You learn something new every day, even basics! For R users on Windows (I’m assuming the same holds true for Mac and Linux users), do you ever find yourself needing to quickly export a dataframe or tibble to Excel or a text editor? I recently discovered base R’s <code>write.table</code> function and have used it much more often than I anticipated.</p>
+<p>See below syntax as an example:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/images/carbon.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">base R’s write.table</figcaption>
+</figure>
+</div>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+  <category>quick tips</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/2020-02-08-R-write-table.html</guid>
+  <pubDate>Sat, 08 Feb 2020 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/images/carbon.png" medium="image" type="image/png" height="105" width="144"/>
 </item>
 </channel>
 </rss>
