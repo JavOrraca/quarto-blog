@@ -1,7 +1,7 @@
 ---
 title: "webR via Quarto Extensions"
 description: "webR has been on my mind recently... With the recent release of webR 0.2.0, it's time to dive in!"
-date: 08-21-2023
+date: 08-23-2023
 categories: [tidyverse, webR]
 image: images/webR.png
 engine: knitr
@@ -9,6 +9,7 @@ webr:
   show-startup-message: false
   show-header-message: false
   home-dir: '/'
+  packages: ['dplyr']
 filters:
   - webr
 service-worker-url: '/posts/2023-08-21-webr-via-quarto-extensions/'
@@ -34,11 +35,22 @@ webR is enabling R developers to bring their applications, algorithms, and visua
 
 # Demo
 
-For the examples below, I'm running webR via a Quarto extension. I'm following James Balamuta's documentation on GitHub to learn how to use his [webR Code Extension for Quarto](https://github.com/coatless/quarto-webr) before I dive deeper into the internals of webR. I'm basically using a plug-and-play implementation of webR for Quarto 🚀. My goal is to start here but eventually dive deeper into the core webR package and framework.
+For the examples below, I'm running webR via a Quarto extension. I'm following James Balamuta's documentation on GitHub to learn how to use his [webR Code Extension for Quarto](https://github.com/coatless/quarto-webr) before I dive deeper into the internals of webR. I'm basically using a plug-and-play implementation of webR for Quarto 🚀. My goal is to start here and eventually use the raw webR framework for more robust applications.
 
-This is a webr-enabled code cell in a Quarto HTML document.
+And so, enjoy some webr-enabled executable code chunks in a static Quarto doc!
 
 ```{webr-r}
-fit = lm(mpg ~ am, data = mtcars)
-summary(fit)
+# review structure of the mtcars object
+str(mtcars)
+```
+
+```{webr-r}
+# show column names
+colnames(mtcars)
+```
+
+```{webr-r}
+# use dplyr to do some munging and glimpse results
+library(dplyr)
+munged_mtcars <- mtcars
 ```

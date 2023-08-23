@@ -7,12 +7,12 @@ about:
   image-width: 5em
   image-shape: round
   links:
+    - icon: rss
+      text: Blog
+      href: https://www.javierorracadeatcu.com/blog
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/orraca/
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/JavierOrraca
     - icon: github
       text: GitHub
       href: https://github.com/JavOrraca
