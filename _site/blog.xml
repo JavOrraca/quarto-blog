@@ -14,7 +14,7 @@
 <item>
   <title>webR via Quarto Extensions</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2023-08-21-webr-via-quarto-extensions/index.html</link>
+  <link>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/index.html</link>
   <description><![CDATA[ 
 
 
@@ -526,9 +526,9 @@ munged_mtcars <- mtcars`,
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
   <category>tidyverse</category>
   <category>webR</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2023-08-21-webr-via-quarto-extensions/index.html</guid>
+  <guid>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/index.html</guid>
   <pubDate>Wed, 23 Aug 2023 07:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2023-08-21-webr-via-quarto-extensions/images/webR.png" medium="image" type="image/png" height="143" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/images/webR.png" medium="image" type="image/png" height="143" width="144"/>
 </item>
 <item>
   <title>Impressing Hiring Teams with a Shiny App Demo</title>
