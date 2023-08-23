@@ -377,7 +377,7 @@ colnames(mtcars)`,
   let editor;
   require(['vs/editor/editor.main'], function () {
     editor = monaco.editor.create(editorDiv, {
-      value: `# install and load dplyr (~30s install)
+      value: `# install and load dplyr (10-20s)
 webr::install("dplyr")
 library(dplyr)`,
       language: 'r',
@@ -540,9 +540,10 @@ library(dplyr)`,
     editor = monaco.editor.create(editorDiv, {
       value: `# round up all numeric variables
 rounded_up_mtcars <- mtcars |> 
-  mutate(across(where(is.numeric), \\(x) ceiling(x))
+  mutate(across(where(is.numeric), \\(x) ceiling(x)))
 
-glimpse(rounded_up_mtcars)`,
+# re-review structure of newly munged object
+str(rounded_up_mtcars)`,
       language: 'r',
       theme: 'vs-light',
       automaticLayout: true,           // TODO: Could be problematic for slide decks

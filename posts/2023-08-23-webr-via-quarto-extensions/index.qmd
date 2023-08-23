@@ -50,7 +50,7 @@ colnames(mtcars)
 ```
 
 ```{webr-r}
-# install and load dplyr (~30s install)
+# install and load dplyr (10-20s)
 webr::install("dplyr")
 library(dplyr)
 ```
@@ -58,9 +58,10 @@ library(dplyr)
 ```{webr-r}
 # round up all numeric variables
 rounded_up_mtcars <- mtcars |> 
-  mutate(across(where(is.numeric), \(x) ceiling(x))
+  mutate(across(where(is.numeric), \(x) ceiling(x)))
 
-glimpse(rounded_up_mtcars)
+# re-review structure of newly munged object
+str(rounded_up_mtcars)
 ```
 
 THAT WAS FUN! Enjoy, and happy learning.
