@@ -15,9 +15,11 @@ filters:
 service-worker-url: '/posts/2023-08-21-webr-via-quarto-extensions/'
 ---
 
-# WebAssembly
+![](images/webr_bart.jpeg)
 
 Imagine you've written a program in R. It's simple and does exactly what you want but now, you wish to make it available for many people on the web, allowing them to run it within their web browsers. The challenge is that web browsers don't natively understand R code.
+
+# WebAssembly
 
 Traditionally, web browsers understand JavaScript as the primary language to run any dynamic operations. If you wanted to run code in a browser, you'd need to rewrite it in JavaScript. Re-writing code for every language to JavaScript is tedious and not efficient. This is where [WebAssembly](https://webassembly.org/) (or "wasm") comes into play.
 
