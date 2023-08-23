@@ -12,6 +12,7 @@ $retro: 'Handjet', cursive;
 #title-block-header.quarto-title-block.default .quarto-title .title {
   font-family: $retro;
   font-size: $font-size-base * 5;
+  line-height: 0.8;
 }
 
 p.subtitle.lead {
