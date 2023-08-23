@@ -1,27 +1,25 @@
 // Google Fonts
-@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Handjet:wght@200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat');
 
 /*-- scss:defaults --*/
 $font-family-base: 'Montserrat', sans-serif;
 
 // Custom Variables
-$retro: 'Monoton', cursive;
+$retro: 'Handjet', cursive;
 
 /*-- scss:rules --*/
 #title-block-header.quarto-title-block.default .quarto-title .title {
   font-family: $retro;
-  font-size: $font-size-base * 3;
-  text-shadow: 1px 1px 0 rgba(31, 81, 255, .3);
+  font-size: $font-size-base * 5;
 }
 
 p.subtitle.lead {
   font-family: $retro;
-  font-size: $font-size-base * 1.75;
+  font-size: $font-size-base * 4.5;
   margin-top: 0px;
   margin-bottom: 0px;
   padding-top: 0px !important;
-  text-shadow: 1px 1px 0 rgba(176, 38, 255, .3);
 }
 
 .about-image {
