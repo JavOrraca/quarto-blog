@@ -51,6 +51,7 @@ colnames(mtcars)
 
 ```{webr-r}
 # use dplyr to do some munging and glimpse results
+install.packages("dplyr", repos = "https://repo.r-wasm.org/", type = "source")
 library(dplyr)
 munged_mtcars <- mtcars
 ```
