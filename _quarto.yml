@@ -37,7 +37,7 @@ website:
           - text: "Javi's Resources"
             href: resources.qmd
           - text: R for Data Science
-            href: https://r4ds.had.co.nz/index.html
+            href: https://r4ds.hadley.nz/
             target: _blank
           - text: Tidyverse
             href: https://www.tidyverse.org/
@@ -58,7 +58,6 @@ format:
     fontsize: 1.0em
     code-copy: true
     code-overflow: wrap
-    link-external-newwindow: true
 
 comments:
   giscus:

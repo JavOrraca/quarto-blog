@@ -8,11 +8,10 @@ engine: knitr
 webr: 
   show-startup-message: false
   show-header-message: false
-  home-dir: '/Users/javierorraca/Documents/GitHub/quarto-blog/'
-  packages: ['ggplot2', 'dplyr']
-filter:
+  home-dir: '/'
+filters:
   - webr
-draft: true
+service-worker-url: '/posts/2023-08-21-webr-via-quarto-extensions/'
 ---
 
 # WebAssembly

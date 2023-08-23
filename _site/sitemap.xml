@@ -2,166 +2,170 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.javierorracadeatcu.com/blog.html</loc>
-    <lastmod>2023-08-22T07:31:01.701Z</lastmod>
+    <lastmod>2023-08-23T01:15:42.051Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/about.html</loc>
-    <lastmod>2023-08-22T07:30:58.798Z</lastmod>
+    <lastmod>2023-08-23T01:15:38.972Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</loc>
-    <lastmod>2023-08-22T07:30:58.236Z</lastmod>
+    <lastmod>2023-08-23T01:15:38.412Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/2021-05-24-dataframe.html</loc>
-    <lastmod>2023-08-22T07:30:56.749Z</lastmod>
+    <lastmod>2023-08-23T01:15:36.938Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-01-09-Writing-to-Excel-from-R/2020-01-09-Writing-to-Excel-from-R.html</loc>
-    <lastmod>2023-08-22T07:30:55.245Z</lastmod>
+    <lastmod>2023-08-23T01:15:35.510Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-02-04-Hadley-Wickham-on-SDS-Podcast/2020-02-04-Hadley-Wickham-on-SDS-Podcast.html</loc>
-    <lastmod>2023-08-22T07:30:53.471Z</lastmod>
+    <lastmod>2023-08-23T01:15:33.976Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-01-18-Create-R-Packages/2020-01-18-Create-R-Packages.html</loc>
-    <lastmod>2023-08-22T07:30:52.014Z</lastmod>
+    <lastmod>2023-08-23T01:15:32.338Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-11-18-Blogdown/2019-11-18-Blogdown.html</loc>
-    <lastmod>2023-08-22T07:30:50.212Z</lastmod>
+    <lastmod>2023-08-23T01:15:30.798Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2021-05-03-DT/2021-05-03-DT.html</loc>
-    <lastmod>2023-08-22T07:30:48.748Z</lastmod>
+    <lastmod>2023-08-23T01:15:29.342Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.javierorracadeatcu.com/posts/2023-08-21-webr-via-quarto-extensions/index.html</loc>
+    <lastmod>2023-08-23T01:15:27.862Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-01-01-Holidays/2020-01-01-Holidays.html</loc>
-    <lastmod>2023-08-22T07:30:45.124Z</lastmod>
+    <lastmod>2023-08-23T01:15:25.858Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</loc>
-    <lastmod>2023-08-22T07:30:43.310Z</lastmod>
+    <lastmod>2023-08-23T01:15:24.389Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</loc>
-    <lastmod>2023-08-22T07:30:40.817Z</lastmod>
+    <lastmod>2023-08-23T01:15:22.008Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-11-05-R-Shiny-Expert-Course/2019-11-05-R-Shiny-Expert-Course.html</loc>
-    <lastmod>2023-08-22T07:30:39.389Z</lastmod>
+    <lastmod>2023-08-23T01:15:20.444Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/2023-01-01-data-science-hangout.html</loc>
-    <lastmod>2023-08-22T07:30:37.964Z</lastmod>
+    <lastmod>2023-08-23T01:15:18.997Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023.html</loc>
-    <lastmod>2023-08-22T07:30:36.151Z</lastmod>
+    <lastmod>2023-08-23T01:15:17.449Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html</loc>
-    <lastmod>2023-08-22T07:30:34.088Z</lastmod>
+    <lastmod>2023-08-23T01:15:15.602Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/2020-04-05-DnD-Adventures.html</loc>
-    <lastmod>2023-08-22T07:30:32.415Z</lastmod>
+    <lastmod>2023-08-23T01:15:14.197Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/2021-10-21-torch-for-r.html</loc>
-    <lastmod>2023-08-22T07:30:30.904Z</lastmod>
+    <lastmod>2023-08-23T01:15:12.563Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-12-31-Ubuntu-Update/2019-12-31-Ubuntu-Update.html</loc>
-    <lastmod>2023-08-22T07:30:29.219Z</lastmod>
+    <lastmod>2023-08-23T01:15:10.923Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-01-04-CCPA/2020-01-04-CCPA.html</loc>
-    <lastmod>2023-08-22T07:30:27.602Z</lastmod>
+    <lastmod>2023-08-23T01:15:09.417Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</loc>
-    <lastmod>2023-08-22T07:30:26.808Z</lastmod>
+    <lastmod>2023-08-23T01:15:08.662Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-01-22-Systematically-Improving-Coffee/2020-01-22-Systematically-Improving-Coffee.html</loc>
-    <lastmod>2023-08-22T07:30:28.244Z</lastmod>
+    <lastmod>2023-08-23T01:15:10.183Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-12-04-Finland-Education-System/2019-12-04-Finland-Education-System.html</loc>
-    <lastmod>2023-08-22T07:30:29.988Z</lastmod>
+    <lastmod>2023-08-23T01:15:11.743Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-10-19-Information-is-Beautiful-Awards/2019-10-19-Information-is-Beautiful-Awards.html</loc>
-    <lastmod>2023-08-22T07:30:31.706Z</lastmod>
+    <lastmod>2023-08-23T01:15:13.271Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-11-11-R-Markown/2019-11-11-R-Markown.html</loc>
-    <lastmod>2023-08-22T07:30:33.196Z</lastmod>
+    <lastmod>2023-08-23T01:15:14.867Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</loc>
-    <lastmod>2023-08-22T07:30:34.753Z</lastmod>
+    <lastmod>2023-08-23T01:15:16.321Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-10-22-BBC-Visualization-Journey-with-R/2019-10-22-BBC-Visualization-Journey-with-R.html</loc>
-    <lastmod>2023-08-22T07:30:37.222Z</lastmod>
+    <lastmod>2023-08-23T01:15:18.146Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</loc>
-    <lastmod>2023-08-22T07:30:38.697Z</lastmod>
+    <lastmod>2023-08-23T01:15:19.713Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/2020-06-20-dplyr-1.0.0.html</loc>
-    <lastmod>2023-08-22T07:30:40.080Z</lastmod>
+    <lastmod>2023-08-23T01:15:21.226Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/2021-01-24-rstudio-global.html</loc>
-    <lastmod>2023-08-22T07:30:42.043Z</lastmod>
+    <lastmod>2023-08-23T01:15:23.177Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/2020-12-19-R-Package-One-Hour-Tutorial.html</loc>
-    <lastmod>2023-08-22T07:30:44.112Z</lastmod>
+    <lastmod>2023-08-23T01:15:25.054Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html</loc>
-    <lastmod>2023-08-22T07:30:46.480Z</lastmod>
+    <lastmod>2023-08-23T01:15:27.057Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-01-20-Puerto-Rico-Earthquakes/2020-01-20-Puerto-Rico-Earthquakes.html</loc>
-    <lastmod>2023-08-22T07:30:48.060Z</lastmod>
+    <lastmod>2023-08-23T01:15:28.586Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</loc>
-    <lastmod>2023-08-22T07:30:49.440Z</lastmod>
+    <lastmod>2023-08-23T01:15:30.104Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/2021-01-19-rsthemes.html</loc>
-    <lastmod>2023-08-22T07:30:51.101Z</lastmod>
+    <lastmod>2023-08-23T01:15:31.630Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-12-17-Hands-On-Machine-Learning-with-R/2019-12-17-Hands-On-Machine-Learning-with-R.html</loc>
-    <lastmod>2023-08-22T07:30:52.707Z</lastmod>
+    <lastmod>2023-08-23T01:15:33.176Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-02-08-R-write-table/2020-02-08-R-write-table.html</loc>
-    <lastmod>2023-08-22T07:30:54.262Z</lastmod>
+    <lastmod>2023-08-23T01:15:34.675Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2020-02-01-k-fold-cross-validation/2020-02-01-k-fold-cross-validation.html</loc>
-    <lastmod>2023-08-22T07:30:55.983Z</lastmod>
+    <lastmod>2023-08-23T01:15:36.229Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/posts/2019-12-15-Java-Joy/2019-12-15-Java-Joy.html</loc>
-    <lastmod>2023-08-22T07:30:57.454Z</lastmod>
+    <lastmod>2023-08-23T01:15:37.687Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/index.html</loc>
-    <lastmod>2023-08-22T07:30:58.503Z</lastmod>
+    <lastmod>2023-08-23T01:15:38.687Z</lastmod>
   </url>
   <url>
     <loc>https://www.javierorracadeatcu.com/resources.html</loc>
-    <lastmod>2023-08-22T07:30:59.641Z</lastmod>
+    <lastmod>2023-08-23T01:15:40.100Z</lastmod>
   </url>
 </urlset>

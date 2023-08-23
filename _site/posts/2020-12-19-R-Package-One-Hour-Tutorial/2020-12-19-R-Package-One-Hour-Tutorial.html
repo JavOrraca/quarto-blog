@@ -161,7 +161,7 @@ cookieconsent.run({
  <span class="dropdown-text">Javi’s Resources</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://r4ds.had.co.nz/index.html" rel="" target="_blank">
+    <a class="dropdown-item" href="https://r4ds.hadley.nz/" rel="" target="_blank">
  <span class="dropdown-text">R for Data Science</span></a>
   </li>  
         <li>
@@ -602,20 +602,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp("https:\/\/www\.javierorracadeatcu\.com");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
 </script>
 <script src="https://giscus.app/client.js" data-repo="JavOrraca/quarto-blog" data-repo-id="R_kgDOIOlJmA" data-category="General" data-category-id="DIC_kwDOIOlJmM4CSH8n" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
