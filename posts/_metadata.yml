@@ -1,6 +1,6 @@
 # freeze computational output
 ## Source: https://quarto.org/docs/projects/code-execution.html#freeze
-freeze: true
+freeze: false
 
 # Disable banner style title blocks
 title-block-banner: false
