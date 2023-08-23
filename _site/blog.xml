@@ -378,7 +378,7 @@ colnames(mtcars)`,
   require(['vs/editor/editor.main'], function () {
     editor = monaco.editor.create(editorDiv, {
       value: `# use dplyr to do some munging and glimpse results
-install.packages("dplyr", repos = "https://repo.r-wasm.org/", type = "source")
+webr::install("dplyr")
 library(dplyr)
 munged_mtcars <- mtcars`,
       language: 'r',
