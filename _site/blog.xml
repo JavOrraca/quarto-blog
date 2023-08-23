@@ -30,9 +30,6 @@
 <section id="webr" class="level1">
 <h1>webR</h1>
 <p>Compiling R to wasm was hypothetical even just a few years ago but is now possible via <a href="https://docs.r-wasm.org/webr/latest/">webR</a>. Being able to run R functions within a web browser without the need for an R interpreter on the user’s end feels game changing.</p>
-<blockquote class="blockquote">
-<p>Being able to run R functions within a web browser without the need for an R interpreter on the user’s end feels game changing.</p>
-</blockquote>
 <p>webR is enabling R developers to bring their applications, algorithms, and visualizations to broader audiences via the web. R + wasm is definitely in the early stages of development and new use cases are being released daily by the data science and web development communities. For now, I’m just enjoying learning the basics and thinking about potential use cases.</p>
 </section>
 <section id="demo" class="level1">

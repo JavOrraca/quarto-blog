@@ -31,8 +31,6 @@ In essence, WebAssembly allows you to take code from languages other than JavaSc
 
 Compiling R to wasm was hypothetical even just a few years ago but is now possible via [webR](https://docs.r-wasm.org/webr/latest/). Being able to run R functions within a web browser without the need for an R interpreter on the user's end feels game changing.
 
-> Being able to run R functions within a web browser without the need for an R interpreter on the user's end feels game changing.
-
 webR is enabling R developers to bring their applications, algorithms, and visualizations to broader audiences via the web. R + wasm is definitely in the early stages of development and new use cases are being released daily by the data science and web development communities. For now, I'm just enjoying learning the basics and thinking about potential use cases.
 
 # Demo
