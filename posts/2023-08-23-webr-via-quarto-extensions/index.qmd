@@ -2,7 +2,9 @@
 title: "webR via Quarto Extensions"
 description: "webR has been on my mind recently... With the recent release of webR 0.2.0, it's time to dive in!"
 date: 08-23-2023
-categories: [tidyverse, webR]
+categories:
+  - webR
+  - dplyr
 image: images/webR.png
 engine: knitr
 webr: 
@@ -15,7 +17,7 @@ filters:
 service-worker-url: '/posts/2023-08-21-webr-via-quarto-extensions/'
 ---
 
-![](images/webr_bart.jpeg)
+![](images/webr_bart.jpeg){.preview-image}
 
 Imagine you've written a program in R. It's simple and does exactly what you want but now, you wish to make it available for many people on the web, allowing them to run it within their web browsers. The challenge is that web browsers don't natively understand R code.
 
