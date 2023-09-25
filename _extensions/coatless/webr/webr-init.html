@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.31.0/min/vs/editor/editor.main.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/editor/editor.main.css" />
+
 <style>
   .monaco-editor pre {
     background-color: unset !important;
@@ -7,19 +8,40 @@
   .btn-webr {
     background-color: #EEEEEE;
     border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    border-bottom-right-radius: 0; /* Extra styling for consistency */
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    -webkit-text-decoration: none;
+    -moz-text-decoration: none;
+    -ms-text-decoration: none;
+    -o-text-decoration: none;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    border-color: #dee2e6;
+    border: 1px solid rgba(0,0,0,0);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+  .btn-webr:hover {
+    color: #000;
+    background-color: #e3e6ea;
+    border-color: #e1e5e9;
+  }
+
+  .btn-webr:disabled,.btn-webr.disabled,fieldset:disabled .btn-webr {
+    pointer-events: none;
+    opacity: .65
   }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.31.0/min/vs/loader.js"></script>
+
 <script type="module">
-
-  // Configure the Monaco Editor's loader
-  require.config({
-    paths: {
-      'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.31.0/min/vs'
-    }
-  });
-
 
   // Start a timer
   const initializeWebRTimerStart = performance.now();
@@ -74,19 +96,34 @@
     quartoTitleMeta.appendChild(firstInnerDiv);
 
     // Add new element as last child in header element
-    var header = document.getElementsByTagName("header")[0];
-    header.appendChild(quartoTitleMeta);
+    var header = document.getElementById("title-block-header");
+
+    // Check if the header option is present or missing
+    if(header) {
+      // If present, directly append the child element.
+      header.appendChild(quartoTitleMeta);
+    } else {
+      // Attempt to place the new element inside a header _after_ the Monaco initialization
+      var monacoScript = document.getElementById("webr-monaco-editor-init");
+      var header = document.createElement("header");
+      header.setAttribute("id", "title-block-header");
+      // Now attempt to add the webR area to the title
+      header.appendChild(quartoTitleMeta);
+      // Include the header after the script tag
+      monacoScript.after(header);
+    }
   }
 
   // Retrieve the webr.mjs
-  import { WebR } from "https://webr.r-wasm.org/v0.2.0/webr.mjs";
+  import { WebR, ChannelType } from "https://webr.r-wasm.org/v0.2.1/webr.mjs";
 
   // Populate WebR options with defaults or new values based on 
   // webr meta
   globalThis.webR = new WebR({
     "baseURL": "{{BASEURL}}",
     "serviceWorkerUrl": "{{SERVICEWORKERURL}}",
-    "homedir": "{{HOMEDIR}}"
+    "homedir": "{{HOMEDIR}}", 
+    "channelType": {{CHANNELTYPE}}
   });
 
   // Initialization WebR

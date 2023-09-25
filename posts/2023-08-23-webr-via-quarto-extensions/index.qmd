@@ -10,11 +10,11 @@ engine: knitr
 webr: 
   show-startup-message: false
   show-header-message: false
+  channel-type: 'post-message'
   home-dir: '/'
   packages: ['dplyr']
 filters:
   - webr
-service-worker-url: '/posts/2023-08-21-webr-via-quarto-extensions/'
 ---
 
 ![](images/webr_bart.jpeg){.preview-image}
