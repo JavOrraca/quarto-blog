@@ -10,7 +10,6 @@ engine: knitr
 filters:
   - webr
 webr: 
-  packages: ['dplyr']
   autoload-packages: false
 ---
 

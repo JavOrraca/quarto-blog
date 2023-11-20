@@ -214,13 +214,13 @@ cookieconsent.run({
   const initializeWebRTimerStart = performance.now();
 
   // Determine if we need to install R packages
-  var installRPackagesList = ['dplyr'];
+  var installRPackagesList = [''];
   // Check to see if we have an empty array, if we do set to skip the installation.
   var setupRPackages = !(installRPackagesList.indexOf("") !== -1);
   var autoloadRPackages = true;
 
   // Display a startup message?
-  var showStartupMessage = false;
+  var showStartupMessage = true;
   var showHeaderMessage = false;
   if (showStartupMessage) {
 
@@ -292,7 +292,7 @@ cookieconsent.run({
   globalThis.webR = new WebR({
     "baseURL": "https://webr.r-wasm.org/v0.2.2/",
     "serviceWorkerUrl": "",
-    "homedir": "/", 
+    "homedir": "/home/web_user", 
     "channelType": ChannelType.Automatic
   });
 
