@@ -11,6 +11,7 @@ filters:
   - webr
 webr: 
   packages: ['dplyr']
+  autoload-packages: false
 ---
 
 ![](images/webr_bart.jpeg){.preview-image}

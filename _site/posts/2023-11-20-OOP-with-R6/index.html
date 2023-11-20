@@ -137,7 +137,7 @@ cookieconsent.run({
 
 <meta name="twitter:title" content="Data Science Bytes - R Users Probably Don’t Need to Know OOP">
 <meta name="twitter:description" content="The R6 package brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2023-11-12-OOP-with-R6/images/Javier_Profile.jpg">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2023-11-20-OOP-with-R6/images/Javier_Profile.jpg">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -589,10 +589,10 @@ cookieconsent.run({
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(patron1<span class="sc">$</span><span class="fu">get_transaction_history</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-20 12:50:37.377001 : Borrowed The Great Gatsby"
+[1] "2023-11-20 17:10:29.815176 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-20 12:50:37.378382 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-20 17:10:29.817955 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -614,24 +614,9 @@ cookieconsent.run({
 </section>
 <section id="closing-remarks" class="level1">
 <h1>Closing Remarks</h1>
-<p>As of 2023, the landscape of R programming has evolved significantly, offering a rich ecosystem of programming paradigms and tools. OOP, with its implementation through R6 classes, is a notable part of this ecosystem. Understanding the pros and cons of OOP in R can be enlightening for an R user deciding whether to delve into this paradigm.</p>
-<p><strong>Pros of OOP with R6:</strong></p>
-<ol type="1">
-<li><strong>Encapsulation and Modularity:</strong> OOP allows for bundling data and methods that operate on the data within objects. This encapsulation makes code more modular and easier to maintain, a boon for complex and large-scale applications.</li>
-<li><strong>Reusability and Extensibility:</strong> Classes and objects in OOP promote code reusability. You can define a class once and create many objects, each with its own state. Moreover, inheritance in R6 allows for extending existing classes, fostering an extensible design.</li>
-<li><strong>Clarity in Code Structure:</strong> OOP can lead to code that mirrors real-world entities, making it more intuitive. This can be especially beneficial in domains where modeling complex entities and their interactions is crucial, like in financial modeling or supply chain management.</li>
-</ol>
-<p><strong>Cons of OOP with R6:</strong></p>
-<ol type="1">
-<li><strong>Learning Curve:</strong> For those accustomed to functional programming or R’s vectorized operations, OOP presents a different mindset, requiring time to learn and understand, especially for those new to programming.</li>
-<li><strong>Overhead and Complexity:</strong> OOP can introduce additional complexity and overhead. For simple tasks or data analysis, the straightforward approach of functional programming or vectorized operations in R might be more efficient.</li>
-<li><strong>Interoperability with Tidyverse:</strong> While R6 is powerful, it does not always seamlessly integrate with the tidyverse, a collection of packages widely used in R for data science tasks. This can lead to a mix of coding styles and potential inefficiencies.</li>
-</ol>
-<p><strong>Relevance in 2023:</strong></p>
-<p>In 2023, an R user, particularly one focused on data analysis, might not need to deeply understand OOP and R6. The rise of the tidyverse, which emphasizes functional programming paradigms and a declarative style of coding, has provided tools that are often more aligned with the typical tasks of data manipulation, visualization, and analysis. These tools are generally more accessible and require less boilerplate code than OOP.</p>
-<p>The tidyverse’s philosophy and syntax have been widely adopted in the R community, especially for data science applications. Consequently, many modern R users can perform a vast majority of their work effectively without needing OOP.</p>
-<p>However, for those working on more complex software development projects in R, such as building large-scale applications or designing systems that require robust modeling of real-world entities, OOP and R6 can be invaluable tools. They provide a level of organization and scalability that is hard to achieve with functional programming alone.</p>
-<p>In summary, while understanding OOP and R6 can be beneficial for specific use cases, many R users in 2023, particularly those focused on data analysis and the tidyverse, may not find it necessary to delve deeply into these concepts. The choice largely depends on the specific needs and scope of one’s projects in R.</p>
+<p>In 2023, most R users might not need to deeply understand OOP and R6. The rise of the <a href="https://style.tidyverse.org/">tidy-style of programming with R</a>, which emphasizes functional programming paradigms and a declarative style of coding, has provided tools that are often more aligned with the typical tasks of data manipulation, visualization, analysis, and machine learning. These tools are generally more accessible and require less boilerplate code than OOP.</p>
+<p>The tidyverse and tidyodels philosophy and syntax have been widely adopted in the R community, especially for data science applications. Consequently, many modern R users can perform a vast majority of their work effectively without needing OOP.</p>
+<p>For those working on more complex software development projects in R, such as building large-scale applications or designing systems that require robust modeling across systems and languages, OOP and R6 may be required.</p>
 
 
 </section>
