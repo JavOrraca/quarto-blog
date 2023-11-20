@@ -1,0 +1,319 @@
+---
+title: "R Users Probably Don't Need to Know OOP"
+description: "The R6 package brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. That said, do you need to know OOP to be a successful data scientist? No."
+date: 11-20-2023
+categories:
+  - r6
+draft: true
+---
+
+# OOP with R6
+
+::: columns
+::: {.column width="80%"}
+The [R6 package](https://r6.r-lib.org/) brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. The _Tidy Wizard_, a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:
+
+* It bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="15%"}
+![](images/logo.svg){.preview-image}
+:::
+:::
+
+When meeting data scientists in the wild, they're almost always Python users and they often ask me the rhetorical question of "can R do OOP and encapsulation?" I used to be embarrassed about this... Did I miss some mission critical component of data science in grad school? Have I been learning from the wrong books and tutorials?
+
+Having worked alongside amazing software engineers over recent years, I've come to realize OOP is fundamental in computer science education. The de facto OOP nature of Python makes the transition from C/C++/Java to Python a breeze and delight. This is one of the many reasons why we see so much OOP development in data science organizations _by_ Python-based data science practitioners and educators. But what if you don't have a formal software background and gravitated to R for statistics, functional programming, and data science? 
+
+<aside>
+[Interact with the Tidy Wizard](https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard) if you're a paying ChatGPT Plus customer! I'm developing a Shiny app for anyone to interact with a more robust version of the wizard via API (and without the Gandalf-speak... trust me when I say it gets old 😅)
+</aside>
+
+My thoughts on this topic will differ from others in the R community, likely from folks that have formal computer science / software engineering backgrounds. I do not have a formal CS background, so bear with me while I work through this heresy: *You don't need to know OOP to be a successful data scientist.*
+
+In data science, would knowing OOP help your future career prospects? Probably; _Probably_ in the same way a PhD _might_ help you climb the corporate ladder more quickly. For me personally (and again, as a primary R user), not knowing the intricacies of OOP hasn't slowed me down from interactive web app development, ML training / production at scale (and containerization via Docker), parallelized / vectorized function writing, package development, NLP and deep learning, etc.
+
+Copying from Hadley Wickham's _Advanced R_, he shares the following insights:
+
+> Generally in R, functional programming is much more important than object-oriented programming, because you typically solve complex problems by decomposing them into simple functions, not simple objects. Nevertheless, there are important reasons to learn each of the three systems:
+>
+* S3 allows your functions to return rich results with user-friendly display and programmer-friendly internals. S3 is used throughout base R, so it’s important to master if you want to extend base R functions to work with new types of input.<br><br>
+>
+* R6 provides a standardised way to escape R’s copy-on-modify semantics. This is particularly important if you want to model objects that exist independently of R. Today, a common need for R6 is to model data that comes from a web API, and where changes come from inside or outside of R.<br><br>
+>
+* S4 is a rigorous system that forces you to think carefully about program design. It’s particularly well-suited for building large systems that evolve over time and will receive contributions from many programmers. This is why it is used by the Bioconductor project, so another reason to learn S4 is to equip you to contribute to that project.
+
+# Additional Resources
+
+After a pattern of writing, modifying, and deleting a more robust background section for object-oriented systems with R, I've decided to instead point you to some of the best resources I've come across:
+
+* The _Advanced R_ book, by Hadley Wickham, includes several chapters on OOP with R including base types, S3, R6, S4, and a trade-offs chapter. The [_Introduction to OOP_](https://adv-r.hadley.nz/oo.html) section is a great place to start for a high-level overview.
+
+* Dario Radečić published a phenomenal [complete R6 guide](https://appsilon.com/oop-in-r-with-r6/) for Appsilon's blog. It's a bookmark-worthy R6 overview that touches on its classes and constructors/methods including `$new()`, `$initialize()`, `$print()`, and more. 
+
+# R6 Example Use Cases
+
+With the assistance of the Tidy Wizard, let's dive into some examples that aim to "illuminate a few practical applications where R6 can lend its prowess." 🧙
+
+## CRM Systems
+
+When we ponder Customer Relationship Management, we find ourselves amidst a vast sea of data, encompassing customer interactions, preferences, transaction histories, and much more. In the traditional approach, this data might be stored in spreadsheets or databases as tabular data. While this method is straightforward, it often leads to a fragmented view of the customer, with data scattered across multiple tables or sheets.
+
+Herein lies the profound advantage of employing R6 in a CRM context:
+
+*Unified Customer View*: By defining an R6 class for a customer, you encapsulate all relevant information and behaviors related to that customer in one place. This approach fosters a holistic view of each customer, integrating data from various sources. It allows for more coherent and comprehensive analysis and decision-making.
+
+*Behavior Encapsulation*: With R6, you're not just storing data; you're also encapsulating behaviors. For instance, an R6 class for a customer could include methods to calculate lifetime value, predict churn, or even trigger personalized marketing actions. This encapsulation of behavior with data enriches the CRM's capabilities.
+
+*Flexibility and Scalability*: R6's object-oriented nature allows for more scalable and adaptable solutions. As business needs evolve, you can extend or modify the R6 classes without overhauling your entire data structure. This flexibility is crucial in the ever-changing business landscape.
+
+*Interactivity and Automation*: R6 classes can interact with each other, enabling automated workflows. For instance, a class representing an email campaign can interact with the customer class to send personalized emails, log interactions, and update customer profiles, all in an automated manner.
+
+```{r}
+# Defining a Customer class
+Customer <- R6::R6Class("Customer",
+    public = list(
+        name = NULL,
+        email = NULL,
+        transaction_history = list(),
+        initialize = function(name, email) {
+            self$name <- name
+            self$email <- email
+        },
+        record_transaction = function(transaction) {
+            self$transaction_history <- c(self$transaction_history, list(transaction))
+        },
+        calculate_lifetime_value = function() {
+          self$transaction_history |> 
+            purrr::map_dbl(~ .x$amount) |> 
+            sum()
+        }
+    )
+)
+
+# Example usage
+customer1 <- Customer$new(name = "John Doe", email = "john@example.com")
+customer1$record_transaction(list(date = "2021-01-01", amount = 100))
+customer1$record_transaction(list(date = "2021-02-01", amount = 150))
+lifetime_value <- customer1$calculate_lifetime_value()
+
+print(lifetime_value)
+```
+
+In this enriched example, our Customer class now not only stores basic information but also tracks transaction history and calculates the lifetime value. This enriched model provides a more dynamic and insightful perspective on the customer, far surpassing the static nature of spreadsheets or basic tabular data.
+
+## Financial Modeling
+
+Let's craft an R6 class that models a portfolio of financial instruments, each with its own characteristics and behaviors. This portfolio can include various types of investments like stocks, bonds, and mutual funds, each represented by their own R6 classes.
+
+The beauty of using R6 in this context lies in its ability to encapsulate the complexities of financial instruments within their respective classes, thereby making the overall portfolio management more intuitive and robust. Let's delve into this with a code example:
+
+```{r}
+library(R6)
+
+# Define a generic FinancialInstrument class
+FinancialInstrument <- R6::R6Class("FinancialInstrument",
+    public = list(
+        identifier = NULL,
+        principal = NULL,
+        initialize = function(identifier, principal) {
+            self$identifier = identifier
+            self$principal = principal
+        },
+        calculate_return = function() {
+            # Placeholder for return calculation
+        }
+    )
+)
+
+# Extend FinancialInstrument for specific types
+Stock <- R6::R6Class("Stock", inherit = FinancialInstrument,
+    public = list(
+        dividend_yield = NULL,
+        initialize = function(identifier, principal, dividend_yield) {
+            super$initialize(identifier, principal)
+            self$dividend_yield = dividend_yield
+        },
+        calculate_return = function() {
+            return(self$principal * self$dividend_yield)
+        }
+    )
+)
+
+Bond <- R6::R6Class("Bond", inherit = FinancialInstrument,
+    public = list(
+        interest_rate = NULL,
+        initialize = function(identifier, principal, interest_rate) {
+            super$initialize(identifier, principal)
+            self$interest_rate = interest_rate
+        },
+        calculate_return = function() {
+            return(self$principal * self$interest_rate)
+        }
+    )
+)
+
+# Define a Portfolio class that can hold multiple financial instruments
+Portfolio <- R6::R6Class("Portfolio",
+    public = list(
+        instruments = list(),
+        add_instrument = function(instrument) {
+            self$instruments[[instrument$identifier]] <- instrument
+        },
+        total_return = function() {
+          self$instruments |> 
+            purrr::map_dbl(\(x) x$calculate_return()) |> 
+            sum()
+        }
+    )
+)
+
+# Example usage
+portfolio <- Portfolio$new()
+portfolio$add_instrument(Stock$new("AAPL", 10000, 0.02))
+portfolio$add_instrument(Bond$new("US-Gov", 5000, 0.03))
+
+total_return <- portfolio$total_return()
+print(total_return)
+```
+
+In this expanded scenario, we have:
+
+* A base class `FinancialInstrument` that defines a generic financial instrument.
+* Derived classes `Stock` and `Bond` that inherit from `FinancialInstrument` and implement specific behaviors, such as different ways of calculating returns.
+* A `Portfolio` class that can contain a collection of different financial instruments. It can calculate the total return of the portfolio by summing the returns of each individual instrument.
+
+This object-oriented approach provided by R6 allows for clear separation and encapsulation of the logic for each type of financial instrument. It makes the code modular, easier to understand, and maintain. For a business leader or data analyst, this translates to a system that is more adaptable to new types of financial instruments and changing financial models, ultimately aiding in making more informed investment decisions.
+
+## Library System
+
+Let's develop a simplified system for managing a library which includes tracking books, patrons, and book loans. This example will demonstrate how R6 can be used to model real-world entities and their interactions.
+
+In our library system, we'll have three main classes:
+
+1. *Book*: Represents a book in the library.
+2. *Patron*: Represents a library member who can borrow books.
+3. *Library*: Manages the collection of books and patrons, and handles book loans.
+
+Here's the R code for this use case:
+
+```{r}
+library(R6)
+
+# Book class
+Book <- R6::R6Class("Book",
+    public = list(
+        title = NULL,
+        author = NULL,
+        is_loaned = FALSE,
+        initialize = function(title, author) {
+            self$title <- title
+            self$author <- author
+            self$is_loaned <- FALSE
+        },
+        loan = function() {
+            self$is_loaned <- TRUE
+        },
+        return_book = function() {
+            self$is_loaned <- FALSE
+        }
+    )
+)
+
+# Patron class
+Patron <- R6::R6Class("Patron",
+    public = list(
+        name = NULL,
+        books_loaned = list(),
+        transaction_history = list(),
+        initialize = function(name) {
+            self$name <- name
+            self$books_loaned <- list()
+            self$transaction_history <- list()
+        },
+        borrow_book = function(book) {
+            if (!book$is_loaned) {
+                book$loan()
+                self$books_loaned[[book$title]] <- book
+                self$transaction_history <- c(self$transaction_history, 
+                                              list(paste(Sys.time(), ": Borrowed", book$title)))
+            } else {
+                message("This book is currently loaned out.")
+            }
+        },
+        return_book = function(book) {
+            book$return_book()
+            self$books_loaned[[book$title]] <- NULL
+            self$transaction_history <- c(self$transaction_history, 
+                                          list(paste(Sys.time(), ": Returned", book$title)))
+        },
+        get_transaction_history = function() {
+            return(self$transaction_history)
+        }
+    )
+)
+
+# Library class
+Library <- R6::R6Class("Library",
+    public = list(
+        books = list(),
+        patrons = list(),
+        initialize = function() {
+            self$books <- list()
+            self$patrons <- list()
+        },
+        add_book = function(book) {
+            self$books[[book$title]] <- book
+        },
+        add_patron = function(patron) {
+            self$patrons[[patron$name]] <- patron
+        }
+    )
+)
+
+# Example usage
+library_system <- Library$new()
+book1 <- Book$new("The Great Gatsby", "F. Scott Fitzgerald")
+book2 <- Book$new("1984", "George Orwell")
+patron1 <- Patron$new("John Doe")
+
+library_system$add_book(book1)
+library_system$add_book(book2)
+library_system$add_patron(patron1)
+
+# John Doe borrows "The Great Gatsby"
+patron1$borrow_book(library_system$books[["The Great Gatsby"]])
+
+# Check if the book is loaned
+print(library_system$books[["The Great Gatsby"]]$is_loaned)
+
+# John Doe returns "The Great Gatsby"
+patron1$return_book(library_system$books[["The Great Gatsby"]])
+
+# Check if the book is loaned
+print(library_system$books[["The Great Gatsby"]]$is_loaned)
+
+# View John Doe's transaction history
+print(patron1$get_transaction_history())
+```
+
+In the above example:
+
+* The `Book` class represents a book with methods to loan and return it
+* The `Patron` class represents a library member who can borrow and return books
+  * The `Patron` class includes a `transaction_history` list to record each borrowing and returning action
+  * Methods `borrow_book` and `return_book` append a descriptive string and timestamp to the `transaction_history` each time they are called
+  * `get_transaction_history` retrieves and displays the transaction history
+* The `Library` class manages the collection of books and patrons
+  * It allows adding books and patrons to the library
+
+This code provides a simple yet effective demonstration of how R6 can be used to model and manage real-world entities and their interactions, showcasing the utility of object-oriented programming in R. Any time John Doe borrows or returns a book, the transaction is recorded. You can then view all his transactions by calling the `get_transaction_history` method on his Patron object.
+
+# Closing Remarks
+
+In 2023, most R users might not need to deeply understand OOP and R6. The rise of the [tidy-style of programming with R](https://style.tidyverse.org/), which emphasizes functional programming paradigms and a declarative style of coding, has provided tools that are often more aligned with the typical tasks of data manipulation, visualization, analysis, and machine learning. These tools are generally more accessible and require less boilerplate code than OOP.
+
+The tidyverse and tidyodels philosophy and syntax have been widely adopted in the R community, especially for data science applications. Consequently, many modern R users can perform a vast majority of their work effectively without needing OOP.
+
+For those working on more complex software development projects in R, such as building large-scale applications or designing systems that require robust modeling across systems and languages, OOP and R6 may be required.

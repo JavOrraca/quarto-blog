@@ -14,18 +14,19 @@ R and Python are open-source programming languages for statistical computing and
 
 ## R Books: Classics
 
-* [R for Data Science](https://r4ds.had.co.nz/): Phenomenal introduction to R, the RStudio IDE, and the `tidyverse` collection of packages
-* [Advanced R](https://adv-r.hadley.nz/): Covers concepts, methods, and advanced object-oriented structures for R
+* [R for Data Science (2e)](https://r4ds.hadley.nz/): Phenomenal introduction to R, the RStudio IDE, and the `tidyverse` collection of packages
+* [Advanced R (2e)](https://adv-r.hadley.nz/): Covers concepts, methods, and advanced object-oriented structures for R
 * [Mastering Shiny](https://mastering-shiny.org/): Designed to teach the foundations of Shiny for web development and more advanced concepts such as the introduction of modules to the Shiny framework
-* [R Packages](https://r-pkgs.org/): The definitive reference point for R package development "covering workflow and process, alongside the presentation of all the important moving parts that make up an R package"
+* [R Packages (2e)](https://r-pkgs.org/): The definitive reference point for R package development "covering workflow and process, alongside the presentation of all the important moving parts that make up an R package"
 
 ## R Books: Applied Resources
 
 * [Tidy Modeling with R](https://www.tmwr.org/): Over the last few months, I've learned a lot from this A to Z resource on predictive modeling workflows using the tidymodels framework
-* [Deep Learning with R, Second Edition](https://www.manning.com/books/deep-learning-with-r-second-edition): In-depth introduction to artificial intelligence and deep learning applications with R using the Keras library
-* [Forecasting Principles and Practice, Third Edition](https://otexts.com/fpp3/): Said best by the author, "The book is written for three audiences: (1) people finding themselves doing forecasting in business when they may not have had any formal training in the area; (2) undergraduate students studying business; (3) MBA students doing a forecasting elective."
+* [Deep Learning with R (2e)](https://www.manning.com/books/deep-learning-with-r-second-edition): In-depth introduction to artificial intelligence and deep learning applications with R using the Keras library
+* [Forecasting Principles and Practice (3e)](https://otexts.com/fpp3/): Said best by the author, "The book is written for three audiences: (1) people finding themselves doing forecasting in business when they may not have had any formal training in the area; (2) undergraduate students studying business; (3) MBA students doing a forecasting elective"
 * [Regression and Other Studies](https://www.cambridge.org/core/books/regression-and-other-stories/DD20DD6C9057118581076E54E40C372C): Super applied textbook on advanced regression techniques, Bayesian inference, and causal inference
-* [Supervised Machine Learning for Text Analysis in R](https://smltar.com/): Written by two Posit software engineers and incredible additions to their tidymodels team, Emil Hvitfeldt and Julia Silge, this book is a masterclass in natural language processing taking you from the basics of NLP to real-life applications including inference and prediction
+* [Supervised Machine Learning for Text Analysis in R](https://smltar.com/): Written by two Posit software engineers, [Emil Hvitfeldt](https://emilhvitfeldt.com/) and [Julia Silge](https://juliasilge.com/), this book is a masterclass in natural language processing taking you from the basics of NLP to real-life applications including inference and prediction
+* [Tidy Finance with R](https://www.tidy-finance.org/r/): This is one of my favorite newer books covering complex financial modeling, valuation, and pricing and represents "an opinionated approach to empirical research in financial economics [with an] open-source code base in multiple programming languages"
 
 ## R Packages
 
@@ -36,12 +37,21 @@ R and Python are open-source programming languages for statistical computing and
 * [bs4Dash](https://bs4dash.rinterface.com/): This R Shiny framework brings Bootstrap + AdminLTE dependencies to Shiny (including 1:1 support for `shinydashboard` functions) and it's my go-to for developing enterprise-grade Shiny apps
 * [leaflet](https://rstudio.github.io/leaflet/): R implementation of the popular Leaflet JavaScript library for developing interactive maps
 * [plotly](https://plotly.com/r/): An extensive graphic library for creating interactive visualizations and 3D (WebGL) charts
+* [embed](https://embed.tidymodels.org/): This package is one of my go-to packages for machine learning and I if I'm working on a classification problem, you can count on me incorporating some of the extra steps it provides for the [recipes](https://recipes.tidymodels.org/) package for embedding predictors into one or more numeric columns
+
+## Language Agnostic ETL Frameworks
+
+* [Arrow](https://arrow.apache.org/): Apache Arrow is a columnar memory format for flat and hierarchical data, organized for efficient analytic operations, supporting zero-copy reads for lightning-fast data access without serialization overhead
+* [DuckDB](https://duckdb.org/): DuckDB is an in-process SQL OLAP database management system (that plays nicely with Arrow) capable of larger than memory processing of tabular data
+* [Polars](https://www.pola.rs/): Polars is a lightning fast DataFrame library/in-memory query engine written in Rust and built upon the Arrow specification - It's a great tool for efficient data wrangling, data pipelines, snappy APIs and much more
+* [Spark](https://spark.apache.org/): Apache Spark is a multi-language engine for executing data engineering, data science, and machine learning on single-node machines or clusters
 
 ## Python Books
 
-* [The Quick Python Book, Third Edition](https://www.manning.com/books/the-quick-python-book-third-edition): This book by Naomi Ceder is a few years old now (2018) but it's the best end-to-end intro on Python that I've yet read taking you from basic classes / structures to function writing to working with modules
+* [The Quick Python Book (3e)](https://www.manning.com/books/the-quick-python-book-third-edition): This book by Naomi Ceder is a few years old now (2018) but it's the best end-to-end intro on Python that I've yet read taking you from basic classes / structures to function writing to working with modules
 * [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/): Introduction to the core libraries essential for working with data in Python
 * [Effective Pandas: Patterns for Data Manipulation](https://www.amazon.com/Effective-Pandas-Patterns-Manipulation-Treading/dp/B09MYXXSFM): Easy to follow tutorials, at your own pace, for mastering the popular Pandas library
+* [Tidy Finance with Python](https://www.tidy-finance.org/python/): This is one of my favorite newer books covering complex financial modeling, valuation, and pricing and represents "an opinionated approach to empirical research in financial economics [with an] open-source code base"
 
 ## Python Packages
 
@@ -51,3 +61,4 @@ R and Python are open-source programming languages for statistical computing and
 * [scikit-learn](https://scikit-learn.org/stable/): Built on top of NumPy, SciPy, and matplotlib, "sklearn" makes the development of predictive analysis workflows a simple and reproducible process
 * [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/): The `beautifulsoup4` library makes web scraping HTML and XML data a breeze
 * [Streamlit](https://streamlit.io/): Using pure Python, this package lets you build interactive web apps in minutes with no UI / front-end experience required
+* [Shiny for Python](https://shiny.posit.co/py/): The popular Shiny framework for R is finally available for Python - Create highly interactive visualizations, realtime dashboards, data explorers, model demos, sophisticated workflow apps, and anything else you can imagine—all in pure Python, with no web development skills required

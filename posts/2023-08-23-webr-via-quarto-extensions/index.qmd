@@ -7,14 +7,10 @@ categories:
   - dplyr
 image: images/webR.png
 engine: knitr
-webr: 
-  show-startup-message: false
-  show-header-message: false
-  channel-type: 'post-message'
-  home-dir: '/'
-  packages: ['dplyr']
 filters:
   - webr
+webr: 
+  packages: ['dplyr']
 ---
 
 ![](images/webr_bart.jpeg){.preview-image}

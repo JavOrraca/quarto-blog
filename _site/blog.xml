@@ -9,13 +9,24 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.3.450</generator>
-<lastBuildDate>Wed, 23 Aug 2023 07:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.506</generator>
+<lastBuildDate>Wed, 23 Aug 2023 04:00:00 GMT</lastBuildDate>
 <item>
   <title>webR via Quarto Extensions</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/index.html</link>
+  <link>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/</link>
   <description><![CDATA[ 
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
+<script type="module" id="webr-monaco-editor-init">
+
+  // Configure the Monaco Editor's loader
+  require.config({
+    paths: {
+      'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs'
+    }
+  });
+</script>
+
 
 
 
@@ -36,20 +47,24 @@
 <h1>Demo</h1>
 <p>For the examples below, I’m running webR via a Quarto extension. I’m following James Balamuta’s documentation on GitHub to learn how to use his <a href="https://github.com/coatless/quarto-webr">webR Code Extension for Quarto</a> before I dive deeper into the internals of webR. I’m basically using a plug-and-play implementation of webR for Quarto 🚀. My goal is to start here and eventually use the raw webR framework for more robust applications.</p>
 <p>And so, enjoy some webr-enabled executable code chunks in a static Quarto doc!</p>
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-1">Loading
-  webR...</button>
-<div id="webr-editor-1"></div>
-<div id="webr-code-output-1" aria-live="assertive">
-  <pre style="visibility: hidden"></pre>
+<div id="qwebr-interactive-area-1" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-1">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-1" class="qwebr-console-area">
+    <div id="qwebr-editor-1" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-1" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-1" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
-  const runButton = document.getElementById("webr-run-button-1");
-  const outputDiv = document.getElementById("webr-code-output-1");
-  const editorDiv = document.getElementById("webr-editor-1");
-
-  // Add a light grey outline around the code editor
-  editorDiv.style.border = "1px solid #eee";
+  const runButton = document.getElementById("qwebr-button-run-1");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-1");
+  const editorDiv = document.getElementById("qwebr-editor-1");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-1");
 
   // Load the Monaco Editor and create an instance
   let editor;
@@ -64,23 +79,9 @@ str(mtcars)`,
       minimap: {
         enabled: false
       },
-      fontSize: '17.5rem',               // Bootstrap is 1 rem
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
       renderLineHighlight: "none",     // Disable current line highlighting
       hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
-    });
-
-    // Add a keydown event listener for Shift+Enter using the addCommand method
-    editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, function () {
-      // Code to run when Shift+Enter is pressed
-      executeCode(editor.getValue());
-    });
-
-    // Add a keydown event listener for Ctrl+Enter to run selected code
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function () {
-      // Get the selected text from the editor
-      const selectedText = editor.getModel().getValueInRange(editor.getSelection());
-      // Code to run when Ctrl+Enter is pressed (run selected code)
-      executeCode(selectedText);
     });
 
     // Dynamically modify the height of the editor window if new lines are added.
@@ -100,6 +101,65 @@ str(mtcars)`,
       }
     };
 
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
     // Register an on change event for when new code is added to the editor window
     editor.onDidContentSizeChange(updateHeight);
 
@@ -109,14 +169,52 @@ str(mtcars)`,
 
   // Function to execute the code (accepts code as an argument)
   async function executeCode(codeToRun) {
-    // Disable run button for code cell active
-    runButton.disabled = true;
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run Code</span>';
 
     // Create a canvas variable for graphics
     let canvas = undefined;
 
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
     // Initialize webR
-    await globalThis.webR.init();
+    await webR.init();
 
     // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
@@ -136,15 +234,20 @@ str(mtcars)`,
       await webR.evalRVoid("dev.off()");
 
       // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-1-result-${index + 1}" class="${className}">${evt.data}</code>`;
+        })
+        .join("\n");
+
 
       // Clean the state
       const msgs = await webR.flush();
 
-      // Output each image stored
-      msgs.forEach(msg => {
+      // Output each image event stored
+      msgs.forEach((msg) => {
         // Determine if old canvas can be used or a new canvas is required.
         if (msg.type === 'canvas'){
           // Add image to the current canvas
@@ -159,36 +262,63 @@ str(mtcars)`,
             canvas.style.display = "block";
             canvas.style.margin = "auto";
           }
-        }
+        } 
       });
 
-      // Nullify the outputDiv of content
-      outputDiv.innerHTML = "";
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
 
       // Design an output object for messages
       const pre = document.createElement("pre");
       if (/\S/.test(out)) {
-        // Display results as text
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
       } else {
         // If nothing is present, hide the element.
         pre.style.visibility = "hidden";
       }
-      outputDiv.appendChild(pre);
+      outputCodeDiv.appendChild(pre);
 
       // Place the graphics on the canvas
       if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-1-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
       }
     } finally {
       // Clean up the remaining code
       webRCodeShelter.purge();
-      runButton.disabled = false;
     }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.disabled = false;
+    });
+
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run Code</span>';
   }
 
   // Add a click event listener to the run button
@@ -196,20 +326,24 @@ str(mtcars)`,
     executeCode(editor.getValue());
   };
 </script>
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-2">Loading
-  webR...</button>
-<div id="webr-editor-2"></div>
-<div id="webr-code-output-2" aria-live="assertive">
-  <pre style="visibility: hidden"></pre>
+<div id="qwebr-interactive-area-2" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-2">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-2" class="qwebr-console-area">
+    <div id="qwebr-editor-2" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-2" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-2" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
-  const runButton = document.getElementById("webr-run-button-2");
-  const outputDiv = document.getElementById("webr-code-output-2");
-  const editorDiv = document.getElementById("webr-editor-2");
-
-  // Add a light grey outline around the code editor
-  editorDiv.style.border = "1px solid #eee";
+  const runButton = document.getElementById("qwebr-button-run-2");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-2");
+  const editorDiv = document.getElementById("qwebr-editor-2");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-2");
 
   // Load the Monaco Editor and create an instance
   let editor;
@@ -224,23 +358,9 @@ colnames(mtcars)`,
       minimap: {
         enabled: false
       },
-      fontSize: '17.5rem',               // Bootstrap is 1 rem
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
       renderLineHighlight: "none",     // Disable current line highlighting
       hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
-    });
-
-    // Add a keydown event listener for Shift+Enter using the addCommand method
-    editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, function () {
-      // Code to run when Shift+Enter is pressed
-      executeCode(editor.getValue());
-    });
-
-    // Add a keydown event listener for Ctrl+Enter to run selected code
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function () {
-      // Get the selected text from the editor
-      const selectedText = editor.getModel().getValueInRange(editor.getSelection());
-      // Code to run when Ctrl+Enter is pressed (run selected code)
-      executeCode(selectedText);
     });
 
     // Dynamically modify the height of the editor window if new lines are added.
@@ -260,6 +380,65 @@ colnames(mtcars)`,
       }
     };
 
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
     // Register an on change event for when new code is added to the editor window
     editor.onDidContentSizeChange(updateHeight);
 
@@ -269,14 +448,52 @@ colnames(mtcars)`,
 
   // Function to execute the code (accepts code as an argument)
   async function executeCode(codeToRun) {
-    // Disable run button for code cell active
-    runButton.disabled = true;
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run Code</span>';
 
     // Create a canvas variable for graphics
     let canvas = undefined;
 
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
     // Initialize webR
-    await globalThis.webR.init();
+    await webR.init();
 
     // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
@@ -296,15 +513,20 @@ colnames(mtcars)`,
       await webR.evalRVoid("dev.off()");
 
       // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-2-result-${index + 1}" class="${className}">${evt.data}</code>`;
+        })
+        .join("\n");
+
 
       // Clean the state
       const msgs = await webR.flush();
 
-      // Output each image stored
-      msgs.forEach(msg => {
+      // Output each image event stored
+      msgs.forEach((msg) => {
         // Determine if old canvas can be used or a new canvas is required.
         if (msg.type === 'canvas'){
           // Add image to the current canvas
@@ -319,36 +541,63 @@ colnames(mtcars)`,
             canvas.style.display = "block";
             canvas.style.margin = "auto";
           }
-        }
+        } 
       });
 
-      // Nullify the outputDiv of content
-      outputDiv.innerHTML = "";
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
 
       // Design an output object for messages
       const pre = document.createElement("pre");
       if (/\S/.test(out)) {
-        // Display results as text
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
       } else {
         // If nothing is present, hide the element.
         pre.style.visibility = "hidden";
       }
-      outputDiv.appendChild(pre);
+      outputCodeDiv.appendChild(pre);
 
       // Place the graphics on the canvas
       if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-2-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
       }
     } finally {
       // Clean up the remaining code
       webRCodeShelter.purge();
-      runButton.disabled = false;
     }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.disabled = false;
+    });
+
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run Code</span>';
   }
 
   // Add a click event listener to the run button
@@ -356,20 +605,24 @@ colnames(mtcars)`,
     executeCode(editor.getValue());
   };
 </script>
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-3">Loading
-  webR...</button>
-<div id="webr-editor-3"></div>
-<div id="webr-code-output-3" aria-live="assertive">
-  <pre style="visibility: hidden"></pre>
+<div id="qwebr-interactive-area-3" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-3">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-3" class="qwebr-console-area">
+    <div id="qwebr-editor-3" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-3" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-3" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
-  const runButton = document.getElementById("webr-run-button-3");
-  const outputDiv = document.getElementById("webr-code-output-3");
-  const editorDiv = document.getElementById("webr-editor-3");
-
-  // Add a light grey outline around the code editor
-  editorDiv.style.border = "1px solid #eee";
+  const runButton = document.getElementById("qwebr-button-run-3");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-3");
+  const editorDiv = document.getElementById("qwebr-editor-3");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-3");
 
   // Load the Monaco Editor and create an instance
   let editor;
@@ -385,23 +638,9 @@ library(dplyr)`,
       minimap: {
         enabled: false
       },
-      fontSize: '17.5rem',               // Bootstrap is 1 rem
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
       renderLineHighlight: "none",     // Disable current line highlighting
       hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
-    });
-
-    // Add a keydown event listener for Shift+Enter using the addCommand method
-    editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, function () {
-      // Code to run when Shift+Enter is pressed
-      executeCode(editor.getValue());
-    });
-
-    // Add a keydown event listener for Ctrl+Enter to run selected code
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function () {
-      // Get the selected text from the editor
-      const selectedText = editor.getModel().getValueInRange(editor.getSelection());
-      // Code to run when Ctrl+Enter is pressed (run selected code)
-      executeCode(selectedText);
     });
 
     // Dynamically modify the height of the editor window if new lines are added.
@@ -421,6 +660,65 @@ library(dplyr)`,
       }
     };
 
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
     // Register an on change event for when new code is added to the editor window
     editor.onDidContentSizeChange(updateHeight);
 
@@ -430,14 +728,52 @@ library(dplyr)`,
 
   // Function to execute the code (accepts code as an argument)
   async function executeCode(codeToRun) {
-    // Disable run button for code cell active
-    runButton.disabled = true;
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run Code</span>';
 
     // Create a canvas variable for graphics
     let canvas = undefined;
 
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
     // Initialize webR
-    await globalThis.webR.init();
+    await webR.init();
 
     // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
@@ -457,15 +793,20 @@ library(dplyr)`,
       await webR.evalRVoid("dev.off()");
 
       // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-3-result-${index + 1}" class="${className}">${evt.data}</code>`;
+        })
+        .join("\n");
+
 
       // Clean the state
       const msgs = await webR.flush();
 
-      // Output each image stored
-      msgs.forEach(msg => {
+      // Output each image event stored
+      msgs.forEach((msg) => {
         // Determine if old canvas can be used or a new canvas is required.
         if (msg.type === 'canvas'){
           // Add image to the current canvas
@@ -480,36 +821,63 @@ library(dplyr)`,
             canvas.style.display = "block";
             canvas.style.margin = "auto";
           }
-        }
+        } 
       });
 
-      // Nullify the outputDiv of content
-      outputDiv.innerHTML = "";
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
 
       // Design an output object for messages
       const pre = document.createElement("pre");
       if (/\S/.test(out)) {
-        // Display results as text
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
       } else {
         // If nothing is present, hide the element.
         pre.style.visibility = "hidden";
       }
-      outputDiv.appendChild(pre);
+      outputCodeDiv.appendChild(pre);
 
       // Place the graphics on the canvas
       if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-3-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
       }
     } finally {
       // Clean up the remaining code
       webRCodeShelter.purge();
-      runButton.disabled = false;
     }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.disabled = false;
+    });
+
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run Code</span>';
   }
 
   // Add a click event listener to the run button
@@ -517,20 +885,24 @@ library(dplyr)`,
     executeCode(editor.getValue());
   };
 </script>
-<button class="btn btn-default btn-webr" disabled="" type="button" id="webr-run-button-4">Loading
-  webR...</button>
-<div id="webr-editor-4"></div>
-<div id="webr-code-output-4" aria-live="assertive">
-  <pre style="visibility: hidden"></pre>
+<div id="qwebr-interactive-area-4" class="qwebr-interactive-area">
+  <button class="btn btn-default qwebr-button-run" disabled="" type="button" id="qwebr-button-run-4">🟡 Loading
+    webR...</button>
+  <div id="qwebr-console-area-4" class="qwebr-console-area">
+    <div id="qwebr-editor-4" class="qwebr-editor"></div>
+    <div id="qwebr-output-code-area-4" class="qwebr-output-code-area" aria-live="assertive">
+      <pre style="visibility: hidden"></pre>
+    </div>
+  </div>
+  <div id="qwebr-output-graph-area-4" class="qwebr-output-graph-area">
+  </div>
 </div>
 <script type="module">
   // Retrieve webR code cell information
-  const runButton = document.getElementById("webr-run-button-4");
-  const outputDiv = document.getElementById("webr-code-output-4");
-  const editorDiv = document.getElementById("webr-editor-4");
-
-  // Add a light grey outline around the code editor
-  editorDiv.style.border = "1px solid #eee";
+  const runButton = document.getElementById("qwebr-button-run-4");
+  const outputCodeDiv = document.getElementById("qwebr-output-code-area-4");
+  const editorDiv = document.getElementById("qwebr-editor-4");
+  const outputGraphDiv = document.getElementById("qwebr-output-graph-area-4");
 
   // Load the Monaco Editor and create an instance
   let editor;
@@ -549,23 +921,9 @@ str(rounded_up_mtcars)`,
       minimap: {
         enabled: false
       },
-      fontSize: '17.5rem',               // Bootstrap is 1 rem
+      fontSize: '17.5pt',               // Bootstrap is 1 rem
       renderLineHighlight: "none",     // Disable current line highlighting
       hideCursorInOverviewRuler: true  // Remove cursor indictor in right hand side scroll bar
-    });
-
-    // Add a keydown event listener for Shift+Enter using the addCommand method
-    editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, function () {
-      // Code to run when Shift+Enter is pressed
-      executeCode(editor.getValue());
-    });
-
-    // Add a keydown event listener for Ctrl+Enter to run selected code
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function () {
-      // Get the selected text from the editor
-      const selectedText = editor.getModel().getValueInRange(editor.getSelection());
-      // Code to run when Ctrl+Enter is pressed (run selected code)
-      executeCode(selectedText);
     });
 
     // Dynamically modify the height of the editor window if new lines are added.
@@ -585,6 +943,65 @@ str(rounded_up_mtcars)`,
       }
     };
 
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        executeCode(editor.getValue());
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          executeCode(currentLine);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          executeCode(selectedText);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
     // Register an on change event for when new code is added to the editor window
     editor.onDidContentSizeChange(updateHeight);
 
@@ -594,14 +1011,52 @@ str(rounded_up_mtcars)`,
 
   // Function to execute the code (accepts code as an argument)
   async function executeCode(codeToRun) {
-    // Disable run button for code cell active
-    runButton.disabled = true;
+
+    // Disallowing execution of other code cells
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.disabled = true;
+    });
+
+    // Emphasize the active code cell
+    runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run Code</span>';
 
     // Create a canvas variable for graphics
     let canvas = undefined;
 
+    // Create a pager variable for help/file contents
+    let pager = [];
+
+    // Process 
+    async function parseTypePager(msg) { 
+
+        // Split out the event data
+        const { path, title, deleteFile } = msg.data; 
+
+        // Process the pager data by reading the information from disk
+        const paged_data = await webR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+            content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+        });
+
+        // Unlink file if needed
+        if (deleteFile) { 
+          await webR.FS.unlink(path); 
+        } 
+
+        // Return extracted data with spaces
+        return paged_data;
+    } 
+
     // Initialize webR
-    await globalThis.webR.init();
+    await webR.init();
 
     // Setup a webR canvas by making a namespace call into the {webr} package
     await webR.evalRVoid("webr::canvas(width=504, height=360)");
@@ -621,15 +1076,20 @@ str(rounded_up_mtcars)`,
       await webR.evalRVoid("dev.off()");
 
       // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
-      const out = result.output.filter(
-        evt => evt.type == "stdout" || evt.type == "stderr"
-      ).map((evt) => evt.data).join("\n");
+      const out = result.output
+        .filter(evt => evt.type === "stdout" || evt.type === "stderr")
+        .map((evt, index) => {
+          const className = `qwebr-output-code-${evt.type}`;
+          return `<code id="${className}-editor-4-result-${index + 1}" class="${className}">${evt.data}</code>`;
+        })
+        .join("\n");
+
 
       // Clean the state
       const msgs = await webR.flush();
 
-      // Output each image stored
-      msgs.forEach(msg => {
+      // Output each image event stored
+      msgs.forEach((msg) => {
         // Determine if old canvas can be used or a new canvas is required.
         if (msg.type === 'canvas'){
           // Add image to the current canvas
@@ -644,36 +1104,63 @@ str(rounded_up_mtcars)`,
             canvas.style.display = "block";
             canvas.style.margin = "auto";
           }
-        }
+        } 
       });
 
-      // Nullify the outputDiv of content
-      outputDiv.innerHTML = "";
+      // Use `map` to process the filtered "pager" events asynchronously
+      const pager = await Promise.all(
+        msgs.filter(msg => msg.type === 'pager').map(
+          async (msg) => {
+            return await parseTypePager(msg);
+          }
+        )
+      );
+
+      // Nullify the output area of content
+      outputCodeDiv.innerHTML = "";
+      outputGraphDiv.innerHTML = "";
 
       // Design an output object for messages
       const pre = document.createElement("pre");
       if (/\S/.test(out)) {
-        // Display results as text
-        const code = document.createElement("code");
-        code.innerText = out;
-        pre.appendChild(code);
+        // Display results as HTML elements to retain output styling
+        const div = document.createElement("div");
+        div.innerHTML = out;
+        pre.appendChild(div);
       } else {
         // If nothing is present, hide the element.
         pre.style.visibility = "hidden";
       }
-      outputDiv.appendChild(pre);
+      outputCodeDiv.appendChild(pre);
 
       // Place the graphics on the canvas
       if (canvas) {
-        const p = document.createElement("p");
-        p.appendChild(canvas);
-        outputDiv.appendChild(p);
+        outputGraphDiv.appendChild(canvas);
+      }
+
+      // Display the pager data
+      if (pager) {
+        // Use the `pre` element to preserve whitespace.
+        pager.forEach((paged_data, index) => {
+          let pre_pager = document.createElement("pre");
+          pre_pager.innerText = paged_data;
+          pre_pager.classList.add("qwebr-output-code-pager");
+          pre_pager.setAttribute("id", "qwebr-output-code-pager-editor-4-result-" + (index + 1));
+          outputCodeDiv.appendChild(pre_pager);
+        });
       }
     } finally {
       // Clean up the remaining code
       webRCodeShelter.purge();
-      runButton.disabled = false;
     }
+
+    // Switch to allowing execution of code
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.disabled = false;
+    });
+
+    // Revert to the initial code cell state
+    runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run Code</span>';
   }
 
   // Add a click event listener to the run button
@@ -686,11 +1173,11 @@ str(rounded_up_mtcars)`,
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>webR</category>
   <category>dplyr</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/index.html</guid>
-  <pubDate>Wed, 23 Aug 2023 07:00:00 GMT</pubDate>
+  <guid>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/</guid>
+  <pubDate>Wed, 23 Aug 2023 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/images/webR.png" medium="image" type="image/png" height="143" width="144"/>
 </item>
 <item>
@@ -698,6 +1185,7 @@ str(rounded_up_mtcars)`,
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -771,13 +1259,13 @@ str(rounded_up_mtcars)`,
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tidyverse</category>
   <category>shiny</category>
   <category>renv</category>
   <category>bslib</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html</guid>
-  <pubDate>Tue, 28 Mar 2023 07:00:00 GMT</pubDate>
+  <pubDate>Tue, 28 Mar 2023 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/images/presentation_cover_slide.png" medium="image" type="image/png" height="80" width="144"/>
 </item>
 <item>
@@ -785,6 +1273,7 @@ str(rounded_up_mtcars)`,
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -1165,7 +1654,11 @@ font-style: inherit;">\n</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">Vertical line = Max J-Index"</span>))</span></code></pre></div>
 <div class="cell-output-display">
-<p><img src="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The <code>max_j_index_threshold</code> has a value of 0.945 and the above viz helps supports the case for changing the discrete classification threshold from the baseline value of 0.5 (where a prediction probability above 0.5 indicates a “good”). Neat package with some other capabilities that I’m going to keep an eye out for.</p>
@@ -2208,7 +2701,7 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tidymodels</category>
   <category>probably</category>
   <category>arrow</category>
@@ -2216,7 +2709,7 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
   <category>sodium</category>
   <category>cyphr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023.html</guid>
-  <pubDate>Sun, 15 Jan 2023 08:00:00 GMT</pubDate>
+  <pubDate>Sun, 15 Jan 2023 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/images/apache_arrow.png" medium="image" type="image/png" height="65" width="144"/>
 </item>
 <item>
@@ -2224,6 +2717,7 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/2023-01-01-data-science-hangout.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -2240,13 +2734,13 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tidyverse</category>
   <category>shiny</category>
   <category>machine learning</category>
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/2023-01-01-data-science-hangout.html</guid>
-  <pubDate>Sun, 01 Jan 2023 08:00:00 GMT</pubDate>
+  <pubDate>Sun, 01 Jan 2023 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/images/Posit_Data_Science_Hangout.png" medium="image" type="image/png" height="78" width="144"/>
 </item>
 <item>
@@ -2254,6 +2748,7 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -2288,7 +2783,7 @@ Git for the R User
 <p>RStudio IDE’s <em>New Project Wizard</em> will launch in a popup window after selecting <code>New Project</code> from the file menu. You should expect the following:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/clone_git_repo.gif" class="img-fluid figure-img" style="width:65.0%"></p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/clone_git_repo.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:65.0%"></p>
 </figure>
 </div>
 <p>This process will create a local clone of all files and folders found on your remote GitHub repo. Once all files are downloaded for this project, the files and folder structure will look like this:</p>
@@ -2301,7 +2796,7 @@ Git for the R User
 <p>Once the project-package dependencies are installed, test launch the Shiny app by running <code>shiny::runApp()</code> in the Console or by clicking on the <code>Run App</code> button in the RStudio IDE. The <code>Run App</code> button only appears if you’re inside the <code>global.R</code>, <code>ui.R</code>, and <code>server.R</code> files - These three filenames are unique to Shiny and the RStudio IDE recognizes them as such.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/run_app.gif" class="img-fluid figure-img"></p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/run_app.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
 </section>
@@ -2558,7 +3053,7 @@ font-style: inherit;">"Bloomreach"</span>)</span>
 <p>Let’s give this app a test run and see how it changed the appearance:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/run_revised_app.gif" class="img-fluid figure-img"></p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/run_revised_app.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
 </figure>
 </div>
 <p>So far, so good! We’ve got a retro logo (re-sized to fit in the top-left of the navbar), a retro font (pulled from Google Fonts), and the primary and accent colors have been updated from yellow to neon green. There are several additional edits we <em>could</em> make but for now, I like it.</p>
@@ -2571,12 +3066,12 @@ font-style: inherit;">"Bloomreach"</span>)</span>
 <p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/publish_button.png" class="img-fluid"> <br>Clicking that button will open a new window to help you publish your app to the shinyapps.io servers. The title you select will be the name of the application on your shinyapps.io dashboard and it will also be included in the URL of your app. For example, I named my app “Bloomreach_Shiny_App” so the URL to visit my app is <a href="https://javierorraca.shinyapps.io/Bloomreach_Shiny_App/">https://javierorraca.shinyapps.io/Bloomreach_Shiny_App/</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/publish_to_server.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/publish_to_server.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></p>
 </figure>
 </div>
 <p>If you use a title that already exists in your shinyapps.io dashboard, you will force overwrite the prior app with the same name, so take caution when publishing. More often than not, it’s desired to overwrite an app so that you can regularly push updates to production to the same URL, however, there are instances where this behavior would not be desired. Regardless of your publishing intention, RStudio IDE will provide a warning to confirm that you want to write over a shinyapps.io application with the same name.</p>
 <p>Since the <code>Dockerfile</code> is not relevant to this project deployment, I recommend un-checking <code>Dockerfile</code> from the list of file from which to publish. Once you’re ready, click on <code>Publish</code> and a new tab, <em>Deploy</em>, will be visible in the bottom-left of your RStudio IDE. This process takes several minutes since shinyapps.io will 1) install an R image with all the project-package dependencies needed to run your Shiny app, and 2) build and deploy the Shiny app itself. Once publishing is complete, you should see something like this:</p>
-<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/deploy_pane.png" class="img-fluid" style="width:85.0%" data-fig-align="center"> <br></p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/deploy_pane.png" class="img-fluid quarto-figure quarto-figure-center" style="width:85.0%"> <br></p>
 </section>
 <section id="git-commit-push" class="level2">
 <h2 class="anchored" data-anchor-id="git-commit-push">6: Git Commit &amp; Push</h2>
@@ -2915,13 +3410,13 @@ font-style: inherit;">2.2</span>              </span></code></pre></div>
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>shiny</category>
   <category>github</category>
   <category>bslib</category>
   <category>docker</category>
   <guid>https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html</guid>
-  <pubDate>Tue, 15 Nov 2022 08:00:00 GMT</pubDate>
+  <pubDate>Tue, 15 Nov 2022 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/Shiny_Demo_Preview.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
@@ -2929,6 +3424,7 @@ font-style: inherit;">2.2</span>              </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/2021-10-21-torch-for-r.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -2948,10 +3444,10 @@ font-style: inherit;">2.2</span>              </span></code></pre></div>
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>machine learning</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/2021-10-21-torch-for-r.html</guid>
-  <pubDate>Fri, 22 Oct 2021 07:00:00 GMT</pubDate>
+  <pubDate>Fri, 22 Oct 2021 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/images/torch_and_luz.png" medium="image" type="image/png" height="91" width="144"/>
 </item>
 <item>
@@ -2959,6 +3455,7 @@ font-style: inherit;">2.2</span>              </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -3080,7 +3577,7 @@ font-style: inherit;">plot_map</span>()</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/laguna_lidar.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">USGS Laguna Canyon LIDAR</figcaption>
+<figcaption>USGS Laguna Canyon LIDAR</figcaption>
 </figure>
 </div>
 </section>
@@ -3373,7 +3870,7 @@ font-style: inherit;">plot_map</span>(base_map)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/base_map.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Laguna Beach base map a la Eduard Imhof</figcaption>
+<figcaption>Laguna Beach base map a la Eduard Imhof</figcaption>
 </figure>
 </div>
 </section>
@@ -3476,7 +3973,7 @@ font-style: inherit;">"Open Street Map `highway` attribute in Laguna Beach"</spa
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/OSM_ggplot2_render.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">OSM render of Laguna Beach roads and highways using ggplot2</figcaption>
+<figcaption>OSM render of Laguna Beach roads and highways using ggplot2</figcaption>
 </figure>
 </div>
 </section>
@@ -3526,7 +4023,7 @@ font-style: inherit;">plot_map</span>()</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/base_map_layer1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Base Map Layer 1</figcaption>
+<figcaption>Base Map Layer 1</figcaption>
 </figure>
 </div>
 <p>I want different styles for different OSM lines so let’s continue by creating several groups of OSM lines.</p>
@@ -3896,7 +4393,7 @@ font-style: inherit;">plot_map</span>()</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/2D_render.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">2D render of Laguna Beach… Success!</figcaption>
+<figcaption>2D render of Laguna Beach… Success!</figcaption>
 </figure>
 </div>
 </section>
@@ -4001,7 +4498,7 @@ font-style: inherit;">render_snapshot</span>()</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/3D_render.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">3D render of Laguna Beach</figcaption>
+<figcaption>3D render of Laguna Beach</figcaption>
 </figure>
 </div>
 </section>
@@ -4440,12 +4937,12 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>rayshader</category>
   <category>ggplot2</category>
   <category>visualizations</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</guid>
-  <pubDate>Tue, 07 Sep 2021 07:00:00 GMT</pubDate>
+  <pubDate>Tue, 07 Sep 2021 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/smallhobart.gif" medium="image" type="image/gif"/>
 </item>
 <item>
@@ -4453,6 +4950,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/2021-05-24-dataframe.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -4467,10 +4965,10 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tibble</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/2021-05-24-dataframe.html</guid>
-  <pubDate>Mon, 24 May 2021 07:00:00 GMT</pubDate>
+  <pubDate>Mon, 24 May 2021 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/images/dataframe.jpeg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -4478,6 +4976,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-05-03-DT/2021-05-03-DT.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -4494,10 +4993,10 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>dt</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-05-03-DT/2021-05-03-DT.html</guid>
-  <pubDate>Mon, 03 May 2021 07:00:00 GMT</pubDate>
+  <pubDate>Mon, 03 May 2021 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-05-03-DT/images/DT_Shiny.png" medium="image" type="image/png" height="84" width="144"/>
 </item>
 <item>
@@ -4505,6 +5004,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/2021-01-24-rstudio-global.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -4687,7 +5187,7 @@ font-style: inherit;">"Random design with 15 candidates"</span>)</span></code></
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/grid-random-matrix-1.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Random grid search using dials::grid_random()</figcaption>
+<figcaption>Random grid search using dials::grid_random()</figcaption>
 </figure>
 </div>
 </section>
@@ -4760,7 +5260,7 @@ font-style: inherit;">"Latin Hypercube design with 15 candidates"</span>)</span>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/grid-sfd-compare-1.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Latin hypercube designed using the dials::grid_latin_hypercube() helper</figcaption>
+<figcaption>Latin hypercube designed using the dials::grid_latin_hypercube() helper</figcaption>
 </figure>
 </div>
 <p>While not perfect, this design spaces the points further away from one another.</p>
@@ -5035,10 +5535,10 @@ font-style: inherit;">grid =</span> glmnet_grid)</span></code></pre></div>
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/2021-01-24-rstudio-global.html</guid>
-  <pubDate>Sun, 24 Jan 2021 08:00:00 GMT</pubDate>
+  <pubDate>Sun, 24 Jan 2021 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/rstudio-global-2021.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -5046,6 +5546,7 @@ font-style: inherit;">grid =</span> glmnet_grid)</span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/2021-01-19-rsthemes.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5130,10 +5631,10 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>quick tips</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/2021-01-19-rsthemes.html</guid>
-  <pubDate>Tue, 19 Jan 2021 08:00:00 GMT</pubDate>
+  <pubDate>Tue, 19 Jan 2021 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/images/rsthemes.gif" medium="image" type="image/gif"/>
 </item>
 <item>
@@ -5144,39 +5645,40 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p>Killing a few birds with one stone and getting ready for 2021… <br><br>1) Getting better at Linux / shell commands, <br> 2) Learning Julia (see my Resources tab for some great Julia starter links!), <br> 3) Doing it all on a Raspberry Pi 😜 Happy holidays and Happy New Years to all!</p>
 <p>Below are some pics of my current progress.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi1.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Raspberry Pi 4, Model B, 8GB RAM, &amp; Super Cute Tiny Heat Sinks</figcaption>
+<figcaption>Raspberry Pi 4, Model B, 8GB RAM, &amp; Super Cute Tiny Heat Sinks</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi2.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Enclosing the Pi 4 in a CanaKit case + fan</figcaption>
+<figcaption>Enclosing the Pi 4 in a CanaKit case + fan</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi3.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Raspberry Pi OS, a Debian distro for the Pi</figcaption>
+<figcaption>Raspberry Pi OS, a Debian distro for the Pi</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi4.jpeg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Jupyter Lab server on the Pi set up w/ Python, R, and Julia</figcaption>
+<figcaption>Jupyter Lab server on the Pi set up w/ Python, R, and Julia</figcaption>
 </figure>
 </div>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>linux</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</guid>
-  <pubDate>Thu, 31 Dec 2020 08:00:00 GMT</pubDate>
+  <pubDate>Thu, 31 Dec 2020 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi-banner.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
@@ -5187,16 +5689,17 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p>Package development should be on every R programmer’s radar in 2021, especially with all the free information available online! Here’s an excellent, concise, ultra-bookmark-worthy tutorial by Shannon Pileggi, PhD, titled “Your first R package in 1 hour”. Folks, she wasn’t lying either. I followed her tutorial and built an R package in roughly 45 minutes (note: I assume you have experience with the R language and understand the basics of <code>devtools</code>, <code>usethis</code>, <code>roxygen2</code>, and <code>rmarkdown</code>).</p>
 <p>Using functions from just the <code>devtools</code> and <code>usethis</code> packages, the whole process is much more streamlined than what I would have thought. Check out the rest of Shannon’s <em>Piping Hot Data</em> website as well… It’s a great resource for R programmers and researchers, and she built it with the newly reintroduced <code>distill</code> package, just like this site. :-)</p>
 <p>Source: <br>* Shannon’s <em>Piping Hot Data</em> <a href="https://www.pipinghotdata.com/posts/2020-10-25-your-first-r-package-in-1-hour/">“Your first R package in 1 hour” post</a> <br>* Shannon’s <a href="https://www.linkedin.com/in/shannon-m-pileggi/">LinkedIn</a></p>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>packages</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/2020-12-19-R-Package-One-Hour-Tutorial.html</guid>
-  <pubDate>Sat, 19 Dec 2020 08:00:00 GMT</pubDate>
+  <pubDate>Sat, 19 Dec 2020 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/images/package_workshop.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -5207,17 +5710,18 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p><code>dbplyr</code> 2.0.0 comes loaded with improvements including the translation of <code>dplyr</code>’s new <code>across()</code> function. If you aren’t familiar with this library, <code>dbplyr</code> translates your <code>dplyr</code> syntax to SQL. I regularly connect to enterprise databases using R and have almost completely transitioned from SQL. Yes, SQL is awesome. Yes, using <code>dplyr</code> is a lot more fun!</p>
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/images/dbplyr.jpeg" class="img-fluid"></p>
 <p>Source:<br> * tidyverse blog’s <a href="https://www.tidyverse.org/blog/2020/11/dbplyr-2-0-0/">dbplyr 2.0.0 Official Announcement</a></p>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tidyverse</category>
   <category>dplyr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</guid>
-  <pubDate>Wed, 04 Nov 2020 08:00:00 GMT</pubDate>
+  <pubDate>Wed, 04 Nov 2020 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/images/dbplyr_what_is_new.jpg_large" medium="image"/>
 </item>
 <item>
@@ -5228,16 +5732,17 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p>I’ll keep this short since all credit should go towards the amazing Cosima Meyer and Dennis Hammerschmidton… They compressed some of the most valuable steps for creating and deploying a package. This duo’s work was published for the MZES Social Science Data Lab. If you want a detailed and easy-to-follow how-to for R package development, bookmark this step-by-step guide!</p>
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/package_dev.png" class="img-fluid"></p>
 <p>Source:<br> * Methods Bites: <a href="https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/">How to write your own R package and publish it on CRAN</a></p>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>packages</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</guid>
-  <pubDate>Sun, 13 Sep 2020 07:00:00 GMT</pubDate>
+  <pubDate>Sun, 13 Sep 2020 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/methods_bites.png" medium="image" type="image/png" height="167" width="144"/>
 </item>
 <item>
@@ -5248,6 +5753,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p>Hey R Shiny users, want to make your Shiny apps voice-interactive? For example, “Click on Product Toy-2A and then drill-down by Region.” Ummm, yes please. Pretty neat stuff made possible with the <code>heyshiny</code> package. “The <code>heyshiny</code> package provides a new Shiny input, the <code>speechInput()</code>. This new input allows your Shiny app to listen to the microphone, recognize the speech, and return it as text.”</p>
 <p>The main caveat with this package is that it is based on the annyang JavaScript library and therefore requires that 1) you’re online and 2) using a browser that supports speech recognition (I tried this on Chrome and works fine). It’s not on CRAN but check out the GitHub page, below. Here’s an example if you’re getting set up, pulled from their GitHub repo:</p>
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/images/heyshiny_code.png" class="img-fluid"></p>
@@ -5255,10 +5761,10 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>shiny</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</guid>
-  <pubDate>Fri, 03 Jul 2020 07:00:00 GMT</pubDate>
+  <pubDate>Fri, 03 Jul 2020 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/images/shiny_logo.png" medium="image" type="image/png" height="69" width="144"/>
 </item>
 <item>
@@ -5269,23 +5775,24 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p>I had read about the new <code>across()</code> function hype and now I get it… No more <code>mutate_at()</code> or <code>summarise_at()</code> with the cryptic list-lambdas. As the dplyr documentation states, “<code>across()</code> supersedes the family of”scoped variants” like <code>summarise_at()</code>, <code>summarise_if()</code>, and <code>summarise_all()</code>.”</p>
 <p>Below is an example highlighting the new <code>across()</code> syntax meant to be used within a <code>mutate()</code> function. I tried this on a few columns of the mtcars data set with dplyr’s <code>case_when()</code> a la SQL CASE_WHEN (as opposed to nesting multiple <code>if_else()</code> statements to the point of confusion!). The dplyr changes are subtle but will definitely streamline my data wrangling.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/images/dplyr_1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">dplyr 1.0.0’s new across() function</figcaption>
+<figcaption>dplyr 1.0.0’s new across() function</figcaption>
 </figure>
 </div>
 <p>Source:<br> * <a href="https://dplyr.tidyverse.org/">dplyr, a core tidyverse package</a></p>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tidyverse</category>
   <category>dplyr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/2020-06-20-dplyr-1.0.0.html</guid>
-  <pubDate>Sat, 20 Jun 2020 07:00:00 GMT</pubDate>
+  <pubDate>Sat, 20 Jun 2020 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/images/dplyr.jpeg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -5293,6 +5800,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5306,12 +5814,12 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>statistics</category>
   <category>ggplot2</category>
   <category>visualizations</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</guid>
-  <pubDate>Sun, 19 Apr 2020 07:00:00 GMT</pubDate>
+  <pubDate>Sun, 19 Apr 2020 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -5322,23 +5830,24 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p>Wizards of the Coast have developed such an incredible tabletop, fantasy, RPG with the 5th edition of D&amp;D… I wish I would have re-discovered this game years back. For context, I haven’t touched D&amp;D since 1997!</p>
 <p>If you know of good resources for newbies and new D&amp;D Dungeon Masters (“DMs”), I’d love to know about your favorite resources. For data science folks out there, this site was built with R using <code>blogdown</code>, Hugo themes, and deployed for free using GitHub and Netlify.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/images/Dnd.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">D&amp;D dragon looking for trouble</figcaption>
+<figcaption>D&amp;D dragon looking for trouble</figcaption>
 </figure>
 </div>
 <p>Reference: <br> * Javier’s <a href="https://flamboyant-brahmagupta-3caca6.netlify.app/">D&amp;D Adventures</a></p>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>rmarkdown</category>
   <category>blogdown</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/2020-04-05-DnD-Adventures.html</guid>
-  <pubDate>Sun, 05 Apr 2020 07:00:00 GMT</pubDate>
+  <pubDate>Sun, 05 Apr 2020 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/images/Dnd.png" medium="image" type="image/png" height="61" width="144"/>
 </item>
 <item>
@@ -5346,6 +5855,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5457,10 +5967,10 @@ font-style: inherit;">#&gt;     0 50316 50316</span></span></code></pre></div>
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</guid>
-  <pubDate>Thu, 20 Feb 2020 08:00:00 GMT</pubDate>
+  <pubDate>Thu, 20 Feb 2020 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/images/themis.png" medium="image" type="image/png" height="126" width="144"/>
 </item>
 </channel>

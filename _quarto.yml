@@ -61,3 +61,8 @@ format:
     fontsize: 1.0em
     code-copy: true
     code-overflow: wrap
+
+webr: 
+  show-startup-message: false
+  show-header-message: false
+  channel-type: 'post-message'
