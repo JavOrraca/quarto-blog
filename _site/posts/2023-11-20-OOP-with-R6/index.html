@@ -322,13 +322,14 @@ cookieconsent.run({
 </div>
 </div>
 <p>When meeting data scientists in the wild, they’re almost always Python users and they often ask me the rhetorical question of “can R do OOP and encapsulation?” I used to be embarrassed about this… Did I miss some mission critical component of data science in grad school? Have I been learning from the wrong books and tutorials?</p>
-<p>Having worked alongside amazing software engineers over recent years, I’ve come to realize OOP is fundamental in computer science education. The de facto OOP nature of Python makes the transition from C/C++/Java to Python a breeze and delight. This is one of the many reasons why we see so much OOP development in data science organizations <em>by</em> Python-based data science practitioners and educators. But what if you don’t have a formal software background and gravitated to R for statistics, functional programming, and data science?</p>
+<p>Having worked alongside amazing software engineers over recent years, I’ve come to realize OOP is fundamental in computer science education. The de facto OOP nature of Python makes the transition from C/C++/Java to Python a breeze and delight. This is one of the many reasons why we see so much OOP development in data science organizations from Python-based data science practitioners and educators. But what if you don’t have a formal software background and gravitated to R for statistics, functional programming, and data science?</p>
 <aside>
 <a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Interact with the Tidy Wizard</a> if you’re a paying ChatGPT Plus customer! I’m developing a Shiny app for anyone to interact with a more robust version of the wizard via API (and without the Gandalf-speak… trust me when I say it gets old 😅)
 </aside>
 <p>My thoughts on this topic will differ from others in the R community, likely from folks that have formal computer science / software engineering backgrounds. I do not have a formal CS background, so bear with me while I work through this heresy: <em>You don’t need to know OOP to be a successful data scientist.</em></p>
 <p>In data science, would knowing OOP help your future career prospects? Probably; <em>Probably</em> in the same way a PhD <em>might</em> help you climb the corporate ladder more quickly. For me personally (and again, as a primary R user), not knowing the intricacies of OOP hasn’t slowed me down from interactive web app development, ML training / production at scale (and containerization via Docker), parallelized / vectorized function writing, package development, NLP and deep learning, etc.</p>
-<p>Copying from Hadley Wickham’s <em>Advanced R</em>, he shares the following insights:</p>
+<p>On a daily basis, most R users don’t have a need for OOP since they utilize objects and functions. They apply functions to objects to create new objects, and all this is typically done to one class: the data.frame/tibble. OOP in R also isn’t limited to R6; In fact, we regularly apply functions in R that inherit the role of generic-function OO. For example, base R’s <code>sum()</code> and <code>print()</code> - <em>to name just a couple!</em> - are S3 functions.</p>
+<p>Copying from Hadley Wickham’s <em>Advanced R</em>, he shares the following insights about different OO systems in R:</p>
 <blockquote class="blockquote">
 <p>Generally in R, functional programming is much more important than object-oriented programming, because you typically solve complex problems by decomposing them into simple functions, not simple objects. Nevertheless, there are important reasons to learn each of the three systems:</p>
 <ul>
@@ -337,6 +338,7 @@ cookieconsent.run({
 <li><p>S4 is a rigorous system that forces you to think carefully about program design. It’s particularly well-suited for building large systems that evolve over time and will receive contributions from many programmers. This is why it is used by the Bioconductor project, so another reason to learn S4 is to equip you to contribute to that project.</p></li>
 </ul>
 </blockquote>
+<p>Not mentioned in the above is the OOP system <a href="https://rconsortium.github.io/S7/">S7</a>, expected to be the successor to S3 and S4. Given the nature of this early-stage framework, I’ve focused most of this post to highlight R6. S7 “has been designed and implemented collaboratively by the R Consortium Object-Oriented Programming Working Group” and their <a href="https://rconsortium.github.io/S7/articles/motivation.html">high-level motivation for S7 post</a> details how it aims to resolve some of the challenges with R’s two built-in OO systems S3 and S4.</p>
 </section>
 <section id="additional-resources" class="level1">
 <h1>Additional Resources</h1>
@@ -589,10 +591,10 @@ cookieconsent.run({
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(patron1<span class="sc">$</span><span class="fu">get_transaction_history</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-20 17:10:29.815176 : Borrowed The Great Gatsby"
+[1] "2023-11-20 23:34:17.392016 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-20 17:10:29.817955 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-20 23:34:17.396209 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
