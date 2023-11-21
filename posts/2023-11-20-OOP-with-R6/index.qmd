@@ -24,7 +24,7 @@ The [R6 package](https://r6.r-lib.org/) brings forth the elegance of object-orie
 
 When meeting data scientists in the wild, they're almost always Python users and they often ask me the rhetorical question of "can R do OOP and encapsulation?" I used to be embarrassed about this... Did I miss some mission critical component of data science in grad school? Have I been learning from the wrong books and tutorials?
 
-Having worked alongside amazing software engineers over recent years, I've come to realize OOP is fundamental in computer science education. The de facto OOP nature of Python makes the transition from C/C++/Java to Python a breeze and delight. This is one of the many reasons why we see so much OOP development in data science organizations _by_ Python-based data science practitioners and educators. But what if you don't have a formal software background and gravitated to R for statistics, functional programming, and data science? 
+Having worked alongside amazing software engineers over recent years, I've come to realize OOP is fundamental in computer science education. The de facto OOP nature of Python makes the transition from C/C++/Java to Python a breeze and delight. This is one of the many reasons why we see so much OOP development in data science organizations from Python-based data science practitioners and educators. But what if you don't have a formal software background and gravitated to R for statistics, functional programming, and data science? 
 
 <aside>
 [Interact with the Tidy Wizard](https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard) if you're a paying ChatGPT Plus customer! I'm developing a Shiny app for anyone to interact with a more robust version of the wizard via API (and without the Gandalf-speak... trust me when I say it gets old 😅)
@@ -34,7 +34,9 @@ My thoughts on this topic will differ from others in the R community, likely fro
 
 In data science, would knowing OOP help your future career prospects? Probably; _Probably_ in the same way a PhD _might_ help you climb the corporate ladder more quickly. For me personally (and again, as a primary R user), not knowing the intricacies of OOP hasn't slowed me down from interactive web app development, ML training / production at scale (and containerization via Docker), parallelized / vectorized function writing, package development, NLP and deep learning, etc.
 
-Copying from Hadley Wickham's _Advanced R_, he shares the following insights:
+On a daily basis, most R users don't have a need for OOP since they utilize objects and functions. They apply functions to objects to create new objects, and all this is typically done to one class: the data.frame/tibble. OOP in R also isn't limited to R6; In fact, we regularly apply functions in R that inherit the role of generic-function OO. For example, base R's `sum()` and `print()` - _to name just a couple!_ - are S3 functions.
+
+Copying from Hadley Wickham's _Advanced R_, he shares the following insights about different OO systems in R:
 
 > Generally in R, functional programming is much more important than object-oriented programming, because you typically solve complex problems by decomposing them into simple functions, not simple objects. Nevertheless, there are important reasons to learn each of the three systems:
 >
@@ -43,6 +45,8 @@ Copying from Hadley Wickham's _Advanced R_, he shares the following insights:
 * R6 provides a standardised way to escape R’s copy-on-modify semantics. This is particularly important if you want to model objects that exist independently of R. Today, a common need for R6 is to model data that comes from a web API, and where changes come from inside or outside of R.<br><br>
 >
 * S4 is a rigorous system that forces you to think carefully about program design. It’s particularly well-suited for building large systems that evolve over time and will receive contributions from many programmers. This is why it is used by the Bioconductor project, so another reason to learn S4 is to equip you to contribute to that project.
+
+Not mentioned in the above is the OOP system [S7](https://rconsortium.github.io/S7/), expected to be the successor to S3 and S4. Given the nature of this early-stage framework, I've focused most of this post to highlight R6. S7 "has been designed and implemented collaboratively by the R Consortium Object-Oriented Programming Working Group" and their [high-level motivation for S7 post](https://rconsortium.github.io/S7/articles/motivation.html) details how it aims to resolve some of the challenges with R's two built-in OO systems S3 and S4.
 
 # Additional Resources
 
