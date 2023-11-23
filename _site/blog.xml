@@ -1006,10 +1006,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-23 02:29:53.487227 : Borrowed The Great Gatsby"
+[1] "2023-11-23 02:33:08.481985 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-23 02:29:53.488718 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-23 02:33:08.483374 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
