@@ -10,7 +10,1041 @@
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
 <generator>quarto-1.4.506</generator>
-<lastBuildDate>Wed, 23 Aug 2023 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 22 Nov 2023 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>R Users Probably Don’t Need to Know OOP</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/images/charlie.jpg" class="preview-image img-fluid figure-img"></p>
+<figcaption>Javier, exploring whether or not data scientists need to know OOP</figcaption>
+</figure>
+</div>
+<section id="oop-with-r" class="level1 page-columns page-full">
+<h1>OOP with R</h1>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>The <a href="https://r6.r-lib.org/">R6 package</a> brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. The <a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Tidy Wizard</a>, a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:</p>
+<ul>
+<li>It bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.</li>
+</ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:25%;">
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/images/logo.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>When meeting data scientists in the wild, they’re almost always Python users and they often ask me the rhetorical question of “can R do OOP and encapsulation?” I used to be embarrassed about this… Did I miss some mission critical component of data science in grad school? Have I been learning from the wrong books and tutorials?</p>
+<p>Having worked alongside amazing software engineers over recent years, I’ve come to realize OOP is fundamental in computer science education. The de facto OOP nature of Python makes the transition from C/C++/Java to Python a breeze and delight. This is one of the many reasons why we see so much OOP development in data science organizations from Python-based data science practitioners and educators. But what if you don’t have a formal software background and gravitated to R for statistics, functional programming, and data science?</p>
+<aside>
+<a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Interact with the Tidy Wizard</a> if you’re a paying ChatGPT Plus customer! I’m developing a Shiny app so anyone can interact with the Wizard directly via API (Gandalf-speak will be optional… trust me when I say it gets old 😅)<br><br>
+</aside>
+<p>My thoughts on this topic will differ from others in the R community, likely from folks that have formal computer science / software engineering backgrounds. I do not have a formal CS background, so bear with me while I work through this heresy: <em>You don’t need to know OOP to be a successful data scientist.</em></p>
+<p>In data science, would knowing OOP help your future career prospects? Probably; <em>Probably</em> in the same way a PhD <em>might</em> help you climb the corporate ladder more quickly. In my experience (and again, as a primary R user), not knowing the intricacies of OOP shouldn’t slow you down from interactive web app development, ML training / production at scale, containerization via Docker, parallelized / vectorized function writing, package development, NLP, deep learning, etc.</p>
+<p>On a daily basis, most R users don’t have a need for OOP since they utilize objects and functions. They apply functions to objects to create new objects, and all this is typically done to one class: the data.frame/tibble. OOP in R also isn’t limited to R6; In fact, we regularly apply functions in R that inherit the role of generic-function OO. For example, base R’s <code>sum()</code> and <code>print()</code> - <em>to name just a couple!</em> - are S3 functions.</p>
+<p>Copying from Hadley Wickham’s <em>Advanced R</em>, he shares the following insights about different OO systems in R:</p>
+<blockquote class="blockquote">
+<p>Generally in R, functional programming is much more important than object-oriented programming, because you typically solve complex problems by decomposing them into simple functions, not simple objects. Nevertheless, there are important reasons to learn each of the three systems:</p>
+<ul>
+<li><p>S3 allows your functions to return rich results with user-friendly display and programmer-friendly internals. S3 is used throughout base R, so it’s important to master if you want to extend base R functions to work with new types of input.<br><br></p></li>
+<li><p>R6 provides a standardised way to escape R’s copy-on-modify semantics. This is particularly important if you want to model objects that exist independently of R. Today, a common need for R6 is to model data that comes from a web API, and where changes come from inside or outside of R.<br><br></p></li>
+<li><p>S4 is a rigorous system that forces you to think carefully about program design. It’s particularly well-suited for building large systems that evolve over time and will receive contributions from many programmers. This is why it is used by the Bioconductor project, so another reason to learn S4 is to equip you to contribute to that project.</p></li>
+</ul>
+</blockquote>
+<p>Not mentioned in the above is the OOP system <a href="https://rconsortium.github.io/S7/">S7</a>, expected to be the successor to S3 and S4. Given the nature of this early-stage framework, I’ve focused most of this post to highlight R6. S7 “has been designed and implemented collaboratively by the R Consortium Object-Oriented Programming Working Group” and their <a href="https://rconsortium.github.io/S7/articles/motivation.html">high-level motivation for S7 post</a> details how it aims to resolve some of the challenges with R’s two built-in OO systems S3 and S4.</p>
+</section>
+<section id="additional-resources" class="level1">
+<h1>Additional Resources</h1>
+<p>After a pattern of writing, modifying, and deleting a more robust background section for object-oriented systems with R, I’ve decided to instead point you to some of the best resources I’ve come across:</p>
+<ul>
+<li><p>The <em>Advanced R</em> book, by Hadley Wickham, includes several chapters on OOP with R including base types, S3, R6, S4, and a trade-offs chapter. The <a href="https://adv-r.hadley.nz/oo.html"><em>Introduction to OOP</em></a> section is a great place to start for a high-level overview.</p></li>
+<li><p>Dario Radečić published a phenomenal <a href="https://appsilon.com/oop-in-r-with-r6/">complete R6 guide</a> for Appsilon’s blog. It’s a bookmark-worthy R6 overview that touches on its classes and constructors/methods including <code>$new()</code>, <code>$initialize()</code>, <code>$print()</code>, and more.</p></li>
+</ul>
+</section>
+<section id="r6-example-use-cases" class="level1">
+<h1>R6 Example Use Cases</h1>
+<p>With the assistance of the Tidy Wizard, let’s dive into some examples that aim to “illuminate a few practical applications where R6 can lend its prowess.” 🧙</p>
+<section id="crm-systems" class="level2">
+<h2 class="anchored" data-anchor-id="crm-systems">CRM Systems</h2>
+<p>When we ponder Customer Relationship Management, we find ourselves amidst a vast sea of data, encompassing customer interactions, preferences, transaction histories, and much more. In the traditional approach, this data might be stored in spreadsheets or databases as tabular data. While this method is straightforward, it often leads to a fragmented view of the customer, with data scattered across multiple tables or sheets.</p>
+<p>Herein lies the profound advantage of employing R6 in a CRM context:</p>
+<p><em>Unified Customer View</em>: By defining an R6 class for a customer, you encapsulate all relevant information and behaviors related to that customer in one place. This approach fosters a holistic view of each customer, integrating data from various sources. It allows for more coherent and comprehensive analysis and decision-making.</p>
+<p><em>Behavior Encapsulation</em>: With R6, you’re not just storing data; you’re also encapsulating behaviors. For instance, an R6 class for a customer could include methods to calculate lifetime value, predict churn, or even trigger personalized marketing actions. This encapsulation of behavior with data enriches the CRM’s capabilities.</p>
+<p><em>Flexibility and Scalability</em>: R6’s object-oriented nature allows for more scalable and adaptable solutions. As business needs evolve, you can extend or modify the R6 classes without overhauling your entire data structure. This flexibility is crucial in the ever-changing business landscape.</p>
+<p><em>Interactivity and Automation</em>: R6 classes can interact with each other, enabling automated workflows. For instance, a class representing an email campaign can interact with the customer class to send personalized emails, log interactions, and update customer profiles, all in an automated manner.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Defining a Customer class</span></span>
+<span id="cb1-2">Customer <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> R6<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">R6Class</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Customer"</span>,</span>
+<span id="cb1-3">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">public =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb1-4">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">name =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb1-5">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">email =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb1-6">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">transaction_history =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(),</span>
+<span id="cb1-7">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">initialize =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(name, email) {</span>
+<span id="cb1-8">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>name <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> name</span>
+<span id="cb1-9">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>email <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> email</span>
+<span id="cb1-10">        },</span>
+<span id="cb1-11">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">record_transaction =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(transaction) {</span>
+<span id="cb1-12">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(transaction))</span>
+<span id="cb1-13">        },</span>
+<span id="cb1-14">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calculate_lifetime_value =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb1-15">          self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-16">            purrr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map_dbl</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> .x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>amount) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-17">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>()</span>
+<span id="cb1-18">        }</span>
+<span id="cb1-19">    )</span>
+<span id="cb1-20">)</span>
+<span id="cb1-21"></span>
+<span id="cb1-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Example usage</span></span>
+<span id="cb1-23">customer1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Customer<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">new</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">name =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"John Doe"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">email =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"john@example.com"</span>)</span>
+<span id="cb1-24">customer1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">record_transaction</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">date =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2021-01-01"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">amount =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>))</span>
+<span id="cb1-25">customer1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">record_transaction</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">date =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2021-02-01"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">amount =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>))</span>
+<span id="cb1-26">lifetime_value <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> customer1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">calculate_lifetime_value</span>()</span>
+<span id="cb1-27"></span>
+<span id="cb1-28"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(lifetime_value)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 250</code></pre>
+</div>
+</div>
+<p>In this enriched example, our Customer class now not only stores basic information but also tracks transaction history and calculates the lifetime value. This enriched model provides a more dynamic and insightful perspective on the customer, far surpassing the static nature of spreadsheets or basic tabular data.</p>
+</section>
+<section id="financial-modeling" class="level2">
+<h2 class="anchored" data-anchor-id="financial-modeling">Financial Modeling</h2>
+<p>Let’s craft an R6 class that models a portfolio of financial instruments, each with its own characteristics and behaviors. This portfolio can include various types of investments like stocks, bonds, and mutual funds, each represented by their own R6 classes.</p>
+<p>The beauty of using R6 in this context lies in its ability to encapsulate the complexities of financial instruments within their respective classes, thereby making the overall portfolio management more intuitive and robust. Let’s delve into this with a code example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(R6)</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define a generic FinancialInstrument class</span></span>
+<span id="cb3-4">FinancialInstrument <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> R6<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">R6Class</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"FinancialInstrument"</span>,</span>
+<span id="cb3-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">public =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb3-6">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">identifier =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb3-7">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">principal =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb3-8">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">initialize =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(identifier, principal) {</span>
+<span id="cb3-9">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>identifier <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> identifier</span>
+<span id="cb3-10">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>principal <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> principal</span>
+<span id="cb3-11">        },</span>
+<span id="cb3-12">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calculate_return =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb3-13">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Placeholder for return calculation</span></span>
+<span id="cb3-14">        }</span>
+<span id="cb3-15">    )</span>
+<span id="cb3-16">)</span>
+<span id="cb3-17"></span>
+<span id="cb3-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Extend FinancialInstrument for specific types</span></span>
+<span id="cb3-19">Stock <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> R6<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">R6Class</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Stock"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inherit =</span> FinancialInstrument,</span>
+<span id="cb3-20">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">public =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb3-21">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dividend_yield =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb3-22">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">initialize =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(identifier, principal, dividend_yield) {</span>
+<span id="cb3-23">            super<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">initialize</span>(identifier, principal)</span>
+<span id="cb3-24">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>dividend_yield <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> dividend_yield</span>
+<span id="cb3-25">        },</span>
+<span id="cb3-26">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calculate_return =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb3-27">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>principal <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>dividend_yield)</span>
+<span id="cb3-28">        }</span>
+<span id="cb3-29">    )</span>
+<span id="cb3-30">)</span>
+<span id="cb3-31"></span>
+<span id="cb3-32">Bond <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> R6<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">R6Class</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bond"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inherit =</span> FinancialInstrument,</span>
+<span id="cb3-33">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">public =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb3-34">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">interest_rate =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb3-35">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">initialize =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(identifier, principal, interest_rate) {</span>
+<span id="cb3-36">            super<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">initialize</span>(identifier, principal)</span>
+<span id="cb3-37">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>interest_rate <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> interest_rate</span>
+<span id="cb3-38">        },</span>
+<span id="cb3-39">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">calculate_return =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb3-40">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>principal <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>interest_rate)</span>
+<span id="cb3-41">        }</span>
+<span id="cb3-42">    )</span>
+<span id="cb3-43">)</span>
+<span id="cb3-44"></span>
+<span id="cb3-45"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define a Portfolio class that can hold multiple financial instruments</span></span>
+<span id="cb3-46">Portfolio <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> R6<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">R6Class</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Portfolio"</span>,</span>
+<span id="cb3-47">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">public =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb3-48">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">instruments =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(),</span>
+<span id="cb3-49">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add_instrument =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(instrument) {</span>
+<span id="cb3-50">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>instruments[[instrument<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>identifier]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> instrument</span>
+<span id="cb3-51">        },</span>
+<span id="cb3-52">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">total_return =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb3-53">          self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>instruments <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-54">            purrr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map_dbl</span>(\(x) x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">calculate_return</span>()) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-55">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>()</span>
+<span id="cb3-56">        }</span>
+<span id="cb3-57">    )</span>
+<span id="cb3-58">)</span>
+<span id="cb3-59"></span>
+<span id="cb3-60"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Example usage</span></span>
+<span id="cb3-61">portfolio <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Portfolio<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">new</span>()</span>
+<span id="cb3-62">portfolio<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_instrument</span>(Stock<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">new</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AAPL"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10000</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.02</span>))</span>
+<span id="cb3-63">portfolio<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_instrument</span>(Bond<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">new</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"US-Gov"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5000</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.03</span>))</span>
+<span id="cb3-64"></span>
+<span id="cb3-65">total_return <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> portfolio<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">total_return</span>()</span>
+<span id="cb3-66"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(total_return)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 350</code></pre>
+</div>
+</div>
+<p>In this expanded scenario, we have:</p>
+<ul>
+<li>A base class <code>FinancialInstrument</code> that defines a generic financial instrument.</li>
+<li>Derived classes <code>Stock</code> and <code>Bond</code> that inherit from <code>FinancialInstrument</code> and implement specific behaviors, such as different ways of calculating returns.</li>
+<li>A <code>Portfolio</code> class that can contain a collection of different financial instruments. It can calculate the total return of the portfolio by summing the returns of each individual instrument.</li>
+</ul>
+<p>This object-oriented approach provided by R6 allows for clear separation and encapsulation of the logic for each type of financial instrument. It makes the code modular, easier to understand, and maintain. For a business leader or data analyst, this translates to a system that is more adaptable to new types of financial instruments and changing financial models, ultimately aiding in making more informed investment decisions.</p>
+</section>
+<section id="library-system" class="level2">
+<h2 class="anchored" data-anchor-id="library-system">Library System</h2>
+<p>Let’s develop a simplified system for managing a library which includes tracking books, patrons, and book loans. This example will demonstrate how R6 can be used to model real-world entities and their interactions.</p>
+<p>In our library system, we’ll have three main classes:</p>
+<ol type="1">
+<li><em>Book</em>: Represents a book in the library.</li>
+<li><em>Patron</em>: Represents a library member who can borrow books.</li>
+<li><em>Library</em>: Manages the collection of books and patrons, and handles book loans.</li>
+</ol>
+<p>Here’s the R code for this use case:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(R6)</span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Book class</span></span>
+<span id="cb5-4">Book <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> R6<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">R6Class</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Book"</span>,</span>
+<span id="cb5-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">public =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb5-6">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb5-7">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">author =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb5-8">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">is_loaned =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb5-9">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">initialize =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(title, author) {</span>
+<span id="cb5-10">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>title <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> title</span>
+<span id="cb5-11">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>author <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> author</span>
+<span id="cb5-12">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>is_loaned <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span></span>
+<span id="cb5-13">        },</span>
+<span id="cb5-14">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">loan =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb5-15">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>is_loaned <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span id="cb5-16">        },</span>
+<span id="cb5-17">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">return_book =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb5-18">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>is_loaned <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span></span>
+<span id="cb5-19">        }</span>
+<span id="cb5-20">    )</span>
+<span id="cb5-21">)</span>
+<span id="cb5-22"></span>
+<span id="cb5-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Patron class</span></span>
+<span id="cb5-24">Patron <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> R6<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">R6Class</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Patron"</span>,</span>
+<span id="cb5-25">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">public =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb5-26">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">name =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb5-27">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">books_loaned =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(),</span>
+<span id="cb5-28">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">transaction_history =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(),</span>
+<span id="cb5-29">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">initialize =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(name) {</span>
+<span id="cb5-30">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>name <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> name</span>
+<span id="cb5-31">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books_loaned <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>()</span>
+<span id="cb5-32">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>()</span>
+<span id="cb5-33">        },</span>
+<span id="cb5-34">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">borrow_book =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(book) {</span>
+<span id="cb5-35">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>is_loaned) {</span>
+<span id="cb5-36">                book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loan</span>()</span>
+<span id="cb5-37">                self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books_loaned[[book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>title]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> book</span>
+<span id="cb5-38">                self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history, </span>
+<span id="cb5-39">                                              <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.time</span>(), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">": Borrowed"</span>, book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>title)))</span>
+<span id="cb5-40">            } <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span> {</span>
+<span id="cb5-41">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">message</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"This book is currently loaned out."</span>)</span>
+<span id="cb5-42">            }</span>
+<span id="cb5-43">        },</span>
+<span id="cb5-44">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">return_book =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(book) {</span>
+<span id="cb5-45">            book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return_book</span>()</span>
+<span id="cb5-46">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books_loaned[[book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>title]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span></span>
+<span id="cb5-47">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history, </span>
+<span id="cb5-48">                                          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.time</span>(), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">": Returned"</span>, book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>title)))</span>
+<span id="cb5-49">        },</span>
+<span id="cb5-50">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">get_transaction_history =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb5-51">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>transaction_history)</span>
+<span id="cb5-52">        }</span>
+<span id="cb5-53">    )</span>
+<span id="cb5-54">)</span>
+<span id="cb5-55"></span>
+<span id="cb5-56"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Library class</span></span>
+<span id="cb5-57">Library <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> R6<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">R6Class</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Library"</span>,</span>
+<span id="cb5-58">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">public =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb5-59">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">books =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(),</span>
+<span id="cb5-60">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">patrons =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(),</span>
+<span id="cb5-61">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">initialize =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>() {</span>
+<span id="cb5-62">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>()</span>
+<span id="cb5-63">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>patrons <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>()</span>
+<span id="cb5-64">        },</span>
+<span id="cb5-65">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add_book =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(book) {</span>
+<span id="cb5-66">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books[[book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>title]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> book</span>
+<span id="cb5-67">        },</span>
+<span id="cb5-68">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add_patron =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(patron) {</span>
+<span id="cb5-69">            self<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>patrons[[patron<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>name]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> patron</span>
+<span id="cb5-70">        }</span>
+<span id="cb5-71">    )</span>
+<span id="cb5-72">)</span>
+<span id="cb5-73"></span>
+<span id="cb5-74"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Example usage</span></span>
+<span id="cb5-75">library_system <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Library<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">new</span>()</span>
+<span id="cb5-76">book1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">new</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The Great Gatsby"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"F. Scott Fitzgerald"</span>)</span>
+<span id="cb5-77">book2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Book<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">new</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1984"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"George Orwell"</span>)</span>
+<span id="cb5-78">patron1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Patron<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">new</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"John Doe"</span>)</span>
+<span id="cb5-79"></span>
+<span id="cb5-80">library_system<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_book</span>(book1)</span>
+<span id="cb5-81">library_system<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_book</span>(book2)</span>
+<span id="cb5-82">library_system<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_patron</span>(patron1)</span>
+<span id="cb5-83"></span>
+<span id="cb5-84"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># John Doe borrows "The Great Gatsby"</span></span>
+<span id="cb5-85">patron1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">borrow_book</span>(library_system<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The Great Gatsby"</span>]])</span>
+<span id="cb5-86"></span>
+<span id="cb5-87"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check if the book is loaned</span></span>
+<span id="cb5-88"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(library_system<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The Great Gatsby"</span>]]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>is_loaned)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># John Doe returns "The Great Gatsby"</span></span>
+<span id="cb7-2">patron1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return_book</span>(library_system<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The Great Gatsby"</span>]])</span>
+<span id="cb7-3"></span>
+<span id="cb7-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check if the book is loaned</span></span>
+<span id="cb7-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(library_system<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>books[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The Great Gatsby"</span>]]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>is_loaned)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># View John Doe's transaction history</span></span>
+<span id="cb9-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(patron1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_transaction_history</span>())</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] "2023-11-22 22:19:36.029254 : Borrowed The Great Gatsby"
+
+[[2]]
+[1] "2023-11-22 22:19:36.030627 : Returned The Great Gatsby"</code></pre>
+</div>
+</div>
+<p>In the above example:</p>
+<ul>
+<li>The <code>Book</code> class represents a book with methods to loan and return it</li>
+<li>The <code>Patron</code> class represents a library member who can borrow and return books
+<ul>
+<li>The <code>Patron</code> class includes a <code>transaction_history</code> list to record each borrowing and returning action</li>
+<li>Methods <code>borrow_book</code> and <code>return_book</code> append a descriptive string and timestamp to the <code>transaction_history</code> each time they are called</li>
+<li><code>get_transaction_history</code> retrieves and displays the transaction history</li>
+</ul></li>
+<li>The <code>Library</code> class manages the collection of books and patrons
+<ul>
+<li>It allows adding books and patrons to the library</li>
+</ul></li>
+</ul>
+<p>This code provides a simple yet effective demonstration of how R6 can be used to model and manage real-world entities and their interactions, showcasing the utility of object-oriented programming in R. Any time John Doe borrows or returns a book, the transaction is recorded. You can then view all his transactions by calling the <code>get_transaction_history</code> method on his Patron object.</p>
+</section>
+</section>
+<section id="closing-remarks" class="level1">
+<h1>Closing Remarks</h1>
+<p>It’s crucial to recognize that OOP, while a powerful paradigm, is not a fundamental requirement for effective data science in R. The essence of R, especially in the realms of statistical programming, data analysis and visualization, is encapsulated in its rich ecosystem of packages and the functional programming approach, which often supersedes the need for a traditional OOP approach.</p>
+<p>In the world of R, the <a href="https://www.tidyverse.org/">tidyverse</a> and <a href="https://www.tidymodels.org/">tidymodels</a> collections of packages stand out as quintessential examples of how functional programming can be both efficient and sufficient for most data science tasks. These packages provide a comprehensive suite of tools that are designed to work seamlessly with data objects, enabling users to perform complex data manipulations, analyses, and modeling without delving deeply into the nuances of OOP. Even web app development in R via Shiny allows data scientists to build robust client- and server-side programs without the need for OOP.</p>
+<p>The functional programming paradigm empowers R users to apply a plethora of functions to objects in a way that is often more aligned with the typical workflows in reproducible statistics and machine learning. I find myself writing packages (often) and have yet had a need to employ traditional OOP in my package development work; That said, some of my favorite R frameworks leverage OOP (R6) in the backend. Whether you choose to dive into OOP or stick with the functional programming nature of R, you’ll most certainly be offered the tools and frameworks necessary to achieve your data science goals efficiently and effectively.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>r6</category>
+  <category>tidyverse</category>
+  <category>tidymodels</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/</guid>
+  <pubDate>Wed, 22 Nov 2023 05:00:00 GMT</pubDate>
+</item>
 <item>
   <title>webR via Quarto Extensions</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -5849,129 +6883,6 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <guid>https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/2020-04-05-DnD-Adventures.html</guid>
   <pubDate>Sun, 05 Apr 2020 04:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/images/Dnd.png" medium="image" type="image/png" height="61" width="144"/>
-</item>
-<item>
-  <title>themis: Extra Steps for tidymodels + recipes</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Working with unbalanced data sets? Remember that accuracy, alone, is not the best performance metric (especially when dealing with unbalanced data). Instead, place more importance on Cohen’s kappa coefficient, F1 harmonic mean, or focus on improving your model’s specificity or sensitivity, etc.</p>
-<p>I’ve been transitioning a lot of my workflows to the tidymodels framework and I am super excited about the future of tidymodels (recipes + parsnip + dials + tune + workflow + more 😭✊🙌). If you’re using recipes often like me, a new library called {themis}, by <a href="https://www.hvitfeldt.me/">Emil Hvitfeldt</a> expands the {recipes} pre-processing steps for working with unbalanced data sets (it adds functionality for under- and hybrid-sampling techniques). I love me some smote, and now I can incorporate this sampling technique into my recipes with <code>themis::step_smote()</code>!</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Installation</span></span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"themis"</span>)</span>
-<span id="cb1-3"></span>
-<span id="cb1-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Example workflow</span></span>
-<span id="cb1-5"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(recipes)</span>
-<span id="cb1-6"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(modeldata)</span>
-<span id="cb1-7"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(themis)</span>
-<span id="cb1-8"></span>
-<span id="cb1-9"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">data</span>(okc)</span>
-<span id="cb1-10"></span>
-<span id="cb1-11"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">table</span>(okc<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">$</span>Class, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">useNA =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"always"</span>))</span>
-<span id="cb1-12"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#&gt; </span></span>
-<span id="cb1-13"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#&gt;  &lt;NA&gt;  stem other </span></span>
-<span id="cb1-14"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#&gt;     0  9539 50316</span></span>
-<span id="cb1-15"></span>
-<span id="cb1-16">ds_rec <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">recipe</span>(Class <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> age <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> height, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> okc) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb1-17">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">step_meanimpute</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">all_predictors</span>()) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb1-18">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">step_smote</span>(Class) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%&gt;%</span></span>
-<span id="cb1-19">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">prep</span>()</span>
-<span id="cb1-20"></span>
-<span id="cb1-21"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sort</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">table</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">bake</span>(ds_rec, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">new_data =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">NULL</span>)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">$</span>Class, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">useNA =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"always"</span>))</span>
-<span id="cb1-22"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#&gt; </span></span>
-<span id="cb1-23"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#&gt;  &lt;NA&gt;  stem other </span></span>
-<span id="cb1-24"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#&gt;     0 50316 50316</span></span></code></pre></div>
-<p>Source:<br> * <a href="https://themis.tidymodels.org/">themis</a><br> * <a href="https://github.com/tidymodels/themis">themis on GitHub</a></p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>tidymodels</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/2020-02-20-Themis.html</guid>
-  <pubDate>Thu, 20 Feb 2020 05:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-02-20-Themis/images/themis.png" medium="image" type="image/png" height="126" width="144"/>
 </item>
 </channel>
 </rss>

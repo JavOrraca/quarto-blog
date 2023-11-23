@@ -1,24 +1,27 @@
 ---
 title: "R Users Probably Don't Need to Know OOP"
-description: "The R6 package brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. That said, do you need to know OOP to be a successful data scientist? No."
-date: 11-20-2023
+description: "The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. That said, do you need to know OOP to be a successful data scientist? No. Well, probably not!"
+date: 11-22-2023
 categories:
   - r6
-draft: true
+  - tidyverse
+  - tidymodels
 ---
 
-# OOP with R6
+![Javier, exploring whether or not data scientists need to know OOP](images/charlie.jpg){.preview-image}
+
+# OOP with R
 
 ::: columns
-::: {.column width="80%"}
-The [R6 package](https://r6.r-lib.org/) brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. The _Tidy Wizard_, a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:
+::: {.column width="70%"}
+The [R6 package](https://r6.r-lib.org/) brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. The [Tidy Wizard](https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard), a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:
 
 * It bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.
 :::
 ::: {.column width="5%"}
 :::
-::: {.column width="15%"}
-![](images/logo.svg){.preview-image}
+::: {.column width="25%"}
+![](images/logo.svg)
 :::
 :::
 
@@ -27,12 +30,12 @@ When meeting data scientists in the wild, they're almost always Python users and
 Having worked alongside amazing software engineers over recent years, I've come to realize OOP is fundamental in computer science education. The de facto OOP nature of Python makes the transition from C/C++/Java to Python a breeze and delight. This is one of the many reasons why we see so much OOP development in data science organizations from Python-based data science practitioners and educators. But what if you don't have a formal software background and gravitated to R for statistics, functional programming, and data science? 
 
 <aside>
-[Interact with the Tidy Wizard](https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard) if you're a paying ChatGPT Plus customer! I'm developing a Shiny app for anyone to interact with a more robust version of the wizard via API (and without the Gandalf-speak... trust me when I say it gets old 😅)
+[Interact with the Tidy Wizard](https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard) if you're a paying ChatGPT Plus customer! I'm developing a Shiny app so anyone can interact with the Wizard directly via API (Gandalf-speak will be optional... trust me when I say it gets old 😅)<br><br>
 </aside>
 
 My thoughts on this topic will differ from others in the R community, likely from folks that have formal computer science / software engineering backgrounds. I do not have a formal CS background, so bear with me while I work through this heresy: *You don't need to know OOP to be a successful data scientist.*
 
-In data science, would knowing OOP help your future career prospects? Probably; _Probably_ in the same way a PhD _might_ help you climb the corporate ladder more quickly. For me personally (and again, as a primary R user), not knowing the intricacies of OOP hasn't slowed me down from interactive web app development, ML training / production at scale (and containerization via Docker), parallelized / vectorized function writing, package development, NLP and deep learning, etc.
+In data science, would knowing OOP help your future career prospects? Probably; _Probably_ in the same way a PhD _might_ help you climb the corporate ladder more quickly. In my experience (and again, as a primary R user), not knowing the intricacies of OOP shouldn't slow you down from interactive web app development, ML training / production at scale, containerization via Docker, parallelized / vectorized function writing, package development, NLP, deep learning, etc.
 
 On a daily basis, most R users don't have a need for OOP since they utilize objects and functions. They apply functions to objects to create new objects, and all this is typically done to one class: the data.frame/tibble. OOP in R also isn't limited to R6; In fact, we regularly apply functions in R that inherit the role of generic-function OO. For example, base R's `sum()` and `print()` - _to name just a couple!_ - are S3 functions.
 
@@ -316,8 +319,9 @@ This code provides a simple yet effective demonstration of how R6 can be used to
 
 # Closing Remarks
 
-In 2023, most R users might not need to deeply understand OOP and R6. The rise of the [tidy-style of programming with R](https://style.tidyverse.org/), which emphasizes functional programming paradigms and a declarative style of coding, has provided tools that are often more aligned with the typical tasks of data manipulation, visualization, analysis, and machine learning. These tools are generally more accessible and require less boilerplate code than OOP.
+It's crucial to recognize that OOP, while a powerful paradigm, is not a fundamental requirement for effective data science in R. The essence of R, especially in the realms of statistical programming, data analysis and visualization, is encapsulated in its rich ecosystem of packages and the functional programming approach, which often supersedes the need for a traditional OOP approach.
 
-The tidyverse and tidyodels philosophy and syntax have been widely adopted in the R community, especially for data science applications. Consequently, many modern R users can perform a vast majority of their work effectively without needing OOP.
+In the world of R, the [tidyverse](https://www.tidyverse.org/) and [tidymodels](https://www.tidymodels.org/) collections of packages stand out as quintessential examples of how functional programming can be both efficient and sufficient for most data science tasks. These packages provide a comprehensive suite of tools that are designed to work seamlessly with data objects, enabling users to perform complex data manipulations, analyses, and modeling without delving deeply into the nuances of OOP. Even web app development in R via Shiny allows data scientists to build robust client- and server-side programs without the need for OOP.
 
-For those working on more complex software development projects in R, such as building large-scale applications or designing systems that require robust modeling across systems and languages, OOP and R6 may be required.
+The functional programming paradigm empowers R users to apply a plethora of functions to objects in a way that is often more aligned with the typical workflows in reproducible statistics and machine learning. I find myself writing packages (often) and have yet had a need to employ traditional OOP in my package development work; That said, some of my favorite R frameworks leverage OOP (R6) in the backend. Whether you choose to dive into OOP or stick with the functional programming nature of R, you'll most certainly be offered the tools and frameworks necessary to achieve your data science goals efficiently and effectively.
+

@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Javier Orraca-Deatcu">
-<meta name="dcterms.date" content="2023-11-20">
-<meta name="description" content="The R6 package brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.">
+<meta name="dcterms.date" content="2023-11-22">
+<meta name="description" content="The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.&nbsp;Well, probably not!">
 
 <title>Data Science Bytes - R Users Probably Don’t Need to Know OOP</title>
 <style>
@@ -136,8 +136,8 @@ cookieconsent.run({
 
 
 <meta name="twitter:title" content="Data Science Bytes - R Users Probably Don’t Need to Know OOP">
-<meta name="twitter:description" content="The R6 package brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2023-11-20-oop-with-r6/images/Javier_Profile.jpg">
+<meta name="twitter:description" content="The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.&nbsp;Well, probably not!">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/images/Javier_Profile.jpg">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -240,7 +240,7 @@ cookieconsent.run({
     <h2 id="toc-title">Table of Contents</h2>
    
   <ul>
-  <li><a href="#oop-with-r6" id="toc-oop-with-r6" class="nav-link active" data-scroll-target="#oop-with-r6">OOP with R6</a></li>
+  <li><a href="#oop-with-r" id="toc-oop-with-r" class="nav-link active" data-scroll-target="#oop-with-r">OOP with R</a></li>
   <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources">Additional Resources</a></li>
   <li><a href="#r6-example-use-cases" id="toc-r6-example-use-cases" class="nav-link" data-scroll-target="#r6-example-use-cases">R6 Example Use Cases</a>
   <ul class="collapse">
@@ -264,12 +264,14 @@ cookieconsent.run({
 <h1 class="title">R Users Probably Don’t Need to Know OOP</h1>
   <div class="quarto-categories">
     <div class="quarto-category">r6</div>
+    <div class="quarto-category">tidyverse</div>
+    <div class="quarto-category">tidymodels</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    The R6 package brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.
+    The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.&nbsp;Well, probably not!
   </div>
 </div>
 
@@ -295,7 +297,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 20, 2023</p>
+      <p class="date">November 22, 2023</p>
     </div>
   </div>
   
@@ -307,27 +309,33 @@ cookieconsent.run({
 </header>
 
 
-<section id="oop-with-r6" class="level1 page-columns page-full">
-<h1>OOP with R6</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/charlie.jpg" class="preview-image img-fluid figure-img"></p>
+<figcaption>Javier, exploring whether or not data scientists need to know OOP</figcaption>
+</figure>
+</div>
+<section id="oop-with-r" class="level1 page-columns page-full">
+<h1>OOP with R</h1>
 <div class="columns">
-<div class="column" style="width:80%;">
-<p>The <a href="https://r6.r-lib.org/">R6 package</a> brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. The <em>Tidy Wizard</em>, a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:</p>
+<div class="column" style="width:70%;">
+<p>The <a href="https://r6.r-lib.org/">R6 package</a> brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. The <a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Tidy Wizard</a>, a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:</p>
 <ul>
 <li>It bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.</li>
 </ul>
 </div><div class="column" style="width:5%;">
 
-</div><div class="column" style="width:15%;">
-<p><img src="images/logo.svg" class="preview-image img-fluid"></p>
+</div><div class="column" style="width:25%;">
+<p><img src="images/logo.svg" class="img-fluid"></p>
 </div>
 </div>
 <p>When meeting data scientists in the wild, they’re almost always Python users and they often ask me the rhetorical question of “can R do OOP and encapsulation?” I used to be embarrassed about this… Did I miss some mission critical component of data science in grad school? Have I been learning from the wrong books and tutorials?</p>
 <p>Having worked alongside amazing software engineers over recent years, I’ve come to realize OOP is fundamental in computer science education. The de facto OOP nature of Python makes the transition from C/C++/Java to Python a breeze and delight. This is one of the many reasons why we see so much OOP development in data science organizations from Python-based data science practitioners and educators. But what if you don’t have a formal software background and gravitated to R for statistics, functional programming, and data science?</p>
 <aside>
-<a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Interact with the Tidy Wizard</a> if you’re a paying ChatGPT Plus customer! I’m developing a Shiny app for anyone to interact with a more robust version of the wizard via API (and without the Gandalf-speak… trust me when I say it gets old 😅)
+<a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Interact with the Tidy Wizard</a> if you’re a paying ChatGPT Plus customer! I’m developing a Shiny app so anyone can interact with the Wizard directly via API (Gandalf-speak will be optional… trust me when I say it gets old 😅)<br><br>
 </aside>
 <p>My thoughts on this topic will differ from others in the R community, likely from folks that have formal computer science / software engineering backgrounds. I do not have a formal CS background, so bear with me while I work through this heresy: <em>You don’t need to know OOP to be a successful data scientist.</em></p>
-<p>In data science, would knowing OOP help your future career prospects? Probably; <em>Probably</em> in the same way a PhD <em>might</em> help you climb the corporate ladder more quickly. For me personally (and again, as a primary R user), not knowing the intricacies of OOP hasn’t slowed me down from interactive web app development, ML training / production at scale (and containerization via Docker), parallelized / vectorized function writing, package development, NLP and deep learning, etc.</p>
+<p>In data science, would knowing OOP help your future career prospects? Probably; <em>Probably</em> in the same way a PhD <em>might</em> help you climb the corporate ladder more quickly. In my experience (and again, as a primary R user), not knowing the intricacies of OOP shouldn’t slow you down from interactive web app development, ML training / production at scale, containerization via Docker, parallelized / vectorized function writing, package development, NLP, deep learning, etc.</p>
 <p>On a daily basis, most R users don’t have a need for OOP since they utilize objects and functions. They apply functions to objects to create new objects, and all this is typically done to one class: the data.frame/tibble. OOP in R also isn’t limited to R6; In fact, we regularly apply functions in R that inherit the role of generic-function OO. For example, base R’s <code>sum()</code> and <code>print()</code> - <em>to name just a couple!</em> - are S3 functions.</p>
 <p>Copying from Hadley Wickham’s <em>Advanced R</em>, he shares the following insights about different OO systems in R:</p>
 <blockquote class="blockquote">
@@ -591,10 +599,10 @@ cookieconsent.run({
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(patron1<span class="sc">$</span><span class="fu">get_transaction_history</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-20 23:34:17.392016 : Borrowed The Great Gatsby"
+[1] "2023-11-22 22:19:36.029254 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-20 23:34:17.396209 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-22 22:19:36.030627 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -616,9 +624,9 @@ cookieconsent.run({
 </section>
 <section id="closing-remarks" class="level1">
 <h1>Closing Remarks</h1>
-<p>In 2023, most R users might not need to deeply understand OOP and R6. The rise of the <a href="https://style.tidyverse.org/">tidy-style of programming with R</a>, which emphasizes functional programming paradigms and a declarative style of coding, has provided tools that are often more aligned with the typical tasks of data manipulation, visualization, analysis, and machine learning. These tools are generally more accessible and require less boilerplate code than OOP.</p>
-<p>The tidyverse and tidyodels philosophy and syntax have been widely adopted in the R community, especially for data science applications. Consequently, many modern R users can perform a vast majority of their work effectively without needing OOP.</p>
-<p>For those working on more complex software development projects in R, such as building large-scale applications or designing systems that require robust modeling across systems and languages, OOP and R6 may be required.</p>
+<p>It’s crucial to recognize that OOP, while a powerful paradigm, is not a fundamental requirement for effective data science in R. The essence of R, especially in the realms of statistical programming, data analysis and visualization, is encapsulated in its rich ecosystem of packages and the functional programming approach, which often supersedes the need for a traditional OOP approach.</p>
+<p>In the world of R, the <a href="https://www.tidyverse.org/">tidyverse</a> and <a href="https://www.tidymodels.org/">tidymodels</a> collections of packages stand out as quintessential examples of how functional programming can be both efficient and sufficient for most data science tasks. These packages provide a comprehensive suite of tools that are designed to work seamlessly with data objects, enabling users to perform complex data manipulations, analyses, and modeling without delving deeply into the nuances of OOP. Even web app development in R via Shiny allows data scientists to build robust client- and server-side programs without the need for OOP.</p>
+<p>The functional programming paradigm empowers R users to apply a plethora of functions to objects in a way that is often more aligned with the typical workflows in reproducible statistics and machine learning. I find myself writing packages (often) and have yet had a need to employ traditional OOP in my package development work; That said, some of my favorite R frameworks leverage OOP (R6) in the backend. Whether you choose to dive into OOP or stick with the functional programming nature of R, you’ll most certainly be offered the tools and frameworks necessary to achieve your data science goals efficiently and effectively.</p>
 
 
 </section>
