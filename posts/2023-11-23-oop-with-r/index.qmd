@@ -326,7 +326,9 @@ In the world of R, the [tidyverse](https://www.tidyverse.org/) and [tidymodels](
 The functional programming paradigm empowers R users to apply a plethora of functions to objects in a way that is often more aligned with the typical workflows in reproducible statistics and machine learning. I find myself writing packages (often) and have yet had a need to employ traditional OOP in my package development work; That said, some of my favorite R frameworks leverage OOP (R6) in the backend. Whether you choose to dive into OOP or stick with the functional programming nature of R, you'll most certainly be offered the tools and frameworks necessary to achieve your data science goals efficiently and effectively.
 
 # sessionInfo()
-```
+```{r}
+#| eval: false
+
 R version 4.3.2 (2023-10-31)
 Platform: aarch64-apple-darwin20 (64-bit)
 Running under: macOS Sonoma 14.1.1
