@@ -1003,10 +1003,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-23 02:56:26.12363 : Borrowed The Great Gatsby"
+[1] "2023-11-23 02:59:42.484129 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-23 02:56:26.125061 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-23 02:59:42.485537 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -1035,7 +1035,7 @@ font-style: inherit;">get_transaction_history</span>())</span></code></pre></div
 <section id="sessioninfo" class="level1">
 <h1>sessionInfo()</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">R version <span class="dv" style="color: #AD0000;
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-overflow-scroll code-with-copy"><code class="sourceCode r"><span id="cb11-1">R version <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">4</span>.<span class="fl" style="color: #AD0000;
 background-color: null;

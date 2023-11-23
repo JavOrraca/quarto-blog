@@ -328,6 +328,7 @@ The functional programming paradigm empowers R users to apply a plethora of func
 # sessionInfo()
 ```{r}
 #| eval: false
+#| code-overflow: scroll
 
 R version 4.3.2 (2023-10-31)
 Platform: aarch64-apple-darwin20 (64-bit)
