@@ -10,9 +10,9 @@
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
 <generator>quarto-1.4.510</generator>
-<lastBuildDate>Wed, 22 Nov 2023 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 23 Nov 2023 05:00:00 GMT</lastBuildDate>
 <item>
-  <title>R Users Probably Don’t Need to Know OOP</title>
+  <title>You Don’t Need OOP for Data Science</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/</link>
   <description><![CDATA[ 
@@ -23,20 +23,17 @@
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/charlie.png" class="preview-image img-fluid figure-img"></p>
-<figcaption>Javier, exploring whether or not data scientists need to know OOP</figcaption>
+<figcaption>Python friends discussing OOP</figcaption>
 </figure>
 </div>
 <section id="oop-with-r" class="level1 page-columns page-full">
 <h1>OOP with R</h1>
 <div class="columns">
-<div class="column" style="width:70%;">
-<p>The <a href="https://r6.r-lib.org/">R6 package</a> brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. The <a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Tidy Wizard</a>, a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:</p>
-<ul>
-<li>It bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.</li>
-</ul>
+<div class="column" style="width:80%;">
+<p>For R users, the <a href="https://r6.r-lib.org/">R6 package</a> - <em>one of several object-oriented systems for R</em> - brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. My friend the <a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Tidy Wizard</a>, a barely-configured GPT tool that I crafted specializing in the R language, says that R6 “bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.”</p>
 </div><div class="column" style="width:5%;">
 
-</div><div class="column" style="width:25%;">
+</div><div class="column" style="width:15%;">
 <p><img src="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/logo.svg" class="img-fluid"></p>
 </div>
 </div>
@@ -1006,10 +1003,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-23 02:33:08.481985 : Borrowed The Great Gatsby"
+[1] "2023-11-23 02:51:24.092959 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-23 02:33:08.483374 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-23 02:51:24.094419 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -1034,6 +1031,35 @@ font-style: inherit;">get_transaction_history</span>())</span></code></pre></div
 <p>It’s crucial to recognize that OOP, while a powerful paradigm, is not a fundamental requirement for effective data science in R. The essence of R, especially in the realms of statistical programming, data analysis and visualization, is encapsulated in its rich ecosystem of packages and the functional programming approach, which often supersedes the need for a traditional OOP approach.</p>
 <p>In the world of R, the <a href="https://www.tidyverse.org/">tidyverse</a> and <a href="https://www.tidymodels.org/">tidymodels</a> collections of packages stand out as quintessential examples of how functional programming can be both efficient and sufficient for most data science tasks. These packages provide a comprehensive suite of tools that are designed to work seamlessly with data objects, enabling users to perform complex data manipulations, analyses, and modeling without delving deeply into the nuances of OOP. Even web app development in R via Shiny allows data scientists to build robust client- and server-side programs without the need for OOP.</p>
 <p>The functional programming paradigm empowers R users to apply a plethora of functions to objects in a way that is often more aligned with the typical workflows in reproducible statistics and machine learning. I find myself writing packages (often) and have yet had a need to employ traditional OOP in my package development work; That said, some of my favorite R frameworks leverage OOP (R6) in the backend. Whether you choose to dive into OOP or stick with the functional programming nature of R, you’ll most certainly be offered the tools and frameworks necessary to achieve your data science goals efficiently and effectively.</p>
+</section>
+<section id="sessioninfo" class="level1">
+<h1>sessionInfo()</h1>
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Sonoma 14.1.1
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] quarto_1.3  purrr_1.0.2 R6_2.5.1   
+
+loaded via a namespace (and not attached):
+ [1] digest_0.6.33     later_1.3.1       fastmap_1.1.1     xfun_0.41         magrittr_2.0.3   
+ [6] knitr_1.45        htmltools_0.5.7   rmarkdown_2.25    lifecycle_1.0.4   ps_1.7.5         
+[11] cli_3.6.1         processx_3.8.2    vctrs_0.6.4       compiler_4.3.2    rstudioapi_0.15.0
+[16] tools_4.3.2       evaluate_0.23     yaml_2.3.7        Rcpp_1.0.11       rlang_1.1.2      
+[21] jsonlite_1.8.7   </code></pre>
 
 
 </section>
@@ -1043,7 +1069,7 @@ font-style: inherit;">get_transaction_history</span>())</span></code></pre></div
   <category>tidyverse</category>
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/</guid>
-  <pubDate>Wed, 22 Nov 2023 05:00:00 GMT</pubDate>
+  <pubDate>Thu, 23 Nov 2023 05:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/charlie.png" medium="image" type="image/png" height="108" width="144"/>
 </item>
 <item>

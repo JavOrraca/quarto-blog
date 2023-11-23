@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Javier Orraca-Deatcu">
-<meta name="dcterms.date" content="2023-11-22">
-<meta name="description" content="The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.&nbsp;Well, probably not!">
+<meta name="dcterms.date" content="2023-11-23">
+<meta name="description" content="For R users, the R6 package - among several object-oriented systems for R - brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No, probably not.">
 
-<title>Data Science Bytes - R Users Probably Don’t Need to Know OOP</title>
+<title>Data Science Bytes - You Don’t Need OOP for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -135,14 +135,14 @@ cookieconsent.run({
   
 
 
-<meta property="og:title" content="Data Science Bytes - R Users Probably Don’t Need to Know OOP">
-<meta property="og:description" content="The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.&nbsp;Well, probably not!">
+<meta property="og:title" content="Data Science Bytes - You Don’t Need OOP for Data Science">
+<meta property="og:description" content="For R users, the R6 package - among several object-oriented systems for R - brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No, probably not.">
 <meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/charlie.png">
 <meta property="og:site_name" content="Data Science Bytes">
 <meta property="og:image:height" content="600">
 <meta property="og:image:width" content="800">
-<meta name="twitter:title" content="Data Science Bytes - R Users Probably Don’t Need to Know OOP">
-<meta name="twitter:description" content="The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.&nbsp;Well, probably not!">
+<meta name="twitter:title" content="Data Science Bytes - You Don’t Need OOP for Data Science">
+<meta name="twitter:description" content="For R users, the R6 package - among several object-oriented systems for R - brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No, probably not.">
 <meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/charlie.png">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
@@ -257,6 +257,7 @@ cookieconsent.run({
   <li><a href="#library-system" id="toc-library-system" class="nav-link" data-scroll-target="#library-system">Library System</a></li>
   </ul></li>
   <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks">Closing Remarks</a></li>
+  <li><a href="#sessioninfo" id="toc-sessioninfo" class="nav-link" data-scroll-target="#sessioninfo">sessionInfo()</a></li>
   </ul>
 </nav>
 </nav>
@@ -269,7 +270,7 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">R Users Probably Don’t Need to Know OOP</h1>
+<h1 class="title">You Don’t Need OOP for Data Science</h1>
   <div class="quarto-categories">
     <div class="quarto-category">r6</div>
     <div class="quarto-category">tidyverse</div>
@@ -279,7 +280,7 @@ cookieconsent.run({
 
 <div>
   <div class="description">
-    The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No.&nbsp;Well, probably not!
+    For R users, the R6 package - among several object-oriented systems for R - brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. That said, do you need to know OOP to be a successful data scientist? No, probably not.
   </div>
 </div>
 
@@ -305,7 +306,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 22, 2023</p>
+      <p class="date">November 23, 2023</p>
     </div>
   </div>
   
@@ -320,20 +321,17 @@ cookieconsent.run({
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="charlie.png" class="preview-image img-fluid figure-img"></p>
-<figcaption>Javier, exploring whether or not data scientists need to know OOP</figcaption>
+<figcaption>Python friends discussing OOP</figcaption>
 </figure>
 </div>
 <section id="oop-with-r" class="level1 page-columns page-full">
 <h1>OOP with R</h1>
 <div class="columns">
-<div class="column" style="width:70%;">
-<p>The <a href="https://r6.r-lib.org/">R6 package</a> brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. The <a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Tidy Wizard</a>, a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:</p>
-<ul>
-<li>It bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.</li>
-</ul>
+<div class="column" style="width:80%;">
+<p>For R users, the <a href="https://r6.r-lib.org/">R6 package</a> - <em>one of several object-oriented systems for R</em> - brings forth the elegance of object-oriented programming (OOP) to a traditionally ‘stats first’ language. My friend the <a href="https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard">Tidy Wizard</a>, a barely-configured GPT tool that I crafted specializing in the R language, says that R6 “bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.”</p>
 </div><div class="column" style="width:5%;">
 
-</div><div class="column" style="width:25%;">
+</div><div class="column" style="width:15%;">
 <p><img src="logo.svg" class="img-fluid"></p>
 </div>
 </div>
@@ -607,10 +605,10 @@ cookieconsent.run({
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(patron1<span class="sc">$</span><span class="fu">get_transaction_history</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-23 02:33:08.481985 : Borrowed The Great Gatsby"
+[1] "2023-11-23 02:51:24.092959 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-23 02:33:08.483374 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-23 02:51:24.094419 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -635,6 +633,35 @@ cookieconsent.run({
 <p>It’s crucial to recognize that OOP, while a powerful paradigm, is not a fundamental requirement for effective data science in R. The essence of R, especially in the realms of statistical programming, data analysis and visualization, is encapsulated in its rich ecosystem of packages and the functional programming approach, which often supersedes the need for a traditional OOP approach.</p>
 <p>In the world of R, the <a href="https://www.tidyverse.org/">tidyverse</a> and <a href="https://www.tidymodels.org/">tidymodels</a> collections of packages stand out as quintessential examples of how functional programming can be both efficient and sufficient for most data science tasks. These packages provide a comprehensive suite of tools that are designed to work seamlessly with data objects, enabling users to perform complex data manipulations, analyses, and modeling without delving deeply into the nuances of OOP. Even web app development in R via Shiny allows data scientists to build robust client- and server-side programs without the need for OOP.</p>
 <p>The functional programming paradigm empowers R users to apply a plethora of functions to objects in a way that is often more aligned with the typical workflows in reproducible statistics and machine learning. I find myself writing packages (often) and have yet had a need to employ traditional OOP in my package development work; That said, some of my favorite R frameworks leverage OOP (R6) in the backend. Whether you choose to dive into OOP or stick with the functional programming nature of R, you’ll most certainly be offered the tools and frameworks necessary to achieve your data science goals efficiently and effectively.</p>
+</section>
+<section id="sessioninfo" class="level1">
+<h1>sessionInfo()</h1>
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Sonoma 14.1.1
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] quarto_1.3  purrr_1.0.2 R6_2.5.1   
+
+loaded via a namespace (and not attached):
+ [1] digest_0.6.33     later_1.3.1       fastmap_1.1.1     xfun_0.41         magrittr_2.0.3   
+ [6] knitr_1.45        htmltools_0.5.7   rmarkdown_2.25    lifecycle_1.0.4   ps_1.7.5         
+[11] cli_3.6.1         processx_3.8.2    vctrs_0.6.4       compiler_4.3.2    rstudioapi_0.15.0
+[16] tools_4.3.2       evaluate_0.23     yaml_2.3.7        Rcpp_1.0.11       rlang_1.1.2      
+[21] jsonlite_1.8.7   </code></pre>
 
 
 </section>

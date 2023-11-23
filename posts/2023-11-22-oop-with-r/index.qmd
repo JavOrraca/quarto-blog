@@ -1,7 +1,7 @@
 ---
-title: "R Users Probably Don't Need to Know OOP"
-description: "The R6 package, among others, brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. That said, do you need to know OOP to be a successful data scientist? No. Well, probably not!"
-date: 11-22-2023
+title: "You Don't Need OOP for Data Science"
+description: "For R users, the R6 package - among several object-oriented systems for R - brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. That said, do you need to know OOP to be a successful data scientist? No, probably not."
+date: 11-23-2023
 categories:
   - r6
   - tidyverse
@@ -9,19 +9,18 @@ categories:
 image: charlie.png
 ---
 
-![Javier, exploring whether or not data scientists need to know OOP](charlie.png){.preview-image}
+![Python friends discussing OOP](charlie.png){.preview-image}
 
 # OOP with R
 
 ::: columns
-::: {.column width="70%"}
-The [R6 package](https://r6.r-lib.org/) brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. The [Tidy Wizard](https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard), a barely-configured GPT variant that I crafted specializing in the R language, has the following to say about R6:
+::: {.column width="80%"}
+For R users, the [R6 package](https://r6.r-lib.org/) - _one of several object-oriented systems for R_ - brings forth the elegance of object-oriented programming (OOP) to a traditionally 'stats first' language. My friend the [Tidy Wizard](https://chat.openai.com/g/g-QvPl8z04e-tidy-wizard), a barely-configured GPT tool that I crafted specializing in the R language, says that R6 "bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios."
 
-* It bestows upon the user the ability to craft sophisticated and modular software, a boon in various business scenarios.
 :::
 ::: {.column width="5%"}
 :::
-::: {.column width="25%"}
+::: {.column width="15%"}
 ![](logo.svg)
 :::
 :::
@@ -326,3 +325,32 @@ In the world of R, the [tidyverse](https://www.tidyverse.org/) and [tidymodels](
 
 The functional programming paradigm empowers R users to apply a plethora of functions to objects in a way that is often more aligned with the typical workflows in reproducible statistics and machine learning. I find myself writing packages (often) and have yet had a need to employ traditional OOP in my package development work; That said, some of my favorite R frameworks leverage OOP (R6) in the backend. Whether you choose to dive into OOP or stick with the functional programming nature of R, you'll most certainly be offered the tools and frameworks necessary to achieve your data science goals efficiently and effectively.
 
+# sessionInfo()
+```
+R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Sonoma 14.1.1
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] quarto_1.3  purrr_1.0.2 R6_2.5.1   
+
+loaded via a namespace (and not attached):
+ [1] digest_0.6.33     later_1.3.1       fastmap_1.1.1     xfun_0.41         magrittr_2.0.3   
+ [6] knitr_1.45        htmltools_0.5.7   rmarkdown_2.25    lifecycle_1.0.4   ps_1.7.5         
+[11] cli_3.6.1         processx_3.8.2    vctrs_0.6.4       compiler_4.3.2    rstudioapi_0.15.0
+[16] tools_4.3.2       evaluate_0.23     yaml_2.3.7        Rcpp_1.0.11       rlang_1.1.2      
+[21] jsonlite_1.8.7   
+```
