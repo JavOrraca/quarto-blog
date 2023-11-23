@@ -1006,10 +1006,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-23 02:02:35.635981 : Borrowed The Great Gatsby"
+[1] "2023-11-23 02:13:01.180544 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-23 02:02:35.63743 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-23 02:13:01.181981 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -1044,6 +1044,7 @@ font-style: inherit;">get_transaction_history</span>())</span></code></pre></div
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/</guid>
   <pubDate>Wed, 22 Nov 2023 05:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/images/charlie.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>webR via Quarto Extensions</title>

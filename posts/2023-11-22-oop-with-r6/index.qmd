@@ -6,6 +6,7 @@ categories:
   - r6
   - tidyverse
   - tidymodels
+image: images/charlie.jpg
 ---
 
 ![Javier, exploring whether or not data scientists need to know OOP](images/charlie.jpg){.preview-image}
