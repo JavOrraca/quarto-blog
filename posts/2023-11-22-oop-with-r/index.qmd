@@ -6,10 +6,10 @@ categories:
   - r6
   - tidyverse
   - tidymodels
-image: images/charlie.jpg
+image: charlie.png
 ---
 
-![Javier, exploring whether or not data scientists need to know OOP](images/charlie.jpg){.preview-image}
+![Javier, exploring whether or not data scientists need to know OOP](charlie.png){.preview-image}
 
 # OOP with R
 
@@ -22,7 +22,7 @@ The [R6 package](https://r6.r-lib.org/) brings forth the elegance of object-orie
 ::: {.column width="5%"}
 :::
 ::: {.column width="25%"}
-![](images/logo.svg)
+![](logo.svg)
 :::
 :::
 
