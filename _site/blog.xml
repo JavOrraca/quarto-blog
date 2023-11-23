@@ -9,12 +9,12 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.4.506</generator>
+<generator>quarto-1.4.510</generator>
 <lastBuildDate>Wed, 22 Nov 2023 05:00:00 GMT</lastBuildDate>
 <item>
   <title>R Users Probably Don’t Need to Know OOP</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/oop-with-r6.html</link>
+  <link>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/</link>
   <description><![CDATA[ 
 
 
@@ -1006,10 +1006,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-23 00:03:03.757807 : Borrowed The Great Gatsby"
+[1] "2023-11-23 02:02:35.635981 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-23 00:03:03.759192 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-23 02:02:35.63743 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -1042,7 +1042,7 @@ font-style: inherit;">get_transaction_history</span>())</span></code></pre></div
   <category>r6</category>
   <category>tidyverse</category>
   <category>tidymodels</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/oop-with-r6.html</guid>
+  <guid>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r6/</guid>
   <pubDate>Wed, 22 Nov 2023 05:00:00 GMT</pubDate>
 </item>
 <item>
