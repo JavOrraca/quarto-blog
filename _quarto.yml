@@ -55,6 +55,7 @@ website:
 
 format:
   html:
+    embed-resources: true
     theme:
       light: [flatly, theme-light.scss]
       dark: [darkly, theme-dark.scss]

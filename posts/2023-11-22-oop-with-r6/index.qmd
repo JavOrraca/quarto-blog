@@ -8,7 +8,7 @@ categories:
   - tidymodels
 ---
 
-![Javier, exploring whether or not data scientists need to know OOP](charlie.jpg){.preview-image}
+![Javier, exploring whether or not data scientists need to know OOP](images/charlie.jpg){.preview-image}
 
 # OOP with R
 
@@ -21,7 +21,7 @@ The [R6 package](https://r6.r-lib.org/) brings forth the elegance of object-orie
 ::: {.column width="5%"}
 :::
 ::: {.column width="25%"}
-![](logo.svg)
+![](images/logo.svg)
 :::
 :::
 
