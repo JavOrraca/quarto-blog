@@ -14,7 +14,7 @@
 <item>
   <title>You Don’t Need OOP for Data Science</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/</link>
+  <link>https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/</link>
   <description><![CDATA[ 
 
 
@@ -22,7 +22,7 @@
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/charlie.png" class="preview-image img-fluid figure-img"></p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/charlie.png" class="preview-image img-fluid figure-img"></p>
 <figcaption>Python friends discussing OOP</figcaption>
 </figure>
 </div>
@@ -34,7 +34,7 @@
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:15%;">
-<p><img src="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/logo.svg" class="img-fluid"></p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/logo.svg" class="img-fluid"></p>
 </div>
 </div>
 <p>When meeting data scientists in the wild, they’re almost always Python users and they often ask me the rhetorical question of “can R do OOP and encapsulation?” I used to be embarrassed about this… Did I miss some mission critical component of data science in grad school? Have I been learning from the wrong books and tutorials?</p>
@@ -1003,10 +1003,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-23 02:51:24.092959 : Borrowed The Great Gatsby"
+[1] "2023-11-23 02:52:59.092462 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-23 02:51:24.094419 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-23 02:52:59.093854 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -1068,9 +1068,9 @@ loaded via a namespace (and not attached):
   <category>r6</category>
   <category>tidyverse</category>
   <category>tidymodels</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/</guid>
+  <guid>https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/</guid>
   <pubDate>Thu, 23 Nov 2023 05:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2023-11-22-oop-with-r/charlie.png" medium="image" type="image/png" height="108" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/charlie.png" medium="image" type="image/png" height="108" width="144"/>
 </item>
 <item>
   <title>webR via Quarto Extensions</title>
