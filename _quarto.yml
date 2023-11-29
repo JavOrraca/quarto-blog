@@ -7,7 +7,7 @@ website:
   description: "Javier Orraca-Deatcu's data science website built with R and Quarto"
   open-graph: true
   google-analytics:
-    tracking-id: "387217041"
+    tracking-id: "G-9L6JEKD131"
     anonymize-ip: true
   cookie-consent: true
   twitter-card: 

@@ -10,7 +10,7 @@
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
 <generator>quarto-1.4.510</generator>
-<lastBuildDate>Thu, 23 Nov 2023 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 23 Nov 2023 08:00:00 GMT</lastBuildDate>
 <item>
   <title>You Don’t Need OOP for Data Science</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -1003,10 +1003,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-23 02:59:42.484129 : Borrowed The Great Gatsby"
+[1] "2023-11-28 14:49:54.173788 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-23 02:59:42.485537 : Returned The Great Gatsby"</code></pre>
+[1] "2023-11-28 14:49:54.175161 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -1247,7 +1247,7 @@ font-style: inherit;">8.7</span>   </span></code></pre></div>
   <category>tidyverse</category>
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/</guid>
-  <pubDate>Thu, 23 Nov 2023 05:00:00 GMT</pubDate>
+  <pubDate>Thu, 23 Nov 2023 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/charlie.png" medium="image" type="image/png" height="108" width="144"/>
 </item>
 <item>
@@ -2416,7 +2416,7 @@ str(rounded_up_mtcars)`,
   <category>webR</category>
   <category>dplyr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/</guid>
-  <pubDate>Wed, 23 Aug 2023 04:00:00 GMT</pubDate>
+  <pubDate>Wed, 23 Aug 2023 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/images/webR.png" medium="image" type="image/png" height="143" width="144"/>
 </item>
 <item>
@@ -2504,7 +2504,7 @@ str(rounded_up_mtcars)`,
   <category>renv</category>
   <category>bslib</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html</guid>
-  <pubDate>Tue, 28 Mar 2023 04:00:00 GMT</pubDate>
+  <pubDate>Tue, 28 Mar 2023 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/images/presentation_cover_slide.png" medium="image" type="image/png" height="80" width="144"/>
 </item>
 <item>
@@ -3948,7 +3948,7 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
   <category>sodium</category>
   <category>cyphr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023.html</guid>
-  <pubDate>Sun, 15 Jan 2023 05:00:00 GMT</pubDate>
+  <pubDate>Sun, 15 Jan 2023 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/images/apache_arrow.png" medium="image" type="image/png" height="65" width="144"/>
 </item>
 <item>
@@ -3979,7 +3979,7 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
   <category>machine learning</category>
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/2023-01-01-data-science-hangout.html</guid>
-  <pubDate>Sun, 01 Jan 2023 05:00:00 GMT</pubDate>
+  <pubDate>Sun, 01 Jan 2023 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2023-01-01-data-science-hangout/images/Posit_Data_Science_Hangout.png" medium="image" type="image/png" height="78" width="144"/>
 </item>
 <item>
@@ -4655,7 +4655,7 @@ font-style: inherit;">2.2</span>              </span></code></pre></div>
   <category>bslib</category>
   <category>docker</category>
   <guid>https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html</guid>
-  <pubDate>Tue, 15 Nov 2022 05:00:00 GMT</pubDate>
+  <pubDate>Tue, 15 Nov 2022 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/Shiny_Demo_Preview.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
@@ -4686,7 +4686,7 @@ font-style: inherit;">2.2</span>              </span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>machine learning</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/2021-10-21-torch-for-r.html</guid>
-  <pubDate>Fri, 22 Oct 2021 04:00:00 GMT</pubDate>
+  <pubDate>Fri, 22 Oct 2021 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/images/torch_and_luz.png" medium="image" type="image/png" height="91" width="144"/>
 </item>
 <item>
@@ -6181,7 +6181,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
   <category>ggplot2</category>
   <category>visualizations</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</guid>
-  <pubDate>Tue, 07 Sep 2021 04:00:00 GMT</pubDate>
+  <pubDate>Tue, 07 Sep 2021 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/smallhobart.gif" medium="image" type="image/gif"/>
 </item>
 <item>
@@ -6207,7 +6207,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tibble</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/2021-05-24-dataframe.html</guid>
-  <pubDate>Mon, 24 May 2021 04:00:00 GMT</pubDate>
+  <pubDate>Mon, 24 May 2021 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/images/dataframe.jpeg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -6235,7 +6235,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>dt</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-05-03-DT/2021-05-03-DT.html</guid>
-  <pubDate>Mon, 03 May 2021 04:00:00 GMT</pubDate>
+  <pubDate>Mon, 03 May 2021 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-05-03-DT/images/DT_Shiny.png" medium="image" type="image/png" height="84" width="144"/>
 </item>
 <item>
@@ -6777,7 +6777,7 @@ font-style: inherit;">grid =</span> glmnet_grid)</span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/2021-01-24-rstudio-global.html</guid>
-  <pubDate>Sun, 24 Jan 2021 05:00:00 GMT</pubDate>
+  <pubDate>Sun, 24 Jan 2021 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/rstudio-global-2021.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -6873,7 +6873,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>quick tips</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/2021-01-19-rsthemes.html</guid>
-  <pubDate>Tue, 19 Jan 2021 05:00:00 GMT</pubDate>
+  <pubDate>Tue, 19 Jan 2021 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/images/rsthemes.gif" medium="image" type="image/gif"/>
 </item>
 <item>
@@ -6917,7 +6917,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>linux</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</guid>
-  <pubDate>Thu, 31 Dec 2020 05:00:00 GMT</pubDate>
+  <pubDate>Thu, 31 Dec 2020 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi-banner.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
@@ -6938,7 +6938,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>packages</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/2020-12-19-R-Package-One-Hour-Tutorial.html</guid>
-  <pubDate>Sat, 19 Dec 2020 05:00:00 GMT</pubDate>
+  <pubDate>Sat, 19 Dec 2020 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/images/package_workshop.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -6960,7 +6960,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <category>tidyverse</category>
   <category>dplyr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</guid>
-  <pubDate>Wed, 04 Nov 2020 05:00:00 GMT</pubDate>
+  <pubDate>Wed, 04 Nov 2020 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/images/dbplyr_what_is_new.jpg_large" medium="image"/>
 </item>
 <item>
@@ -6981,7 +6981,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>packages</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</guid>
-  <pubDate>Sun, 13 Sep 2020 04:00:00 GMT</pubDate>
+  <pubDate>Sun, 13 Sep 2020 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/methods_bites.png" medium="image" type="image/png" height="167" width="144"/>
 </item>
 <item>
@@ -7003,7 +7003,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
   <category>shiny</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</guid>
-  <pubDate>Fri, 03 Jul 2020 04:00:00 GMT</pubDate>
+  <pubDate>Fri, 03 Jul 2020 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/images/shiny_logo.png" medium="image" type="image/png" height="69" width="144"/>
 </item>
 <item>
@@ -7031,7 +7031,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <category>tidyverse</category>
   <category>dplyr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/2020-06-20-dplyr-1.0.0.html</guid>
-  <pubDate>Sat, 20 Jun 2020 04:00:00 GMT</pubDate>
+  <pubDate>Sat, 20 Jun 2020 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/images/dplyr.jpeg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -7058,7 +7058,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <category>ggplot2</category>
   <category>visualizations</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</guid>
-  <pubDate>Sun, 19 Apr 2020 04:00:00 GMT</pubDate>
+  <pubDate>Sun, 19 Apr 2020 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -7086,7 +7086,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <category>rmarkdown</category>
   <category>blogdown</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/2020-04-05-DnD-Adventures.html</guid>
-  <pubDate>Sun, 05 Apr 2020 04:00:00 GMT</pubDate>
+  <pubDate>Sun, 05 Apr 2020 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/images/Dnd.png" medium="image" type="image/png" height="61" width="144"/>
 </item>
 </channel>

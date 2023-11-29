@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Javier Orraca-Deatcu">
-<meta name="dcterms.date" content="2021-10-22">
-<meta name="description" content="The ‘torch for R’ ecosystem is a collection of extensions for torch, an R framework for machine learning and artificial intelligence based on PyTorch.">
+<meta name="dcterms.date" content="2023-11-27">
+<meta name="description" content="Several months ago, I attended a Big Data with Arrow workshop where I learned more about the Arrow engine, the Parquet file format, and the extensibility of Arrow for data transfer and ETL. In this post, I’ll share several ETL approaches with R and Python including a comparison of runtimes for the various approaches.">
 
-<title>Data Science Bytes - Torch for R + luz</title>
+<title>Data Science Bytes - Benchmarking ETL Frameworks for Medium-Sized Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -101,19 +135,15 @@ cookieconsent.run({
   
 
 
-<meta property="og:title" content="Data Science Bytes - Torch for R + luz">
-<meta property="og:description" content="The ‘torch for R’ ecosystem is a collection of extensions for torch, an R framework for machine learning and artificial intelligence based on PyTorch.">
-<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/images/torch_and_luz.png">
+<meta property="og:title" content="Data Science Bytes - Benchmarking ETL Frameworks for Medium-Sized Data">
+<meta property="og:description" content="Several months ago, I attended a Big Data with Arrow workshop where I learned more about the Arrow engine, the Parquet file format, and the extensibility of Arrow for data transfer and ETL. In this post, I’ll share several ETL approaches with R and Python including a comparison of runtimes for the various approaches.">
+<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2023-11-27-etl-benchmarking/charlie.png">
 <meta property="og:site_name" content="Data Science Bytes">
-<meta property="og:image:height" content="391">
-<meta property="og:image:width" content="616">
-<meta name="twitter:title" content="Data Science Bytes - Torch for R + luz">
-<meta name="twitter:description" content="The ‘torch for R’ ecosystem is a collection of extensions for torch, an R framework for machine learning and artificial intelligence based on PyTorch.">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2021-10-21-torch-for-r/images/torch_and_luz.png">
+<meta name="twitter:title" content="Data Science Bytes - Benchmarking ETL Frameworks for Medium-Sized Data">
+<meta name="twitter:description" content="Several months ago, I attended a Big Data with Arrow workshop where I learned more about the Arrow engine, the Parquet file format, and the extensibility of Arrow for data transfer and ETL. In this post, I’ll share several ETL approaches with R and Python including a comparison of runtimes for the various approaches.">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2023-11-27-etl-benchmarking/images/Javier_Profile.jpg">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image-height" content="391">
-<meta name="twitter:image-width" content="616">
 </head>
 
 <body class="floating nav-fixed">
@@ -214,7 +244,15 @@ cookieconsent.run({
     <h2 id="toc-title">Table of Contents</h2>
    
   <ul>
-  <li><a href="#sources" id="toc-sources" class="nav-link active" data-scroll-target="#sources">Sources</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#system-and-data-overview" id="toc-system-and-data-overview" class="nav-link" data-scroll-target="#system-and-data-overview">System and Data Overview</a></li>
+  <li><a href="#frameworks-in-scope" id="toc-frameworks-in-scope" class="nav-link" data-scroll-target="#frameworks-in-scope">Frameworks In Scope</a></li>
+  <li><a href="#downloading-the-data" id="toc-downloading-the-data" class="nav-link" data-scroll-target="#downloading-the-data">Downloading the Data</a>
+  <ul class="collapse">
+  <li><a href="#create-python-and-r-chunks" id="toc-create-python-and-r-chunks" class="nav-link" data-scroll-target="#create-python-and-r-chunks">CREATE PYTHON AND R CHUNKS</a></li>
+  </ul></li>
+  <li><a href="#benchmarking" id="toc-benchmarking" class="nav-link" data-scroll-target="#benchmarking">Benchmarking</a></li>
+  <li><a href="#sessioninfo" id="toc-sessioninfo" class="nav-link" data-scroll-target="#sessioninfo">sessionInfo()</a></li>
   </ul>
 </nav>
 </nav>
@@ -227,15 +265,20 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Torch for R + luz</h1>
+<h1 class="title">Benchmarking ETL Frameworks for Medium-Sized Data</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">machine learning</div>
+    <div class="quarto-category">dplyr</div>
+    <div class="quarto-category">polars</div>
+    <div class="quarto-category">arrow</div>
+    <div class="quarto-category">duckdb</div>
+    <div class="quarto-category">duckplyr</div>
+    <div class="quarto-category">bench</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    The ‘torch for R’ ecosystem is a collection of extensions for torch, an R framework for machine learning and artificial intelligence based on PyTorch.
+    Several months ago, I attended a Big Data with Arrow workshop where I learned more about the Arrow engine, the Parquet file format, and the extensibility of Arrow for data transfer and ETL. In this post, I’ll share several ETL approaches with R and Python including a comparison of runtimes for the various approaches.
   </div>
 </div>
 
@@ -261,7 +304,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 22, 2021</p>
+      <p class="date">November 27, 2023</p>
     </div>
   </div>
   
@@ -273,18 +316,205 @@ cookieconsent.run({
 </header>
 
 
-<p>Torch for R… wow! 🔥🔥🔥 I was recently having a discussion with a coworker about the benefits of Torch, especially the power of training one global model capable of hierarchical projections (awesome for time series) and predicting multiple group-specific regressions. I went down a Googling rabbit hole last weekend and came across some amazing articles by Sigrid Keydana (see links below) introducing <code>torch</code> to the R community and also recently releasing <code>luz</code>, a high-level R interface to Torch (“<code>luz</code> is to <code>torch</code> what <code>Keras</code> is to <code>TensorFlow</code>”).</p>
-<p>RStudio’s MLVerse team is doing really exciting things for the R machine learning and AI community. With <code>torch</code>, I no longer need to launch a conda environment for complex NNs (although having Python on your system is always handy 😅). And even better, “<code>torch</code> for R is built directly on top of <code>libtorch</code>, a C++ library that provides the tensor-computation and automatic-differentiation capabilities essential to building neural networks.” If you’re looking for fast NNs and deep learning solutions within the <strong>#rstats</strong> framework, give these packages a try. Happy Friday and happy learning! 🤓📚</p>
-<section id="sources" class="level2">
-<h2 class="anchored" data-anchor-id="sources">Sources</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="charlie.png" class="preview-image img-fluid figure-img"></p>
+<figcaption>Python friends discussing OOP</figcaption>
+</figure>
+</div>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>Several months ago, I attended a <a href="https://posit-conf-2023.github.io/arrow/"><em>Big Data in R with Arrow workshop</em></a> where I learned more about the Arrow engine, the Parquet file format, and the extensibility(xxxxxxx) of Arrow for data transfer and ETL. In this post, I’ll share several ETL approaches with R and Python including a comparison of runtimes for the various approaches.</p>
+</section>
+<section id="system-and-data-overview" class="level1">
+<h1>System and Data Overview</h1>
+<p>Windows and macOS are RAM hogs requiring anywhere from 6-10 GB of RAM. Hopefully your employer has Linux-based VMs running your favorite notebook or IDE since Linux distributions run lean and and don’t require as much RAM as Windows and macOS, but if you’re at home having fun or stuck at work using Windows or macOS, you’ll be unable to load anything near “big data.”</p>
+<p>My personal computer is a MacBook Air with 24 GB RAM. Simply running macOS Sonoma 14.1.1 sucks up ~8 GB RAM leaving 16 GB RAM available for anything else. Until recently, if I wanted to load a 40 GB serialized object (like an <code>.rds</code> file) or delimited data set (like a <code>.csv</code> file) into memory using R or Python, my system would have crashed given that I only had 16 GB of free memory. There are tedious ways around this limitation that I won’t cover but Arrow introduces a language-agnostic, larger-than-memory engine for data processing that brings “big data” processing closer to reality on small systems like my MacBook Air.</p>
+<p>To be clear, I’m not talking about 2020s “big data”… I won’t be benchmarking performance on terabyte- or exabyte(xxxxxxx)-sized data, but I will be showing you how to perform ETL operations on a 40 GB Parquet data set, partitioned by Year and Month (120 individual Parquet files), including information on 1.1 billion NYC taxi rides.</p>
+</section>
+<section id="frameworks-in-scope" class="level1">
+<h1>Frameworks In Scope</h1>
+<p>Many of the frameworks below play nicely with Arrow (if not built on top of the Arrow engine in some way), but below are the various methods that I plan to cover:</p>
 <ul>
-<li>Torch for R: <a href="https://torch.mlverse.org/">https://torch.mlverse.org/</a></li>
-<li>Intro to Torch: <a href="https://blogs.rstudio.com/ai/posts/2020-09-29-introducing-torch-for-r/">Torch for R</a></li>
-<li>Intro to Luz: <a href="https://blogs.rstudio.com/ai/posts/2021-06-17-luz/">Que haja luz: More light for torch!</a></li>
-<li>Intro to TabNet: <a href="https://blogs.rstudio.com/ai/posts/2021-02-11-tabnet/">TabNet for Tabular Data with Torch</a></li>
-<li>Intro to Time Series with Torch: <a href="https://blogs.rstudio.com/ai/posts/2021-03-10-forecasting-time-series-with-torch_1/">Introductory Time-Series Forecasting with Torch</a></li>
-<li>Sigrid Keydana: <a href="https://www.linkedin.com/in/sigrid-keydana-9a16b410/?originalSubdomain=de">Sigrid on LinkedIn</a></li>
+<li>Arrow (Python/R)</li>
+<li>dplyr (R)</li>
+<li>DuckDB (Python/R)</li>
+<li>duckplyr (R)</li>
+<li>Pandas (Python)</li>
+<li>Polars (Python/R)</li>
+<li>Spark (Python/R)</li>
 </ul>
+</section>
+<section id="downloading-the-data" class="level1">
+<h1>Downloading the Data</h1>
+<p>The following code chunk will download a 40 GB data set of 1.1 billion NYC taxi rides partitioned over 120 files (by Year and Month). Depending on your internet connection, download time could take several hours for this data set.</p>
+<section id="create-python-and-r-chunks" class="level3">
+<h3 class="anchored" data-anchor-id="create-python-and-r-chunks">CREATE PYTHON AND R CHUNKS</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Load packages</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co"># URL for data set persisting in an S3 bucket</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>url_s3 <span class="ot">&lt;-</span> <span class="st">"s3://voltrondata-labs-datasets/nyc-taxi"</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co"># Folder on working directory to save dataset </span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>data_path <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/nyc-taxi"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co"># Connect to data, filter for 10 years, write to disk</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>arrow<span class="sc">::</span><span class="fu">open_dataset</span>(url_s3) <span class="sc">|&gt;</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="dv">2012</span><span class="sc">:</span><span class="dv">2021</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>  arrow<span class="sc">::</span><span class="fu">write_dataset</span>(<span class="at">path =</span> data_path, </span>
+<span id="cb1-16"><a href="#cb1-16"></a>                       <span class="at">partitioning =</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"month"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="benchmarking" class="level1">
+<h1>Benchmarking</h1>
+<p>For benchmarking performance across different approaches, one of my favorite packages is <a href="https://bench.r-lib.org/">bench</a>. I’ll first create a custom function, <code>run_benchmark()</code>, that will use <code>bench::mark()</code> to compare performance across methods and plot the benchmarking results. The only input into the function will be the number of rows to sample and benchmark.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Benchmarking code for 1 million rows</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Turn off diagnostic output from duckdb</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># on data frame materialization</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">options</span>(<span class="at">duckdb.materialize_message =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># Load additional packages</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">library</span>(tictoc)</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="fu">library</span>(duckplyr)</span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co"># Manually iterated over the code below to benchmark</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co"># and compare performance on 1 million, 10 million, 100</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co"># million, and 500 million rows</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>run_benchmark <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-15"><a href="#cb2-15"></a>  tictoc<span class="sc">::</span><span class="fu">tic</span>()</span>
+<span id="cb2-16"><a href="#cb2-16"></a>  </span>
+<span id="cb2-17"><a href="#cb2-17"></a>  nyc_taxi_tibble <span class="ot">&lt;-</span> arrow<span class="sc">::</span><span class="fu">open_dataset</span>(<span class="st">"data/nyc-taxi"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-18"><a href="#cb2-18"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(year, passenger_count) <span class="sc">|&gt;</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>    dplyr<span class="sc">::</span><span class="fu">collect</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-20"><a href="#cb2-20"></a>    dplyr<span class="sc">::</span><span class="fu">slice_sample</span>(<span class="at">n =</span> x)</span>
+<span id="cb2-21"><a href="#cb2-21"></a>  </span>
+<span id="cb2-22"><a href="#cb2-22"></a>  nyc_taxi <span class="ot">&lt;-</span> nyc_taxi_tibble <span class="sc">|&gt;</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a>    arrow<span class="sc">::</span><span class="fu">as_arrow_table</span>()</span>
+<span id="cb2-24"><a href="#cb2-24"></a>  </span>
+<span id="cb2-25"><a href="#cb2-25"></a>  nyc_taxi_duckplyr_df <span class="ot">&lt;-</span> nyc_taxi_tibble <span class="sc">|&gt;</span> </span>
+<span id="cb2-26"><a href="#cb2-26"></a>    duckplyr<span class="sc">::</span><span class="fu">as_duckplyr_df</span>()</span>
+<span id="cb2-27"><a href="#cb2-27"></a>  </span>
+<span id="cb2-28"><a href="#cb2-28"></a>  bnch <span class="ot">&lt;-</span> bench<span class="sc">::</span><span class="fu">mark</span>(</span>
+<span id="cb2-29"><a href="#cb2-29"></a>    <span class="at">min_iterations =</span> <span class="dv">50</span>,</span>
+<span id="cb2-30"><a href="#cb2-30"></a>    <span class="at">tibble_to_arrow =</span> nyc_taxi_tibble <span class="sc">|&gt;</span> </span>
+<span id="cb2-31"><a href="#cb2-31"></a>      arrow<span class="sc">::</span><span class="fu">as_arrow_table</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-32"><a href="#cb2-32"></a>      dplyr<span class="sc">::</span><span class="fu">filter</span>(passenger_count <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-33"><a href="#cb2-33"></a>      dplyr<span class="sc">::</span><span class="fu">group_by</span>(year) <span class="sc">|&gt;</span> </span>
+<span id="cb2-34"><a href="#cb2-34"></a>      dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb2-35"><a href="#cb2-35"></a>        <span class="at">all_trips =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-36"><a href="#cb2-36"></a>        <span class="at">shared_trips =</span> <span class="fu">sum</span>(passenger_count, <span class="at">na.rm =</span> T)</span>
+<span id="cb2-37"><a href="#cb2-37"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pct_shared =</span> shared_trips <span class="sc">/</span> all_trips <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-39"><a href="#cb2-39"></a>      dplyr<span class="sc">::</span><span class="fu">collect</span>(),</span>
+<span id="cb2-40"><a href="#cb2-40"></a>    <span class="at">tibble_to_duckplyr =</span> nyc_taxi_tibble <span class="sc">|&gt;</span> </span>
+<span id="cb2-41"><a href="#cb2-41"></a>      duckplyr<span class="sc">::</span><span class="fu">as_duckplyr_df</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-42"><a href="#cb2-42"></a>      duckplyr<span class="sc">::</span><span class="fu">filter</span>(passenger_count <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-43"><a href="#cb2-43"></a>      duckplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb2-44"><a href="#cb2-44"></a>        <span class="at">all_trips =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-45"><a href="#cb2-45"></a>        <span class="at">shared_trips =</span> <span class="fu">sum</span>(passenger_count),</span>
+<span id="cb2-46"><a href="#cb2-46"></a>        <span class="at">.by =</span> year</span>
+<span id="cb2-47"><a href="#cb2-47"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a>      duckplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pct_shared =</span> shared_trips <span class="sc">/</span> all_trips <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-49"><a href="#cb2-49"></a>      duckplyr<span class="sc">::</span><span class="fu">collect</span>(),</span>
+<span id="cb2-50"><a href="#cb2-50"></a>    <span class="at">tibble_to_dplyr =</span> nyc_taxi_tibble <span class="sc">|&gt;</span> </span>
+<span id="cb2-51"><a href="#cb2-51"></a>      dplyr<span class="sc">::</span><span class="fu">filter</span>(passenger_count <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-52"><a href="#cb2-52"></a>      dplyr<span class="sc">::</span><span class="fu">group_by</span>(year) <span class="sc">|&gt;</span> </span>
+<span id="cb2-53"><a href="#cb2-53"></a>      dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">all_trips =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-54"><a href="#cb2-54"></a>                       <span class="at">shared_trips =</span> <span class="fu">sum</span>(passenger_count, <span class="at">na.rm =</span> T)) <span class="sc">|&gt;</span></span>
+<span id="cb2-55"><a href="#cb2-55"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pct_shared =</span> shared_trips <span class="sc">/</span> all_trips <span class="sc">*</span> <span class="dv">100</span>),</span>
+<span id="cb2-56"><a href="#cb2-56"></a>    <span class="at">arrow_table =</span> nyc_taxi <span class="sc">|&gt;</span> </span>
+<span id="cb2-57"><a href="#cb2-57"></a>      dplyr<span class="sc">::</span><span class="fu">filter</span>(passenger_count <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-58"><a href="#cb2-58"></a>      dplyr<span class="sc">::</span><span class="fu">group_by</span>(year) <span class="sc">|&gt;</span> </span>
+<span id="cb2-59"><a href="#cb2-59"></a>      dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb2-60"><a href="#cb2-60"></a>        <span class="at">all_trips =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-61"><a href="#cb2-61"></a>        <span class="at">shared_trips =</span> <span class="fu">sum</span>(passenger_count, <span class="at">na.rm =</span> T)</span>
+<span id="cb2-62"><a href="#cb2-62"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb2-63"><a href="#cb2-63"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pct_shared =</span> shared_trips <span class="sc">/</span> all_trips <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-64"><a href="#cb2-64"></a>      dplyr<span class="sc">::</span><span class="fu">collect</span>(),</span>
+<span id="cb2-65"><a href="#cb2-65"></a>    <span class="at">arrow_to_duckdb =</span> nyc_taxi <span class="sc">|&gt;</span> </span>
+<span id="cb2-66"><a href="#cb2-66"></a>      arrow<span class="sc">::</span><span class="fu">to_duckdb</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-67"><a href="#cb2-67"></a>      dplyr<span class="sc">::</span><span class="fu">filter</span>(passenger_count <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-68"><a href="#cb2-68"></a>      dplyr<span class="sc">::</span><span class="fu">group_by</span>(year) <span class="sc">|&gt;</span> </span>
+<span id="cb2-69"><a href="#cb2-69"></a>      dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb2-70"><a href="#cb2-70"></a>        <span class="at">all_trips =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-71"><a href="#cb2-71"></a>        <span class="at">shared_trips =</span> <span class="fu">sum</span>(passenger_count, <span class="at">na.rm =</span> T)</span>
+<span id="cb2-72"><a href="#cb2-72"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb2-73"><a href="#cb2-73"></a>      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pct_shared =</span> shared_trips <span class="sc">/</span> all_trips <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-74"><a href="#cb2-74"></a>      dplyr<span class="sc">::</span><span class="fu">collect</span>(),</span>
+<span id="cb2-75"><a href="#cb2-75"></a>    <span class="at">duckplyr_df =</span> nyc_taxi_duckplyr_df <span class="sc">|&gt;</span> </span>
+<span id="cb2-76"><a href="#cb2-76"></a>      duckplyr<span class="sc">::</span><span class="fu">filter</span>(passenger_count <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-77"><a href="#cb2-77"></a>      duckplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb2-78"><a href="#cb2-78"></a>        <span class="at">all_trips =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-79"><a href="#cb2-79"></a>        <span class="at">shared_trips =</span> <span class="fu">sum</span>(passenger_count),</span>
+<span id="cb2-80"><a href="#cb2-80"></a>        <span class="at">.by =</span> year</span>
+<span id="cb2-81"><a href="#cb2-81"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb2-82"><a href="#cb2-82"></a>      duckplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pct_shared =</span> shared_trips <span class="sc">/</span> all_trips <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-83"><a href="#cb2-83"></a>      duckplyr<span class="sc">::</span><span class="fu">collect</span>(),</span>
+<span id="cb2-84"><a href="#cb2-84"></a>    <span class="at">check =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-85"><a href="#cb2-85"></a>  )</span>
+<span id="cb2-86"><a href="#cb2-86"></a>  </span>
+<span id="cb2-87"><a href="#cb2-87"></a>  <span class="co"># Print benchmarking elapsed time</span></span>
+<span id="cb2-88"><a href="#cb2-88"></a>  tictoc<span class="sc">::</span><span class="fu">toc</span>()</span>
+<span id="cb2-89"><a href="#cb2-89"></a>  </span>
+<span id="cb2-90"><a href="#cb2-90"></a>  <span class="co"># Plot results</span></span>
+<span id="cb2-91"><a href="#cb2-91"></a>  ggplot2<span class="sc">::</span><span class="fu">autoplot</span>(bnch)</span>
+<span id="cb2-92"><a href="#cb2-92"></a>}</span>
+<span id="cb2-93"><a href="#cb2-93"></a></span>
+<span id="cb2-94"><a href="#cb2-94"></a><span class="fu">run_benchmark</span>(<span class="dv">1000000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>24.94 sec elapsed</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sessioninfo" class="level1">
+<h1>sessionInfo()</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-overflow-scroll code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">4</span>.<span class="fl">3.2</span> (<span class="dv">2023-10-31</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> aarch64<span class="sc">-</span>apple<span class="sc">-</span><span class="fu">darwin20</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> macOS Sonoma <span class="dv">14</span>.<span class="fl">1.1</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Matrix products<span class="sc">:</span> default</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>BLAS<span class="sc">:</span>   <span class="er">/</span>System<span class="sc">/</span>Library<span class="sc">/</span>Frameworks<span class="sc">/</span>Accelerate.framework<span class="sc">/</span>Versions<span class="sc">/</span>A<span class="sc">/</span>Frameworks<span class="sc">/</span>vecLib.framework<span class="sc">/</span>Versions<span class="sc">/</span>A<span class="sc">/</span>libBLAS.dylib </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>LAPACK<span class="sc">:</span> <span class="er">/</span>Library<span class="sc">/</span>Frameworks<span class="sc">/</span>R.framework<span class="sc">/</span>Versions<span class="sc">/</span><span class="fl">4.3</span><span class="sc">-</span>arm64<span class="sc">/</span>Resources<span class="sc">/</span>lib<span class="sc">/</span>libRlapack.dylib;  LAPACK version <span class="dv">3</span>.<span class="fl">11.0</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>locale<span class="sc">:</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">1</span>] en_US.UTF<span class="dv">-8</span><span class="sc">/</span>en_US.UTF<span class="dv">-8</span><span class="sc">/</span>en_US.UTF<span class="dv">-8</span><span class="sc">/</span>C<span class="sc">/</span>en_US.UTF<span class="dv">-8</span><span class="sc">/</span>en_US.UTF<span class="dv">-8</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>time zone<span class="sc">:</span> America<span class="sc">/</span>New_York</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>tzcode source<span class="sc">:</span> internal</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>attached base packages<span class="sc">:</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">1</span>] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>other attached packages<span class="sc">:</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">1</span>] quarto_1<span class="fl">.3</span>  purrr_1.<span class="fl">0.2</span> R6_2.<span class="fl">5.1</span>   </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>loaded via a <span class="fu">namespace</span> (and not attached)<span class="sc">:</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  [<span class="dv">1</span>] digest_0.<span class="fl">6.33</span>     later_1.<span class="fl">3.1</span>       fastmap_1.<span class="fl">1.1</span>     xfun_0<span class="fl">.41</span>         magrittr_2.<span class="fl">0.3</span>   </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>[<span class="dv">6</span>] knitr_1<span class="fl">.45</span>        htmltools_0.<span class="fl">5.7</span>   rmarkdown_2<span class="fl">.25</span>    lifecycle_1.<span class="fl">0.4</span>   ps_1.<span class="fl">7.5</span>         </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>[<span class="dv">11</span>] cli_3.<span class="fl">6.1</span>         processx_3.<span class="fl">8.2</span>    vctrs_0.<span class="fl">6.4</span>       compiler_4.<span class="fl">3.2</span>    rstudioapi_0.<span class="fl">15.0</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">16</span>] tools_4.<span class="fl">3.2</span>       evaluate_0<span class="fl">.23</span>     yaml_2.<span class="fl">3.7</span>        Rcpp_1.<span class="fl">0.11</span>       rlang_1.<span class="fl">1.2</span>      </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">21</span>] jsonlite_1.<span class="fl">8.7</span>   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>
