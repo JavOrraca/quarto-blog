@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.510">
+<meta name="generator" content="quarto-1.4.540">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -64,6 +64,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -233,23 +234,27 @@ cookieconsent.run({
 </div>
 <section id="professional" class="level2">
 <h2 class="anchored" data-anchor-id="professional">Professional</h2>
-<p>My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&amp;E, KPMG, Centene, and Bloomreach. I use the R and Python programming languages on a daily basis but am much more advanced with my R work. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive analytics. I help bridge the gap between business needs and IT to develop and deploy automation solutions, predictive algorithms, and interactive web apps.</p>
+<p>My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&amp;E, KPMG, Centene, and Bloomreach. I use the R and Python programming languages on a daily basis but am much more advanced with my R work. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive analytics. I sit somewhere between the business stakeholder and cloud IT engineering to develop and deploy automation pipelines, predictive models, interactive web apps, and simulations.</p>
 </section>
 <section id="scatter-podcast" class="level2">
 <h2 class="anchored" data-anchor-id="scatter-podcast">Scatter Podcast</h2>
 <p>In 2019, I launched <a href="https://soundcloud.com/scatterpodcast">Scatter Podcast</a> to share career tips and insights from data science leaders for students, business managers, and professionals looking to pivot into data science. It was a fun and incredibly rewarding side project but after 30 episodes, I started to feel fatigued with the amount of time it took to plan, record, edit, market, etc. The podcast is on hold <em>but not dead!</em></p>
 </section>
-<section id="programming-analytics-skills" class="level2">
-<h2 class="anchored" data-anchor-id="programming-analytics-skills">Programming &amp; Analytics Skills</h2>
+<section id="data-science-associated-experiences" class="level2">
+<h2 class="anchored" data-anchor-id="data-science-associated-experiences">Data Science &amp; Associated Experiences</h2>
 <ul>
-<li><strong>R</strong>: tidyverse, tidymodels, Quarto, Shiny, Plotly, Leaflet, Prophet, xaringan, XGBoost, Ranger, and many more</li>
-<li><strong>Other Analytics &amp; Programming Platforms</strong>: Python, Jupyter Notebooks, h2o, GitLab / GitHub, RStudio Connect, AWS S3, AWS Redshift, Google Cloud Platform, BigQuery, SQL, Netlify</li>
-<li><strong>Microsoft</strong>: Expert-level Excel financial modeler with experiences including nested formulas, XLOOKUPs, Solver for optimization and simulations (yes… in Excel!), macros for psuedo-automated data manipulation, add-in integrations, and more</li>
+<li><strong>R</strong>: tidyverse, tidymodels, Quarto, webR, XGBoost, Prophet, sparkr / sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, package developer for my orgs, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more</li>
+<li><strong>DevOps + MLOps</strong>: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash</li>
+<li><strong>Data</strong>: Snowflake, Teradata, Apache Arrow, Apache Parquet, DuckDB, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery</li>
+<li><strong>Other</strong>: Python (I’m objectively terrible but w/ ChatGPT I’ve been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (+ the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify</li>
 </ul>
 </section>
 <section id="media-appearances" class="level2">
 <h2 class="anchored" data-anchor-id="media-appearances">Media Appearances</h2>
 <ul>
+<li>R Consortium interview on <a href="https://www.r-consortium.org/blog/2023/09/25/empowering-healthcare-with-r-javier-orraca-deatcus-journey-from-finance-to-predictive-health-models">Empowering Healthcare with R: Javier Orraca-Deatcu’s Journey from Finance to Predictive Health Models</a> (2023-09-25)</li>
+<li>SoCal RUG presentation on <a href="https://www.youtube.com/watch?v=lNn4beRxnbk&amp;t=2321s&amp;ab_channel=SouthernCaliforniaRUsersGroup">How to Build a Shiny App Demo as a Cover Letter Accessory</a> (2023-03-21)</li>
+<li>Posit hosted me on their <em>Data Science Hangout</em> to discuss <a href="https://www.youtube.com/watch?v=-mm5tHQVPY8&amp;t=2858s&amp;ab_channel=PositPBC">Excel to Data Science to Machine Learning Engineering</a> (2022-12-08)</li>
 <li>UC Irvine’s inaugural <a href="https://merage.uci.edu/events/2021/10/2021-lxi-conference.html">Latinx Initiative Conference</a> (2021-10-15)</li>
 <li><a href="https://datapoints.griddynamics.com/events/data-points-virtual-summit-healthcare-finance-06-09-2021/">Data Points: Healthcare and Finance</a> virtual conference hosted by Grid Dynamics (2021-06-09)
 <ul>
@@ -536,27 +541,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
     stripColumnClz(note)
-    const typesetMath = (el) => {
-      if (window.MathJax) {
-        // MathJax Typeset
-        window.MathJax.typeset([el]);
-      } else if (window.katex) {
-        // KaTeX Render
-        var mathElements = el.getElementsByClassName("math");
-        var macros = [];
-        for (var i = 0; i < mathElements.length; i++) {
-          var texText = mathElements[i].firstChild;
-          if (mathElements[i].tagName == "SPAN") {
-            window.katex.render(texText.data, mathElements[i], {
-              displayMode: mathElements[i].classList.contains('display'),
-              throwOnError: false,
-              macros: macros,
-              fleqn: false
-            });
-          }
-        }
-      }
-    }
     if (id === null || id.startsWith('sec-')) {
       // Special case sections, only their first couple elements
       const container = document.createElement("div");
@@ -571,10 +555,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             break;
           }
         }
-        typesetMath(container);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
         return container.innerHTML
       } else {
-        typesetMath(note);
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
         return note.innerHTML;
       }
     } else {
@@ -583,7 +571,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (anchorLink) {
         anchorLink.remove();
       }
-      typesetMath(note);
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
       return note.innerHTML;
     }
   }

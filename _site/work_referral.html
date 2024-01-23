@@ -6,11 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Javier Orraca-Deatcu">
-<meta name="dcterms.date" content="2020-04-19">
-<meta name="description" content="It’s quite easy to manipulate raw data in a manner that ‘proves’ your point. For the sake of exploring this topic further, I’ll analyze police killing data and present it in three different ways.">
 
-<title>Data Science Bytes - Lying with Statistics</title>
+<title>Data Science Bytes - Read for Work Referrals</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -26,26 +23,26 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -102,25 +99,24 @@ cookieconsent.run({
   
 
 
-<meta property="og:title" content="Data Science Bytes - Lying with Statistics">
-<meta property="og:description" content="It’s quite easy to manipulate raw data in a manner that ‘proves’ your point. For the sake of exploring this topic further, I’ll analyze police killing data and present it in three different ways.">
-<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg">
+<meta property="og:title" content="Data Science Bytes - Read for Work Referrals">
+<meta property="og:description" content="Javier Orraca-Deatcu’s data science website built with R and Quarto">
 <meta property="og:site_name" content="Data Science Bytes">
-<meta name="twitter:title" content="Data Science Bytes - Lying with Statistics">
-<meta name="twitter:description" content="It’s quite easy to manipulate raw data in a manner that ‘proves’ your point. For the sake of exploring this topic further, I’ll analyze police killing data and present it in three different ways.">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg">
+<meta name="twitter:title" content="Data Science Bytes - Read for Work Referrals">
+<meta name="twitter:description" content="Javier Orraca-Deatcu’s data science website built with R and Quarto">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/images/Javier_Profile.jpg">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="floating nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Data Science Bytes</span>
     </a>
   </div>
@@ -131,7 +127,7 @@ cookieconsent.run({
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="../../blog.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="./blog.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -161,7 +157,7 @@ cookieconsent.run({
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../blog.html"> 
+    <a class="nav-link" href="./blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -170,7 +166,7 @@ cookieconsent.run({
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
         <li>
-    <a class="dropdown-item" href="../../resources.html">
+    <a class="dropdown-item" href="./resources.html">
  <span class="dropdown-text">Javi’s Resources</span></a>
   </li>  
         <li>
@@ -192,7 +188,7 @@ cookieconsent.run({
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
+    <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -206,57 +202,21 @@ cookieconsent.run({
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lying with Statistics</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">statistics</div>
-    <div class="quarto-category">ggplot2</div>
-    <div class="quarto-category">visualizations</div>
-  </div>
-  </div>
-
-<div>
-  <div class="description">
-    It’s quite easy to manipulate raw data in a manner that ‘proves’ your point. For the sake of exploring this topic further, I’ll analyze police killing data and present it in three different ways.
-  </div>
+<h1 class="title">Read for Work Referrals</h1>
 </div>
 
-<div class="quarto-title-meta-author">
-  <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliation</div>
-  
-    <div class="quarto-title-meta-contents">
-    <p class="author"><a href="https://www.javierorracadeatcu.com/">Javier Orraca-Deatcu</a> </p>
-  </div>
-  <div class="quarto-title-meta-contents">
-        <p class="affiliation">
-            <a href="https://soundcloud.com/scatterpodcast">
-            Scatter Podcast
-            </a>
-          </p>
-      </div>
-  </div>
+
 
 <div class="quarto-title-meta">
 
-      
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">April 19, 2020</p>
-    </div>
-  </div>
+    
   
     
   </div>
@@ -266,17 +226,45 @@ cookieconsent.run({
 </header>
 
 
-<p>Lets explore four plots and see how we can #LieWithStatistics…</p>
-<p><strong>Plot 1</strong>: Police killings by date, by race <br>General observation: Police kill more white people than black people<br><br> <img src="./images/Police_Killings_1.jpeg" class="img-fluid" alt="Police Killings, Plot 1, made with R’s ggplot2"></p>
-<p><strong>Plot 2</strong>: Police killing boxplot showing murder rates, by race, by police department <br><strong>General explanation and takeaway</strong>: The dots on each boxplot show the statistical outliers, box plot lines extend out to the “min” and “max”, and the box lines (from bottom to top of each box) represent the first quartile (25th percentile), median (50th percentile), and third quartile (75th percentile)<br><br> <img src="./images/Police_Killings_2.jpeg" class="img-fluid" alt="Police Killings, Plot 2, made with R’s ggplot2"></p>
-<p><strong>Plot 3</strong>: Police killing boxplot, now log-transforming the murder rates to more easily identify statistical differences, by race <br><strong>General explanation and takeaway</strong>: Log-transforming data points for visualization or modeling purposes is a technique by which you can <em>smooth</em> observed data making it more robust (or resistant) to outliers. I effectively re-wrote the murder rates to show exponential relativity. <br><strong>Important caveat</strong>: Are Native Americans more likely to die by police than other races? Sure looks like it… <em>but see Plot 4 for more thoughts</em><br><br> <img src="./images/Police_Killings_3.jpeg" class="img-fluid" alt="Police Killings, Plot 3, made with R’s ggplot2"></p>
-<p><strong>Plot 4</strong>: Police killing boxplot, now log-transforming the murder rates using a log base 10 (easier interpretability) and “fixing” the Native American data points causing a misleading assumption in Plot 3, i.e., Native American death rates appeared much higher than others in Plot 3 given the fact that log(0) = 1. <br><strong>General takeaway</strong>: There were such few Native American data points that log-transforming all of the zeroes was unintentionally bastardizing the analysis. It would appear black people are almost an order of magnitude more likely to be killed by police than white people.<br><br> <img src="./images/Police_Killings_3_modified.png" class="img-fluid" alt="Police Killings, Plot 4, made with R’s ggplot2"></p>
-<p>I do not seek to answer questions of “why” systemic injustice exists in the US, but I wanted to analyze police killing data and share these dialectical investigations.</p>
-<p>Source:<br> * <a href="https://mappingpoliceviolence.org/">Samuel Sinyangwe &amp; the Mapping Police Violence team</a></p>
+<p><em>Disclaimer: Before we get to the good stuff below, please note that the views expressed below are mine alone and do not reflect the views of my employer.</em></p>
+<section id="hello-world" class="level2">
+<h2 class="anchored" data-anchor-id="hello-world">Hello, World!</h2>
+<p>If you’re reading this, I truly appreciate you connecting with me about work at <a href="https://www.centene.com/">Centene Corporation</a>. Whether you’re approaching the end of your education, looking to switch jobs, perhaps you’re desiring a mid-career pivot to “data science” (<em>something I did later in my career</em>)… It is never easy, it is uncomfortable and repetitive, and generally the whole process feels broken. I feel for you, and please know that I legitimately want to try to help you if I can.</p>
+</section>
+<section id="a-bit-about-centene" class="level2">
+<h2 class="anchored" data-anchor-id="a-bit-about-centene">A Bit About Centene</h2>
+<p><img src="./images/work_logo.png" class="img-fluid"></p>
+<p>Centene is a huge company. We have approximately 70,000 employees and provide healthcare insurance to 28 million members. We operate a bit like a portfolio management company, albeit, somewhat under the radar - By that I mean, despite Centene generating revenues of $145 billion (USD) in 2022 and landing us on the Fortune 25 list, “Centene” is not particularly a household name like other national health insurance companies such as Aetna, BlueCross BlueShield, Kaiser Permanente, or United Healthcare… This is largely by design and also because of the inorganic growth (via acquisitions) that Centene has made over the last 10 years.</p>
+<p>Centene operates its health plans at the State level and it is these brand names that have become household names in the respective communities they serve, e.g., Health Net (our California offering), Peach State Health Plan (our Georgia plan), Superior HealthPlan (our Texas plan), Fidelis (our New York plan), WellCare, Ambetter, etc.</p>
+<p>Centene is publicly traded, “managed care” health insurance carrier that primarily works with government-sponsored insurance products. The bulk of our members are on Medicaid (low-income households) and Medicare (65 and older). Managed care is a type of health insurance plan that aims to reduce costs while maintaining high quality of care. Managed care plans have contracts with medical facilities and health care providers to provide care for members at reduced costs.</p>
+</section>
+<section id="a-bit-about-data-science-at-centene" class="level2">
+<h2 class="anchored" data-anchor-id="a-bit-about-data-science-at-centene">A Bit About Data Science at Centene</h2>
+<p>As stated in the above section, we have almost 70,000 employees. While I work for Centene’s Data Science Center of Excellence (we call it the <em>Data Science &amp; AI Hub</em>), we make up a small fraction of the data science horsepower at Centene - There are Data Analysts, Data Scientists, Analytics Engineers, Machine Learning Engineers, Cloud Engineers, Statistical Programmers, Biostatisticians, Business Analysts, Actuaries and Finance professionals, and many other ad hoc teams that code or work in data science adjacent spaces.</p>
+<p>If you truly enjoy analytics, data science, machine learning, engineering, etc., you’ll <em>love</em> the stack that is at our disposal. On a regular basis, I get to work with GitLab (git repos and CI/CD), Jupyter Hub, VS Code (for Python), RStudio (for R), Databricks (for experimentation, training with Spark clusters, and model registy), Snowflake (data warehouse), Kubernetes (orchestration), AWS (storage), and those are just the tools that I regularly use. Some teams develop more on the Microsoft Azure stack, some are more focused on NLP / chat bots / web apps, some are more focused on GenAI + LLMs… LOTS of interesting things going on at Centene and I’d recommend this place to anybody who is driven and eager to learn/share new methods around data and ML/AI.</p>
+<p>I help plan meetups and workshops with Centene’s R User Group and we have 100-150 regular attendees from across the country. There are <em>many</em> more Python developers. There is a ton of collaboration but even then, I likely won’t know specifics of the role that you’re interested in. This leads me to my next section…</p>
+</section>
+<section id="help-me-help-you" class="level2">
+<h2 class="anchored" data-anchor-id="help-me-help-you">Help Me Help You</h2>
+<p>I receive about 1-5 LinkedIn messages per day asking if I can refer them to a Centene position. Unfortunately, I do not run a recruiting or hiring agency (although maybe I should 😅). That said, I do want to help you!</p>
+<p>Centene does not have a formal internal referral application system and puts the onus on the applicant. Feel free to use me as a referral on your online application. If the position you’ve applied to is in my org or for a close colleague’s team, I will certainly reach back out to you to discuss in more detail.</p>
+<p>It goes without saying but given the competitive landscape, it is in your best interest to revise your resume to highlight your skills and experiences in a way that addresses the requirements of the position you’re interested in.</p>
+<p>PLEASE follow the steps below and let me know if you have any questions or concerns:</p>
+<ol type="1">
+<li><p>Apply for the role you found on the Centene careers site and in the application form when it asks how you heard out about the role, use the drop-down to select “Employee Referral” and type in my full-name, “Javier Orraca-Deatcu”</p></li>
+<li><p>Once your application is submitted, forward your confirmation email to my work email at <a href="mailto:javier.orraca@centene.com">javier.orraca@centene.com</a></p>
+<ul>
+<li>Attach a copy of your resume</li>
+<li>Write a few sentences in that email explaining why you’re interested in the position you applied to and also what interests you about Centene (or healthcare in general)</li>
+<li>I want to be able to forward your email to Recruiting and the hiring team, and this will REALLY help me help you!</li>
+</ul></li>
+</ol>
+<p>Best of luck!</p>
 
 
+</section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

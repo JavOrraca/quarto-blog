@@ -18,7 +18,7 @@
     "href": "about.html#professional",
     "title": "About Me",
     "section": "Professional",
-    "text": "Professional\nMy career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. I use the R and Python programming languages on a daily basis but am much more advanced with my R work. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive analytics. I help bridge the gap between business needs and IT to develop and deploy automation solutions, predictive algorithms, and interactive web apps."
+    "text": "Professional\nMy career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. I use the R and Python programming languages on a daily basis but am much more advanced with my R work. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive analytics. I sit somewhere between the business stakeholder and cloud IT engineering to develop and deploy automation pipelines, predictive models, interactive web apps, and simulations."
   },
   {
     "objectID": "about.html#scatter-podcast",
@@ -28,25 +28,46 @@
     "text": "Scatter Podcast\nIn 2019, I launched Scatter Podcast to share career tips and insights from data science leaders for students, business managers, and professionals looking to pivot into data science. It was a fun and incredibly rewarding side project but after 30 episodes, I started to feel fatigued with the amount of time it took to plan, record, edit, market, etc. The podcast is on hold but not dead!"
   },
   {
-    "objectID": "about.html#programming-analytics-skills",
-    "href": "about.html#programming-analytics-skills",
+    "objectID": "about.html#data-science-associated-experiences",
+    "href": "about.html#data-science-associated-experiences",
     "title": "About Me",
-    "section": "Programming & Analytics Skills",
-    "text": "Programming & Analytics Skills\n\nR: tidyverse, tidymodels, Quarto, Shiny, Plotly, Leaflet, Prophet, xaringan, XGBoost, Ranger, and many more\nOther Analytics & Programming Platforms: Python, Jupyter Notebooks, h2o, GitLab / GitHub, RStudio Connect, AWS S3, AWS Redshift, Google Cloud Platform, BigQuery, SQL, Netlify\nMicrosoft: Expert-level Excel financial modeler with experiences including nested formulas, XLOOKUPs, Solver for optimization and simulations (yes… in Excel!), macros for psuedo-automated data manipulation, add-in integrations, and more"
+    "section": "Data Science & Associated Experiences",
+    "text": "Data Science & Associated Experiences\n\nR: tidyverse, tidymodels, Quarto, webR, XGBoost, Prophet, sparkr / sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, package developer for my orgs, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more\nDevOps + MLOps: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash\nData: Snowflake, Teradata, Apache Arrow, Apache Parquet, DuckDB, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery\nOther: Python (I’m objectively terrible but w/ ChatGPT I’ve been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (+ the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify"
   },
   {
     "objectID": "about.html#media-appearances",
     "href": "about.html#media-appearances",
     "title": "About Me",
     "section": "Media Appearances",
-    "text": "Media Appearances\n\nUC Irvine’s inaugural Latinx Initiative Conference (2021-10-15)\nData Points: Healthcare and Finance virtual conference hosted by Grid Dynamics (2021-06-09)\n\nWatch my presentation Healthcare Finance Beyond Excel: R for Automation, Time Series Forecasting, and Interactive Reporting\n\nScatter Podcast on UC Irvine News (2019-06-13)\nWinner of the Orange County Predictive Modeling Hackathon (2019-05-20)\nScatter Podcast mention on Forbes (2019-04-14)"
+    "text": "Media Appearances\n\nR Consortium interview on Empowering Healthcare with R: Javier Orraca-Deatcu’s Journey from Finance to Predictive Health Models (2023-09-25)\nSoCal RUG presentation on How to Build a Shiny App Demo as a Cover Letter Accessory (2023-03-21)\nPosit hosted me on their Data Science Hangout to discuss Excel to Data Science to Machine Learning Engineering (2022-12-08)\nUC Irvine’s inaugural Latinx Initiative Conference (2021-10-15)\nData Points: Healthcare and Finance virtual conference hosted by Grid Dynamics (2021-06-09)\n\nWatch my presentation Healthcare Finance Beyond Excel: R for Automation, Time Series Forecasting, and Interactive Reporting\n\nScatter Podcast on UC Irvine News (2019-06-13)\nWinner of the Orange County Predictive Modeling Hackathon (2019-05-20)\nScatter Podcast mention on Forbes (2019-04-14)"
   },
   {
-    "objectID": "posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html",
-    "href": "posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html",
-    "title": "Preparing for 2021 Goals with a Raspberry Pi",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "javier",
     "section": "",
-    "text": "Killing a few birds with one stone and getting ready for 2021… 1) Getting better at Linux / shell commands,  2) Learning Julia (see my Resources tab for some great Julia starter links!),  3) Doing it all on a Raspberry Pi 😜 Happy holidays and Happy New Years to all!\nBelow are some pics of my current progress.\n\n\n\nRaspberry Pi 4, Model B, 8GB RAM, & Super Cute Tiny Heat Sinks\n\n\n\n\n\nEnclosing the Pi 4 in a CanaKit case + fan\n\n\n\n\n\nRaspberry Pi OS, a Debian distro for the Pi\n\n\n\n\n\nJupyter Lab server on the Pi set up w/ Python, R, and Julia\n\n\n\n\n\nReuseCC BY 4.0"
+    "text": "I’m a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data… Life is good!"
+  },
+  {
+    "objectID": "index.html#programming",
+    "href": "index.html#programming",
+    "title": "javier",
+    "section": "Programming",
+    "text": "Programming\nI use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with Quarto). My daily toolkit also includes Python but I prefer R."
+  },
+  {
+    "objectID": "index.html#web-app-development",
+    "href": "index.html#web-app-development",
+    "title": "javier",
+    "section": "Web App Development",
+    "text": "Web App Development\nMy framework of choice for web app development is R + Shiny . With Shiny, I can build enterprise-grade UIs on top of Bootstrap 5 that can be infinitely styled with HTML, Sass, CSS, JavaScript, and more."
+  },
+  {
+    "objectID": "index.html#data-science-communities",
+    "href": "index.html#data-science-communities",
+    "title": "javier",
+    "section": "Data Science Communities",
+    "text": "Data Science Communities\nThere are a plethora of online and in-person data science communities to learn from and share your own experiences. Online communities for open-source languages and data science are incredibly welcoming and below are my favorites:\n\nSoCal R Users Group\nData Science Hangout\nR-Ladies Global\nThe Ravit Show"
   },
   {
     "objectID": "posts/2019-12-15-Java-Joy/2019-12-15-Java-Joy.html",
@@ -417,7 +438,7 @@
     "href": "posts/2023-08-23-webr-via-quarto-extensions/index.html",
     "title": "webR via Quarto Extensions",
     "section": "",
-    "text": "Imagine you’ve written a program in R. It’s simple and does exactly what you want but now, you wish to make it available for many people on the web, allowing them to run it within their web browsers. The challenge is that web browsers don’t natively understand R code.\n\nWebAssembly\nTraditionally, web browsers understand JavaScript as the primary language to run any dynamic operations. If you wanted to run code in a browser, you’d need to rewrite it in JavaScript. Re-writing code for every language to JavaScript is tedious and not efficient. This is where WebAssembly (or “wasm”) comes into play.\nWebAssembly introduces a new type of code that can be run in modern web browsers. It is designed as a low-level virtual machine that runs code at near-native speed. What’s fascinating about WebAssembly is that it isn’t written by hand; instead, other languages (like C, C++, Rust, Python, R, and more) can be compiled to WebAssembly.\nIn essence, WebAssembly allows you to take code from languages other than JavaScript, compile it into a format that the browser can understand, and then run it efficiently.\n\n\nwebR\nCompiling R to wasm was hypothetical even just a few years ago but is now possible via webR. Being able to run R functions within a web browser without the need for an R interpreter on the user’s end feels game changing.\nwebR is enabling R developers to bring their applications, algorithms, and visualizations to broader audiences via the web. R + wasm is definitely in the early stages of development and new use cases are being released daily by the data science and web development communities. For now, I’m just enjoying learning the basics and thinking about potential use cases.\n\n\nDemo\nFor the examples below, I’m running webR via a Quarto extension. I’m following James Balamuta’s documentation on GitHub to learn how to use his webR Code Extension for Quarto before I dive deeper into the internals of webR. I’m basically using a plug-and-play implementation of webR for Quarto 🚀. My goal is to start here and eventually use the raw webR framework for more robust applications.\nAnd so, enjoy some webr-enabled executable code chunks in a static Quarto doc!\n\n  🟡 Loading\n    webR...\n  \n    \n    \n      \n    \n  \n  \n  \n\n\n\n  🟡 Loading\n    webR...\n  \n    \n    \n      \n    \n  \n  \n  \n\n\n\n  🟡 Loading\n    webR...\n  \n    \n    \n      \n    \n  \n  \n  \n\n\n\n  🟡 Loading\n    webR...\n  \n    \n    \n      \n    \n  \n  \n  \n\n\nTHAT WAS FUN! Enjoy, and happy learning.\n\n\n\n\nReuseCC BY 4.0"
+    "text": "Imagine you’ve written a program in R. It’s simple and does exactly what you want but now, you wish to make it available for many people on the web, allowing them to run it within their web browsers. The challenge is that web browsers don’t natively understand R code.\n\nWebAssembly\nTraditionally, web browsers understand JavaScript as the primary language to run any dynamic operations. If you wanted to run code in a browser, you’d need to rewrite it in JavaScript. Re-writing code for every language to JavaScript is tedious and not efficient. This is where WebAssembly (or “wasm”) comes into play.\nWebAssembly introduces a new type of code that can be run in modern web browsers. It is designed as a low-level virtual machine that runs code at near-native speed. What’s fascinating about WebAssembly is that it isn’t written by hand; instead, other languages (like C, C++, Rust, Python, R, and more) can be compiled to WebAssembly.\nIn essence, WebAssembly allows you to take code from languages other than JavaScript, compile it into a format that the browser can understand, and then run it efficiently.\n\n\nwebR\nCompiling R to wasm was hypothetical even just a few years ago but is now possible via webR. Being able to run R functions within a web browser without the need for an R interpreter on the user’s end feels game changing.\nwebR is enabling R developers to bring their applications, algorithms, and visualizations to broader audiences via the web. R + wasm is definitely in the early stages of development and new use cases are being released daily by the data science and web development communities. For now, I’m just enjoying learning the basics and thinking about potential use cases.\n\n\nDemo\nFor the examples below, I’m running webR via a Quarto extension. I’m following James Balamuta’s documentation on GitHub to learn how to use his webR Code Extension for Quarto before I dive deeper into the internals of webR. I’m basically using a plug-and-play implementation of webR for Quarto 🚀. My goal is to start here and eventually use the raw webR framework for more robust applications.\nAnd so, enjoy some webr-enabled executable code chunks in a static Quarto doc!\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nTHAT WAS FUN! Enjoy, and happy learning.\n\n\n\n\nReuseCC BY 4.0"
   },
   {
     "objectID": "posts/2019-11-05-R-Shiny-Expert-Course/2019-11-05-R-Shiny-Expert-Course.html",
@@ -560,32 +581,46 @@
     "text": "This is quite the insightful read on the history of the dataframe. From its origins in the S programming language, to R, to the pandas library for Python (to the tibble for R!)… I couldn’t imagine doing my work without this fundamental data structure, but will it really be defined out of existence? See below link for an excellent overview by Devin Petersohn:\n\nSource:\n\nTowards Data Science: Preventing the Death of the Dataframe\npandas for Python\ntibble for R\n\n\n\n\nReuseCC BY 4.0"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "javier",
+    "objectID": "posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html",
+    "href": "posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html",
+    "title": "Preparing for 2021 Goals with a Raspberry Pi",
     "section": "",
-    "text": "I’m a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data… Life is good!"
+    "text": "Killing a few birds with one stone and getting ready for 2021… 1) Getting better at Linux / shell commands,  2) Learning Julia (see my Resources tab for some great Julia starter links!),  3) Doing it all on a Raspberry Pi 😜 Happy holidays and Happy New Years to all!\nBelow are some pics of my current progress.\n\n\n\nRaspberry Pi 4, Model B, 8GB RAM, & Super Cute Tiny Heat Sinks\n\n\n\n\n\nEnclosing the Pi 4 in a CanaKit case + fan\n\n\n\n\n\nRaspberry Pi OS, a Debian distro for the Pi\n\n\n\n\n\nJupyter Lab server on the Pi set up w/ Python, R, and Julia\n\n\n\n\n\nReuseCC BY 4.0"
   },
   {
-    "objectID": "index.html#programming",
-    "href": "index.html#programming",
-    "title": "javier",
-    "section": "Programming",
-    "text": "Programming\nI use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with Quarto). My daily toolkit also includes Python but I prefer R."
+    "objectID": "work_referral.html",
+    "href": "work_referral.html",
+    "title": "Read for Work Referrals",
+    "section": "",
+    "text": "Disclaimer: Before we get to the good stuff below, please note that the views expressed below are mine alone and do not reflect the views of my employer."
   },
   {
-    "objectID": "index.html#web-app-development",
-    "href": "index.html#web-app-development",
-    "title": "javier",
-    "section": "Web App Development",
-    "text": "Web App Development\nMy framework of choice for web app development is R + Shiny . With Shiny, I can build enterprise-grade UIs on top of Bootstrap 5 that can be infinitely styled with HTML, Sass, CSS, JavaScript, and more."
+    "objectID": "work_referral.html#hello-world",
+    "href": "work_referral.html#hello-world",
+    "title": "Read for Work Referrals",
+    "section": "Hello, World!",
+    "text": "Hello, World!\nIf you’re reading this, I truly appreciate you connecting with me about work at Centene Corporation. Whether you’re approaching the end of your education, looking to switch jobs, perhaps you’re desiring a mid-career pivot to “data science” (something I did later in my career)… It is never easy, it is uncomfortable and repetitive, and generally the whole process feels broken. I feel for you, and please know that I legitimately want to try to help you if I can."
   },
   {
-    "objectID": "index.html#data-science-communities",
-    "href": "index.html#data-science-communities",
-    "title": "javier",
-    "section": "Data Science Communities",
-    "text": "Data Science Communities\nThere are a plethora of online and in-person data science communities to learn from and share your own experiences. Online communities for open-source languages and data science are incredibly welcoming and below are my favorites:\n\nSoCal R Users Group\nData Science Hangout\nR-Ladies Global\nThe Ravit Show"
+    "objectID": "work_referral.html#a-bit-about-centene",
+    "href": "work_referral.html#a-bit-about-centene",
+    "title": "Read for Work Referrals",
+    "section": "A Bit About Centene",
+    "text": "A Bit About Centene\n\nCentene is a huge company. We have approximately 70,000 employees and provide healthcare insurance to 28 million members. We operate a bit like a portfolio management company, albeit, somewhat under the radar - By that I mean, despite Centene generating revenues of $145 billion (USD) in 2022 and landing us on the Fortune 25 list, “Centene” is not particularly a household name like other national health insurance companies such as Aetna, BlueCross BlueShield, Kaiser Permanente, or United Healthcare… This is largely by design and also because of the inorganic growth (via acquisitions) that Centene has made over the last 10 years.\nCentene operates its health plans at the State level and it is these brand names that have become household names in the respective communities they serve, e.g., Health Net (our California offering), Peach State Health Plan (our Georgia plan), Superior HealthPlan (our Texas plan), Fidelis (our New York plan), WellCare, Ambetter, etc.\nCentene is publicly traded, “managed care” health insurance carrier that primarily works with government-sponsored insurance products. The bulk of our members are on Medicaid (low-income households) and Medicare (65 and older). Managed care is a type of health insurance plan that aims to reduce costs while maintaining high quality of care. Managed care plans have contracts with medical facilities and health care providers to provide care for members at reduced costs."
+  },
+  {
+    "objectID": "work_referral.html#a-bit-about-data-science-at-centene",
+    "href": "work_referral.html#a-bit-about-data-science-at-centene",
+    "title": "Read for Work Referrals",
+    "section": "A Bit About Data Science at Centene",
+    "text": "A Bit About Data Science at Centene\nAs stated in the above section, we have almost 70,000 employees. While I work for Centene’s Data Science Center of Excellence (we call it the Data Science & AI Hub), we make up a small fraction of the data science horsepower at Centene - There are Data Analysts, Data Scientists, Analytics Engineers, Machine Learning Engineers, Cloud Engineers, Statistical Programmers, Biostatisticians, Business Analysts, Actuaries and Finance professionals, and many other ad hoc teams that code or work in data science adjacent spaces.\nIf you truly enjoy analytics, data science, machine learning, engineering, etc., you’ll love the stack that is at our disposal. On a regular basis, I get to work with GitLab (git repos and CI/CD), Jupyter Hub, VS Code (for Python), RStudio (for R), Databricks (for experimentation, training with Spark clusters, and model registy), Snowflake (data warehouse), Kubernetes (orchestration), AWS (storage), and those are just the tools that I regularly use. Some teams develop more on the Microsoft Azure stack, some are more focused on NLP / chat bots / web apps, some are more focused on GenAI + LLMs… LOTS of interesting things going on at Centene and I’d recommend this place to anybody who is driven and eager to learn/share new methods around data and ML/AI.\nI help plan meetups and workshops with Centene’s R User Group and we have 100-150 regular attendees from across the country. There are many more Python developers. There is a ton of collaboration but even then, I likely won’t know specifics of the role that you’re interested in. This leads me to my next section…"
+  },
+  {
+    "objectID": "work_referral.html#help-me-help-you",
+    "href": "work_referral.html#help-me-help-you",
+    "title": "Read for Work Referrals",
+    "section": "Help Me Help You",
+    "text": "Help Me Help You\nI receive about 1-5 LinkedIn messages per day asking if I can refer them to a Centene position. Unfortunately, I do not run a recruiting or hiring agency (although maybe I should 😅). That said, I do want to help you!\nCentene does not have a formal internal referral application system and puts the onus on the applicant. Feel free to use me as a referral on your online application. If the position you’ve applied to is in my org or for a close colleague’s team, I will certainly reach back out to you to discuss in more detail.\nIt goes without saying but given the competitive landscape, it is in your best interest to revise your resume to highlight your skills and experiences in a way that addresses the requirements of the position you’re interested in.\nPLEASE follow the steps below and let me know if you have any questions or concerns:\n\nApply for the role you found on the Centene careers site and in the application form when it asks how you heard out about the role, use the drop-down to select “Employee Referral” and type in my full-name, “Javier Orraca-Deatcu”\nOnce your application is submitted, forward your confirmation email to my work email at javier.orraca@centene.com\n\nAttach a copy of your resume\nWrite a few sentences in that email explaining why you’re interested in the position you applied to and also what interests you about Centene (or healthcare in general)\nI want to be able to forward your email to Recruiting and the hiring team, and this will REALLY help me help you!\n\n\nBest of luck!"
   },
   {
     "objectID": "resources.html",
