@@ -18,7 +18,7 @@
     "href": "about.html#professional",
     "title": "About Me",
     "section": "Professional",
-    "text": "Professional\nMy career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. I use the R and Python programming languages on a daily basis but am much more advanced with my R work. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive analytics. I sit somewhere between the business stakeholder and cloud IT engineering to develop and deploy automation pipelines, predictive models, interactive web apps, and simulations."
+    "text": "Professional\nMy career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&E, KPMG, Centene, and Bloomreach. I use the R and Python programming languages on a daily basis but am much more advanced with my R work. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive insights. I sit somewhere between the business stakeholder and cloud engineering to develop and deploy automation pipelines, predictive models, interactive web apps, and simulations."
   },
   {
     "objectID": "about.html#scatter-podcast",
@@ -28,18 +28,18 @@
     "text": "Scatter Podcast\nIn 2019, I launched Scatter Podcast to share career tips and insights from data science leaders for students, business managers, and professionals looking to pivot into data science. It was a fun and incredibly rewarding side project but after 30 episodes, I started to feel fatigued with the amount of time it took to plan, record, edit, market, etc. The podcast is on hold but not dead!"
   },
   {
-    "objectID": "about.html#data-science-associated-experiences",
-    "href": "about.html#data-science-associated-experiences",
+    "objectID": "about.html#data-science-mlops-toolkit",
+    "href": "about.html#data-science-mlops-toolkit",
     "title": "About Me",
-    "section": "Data Science & Associated Experiences",
-    "text": "Data Science & Associated Experiences\n\nR: tidyverse, tidymodels, Quarto, webR, XGBoost, Prophet, sparkr / sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, package developer for my orgs, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more\nDevOps + MLOps: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash\nData: Snowflake, Teradata, Apache Arrow, Apache Parquet, DuckDB, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery\nOther: Python (I’m objectively terrible but w/ ChatGPT I’ve been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (+ the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify"
+    "section": "Data Science & MLOps Toolkit",
+    "text": "Data Science & MLOps Toolkit\n\nR: tidyverse, tidymodels, Quarto, webR, XGBoost, Prophet, sparkr / sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, package development, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more\nDevOps + MLOps: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash\nData: Snowflake, Teradata, Apache Arrow, Apache Parquet, DuckDB, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery\nOther: Python (I’m objectively terrible but w/ ChatGPT I’ve been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (+ the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify"
   },
   {
-    "objectID": "about.html#media-appearances",
-    "href": "about.html#media-appearances",
+    "objectID": "about.html#media-presentations",
+    "href": "about.html#media-presentations",
     "title": "About Me",
-    "section": "Media Appearances",
-    "text": "Media Appearances\n\nR Consortium interview on Empowering Healthcare with R: Javier Orraca-Deatcu’s Journey from Finance to Predictive Health Models (2023-09-25)\nSoCal RUG presentation on How to Build a Shiny App Demo as a Cover Letter Accessory (2023-03-21)\nPosit hosted me on their Data Science Hangout to discuss Excel to Data Science to Machine Learning Engineering (2022-12-08)\nUC Irvine’s inaugural Latinx Initiative Conference (2021-10-15)\nData Points: Healthcare and Finance virtual conference hosted by Grid Dynamics (2021-06-09)\n\nWatch my presentation Healthcare Finance Beyond Excel: R for Automation, Time Series Forecasting, and Interactive Reporting\n\nScatter Podcast on UC Irvine News (2019-06-13)\nWinner of the Orange County Predictive Modeling Hackathon (2019-05-20)\nScatter Podcast mention on Forbes (2019-04-14)"
+    "section": "Media + Presentations",
+    "text": "Media + Presentations\n\n[2023-09-26] SoCal RUG presentation on Highlights from Posit’s 2023 Annual Conference\n[2023-09-25] R Consortium interview on Empowering Healthcare with R: Javier Orraca-Deatcu’s Journey from Finance to Predictive Health Models\n[2023-03-21] SoCal RUG presentation on How to Build a Shiny App Demo as a Cover Letter Accessory\n[2022-12-08] Posit hosted me on their Data Science Hangout to discuss Excel to Data Science to Machine Learning Engineering\n[2021-10-15] UC Irvine’s inaugural Latinx Initiative Conference\n[2021-06-09] Data Points: Healthcare and Finance virtual conference hosted by Grid Dynamics\n\nWatch my presentation Healthcare Finance Beyond Excel: R for Automation, Time Series Forecasting, and Interactive Reporting\n\n[2019-06-13] Scatter Podcast on UC Irvine News\n[2019-05-20] Winner of the Orange County Predictive Modeling Hackathon\n[2019-04-14] Scatter Podcast mention on Forbes"
   },
   {
     "objectID": "index.html",
@@ -53,7 +53,7 @@
     "href": "index.html#data-science-mlops",
     "title": "javier",
     "section": "Data Science & MLOps",
-    "text": "Data Science & MLOps\nI initially got into data science to augment my financial modeling experiences and naturally found myself developing time series regression models with tools like XGBoost, Prophet, TensorFlow, H2O, and more. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with R Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing models or experimenting with the RStudio IDE, git automation, Quarto, Databricks, tidymodels, Apache Arrow, and DuckDB."
+    "text": "Data Science & MLOps\nI initially got into data science to augment my financial modeling experiences and found myself developing time series regression models with XGBoost, Prophet, TensorFlow, H2O, and more. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with R Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing models or experimenting with the RStudio IDE, git automation, Quarto, Databricks, tidymodels, Apache Arrow, and DuckDB."
   },
   {
     "objectID": "index.html#languages",
