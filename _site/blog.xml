@@ -9,7 +9,7 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.4.540</generator>
+<generator>quarto-1.4.549</generator>
 <lastBuildDate>Thu, 23 Nov 2023 08:00:00 GMT</lastBuildDate>
 <item>
   <title>You Don’t Need OOP for Data Science</title>

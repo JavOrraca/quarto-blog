@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.540">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -250,7 +250,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"# review structure of the mtcars object\nstr(mtcars)","id":1,"options":{"context":"interactive"}},{"code":"# show column names\ncolnames(mtcars)","id":2,"options":{"context":"interactive"}},{"code":"# install and load dplyr (10-20s)\nwebr::install(\"dplyr\")\nlibrary(dplyr)","id":3,"options":{"context":"interactive"}},{"code":"# round up all numeric variables\nrounded_up_mtcars <- mtcars |> \n  mutate(across(where(is.numeric), \\(x) ceiling(x)))\n\n# re-review structure of newly munged object\nstr(rounded_up_mtcars)","id":4,"options":{"context":"interactive"}}];
+globalThis.qwebrCellDetails = [{"id":1,"code":"# review structure of the mtcars object\nstr(mtcars)","options":{"context":"interactive"}},{"id":2,"code":"# show column names\ncolnames(mtcars)","options":{"context":"interactive"}},{"id":3,"code":"# install and load dplyr (10-20s)\nwebr::install(\"dplyr\")\nlibrary(dplyr)","options":{"context":"interactive"}},{"id":4,"code":"# round up all numeric variables\nrounded_up_mtcars <- mtcars |> \n  mutate(across(where(is.numeric), \\(x) ceiling(x)))\n\n# re-review structure of newly munged object\nstr(rounded_up_mtcars)","options":{"context":"interactive"}}];
 
 </script>
 <script type="module">
@@ -1509,7 +1509,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      return note.innerHTML;
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
