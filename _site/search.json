@@ -60,7 +60,7 @@
     "href": "index.html#data-science-mlops",
     "title": "javier",
     "section": "Data Science & MLOps",
-    "text": "Data Science & MLOps\nInitially, I entered the “data science” space to expand my time-series forecasting skills and enjoyed building multivariate time-series regressions with XGBoost, Prophet, TensorFlow, H2O, GluonTS, and more. After joining a healthcare insurance company, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing or experimenting with GitLab, Posit tools, Databricks, Snowflake, Arrow, and DuckDB 🐤. Again, life is good!"
+    "text": "Data Science & MLOps\nInitially, I entered the “data science” space to expand my time-series forecasting skills and enjoyed building multivariate regression models with XGBoost, Prophet, TensorFlow, H2O, GluonTS, and more. After joining a healthcare insurance company, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing or experimenting with GitLab, Posit tools, Databricks, Snowflake, Arrow, and DuckDB 🐤. Again, life is good!"
   },
   {
     "objectID": "index.html#data-science-communities",
