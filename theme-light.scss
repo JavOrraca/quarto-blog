@@ -3,7 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat');
 
 /*-- scss:defaults --*/
+$navbar-bg: #853d25;
 $font-family-base: 'Montserrat', sans-serif;
+$success: #ed4e0d;
 
 // Custom Variables
 $retro: 'Handjet', cursive;
@@ -30,6 +32,7 @@ p.subtitle.lead {
 #webr-run-button-1.btn.btn-default.btn-webr,
 #webr-run-button-2.btn.btn-default.btn-webr,
 #webr-run-button-3.btn.btn-default.btn-webr,
-#webr-run-button-4.btn.btn-default.btn-webr{
-  background-color: #18bc9c;
+#webr-run-button-4.btn.btn-default.btn-webr,
+.termsfeed-com---palette-light .cc-nb-okagree {
+  background-color: #ed4e0d;
 }
