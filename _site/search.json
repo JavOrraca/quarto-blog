@@ -11,7 +11,7 @@
     "href": "about.html",
     "title": "About Me",
     "section": "",
-    "text": "Tulum, Quintana Roo, Mexico - The second happiest place on Earth, after Disneyland"
+    "text": "A fresh look brought to you by Generative AI"
   },
   {
     "objectID": "about.html#professional",
@@ -46,28 +46,28 @@
     "href": "index.html",
     "title": "javier",
     "section": "",
-    "text": "I’m a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data… Life is good!"
+    "text": "I’m a data scientist and machine learning engineer with experiences in financial modeling, analytics, and predictive modeling. For a living, I get to solve problems with data… Life is good!"
   },
   {
-    "objectID": "index.html#programming",
-    "href": "index.html#programming",
+    "objectID": "index.html#languages",
+    "href": "index.html#languages",
     "title": "javier",
-    "section": "Programming",
-    "text": "Programming\nI use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with Quarto). My daily toolkit also includes Python but I prefer R."
+    "section": "Languages",
+    "text": "Languages\nMy daily toolkit includes R, Python, and Bash, but my superpower is R. I use R to develop and deploy packages, web apps, ML/AI models, automation pipelines & workflows, and websites (this site was built with Quarto)."
   },
   {
-    "objectID": "index.html#web-app-development",
-    "href": "index.html#web-app-development",
+    "objectID": "index.html#data-science-mlops",
+    "href": "index.html#data-science-mlops",
     "title": "javier",
-    "section": "Web App Development",
-    "text": "Web App Development\nMy framework of choice for web app development is R + Shiny . With Shiny, I can build enterprise-grade UIs on top of Bootstrap 5 that can be infinitely styled with HTML, Sass, CSS, JavaScript, and more."
+    "section": "Data Science & MLOps",
+    "text": "Data Science & MLOps\nInitially, I entered the “data science” space to expand my time-series forecasting skills and enjoyed building multivariate time-series regressions with XGBoost, Prophet, TensorFlow, H2O, GluonTS, and more. After joining a healthcare insurance company, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing or experimenting with GitLab, Posit tools, Databricks, Snowflake, Arrow, and DuckDB 🐤. Again, life is good!"
   },
   {
     "objectID": "index.html#data-science-communities",
     "href": "index.html#data-science-communities",
     "title": "javier",
     "section": "Data Science Communities",
-    "text": "Data Science Communities\nThere are a plethora of online and in-person data science communities to learn from and share your own experiences. Online communities for open-source languages and data science are incredibly welcoming and below are my favorites:\n\nSoCal R Users Group\nData Science Hangout\nR-Ladies Global\nThe Ravit Show"
+    "text": "Data Science Communities\nThere are a plethora of online and in-person data science communities to learn from and share your own experiences. Online communities for open-source languages and data science are incredibly welcoming and below are my favorites:\n\nSoCal R Users Group\nData Science Hangout\nR-Ladies Global"
   },
   {
     "objectID": "posts/2019-12-15-Java-Joy/2019-12-15-Java-Joy.html",

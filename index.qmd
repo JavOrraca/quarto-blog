@@ -20,15 +20,15 @@ comments: false
 page-layout: full
 ---
 
-I'm a data scientist with experiences in financial modeling, analytics, and machine learning. For a living, I get to solve problems with data... **Life is good!**
+I'm a data scientist and machine learning engineer with experiences in financial modeling, analytics, and predictive modeling. For a living, I get to solve problems with data... **Life is good!**
 
-## Programming
+## Languages
 
-I use R to develop and deploy packages, web apps, automation pipelines, machine learning workflows, and websites (this site was built with [Quarto](https://quarto.org/)). My daily toolkit also includes Python but I prefer R.
+My daily toolkit includes R, Python, and Bash, but my superpower is R. I use R to develop and deploy packages, web apps, ML/AI models, automation pipelines & workflows, and websites (this site was built with [Quarto](https://quarto.org/)).
 
-## Web App Development
+## Data Science & MLOps
 
-My framework of choice for web app development is R + [Shiny](https://shiny.rstudio.com/) . With Shiny, I can build enterprise-grade UIs on top of [Bootstrap 5](https://getbootstrap.com/) that can be infinitely styled with HTML, [Sass](https://sass-lang.com/), CSS, JavaScript, and more.
+Initially, I entered the "data science" space to expand my time-series forecasting skills and enjoyed building multivariate time-series regressions with [XGBoost](https://xgboost.readthedocs.io/en/stable/), [Prophet](https://facebook.github.io/prophet/), [TensorFlow](https://www.tensorflow.org/tutorials/structured_data/time_series), [H2O](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html), [GluonTS](https://ts.gluon.ai/stable/), and more. After joining a healthcare insurance company, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with [Shiny](https://shiny.rstudio.com/). Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you'll likely find me developing or experimenting with GitLab, Posit tools, Databricks, Snowflake, Arrow, and DuckDB 🐤. Again, **life is good!**
 
 ## Data Science Communities
 
@@ -37,4 +37,3 @@ There are a plethora of online and in-person data science communities to learn f
 - [SoCal R Users Group](https://www.meetup.com/socal-rug/ "SoCal RUG meets on a monthly basis for online and in-person events")
 - [Data Science Hangout](https://www.rstudio.com/data-science-hangout/live-calls/ "Data Science Hangout hosted by RStudio's Rachael Dempsey, Thursdays at 12pm ET")
 - [R-Ladies Global](https://rladies.org/ "R-Ladies Is A World-Wide Organization To Promote Gender Diversity In The R Community")
-- [The Ravit Show](https://theravitshow.com/ "TRS, hosted by Ravit Jain, is a community for data science & AI practitioners")

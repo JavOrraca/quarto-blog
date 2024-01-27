@@ -4,7 +4,7 @@ comments: false
 title-block-banner: false
 ---
 
-![Tulum, Quintana Roo, Mexico - The second happiest place on Earth, after Disneyland](./images/Javier_Tulum.jpg)
+![A fresh look brought to you by Generative AI](./images/Javier_Wide.jpg)
 
 ## Professional
 
