@@ -53,14 +53,14 @@
     "href": "index.html#data-science-mlops",
     "title": "javier",
     "section": "Data Science & MLOps",
-    "text": "Data Science & MLOps\nI initially got into data science to expand my time series forecasting skill set, learn how to code, and build multivariate regression models with XGBoost, Prophet, TensorFlow, H2O, modeltime, and more. Shortly after pivoting to healthcare and insurance, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with R Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing models or experimenting with git automation, Posit enterprise tools, Databricks + MLFlow, Snowflake, Apache Arrow, and DuckDB. Again, life is good!"
+    "text": "Data Science & MLOps\nI initially got into data science to augment my financial modeling experiences and naturally found myself developing time series regression models with tools likeXGBoost, Prophet, TensorFlow, H2O, and more. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with R Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing models or experimenting with git automation, the RStudio IDE, Quarto, Databricks, tidymodels, Apache Arrow, DuckDB, and Snowflake."
   },
   {
     "objectID": "index.html#languages",
     "href": "index.html#languages",
     "title": "javier",
     "section": "Languages",
-    "text": "Languages\nMy daily toolkit includes R, Python, and Bash, but my superpower is R. I use R to develop and deploy packages, ML/AI models, automation pipelines & workflows, web apps, and websites (this site was built with R + Quarto)."
+    "text": "Languages\nMy daily toolkit includes R, Python, and Bash, but my preferred language is R. I use R to develop and deploy packages, ML/AI models, automation pipelines & workflows, web apps, and websites (this site was built with R + Quarto)."
   },
   {
     "objectID": "index.html#data-science-communities",
