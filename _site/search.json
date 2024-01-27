@@ -46,21 +46,21 @@
     "href": "index.html",
     "title": "javier",
     "section": "",
-    "text": "I’m a data scientist and machine learning engineer with experiences in financial modeling, analytics, and predictive modeling. For a living, I get to solve problems with data… Life is good!"
+    "text": "I’m a data scientist and machine learning engineer with experiences in financial modeling, analytics, interactive visualizations, and predictive modeling. For a living, I get to solve problems with data… Life is good!"
   },
   {
     "objectID": "index.html#data-science-mlops",
     "href": "index.html#data-science-mlops",
     "title": "javier",
     "section": "Data Science & MLOps",
-    "text": "Data Science & MLOps\nI initially got into data science to augment my financial modeling experiences and naturally found myself developing time series regression models with tools likeXGBoost, Prophet, TensorFlow, H2O, and more. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with R Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing models or experimenting with git automation, the RStudio IDE, Quarto, Databricks, tidymodels, Apache Arrow, DuckDB, and Snowflake."
+    "text": "Data Science & MLOps\nI initially got into data science to augment my financial modeling experiences and naturally found myself developing time series regression models with tools like XGBoost, Prophet, TensorFlow, H2O, and more. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with R Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing models or experimenting with the RStudio IDE, git automation, Quarto, Databricks, tidymodels, Apache Arrow, and DuckDB."
   },
   {
     "objectID": "index.html#languages",
     "href": "index.html#languages",
     "title": "javier",
     "section": "Languages",
-    "text": "Languages\nMy daily toolkit includes R, Python, and Bash, but my preferred language is R. I use R to develop and deploy packages, ML/AI models, automation pipelines & workflows, web apps, and websites (this site was built with R + Quarto)."
+    "text": "Languages\nMy daily toolkit includes R, SQL, Python, and Bash. My preferred go-to language is R as I can use it for a wide range of work including: package and ML/AI model development, data warehouse communication (via backend SQL executions), automation pipelines & workflows, web apps, and websites (for example, this site was built with R + Quarto)."
   },
   {
     "objectID": "index.html#data-science-communities",

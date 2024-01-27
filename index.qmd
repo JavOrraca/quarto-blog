@@ -20,15 +20,15 @@ comments: false
 page-layout: full
 ---
 
-I'm a data scientist and machine learning engineer with experiences in financial modeling, analytics, and predictive modeling. For a living, I get to solve problems with data... **Life is good!**
+I'm a data scientist and machine learning engineer with experiences in financial modeling, analytics, interactive visualizations, and predictive modeling. For a living, I get to solve problems with data... **Life is good!**
 
 ## Data Science & MLOps
 
-I initially got into data science to augment my financial modeling experiences and naturally found myself developing time series regression models with tools like[XGBoost](https://xgboost.readthedocs.io/en/stable/), [Prophet](https://facebook.github.io/prophet/), [TensorFlow](https://www.tensorflow.org/tutorials/structured_data/time_series), [H2O](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html), and more. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with R [Shiny](https://shiny.rstudio.com/). Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you'll likely find me developing models or experimenting with [git automation](https://docs.gitlab.com/ee/ci/), [the RStudio IDE](https://posit.co/downloads/), [Quarto](https://quarto.org/), [Databricks](https://www.databricks.com/), [tidymodels](https://www.tidymodels.org/), [Apache Arrow](https://arrow.apache.org/), [DuckDB](https://duckdb.org/), and [Snowflake](https://www.snowflake.com/en/).
+I initially got into data science to augment my financial modeling experiences and naturally found myself developing time series regression models with tools like [XGBoost](https://xgboost.readthedocs.io/en/stable/), [Prophet](https://facebook.github.io/prophet/), [TensorFlow](https://www.tensorflow.org/tutorials/structured_data/time_series), [H2O](https://docs.h2o.ai/h2o/latest-stable/h2o-docs/welcome.html), and more. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, aesthetically clean, enterprise-grade web apps with R [Shiny](https://shiny.rstudio.com/). Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you'll likely find me developing models or experimenting with [the RStudio IDE](https://posit.co/downloads/), git [automation](https://docs.gitlab.com/ee/ci/), [Quarto](https://quarto.org/), [Databricks](https://www.databricks.com/), [tidymodels](https://www.tidymodels.org/), [Apache Arrow](https://arrow.apache.org/), and [DuckDB](https://duckdb.org/).
 
 ## Languages
 
-My daily toolkit includes R, Python, and Bash, but my preferred language is R. I use R to develop and deploy packages, ML/AI models, automation pipelines & workflows, web apps, and websites (this site was built with R + [Quarto](https://quarto.org/)).
+My daily toolkit includes R, SQL, Python, and Bash. My preferred go-to language is R as I can use it for a wide range of work including: package and ML/AI model development, data warehouse communication (via backend SQL executions), automation pipelines & workflows, web apps, and websites (for example, this site was built with R + [Quarto](https://quarto.org/)).
 
 ## Data Science Communities
 
