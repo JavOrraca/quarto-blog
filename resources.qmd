@@ -27,6 +27,7 @@ R and Python are open-source programming languages for statistical computing and
 * [Regression and Other Studies](https://www.cambridge.org/core/books/regression-and-other-stories/DD20DD6C9057118581076E54E40C372C): Super applied textbook on advanced regression techniques, Bayesian inference, and causal inference
 * [Supervised Machine Learning for Text Analysis in R](https://smltar.com/): Written by two Posit software engineers, [Emil Hvitfeldt](https://emilhvitfeldt.com/) and [Julia Silge](https://juliasilge.com/), this book is a masterclass in natural language processing taking you from the basics of NLP to real-life applications including inference and prediction
 * [Tidy Finance with R](https://www.tidy-finance.org/r/): This is one of my favorite newer books covering complex financial modeling, valuation, and pricing and represents "an opinionated approach to empirical research in financial economics [with an] open-source code base in multiple programming languages"
+* [Feature Engineering A-Z](https://feaz-book.com/): A reference guide to nearly all feature engineering methods you will encounter with examples in R and Python
 
 ## R Packages
 
@@ -50,7 +51,7 @@ R and Python are open-source programming languages for statistical computing and
 
 * [The Quick Python Book (3e)](https://www.manning.com/books/the-quick-python-book-third-edition): This book by Naomi Ceder is a few years old now (2018) but it's the best end-to-end intro on Python that I've yet read taking you from basic classes / structures to function writing to working with modules
 * [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/): Introduction to the core libraries essential for working with data in Python
-* [Effective Pandas: Patterns for Data Manipulation](https://www.amazon.com/Effective-Pandas-Patterns-Manipulation-Treading/dp/B09MYXXSFM): Easy to follow tutorials, at your own pace, for mastering the popular Pandas library
+* [Effective Pandas 2: Opinionated Patterns for Data Manipulation](https://store.metasnake.com/effective-pandas-book): After a wildly successful 1st edition, Matt Harrison is back with the revised 2nd edition with easy to follow tutorials for mastering the popular Pandas library
 * [Tidy Finance with Python](https://www.tidy-finance.org/python/): This is one of my favorite newer books covering complex financial modeling, valuation, and pricing and represents "an opinionated approach to empirical research in financial economics [with an] open-source code base"
 
 ## Python Packages
