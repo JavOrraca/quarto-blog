@@ -53,14 +53,14 @@
     "href": "index.html#data-science-mlops",
     "title": "javier",
     "section": "Data Science & MLOps",
-    "text": "Data Science & MLOps\nI initially got into data science to advance my financial modeling skills and found myself developing time series forecasting models with XGBoost, Prophet, TensorFlow, H2O, etc. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, clean, enterprise-grade web apps with R Shiny. Today, I spend most of my time developing classification models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me developing or experimenting with the RStudio IDE, git automation, Quarto, Databricks, tidymodels, Apache Arrow, and DuckDB."
+    "text": "Data Science & MLOps\nI initially got into data science to advance my financial modeling skills and found myself developing time series forecasting models with frameworks and algorithms such as XGBoost, Prophet, TensorFlow, and H2O. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, clean, enterprise-grade web apps for my stakeholders using R + Shiny. Today, I spend most of my time developing and deploying ML models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me working with the RStudio IDE, git automation, Quarto, Databricks, tidymodels, Docker, Apache Arrow, and DuckDB."
   },
   {
     "objectID": "index.html#languages",
     "href": "index.html#languages",
     "title": "javier",
     "section": "Languages",
-    "text": "Languages\nMy daily toolkit includes R, SQL, Python, and Bash. My preferred language is R as I can use it for a wide range of work including package and ML/AI model development, communication with databases and data lakes, automation pipelines & workflows, web app development, and websites (for example, this site was built with R + Quarto)."
+    "text": "Languages\nMy daily languages includes R, Python, SQL, and Bash. My preferred language is R as I can use it for a wide range of work including package and ML/AI model development, communication with databases and data lakes, automation pipelines & workflows, web app development, and even website development (this site was built with R + Quarto)."
   },
   {
     "objectID": "index.html#data-science-communities",
