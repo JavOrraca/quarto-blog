@@ -10,7 +10,149 @@
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Thu, 23 Nov 2023 08:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 29 Apr 2024 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>ETL with Arrow &amp; DuckDB</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="ultra-fast-etl" class="level1">
+<h1>Ultra-Fast ETL</h1>
+<p>Two of my favorite data science tools in recent years include the advent of language agnostic, in-memory analytics frameworks like <a href="https://arrow.apache.org/">Apache Arrow</a> &amp; single-node in-process engines like <a href="https://duckdb.org/">DuckDB</a>. When paired with the <a href="https://parquet.apache.org/">Apache Parquet</a> columnar storage format to read, manipulate, analyze, and write data, these tools improve the R and Python experience in multiple ways:</p>
+<ul>
+<li>faster than dplyr (R) and pandas (Python)</li>
+<li>SQL-friendly larger than memory processing</li>
+<li>extremely portable (compile on all major systems)</li>
+<li>zero-copy integration between DuckDB and Arrow</li>
+</ul>
+</section>
+<section id="hackathon-talk" class="level1">
+<h1>Hackathon Talk</h1>
+<p>This past weekend, the <a href="https://www.meetup.com/socal-rug/">Southern California R Users Group</a> and UC Irvine hosted their annual hackathon. Given the larger data sets that we made available to the hackathon participants, I provided a talk on <a href="https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB"><em>ETL with Arrow &amp; DuckDB</em></a>.</p>
+<p>Traditionally, you’d be unable to load a data set larger than your available RAM into your R or Python development environment; Arrow and DuckDB help us get around this limitation. For example, my MacBook Air has 24GB RAM and with R + Arrow, I could read and begin analyzing a 1.1 billion row 40GB Parquet data set in 25 milliseconds!</p>
+<p><img src="https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/ArrowHackathonTalk.png" class="img-fluid"></p>
+</section>
+<section id="presentation-materials" class="level1">
+<h1>Presentation Materials</h1>
+<ul>
+<li>Slides: <a href="https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB">javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB</a></li>
+<li>Source: <a href="https://github.com/JavOrraca/UCI-2024-Hackathon-Workshop-Arrow-DuckDB">github.com/JavOrraca/UCI-2024-Hackathon-Workshop-Arrow-DuckDB</a></li>
+</ul>
+</section>
+<section id="installation-notes" class="level1">
+<h1>Installation Notes</h1>
+<p>To compile the full Arrow build with easy access to Amazon S3 and GCS, I’d recommend the following pattern for R and Python users:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Install full Arrow package w/ S3 and GCS support:</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Set required env vars</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.setenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"LIBARROW_MINIMAL"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.setenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ARROW_S3"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ON"</span>)</span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.setenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ARROW_GCS"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ON"</span>)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Install Arrow</span></span>
+<span id="cb1-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"arrow"</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Install full PyArrow w/ S3 and GCS support</span></span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Set required env vars</span></span>
+<span id="cb2-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb2-5">os.environ[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"LIBARROW_MINIMAL"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"FALSE"</span></span>
+<span id="cb2-6">os.environ[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ARROW_S3"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ON"</span></span>
+<span id="cb2-7">os.environ[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ARROW_GCS"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ON"</span></span>
+<span id="cb2-8"></span>
+<span id="cb2-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Install PyArrow</span></span>
+<span id="cb2-10"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>pip install pyarrow</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>dplyr</category>
+  <category>arrow</category>
+  <category>duckdb</category>
+  <category>duckplyr</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/</guid>
+  <pubDate>Mon, 29 Apr 2024 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/ArrowHackathonTalk.png" medium="image" type="image/png" height="75" width="144"/>
+</item>
 <item>
   <title>You Don’t Need OOP for Data Science</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -6093,34 +6235,6 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <guid>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</guid>
   <pubDate>Sun, 19 Apr 2020 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>D&amp;D Adventures + blogdown</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/2020-04-05-DnD-Adventures.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Wizards of the Coast have developed such an incredible tabletop, fantasy, RPG with the 5th edition of D&amp;D… I wish I would have re-discovered this game years back. For context, I haven’t touched D&amp;D since 1997!</p>
-<p>If you know of good resources for newbies and new D&amp;D Dungeon Masters (“DMs”), I’d love to know about your favorite resources. For data science folks out there, this site was built with R using <code>blogdown</code>, Hugo themes, and deployed for free using GitHub and Netlify.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/images/Dnd.png" class="img-fluid figure-img"></p>
-<figcaption>D&amp;D dragon looking for trouble</figcaption>
-</figure>
-</div>
-<p>Reference: <br> * Javier’s <a href="https://flamboyant-brahmagupta-3caca6.netlify.app/">D&amp;D Adventures</a></p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>rmarkdown</category>
-  <category>blogdown</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/2020-04-05-DnD-Adventures.html</guid>
-  <pubDate>Sun, 05 Apr 2020 07:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-05-DnD-Adventures/images/Dnd.png" medium="image" type="image/png" height="61" width="144"/>
 </item>
 </channel>
 </rss>

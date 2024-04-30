@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/2024-04-29-arrow-and-duckdb-talk/index.html",
       "/posts/2023-11-23-oop-with-r/index.html",
       "/posts/2023-08-23-webr-via-quarto-extensions/index.html",
       "/posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html",

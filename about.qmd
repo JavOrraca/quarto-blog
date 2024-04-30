@@ -26,6 +26,8 @@ In 2019, I launched [Scatter Podcast](https://soundcloud.com/scatterpodcast) to 
 
 ## Media + Presentations
 
+* [2024-04-27] UC Irvine hackathon talk on [ETL with Arrow & DuckDB](https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB/#/title-slide)
+
 * [2023-09-26] SoCal RUG presentation on [Highlights from Posit's 2023 Annual Conference](https://javorraca.github.io/posit-conf-2023-presentation)
 
 * [2023-09-25] R Consortium interview on [Empowering Healthcare with R: Javier Orraca-Deatcu’s Journey from Finance to Predictive Health Models](https://www.r-consortium.org/blog/2023/09/25/empowering-healthcare-with-r-javier-orraca-deatcus-journey-from-finance-to-predictive-health-models) 

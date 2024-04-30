@@ -1,0 +1,15 @@
+{
+  "hash": "ef7f23a5c6c5ddbd85e7579c51f70c05",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"ETL with Arrow & DuckDB\"\ndescription: \"Presentation materials from this weekend's SoCal RUG x UC Irvine hackathon️\"\ndate: 04-29-2024\ncategories: [dplyr, arrow, duckdb, duckplyr]\nimage: ArrowHackathonTalk.png\n---\n\n\n# Ultra-Fast ETL\n\nTwo of my favorite data science tools in recent years include the advent of language agnostic, in-memory analytics frameworks like [Apache Arrow](https://arrow.apache.org/) & single-node in-process engines like [DuckDB](https://duckdb.org/). When paired with the [Apache Parquet](https://parquet.apache.org/) columnar storage format to read, manipulate, analyze, and write data, these tools improve the R and Python experience in multiple ways:\n\n- faster than dplyr (R) and pandas (Python)\n- SQL-friendly larger than memory processing\n- extremely portable (compile on all major systems)\n- zero-copy integration between DuckDB and Arrow\n\n# Hackathon Talk\n\nThis past weekend, the [Southern California R Users Group](https://www.meetup.com/socal-rug/) and UC Irvine hosted their annual hackathon. Given the larger data sets that we made available to the hackathon participants, I provided a talk on [_ETL with Arrow & DuckDB_](https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB).\n\nTraditionally, you'd be unable to load a data set larger than your available RAM into your R or Python development environment; Arrow and DuckDB help us get around this limitation. For example, my MacBook Air has 24GB RAM and with R + Arrow, I could read and begin analyzing a 1.1 billion row 40GB Parquet data set in 25 milliseconds!\n\n![](ArrowHackathonTalk.png)\n\n# Presentation Materials\n\n- Slides: [javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB](https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB)\n- Source: [github.com/JavOrraca/UCI-2024-Hackathon-Workshop-Arrow-DuckDB](https://github.com/JavOrraca/UCI-2024-Hackathon-Workshop-Arrow-DuckDB)\n\n# Installation Notes\n\nTo compile the full Arrow build with easy access to Amazon S3 and GCS, I'd recommend the following pattern for R and Python users:\n\n::: {.panel-tabset}\n\n## R\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# Install full Arrow package w/ S3 and GCS support:\n\n# Set required env vars\nSys.setenv(\"LIBARROW_MINIMAL\" = FALSE)\nSys.setenv(\"ARROW_S3\" = \"ON\")\nSys.setenv(\"ARROW_GCS\" = \"ON\")\n\n# Install Arrow\ninstall.packages(\"arrow\")\n```\n:::\n\n\n## Python\n\n\n::: {.cell}\n\n```{.python .cell-code}\n# Install full PyArrow w/ S3 and GCS support\n\n# Set required env vars\nimport os\nos.environ[\"LIBARROW_MINIMAL\"] = \"FALSE\"\nos.environ[\"ARROW_S3\"] = \"ON\"\nos.environ[\"ARROW_GCS\"] = \"ON\"\n\n# Install PyArrow\n!pip install pyarrow\n```\n:::\n\n\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

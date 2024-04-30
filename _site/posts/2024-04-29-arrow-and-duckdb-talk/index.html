@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Javier Orraca-Deatcu">
+<meta name="dcterms.date" content="2024-04-29">
+<meta name="description" content="Presentation materials from this weekend’s SoCal RUG x UC Irvine hackathon️">
 
-<title>Data Science Bytes - About Me</title>
+<title>Data Science Bytes - ETL with Arrow &amp; DuckDB</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,29 +23,63 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -99,24 +136,29 @@ cookieconsent.run({
   
 
 
-<meta property="og:title" content="Data Science Bytes - About Me">
-<meta property="og:description" content="Javier Orraca-Deatcu’s data science website built with R and Quarto">
+<meta property="og:title" content="Data Science Bytes - ETL with Arrow &amp; DuckDB">
+<meta property="og:description" content="Presentation materials from this weekend’s SoCal RUG x UC Irvine hackathon️">
+<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/ArrowHackathonTalk.png">
 <meta property="og:site_name" content="Data Science Bytes">
-<meta name="twitter:title" content="Data Science Bytes - About Me">
-<meta name="twitter:description" content="Javier Orraca-Deatcu’s data science website built with R and Quarto">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/images/Javier_Profile.jpg">
+<meta property="og:image:height" content="1640">
+<meta property="og:image:width" content="3154">
+<meta name="twitter:title" content="Data Science Bytes - ETL with Arrow &amp; DuckDB">
+<meta name="twitter:description" content="Presentation materials from this weekend’s SoCal RUG x UC Irvine hackathon️">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/ArrowHackathonTalk.png">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1640">
+<meta name="twitter:image-width" content="3154">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Data Science Bytes</span>
     </a>
   </div>
@@ -127,7 +169,7 @@ cookieconsent.run({
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="./blog.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../blog.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -157,7 +199,7 @@ cookieconsent.run({
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -166,7 +208,7 @@ cookieconsent.run({
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
         <li>
-    <a class="dropdown-item" href="./resources.html">
+    <a class="dropdown-item" href="../../resources.html">
  <span class="dropdown-text">Javi’s Resources</span></a>
   </li>  
         <li>
@@ -188,7 +230,7 @@ cookieconsent.run({
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="./about.html" aria-current="page"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -202,21 +244,67 @@ cookieconsent.run({
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#ultra-fast-etl" id="toc-ultra-fast-etl" class="nav-link active" data-scroll-target="#ultra-fast-etl">Ultra-Fast ETL</a></li>
+  <li><a href="#hackathon-talk" id="toc-hackathon-talk" class="nav-link" data-scroll-target="#hackathon-talk">Hackathon Talk</a></li>
+  <li><a href="#presentation-materials" id="toc-presentation-materials" class="nav-link" data-scroll-target="#presentation-materials">Presentation Materials</a></li>
+  <li><a href="#installation-notes" id="toc-installation-notes" class="nav-link" data-scroll-target="#installation-notes">Installation Notes</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About Me</h1>
+<h1 class="title">ETL with Arrow &amp; DuckDB</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">dplyr</div>
+    <div class="quarto-category">arrow</div>
+    <div class="quarto-category">duckdb</div>
+    <div class="quarto-category">duckplyr</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Presentation materials from this weekend’s SoCal RUG x UC Irvine hackathon️
+  </div>
 </div>
 
-
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author"><a href="https://www.javierorracadeatcu.com/">Javier Orraca-Deatcu</a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://soundcloud.com/scatterpodcast">
+            Scatter Podcast
+            </a>
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 29, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -226,51 +314,69 @@ cookieconsent.run({
 </header>
 
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/Javier_Wide.jpg" class="img-fluid figure-img"></p>
-<figcaption>A fresh look brought to you by Generative AI</figcaption>
-</figure>
+<section id="ultra-fast-etl" class="level1">
+<h1>Ultra-Fast ETL</h1>
+<p>Two of my favorite data science tools in recent years include the advent of language agnostic, in-memory analytics frameworks like <a href="https://arrow.apache.org/">Apache Arrow</a> &amp; single-node in-process engines like <a href="https://duckdb.org/">DuckDB</a>. When paired with the <a href="https://parquet.apache.org/">Apache Parquet</a> columnar storage format to read, manipulate, analyze, and write data, these tools improve the R and Python experience in multiple ways:</p>
+<ul>
+<li>faster than dplyr (R) and pandas (Python)</li>
+<li>SQL-friendly larger than memory processing</li>
+<li>extremely portable (compile on all major systems)</li>
+<li>zero-copy integration between DuckDB and Arrow</li>
+</ul>
+</section>
+<section id="hackathon-talk" class="level1">
+<h1>Hackathon Talk</h1>
+<p>This past weekend, the <a href="https://www.meetup.com/socal-rug/">Southern California R Users Group</a> and UC Irvine hosted their annual hackathon. Given the larger data sets that we made available to the hackathon participants, I provided a talk on <a href="https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB"><em>ETL with Arrow &amp; DuckDB</em></a>.</p>
+<p>Traditionally, you’d be unable to load a data set larger than your available RAM into your R or Python development environment; Arrow and DuckDB help us get around this limitation. For example, my MacBook Air has 24GB RAM and with R + Arrow, I could read and begin analyzing a 1.1 billion row 40GB Parquet data set in 25 milliseconds!</p>
+<p><img src="ArrowHackathonTalk.png" class="img-fluid"></p>
+</section>
+<section id="presentation-materials" class="level1">
+<h1>Presentation Materials</h1>
+<ul>
+<li>Slides: <a href="https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB">javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB</a></li>
+<li>Source: <a href="https://github.com/JavOrraca/UCI-2024-Hackathon-Workshop-Arrow-DuckDB">github.com/JavOrraca/UCI-2024-Hackathon-Workshop-Arrow-DuckDB</a></li>
+</ul>
+</section>
+<section id="installation-notes" class="level1">
+<h1>Installation Notes</h1>
+<p>To compile the full Arrow build with easy access to Amazon S3 and GCS, I’d recommend the following pattern for R and Python users:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install full Arrow package w/ S3 and GCS support:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set required env vars</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="st">"LIBARROW_MINIMAL"</span> <span class="ot">=</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="st">"ARROW_S3"</span> <span class="ot">=</span> <span class="st">"ON"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="st">"ARROW_GCS"</span> <span class="ot">=</span> <span class="st">"ON"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Arrow</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"arrow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="professional" class="level2">
-<h2 class="anchored" data-anchor-id="professional">Professional</h2>
-<p>My career includes over 15 years of data science, financial strategy, and business analytics for EY, PG&amp;E, KPMG, Centene, and Bloomreach. I use the R and Python programming languages on a daily basis but am much more advanced with my R work. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive insights. I sit somewhere between the business stakeholder and cloud engineering to develop and deploy automation pipelines, predictive models, interactive web apps, and simulations.</p>
-</section>
-<section id="scatter-podcast" class="level2">
-<h2 class="anchored" data-anchor-id="scatter-podcast">Scatter Podcast</h2>
-<p>In 2019, I launched <a href="https://soundcloud.com/scatterpodcast">Scatter Podcast</a> to share career tips and insights from data science leaders for students, business managers, and professionals looking to pivot into data science. It was a fun and incredibly rewarding side project but after 30 episodes, I started to feel fatigued with the amount of time it took to plan, record, edit, market, etc. The podcast is on hold <em>but not dead!</em></p>
-</section>
-<section id="data-science-mlops-toolkit" class="level2">
-<h2 class="anchored" data-anchor-id="data-science-mlops-toolkit">Data Science &amp; MLOps Toolkit</h2>
-<ul>
-<li><p><strong>R</strong>: tidyverse, tidymodels, Quarto, webR, XGBoost, Prophet, sparkr / sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, package development, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more</p></li>
-<li><p><strong>DevOps + MLOps</strong>: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash</p></li>
-<li><p><strong>Data</strong>: Snowflake, Teradata, Apache Arrow, Apache Parquet, DuckDB, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery</p></li>
-<li><p><strong>Other</strong>: Python (I’m objectively terrible but w/ ChatGPT I’ve been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (+ the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify</p></li>
-</ul>
-</section>
-<section id="media-presentations" class="level2">
-<h2 class="anchored" data-anchor-id="media-presentations">Media + Presentations</h2>
-<ul>
-<li><p>[2024-04-27] UC Irvine hackathon talk on <a href="https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB/#/title-slide">ETL with Arrow &amp; DuckDB</a></p></li>
-<li><p>[2023-09-26] SoCal RUG presentation on <a href="https://javorraca.github.io/posit-conf-2023-presentation">Highlights from Posit’s 2023 Annual Conference</a></p></li>
-<li><p>[2023-09-25] R Consortium interview on <a href="https://www.r-consortium.org/blog/2023/09/25/empowering-healthcare-with-r-javier-orraca-deatcus-journey-from-finance-to-predictive-health-models">Empowering Healthcare with R: Javier Orraca-Deatcu’s Journey from Finance to Predictive Health Models</a></p></li>
-<li><p>[2023-03-21] SoCal RUG presentation on <a href="https://www.youtube.com/watch?v=lNn4beRxnbk&amp;t=2321s&amp;ab_channel=SouthernCaliforniaRUsersGroup">How to Build a Shiny App Demo as a Cover Letter Accessory</a></p></li>
-<li><p>[2022-12-08] Posit hosted me on their <em>Data Science Hangout</em> to discuss <a href="https://www.youtube.com/watch?v=-mm5tHQVPY8&amp;t=2858s&amp;ab_channel=PositPBC">Excel to Data Science to Machine Learning Engineering</a></p></li>
-<li><p>[2021-10-15] UC Irvine’s inaugural <a href="https://merage.uci.edu/events/2021/10/2021-lxi-conference.html">Latinx Initiative Conference</a></p></li>
-<li><p>[2021-06-09] <a href="https://datapoints.griddynamics.com/events/data-points-virtual-summit-healthcare-finance-06-09-2021/">Data Points: Healthcare and Finance</a> virtual conference hosted by Grid Dynamics</p>
-<ul>
-<li>Watch my presentation <a href="https://youtu.be/LMaPvd4qMQk">Healthcare Finance Beyond Excel: R for Automation, Time Series Forecasting, and Interactive Reporting</a></li>
-</ul></li>
-<li><p>[2019-06-13] Scatter Podcast on <a href="https://merage.uci.edu/news/2019/06/podcast-launched-by-merage-student-navigates-complex-field-of-data-analytics-and-science.html">UC Irvine News</a></p></li>
-<li><p>[2019-05-20] Winner of the <a href="https://twitter.com/oc_rug/status/1130553620456300544?s=20">Orange County Predictive Modeling Hackathon</a></p></li>
-<li><p>[2019-04-14] Scatter Podcast mention on <a href="https://forbes.com/sites/louiscolumbus/2019/04/14/how-to-get-your-data-scientist-career-started">Forbes</a></p></li>
-</ul>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install full PyArrow w/ S3 and GCS support</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set required env vars</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"LIBARROW_MINIMAL"</span>] <span class="op">=</span> <span class="st">"FALSE"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"ARROW_S3"</span>] <span class="op">=</span> <span class="st">"ON"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"ARROW_GCS"</span>] <span class="op">=</span> <span class="st">"ON"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Install PyArrow</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install pyarrow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
