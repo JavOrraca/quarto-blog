@@ -9,7 +9,7 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.4.549</generator>
+<generator>quarto-1.4.554</generator>
 <lastBuildDate>Mon, 29 Apr 2024 07:00:00 GMT</lastBuildDate>
 <item>
   <title>ETL with Arrow &amp; DuckDB</title>
@@ -60,40 +60,38 @@ background-color: null;
 font-style: inherit;"># Set required env vars</span></span>
 <span id="cb1-4"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">Sys.setenv</span>(<span class="st" style="color: #20794D;
+font-style: inherit;">Sys.setenv</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">"LIBARROW_MINIMAL"</span> <span class="ot" style="color: #003B4F;
+font-style: inherit;">LIBARROW_MINIMAL =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">FALSE</span>)</span>
+font-style: inherit;">"false"</span>)</span>
 <span id="cb1-5"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">Sys.setenv</span>(<span class="st" style="color: #20794D;
+font-style: inherit;">Sys.setenv</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">"ARROW_S3"</span> <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+font-style: inherit;">ARROW_S3 =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"ON"</span>)</span>
 <span id="cb1-6"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">Sys.setenv</span>(<span class="st" style="color: #20794D;
+font-style: inherit;">Sys.setenv</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">"ARROW_GCS"</span> <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+font-style: inherit;">ARROW_GCS =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"ON"</span>)</span>
 <span id="cb1-7"></span>
 <span id="cb1-8"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># Install Arrow</span></span>
+font-style: inherit;"># Download &amp; Install Arrow</span></span>
 <span id="cb1-9"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"arrow"</span>)</span></code></pre></div>
+font-style: inherit;">'arrow'</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">repos =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://apache.r-universe.dev'</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">

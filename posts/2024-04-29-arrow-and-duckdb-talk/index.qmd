@@ -41,12 +41,12 @@ To compile the full Arrow build with easy access to Amazon S3 and GCS, I'd recom
 # Install full Arrow package w/ S3 and GCS support:
 
 # Set required env vars
-Sys.setenv("LIBARROW_MINIMAL" = FALSE)
-Sys.setenv("ARROW_S3" = "ON")
-Sys.setenv("ARROW_GCS" = "ON")
+Sys.setenv(LIBARROW_MINIMAL = "false")
+Sys.setenv(ARROW_S3 = "ON")
+Sys.setenv(ARROW_GCS = "ON")
 
-# Install Arrow
-install.packages("arrow")
+# Download & Install Arrow
+install.packages('arrow', repos = 'https://apache.r-universe.dev')
 ```
 
 ## Python
