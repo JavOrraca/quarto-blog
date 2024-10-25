@@ -16,13 +16,13 @@ In 2019, I launched [Scatter Podcast](https://soundcloud.com/scatterpodcast) to 
 
 ## Data Science & MLOps Toolkit
 
-- **R**: tidyverse, tidymodels, Quarto, webR, XGBoost, Prophet, sparkr / sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, package development, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more
+- **R**: tidyverse, tidymodels, Quarto, XGBoost, Prophet, sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, webR, devtools, usethis, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more
 
 - **DevOps + MLOps**: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash
 
-- **Data**: Snowflake, Teradata, Apache Arrow, Apache Parquet, DuckDB, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery
+- **Data**: Snowflake, Teradata, Databricks Unity Catalog, Apache Arrow, Apache Parquet, DuckDB, Polars, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery
 
-- **Other**: Python (I'm objectively terrible but w/ ChatGPT I've been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (+ the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify
+- **Other**: Python (I'm objectively terrible but w/ llama3.1, I've been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (& the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify
 
 ## Media + Presentations
 

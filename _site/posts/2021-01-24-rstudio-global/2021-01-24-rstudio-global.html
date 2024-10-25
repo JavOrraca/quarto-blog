@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2021-01-24">
 <meta name="description" content="RStudio’s annual conference saw roughly 17,000 attendees for their first global, all-virtual, 24-hour event. I attended several sessions throughout the day and I’ll highlight my favorite data bytes learned that day. I’ll also share relatable content for better modeling with R.">
 
-<title>Data Science Bytes - rstudio::global tips, tricks, and more</title>
+<title>rstudio::global tips, tricks, and more – Data Science Bytes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -136,11 +136,11 @@ cookieconsent.run({
   
 
 
-<meta property="og:title" content="Data Science Bytes - rstudio::global tips, tricks, and more">
+<meta property="og:title" content="rstudio::global tips, tricks, and more – Data Science Bytes">
 <meta property="og:description" content="RStudio’s annual conference saw roughly 17,000 attendees for their first global, all-virtual, 24-hour event. I attended several sessions throughout the day and I’ll highlight my favorite data bytes learned that day. I’ll also share relatable content for better modeling with R.">
 <meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/rstudio-global-2021.jpg">
 <meta property="og:site_name" content="Data Science Bytes">
-<meta name="twitter:title" content="Data Science Bytes - rstudio::global tips, tricks, and more">
+<meta name="twitter:title" content="rstudio::global tips, tricks, and more – Data Science Bytes">
 <meta name="twitter:description" content="RStudio’s annual conference saw roughly 17,000 attendees for their first global, all-virtual, 24-hour event. I attended several sessions throughout the day and I’ll highlight my favorite data bytes learned that day. I’ll also share relatable content for better modeling with R.">
 <meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/images/rstudio-global-2021.jpg">
 <meta name="twitter:creator" content="@JavierOrraca">
@@ -159,7 +159,7 @@ cookieconsent.run({
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -175,7 +175,7 @@ cookieconsent.run({
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/JavierOrraca" target="_blank"> <i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://x.com/JavierOrraca" target="_blank"> <i class="bi bi-twitter-x" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -199,7 +199,7 @@ cookieconsent.run({
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Resources</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
@@ -231,7 +231,7 @@ cookieconsent.run({
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
@@ -266,7 +266,7 @@ cookieconsent.run({
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -324,7 +324,7 @@ cookieconsent.run({
 <h1>Fostering Positive Thinking</h1>
 <p>The opening keynote presentation with RStudio’s Chief Data Scientist, Hadley Wickham, was super refreshing and very encouraging to hear. In short, Wickham encouraged analysts and data scientists to change the way you approach challenges when programming or maintaining code.</p>
 <p>Below are several reminders that Wickham discussed… If you’re your harshest critic, revisit these. I know that I will:</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
@@ -714,18 +714,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -757,7 +746,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/www\.javierorracadeatcu\.com");
@@ -765,7 +776,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

@@ -32,7 +32,7 @@
     "href": "about.html#data-science-mlops-toolkit",
     "title": "About Me",
     "section": "Data Science & MLOps Toolkit",
-    "text": "Data Science & MLOps Toolkit\n\nR: tidyverse, tidymodels, Quarto, webR, XGBoost, Prophet, sparkr / sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, package development, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more\nDevOps + MLOps: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash\nData: Snowflake, Teradata, Apache Arrow, Apache Parquet, DuckDB, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery\nOther: Python (I’m objectively terrible but w/ ChatGPT I’ve been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (+ the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify"
+    "text": "Data Science & MLOps Toolkit\n\nR: tidyverse, tidymodels, Quarto, XGBoost, Prophet, sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, webR, devtools, usethis, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more\nDevOps + MLOps: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash\nData: Snowflake, Teradata, Databricks Unity Catalog, Apache Arrow, Apache Parquet, DuckDB, Polars, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery\nOther: Python (I’m objectively terrible but w/ llama3.1, I’ve been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (& the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify"
   },
   {
     "objectID": "about.html#media-presentations",
@@ -53,14 +53,14 @@
     "href": "index.html#data-science-mlops",
     "title": "javier",
     "section": "Data Science & MLOps",
-    "text": "Data Science & MLOps\nI initially got into data science to advance my financial modeling skills and found myself developing time series forecasting models with frameworks and algorithms like XGBoost, Prophet, TensorFlow, and H2O. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, enterprise-grade Shiny web apps. Today, I spend most of my time developing and deploying ML models that improve healthcare quality for over 25 million individuals. On any given day, you’ll likely find me working with the RStudio IDE, git automation, Quarto, Databricks, tidymodels, Docker, Apache Arrow, and DuckDB."
+    "text": "Data Science & MLOps\nI initially got into data science to advance my financial modeling skills and found myself developing time series forecasting models with algorithms like XGBoost and Prophet. Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, enterprise-grade Shiny web apps.\nToday, I lead machine learning initiatives that enhance healthcare quality and customer experience for over 25 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, and equip our data professionals with tutorials and technical documentation.\nOn any given day, you’ll find me working with the RStudio IDE, Databricks, Posit Connect, JupyterHub, Docker, tidymodels, Arrow, DuckDB, and more."
   },
   {
     "objectID": "index.html#languages",
     "href": "index.html#languages",
     "title": "javier",
     "section": "Languages",
-    "text": "Languages\nMy daily languages include R, Python, SQL, and Bash, but my preferred language is R. I use R for a wide range of work including package and ML/AI model development, communication with databases and data lakes, automation pipelines & workflows, web app development, and website development (for example, this website was built with R + Quarto)."
+    "text": "Languages\nMy daily languages include R, Python, SQL, and Bash, but my preferred language is R. I use R for a wide range of work including ML/AI model development, package creation, communication with data warehouses and REST APIs, automation pipelines, interactive apps, and websites (for example, this site was built with R + Quarto)."
   },
   {
     "objectID": "index.html#data-science-communities",
