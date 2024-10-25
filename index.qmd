@@ -26,7 +26,7 @@ I'm a data scientist and machine learning engineer with experiences in financial
 
 I initially got into data science to advance my financial modeling skills and found myself developing time series forecasting models with algorithms like [XGBoost](https://xgboost.readthedocs.io/en/stable/) and [Prophet](https://facebook.github.io/prophet/). Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, enterprise-grade [Shiny](https://shiny.rstudio.com/) web apps.
 
-Today, I lead machine learning initiatives that enhance healthcare quality and customer experience for over 25 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, and equip our data professionals with tutorials and technical documentation.
+Today, I lead machine learning initiatives that enhance healthcare quality and customer experience for over 28 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, and equip our data professionals with tutorials and technical documentation.
 
 On any given day, you'll find me working with the [RStudio IDE](https://posit.co/downloads/), [Databricks](https://www.databricks.com/), [Posit Connect](https://posit.co/products/enterprise/connect/), [JupyterHub](https://jupyter.org/hub), [Docker](https://www.docker.com/), [tidymodels](https://www.tidymodels.org/), [Arrow](https://arrow.apache.org/), [DuckDB](https://duckdb.org/), and more.
 
