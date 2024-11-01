@@ -46,6 +46,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -250,7 +251,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"# review structure of the mtcars object\nstr(mtcars)","options":{"context":"interactive"},"id":1},{"code":"# show column names\ncolnames(mtcars)","options":{"context":"interactive"},"id":2},{"code":"# install and load dplyr (10-20s)\nwebr::install(\"dplyr\")\nlibrary(dplyr)","options":{"context":"interactive"},"id":3},{"code":"# round up all numeric variables\nrounded_up_mtcars <- mtcars |> \n  mutate(across(where(is.numeric), \\(x) ceiling(x)))\n\n# re-review structure of newly munged object\nstr(rounded_up_mtcars)","options":{"context":"interactive"},"id":4}];
+globalThis.qwebrCellDetails = [{"options":{"context":"interactive"},"id":1,"code":"# review structure of the mtcars object\nstr(mtcars)"},{"options":{"context":"interactive"},"id":2,"code":"# show column names\ncolnames(mtcars)"},{"options":{"context":"interactive"},"id":3,"code":"# install and load dplyr (10-20s)\nwebr::install(\"dplyr\")\nlibrary(dplyr)"},{"options":{"context":"interactive"},"id":4,"code":"# round up all numeric variables\nrounded_up_mtcars <- mtcars |> \n  mutate(across(where(is.numeric), \\(x) ceiling(x)))\n\n# re-review structure of newly munged object\nstr(rounded_up_mtcars)"}];
 
 </script>
 <script type="module">
@@ -883,6 +884,10 @@ globalThis.qwebrExecuteCode = async function (
     <a class="nav-link" href="https://www.linkedin.com/in/orraca" target="_blank"> <i class="bi bi-linkedin" role="img">
 </i> 
 <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bsky.app/profile/javierorracadeatcu.bsky.social" target="_blank"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa6-brands:bluesky" aria-label="Icon bluesky from fa6-brands Iconify.design set." title="Icon bluesky from fa6-brands Iconify.design set."></iconify-icon></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://x.com/JavierOrraca" target="_blank"> <i class="bi bi-twitter-x" role="img">
