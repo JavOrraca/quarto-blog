@@ -251,7 +251,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"context":"interactive"},"id":1,"code":"# review structure of the mtcars object\nstr(mtcars)"},{"options":{"context":"interactive"},"id":2,"code":"# show column names\ncolnames(mtcars)"},{"options":{"context":"interactive"},"id":3,"code":"# install and load dplyr (10-20s)\nwebr::install(\"dplyr\")\nlibrary(dplyr)"},{"options":{"context":"interactive"},"id":4,"code":"# round up all numeric variables\nrounded_up_mtcars <- mtcars |> \n  mutate(across(where(is.numeric), \\(x) ceiling(x)))\n\n# re-review structure of newly munged object\nstr(rounded_up_mtcars)"}];
+globalThis.qwebrCellDetails = [{"code":"# review structure of the mtcars object\nstr(mtcars)","id":1,"options":{"context":"interactive"}},{"code":"# show column names\ncolnames(mtcars)","id":2,"options":{"context":"interactive"}},{"code":"# install and load dplyr (10-20s)\nwebr::install(\"dplyr\")\nlibrary(dplyr)","id":3,"options":{"context":"interactive"}},{"code":"# round up all numeric variables\nrounded_up_mtcars <- mtcars |> \n  mutate(across(where(is.numeric), \\(x) ceiling(x)))\n\n# re-review structure of newly munged object\nstr(rounded_up_mtcars)","id":4,"options":{"context":"interactive"}}];
 
 </script>
 <script type="module">

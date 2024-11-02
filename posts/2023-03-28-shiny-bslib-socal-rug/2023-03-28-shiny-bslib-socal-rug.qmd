@@ -1,6 +1,6 @@
 ---
 title: "Impressing Hiring Teams with a Shiny App Demo"
-description: "Last week, I presented to SoCal RUG on how to build a Shiny app demo as a resume or cover letter accessory. This 'accessory' will help impress hiring managers that you're interviewing with and also differentiate you from other data science applicants."
+description: "Last week, I presented to SoCal RUG on how to build a Shiny app demo as a resume or cover letter accessory. This 'accessory' will impress hiring managers with whom you're interviewing and help differentiate you from other data science applicants."
 date: 03-28-2023
 categories: [tidyverse, shiny, renv, bslib]
 image: images/presentation_cover_slide.png
