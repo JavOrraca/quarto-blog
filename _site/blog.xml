@@ -9,7 +9,7 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.5.57</generator>
+<generator>quarto-1.6.39</generator>
 <lastBuildDate>Mon, 29 Apr 2024 07:00:00 GMT</lastBuildDate>
 <item>
   <title>ETL with Arrow &amp; DuckDB</title>
