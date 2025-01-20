@@ -1,2 +1,1086 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"></html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Javier Orraca-Deatcu">
+<meta name="dcterms.date" content="2025-01-19">
+<meta name="description" content="Getting started with Databricks and R. Tips after two years of use.">
+
+<title>Databricks for R Users – Data Science Bytes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-084e9ae2c412365c2cdd8a34d41da5d6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-28a68f6d3836d8eedc2e489e1efbeb93.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-9L6JEKD131"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9L6JEKD131', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+<meta name="quarto:status" content="draft">
+
+
+<meta property="og:title" content="Databricks for R Users – Data Science Bytes">
+<meta property="og:description" content="Getting started with Databricks and R. Tips after two years of use.">
+<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2025-01-19-databricks-for-r-users/this_is_fine.gif">
+<meta property="og:site_name" content="Data Science Bytes">
+<meta name="twitter:title" content="Databricks for R Users – Data Science Bytes">
+<meta name="twitter:description" content="Getting started with Databricks and R. Tips after two years of use.">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2025-01-19-databricks-for-r-users/this_is_fine.gif">
+<meta name="twitter:creator" content="@JavierOrraca">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Data Science Bytes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../blog.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/orraca" target="_blank"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://bsky.app/profile/javierorracadeatcu.bsky.social" target="_blank"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa6-brands:bluesky" aria-label="Icon bluesky from fa6-brands Iconify.design set." title="Icon bluesky from fa6-brands Iconify.design set."></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/JavierOrraca" target="_blank"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://open.spotify.com/show/64UpJwByrdsrLSYObuEeHx?si=uZChaWIhSxukmDQbvPm4Uw" target="_blank"> <i class="bi bi-spotify" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JavOrraca" target="_blank"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://stackoverflow.com/users/17282384/javier-orraca-deatcu" target="_blank"> <i class="bi bi-stack-overflow" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="../../resources.html">
+ <span class="dropdown-text">Javi’s Resources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://r4ds.hadley.nz/" target="_blank">
+ <span class="dropdown-text">R for Data Science</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidyverse.org/" target="_blank">
+ <span class="dropdown-text">Tidyverse</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tidymodels.org/" target="_blank">
+ <span class="dropdown-text">Tidymodels</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://style.tidyverse.org/" target="_blank">
+ <span class="dropdown-text">Tidyverse Style Guide</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#what-is-databricks" id="toc-what-is-databricks" class="nav-link active" data-scroll-target="#what-is-databricks">What is Databricks?</a></li>
+  <li><a href="#package-management" id="toc-package-management" class="nav-link" data-scroll-target="#package-management">Package Management</a></li>
+  <li><a href="#spark-with-r" id="toc-spark-with-r" class="nav-link" data-scroll-target="#spark-with-r">Spark with R</a></li>
+  <li><a href="#unity-catalog" id="toc-unity-catalog" class="nav-link" data-scroll-target="#unity-catalog">Unity Catalog</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Databricks for R Users</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">brickster</div>
+    <div class="quarto-category">httr2</div>
+    <div class="quarto-category">mlflow</div>
+    <div class="quarto-category">sparklyr</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Getting started with Databricks and R. Tips after two years of use.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://www.javierorracadeatcu.com/">Javier Orraca-Deatcu</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 19, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="what-is-databricks" class="level1">
+<h1>What is Databricks?</h1>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><a href="https://www.databricks.com/">Databricks</a> is a cloud-based data and AI platform that uses <a href="https://spark.apache.org/">Apache Spark</a> as its engine for automating large-scale data processing and machine learning. While Spark itself is an open-sourced project, its creators founded Databricks to lower the barrier to entry for organizations struggling with the management and configuration of Spark clusters, drivers, executors, nodes, dependencies, security, etc.</p>
+</div><div class="column" style="width:35%;">
+<p><img src="databricks-logo.png" class="img-fluid"></p>
+</div>
+</div>
+<p>As Databricks attracted data engineers, analysts, machine learning practitioners, and Wall Street,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> it evolved into the comprehensive AI platform we know today. The company open-sourced <a href="https://mlflow.org/">MLflow</a> to support ML and GenAI experimentation, deployment, and model lifecycle management, and at the Databricks 2024 Data + AI Summit,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> they open-sourced <a href="https://www.unitycatalog.io/">Unity Catalog</a> to unify governance and security controls and simplify lakehouse architectures (data lakes + data warehouses) and make it easier to manage tabular data, unstructured data, and storage of data files, functions, and trained AI model objects.</p>
+<p>Databricks can do a lot, a lot that I love, but make no mistake about a few things:</p>
+<ul>
+<li>Databricks is a Python-first platform</li>
+<li>Notebooks are everything on Databricks</li>
+<li>You can’t launch robust IDEs on top of Databricks<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+<li>The future of Databricks appears to be serverless and this should be very concerning to more R users<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></li>
+</ul>
+<p>And let’s take a quick sidebar to discuss notebooks… It’s not that I don’t like notebooks! I’ve used R Markdown and Quarto for years and as feature-rich as they might be for “scientific and technical publishing,” you’re either coding in Markdown or code chunks… It smells a lot like a notebook. 🤷‍♂️ This entire website was built with Quarto and R, <em>but</em> I’m using an IDE to interact with the codebase for my website project. Imagine doing all of your development work in a Jupyter Notebook (an <code>.ipynb</code> file)… “Yuck” is the only appropriate sentiment here. Robust development on notebooks without an IDE feels wrong for this simple reason: It sucks. If you’re new to Databricks in 2025 as a Python or R user, get ready for notebooks hell.</p>
+<p>Back to the good stuff… My motivation for this post was to share personal best practices that I’ve adopted after more than two years of near daily use of Databricks as an R user. I am more frequently meeting R users that have started to leverage Databricks or “plan to” in the near future - If this is you and you’re stuck, don’t hesitate to reach out. And if you’re an experienced R + Databricks user, I more than welcome any recommendations! Enough of the background context, let’s dive in.</p>
+</section>
+<section id="package-management" class="level1">
+<h1>Package Management</h1>
+<p>To understand packages on Databricks, let’s take a step back to better understand what happens when a Spark cluster boots up. When a Databicks Spark cluster is launched with your runtime of choice, you’re launching a pre-configured and managed image that comes pre-installed with a minimal Ubuntu CLI, Spark, Python, R, Java (spark runs on Java Virtual Machines or “JVMs”), Apache Arrow, and tons of Python and R packages. These are referred to as “Databricks runtimes” and as of the original publication of this post, the most current Long Term Stable (“LTS”) Databricks runtime version is the 15.4 runtime. Here is a general link to Databricks runtime release notes including notes for pre-release versions: <a href="https://docs.databricks.com/en/release-notes/runtime/index.html" class="uri">https://docs.databricks.com/en/release-notes/runtime/index.html</a></p>
+<p>I often visit the Databricks docs to know which exact <a href="https://docs.databricks.com/en/release-notes/runtime/15.4lts-ml.html#python-libraries-on-cpu-clusters">Python</a> and <a href="https://docs.databricks.com/en/release-notes/runtime/15.4lts.html#rlibraries">R package versions</a> are pre-installed on my cluster. It is costly to keep Spark clusters “always on” and your Databricks admins likely impose rules to automatically shutoff your Spark clusters if they are inactive for some period of time (for reference, I think my clusters auto-shutoff after an hour of inactivity). Whenever you re-launch your cluster, you need to re-install packages that aren’t part of your Databricks runtime image. On the surface, this is a non-issue, but in reality, I find myself having to re-launch my Spark clusters at least once a day (often multiple times daily) due to conference calls, unscheduled strategy sessions, ad hoc technical work calls, etc. It takes 8-10 minutes to launch a Spark ML cluster using the Databricks 15.4 LTS runtime and if you need to install or update specific R and Python packages, add several extra minutes until you’re ready to work with Databricks. Databricks serverless compute clusters allow you to connect on-demand to pre-launched clusters, but as mentioned briefly above, R is not yet supported on Databricks serverless compute.</p>
+<p>There is no gold standard for managing and/or persisting Python and R package dependencies on Databricks. You can modify your Spark cluster’s configuration to install certain packages every time your cluster launches, but I prefer to simply re-install project-package dependencies after I launch my Spark cluster. If your company implemented Databricks, it’s very likely your company also has an internal package manager that makes it easier for your employees to 1) deploy internally developed packages, and 2) install CRAN and PyPI packages from behind your company’s firewall. I’ve experienced a few package managers over the years and my favorite for Python and R packages is <a href="https://posit.co/products/enterprise/package-manager/">Posit Package Manager</a> (“Posit PM”). This might sound unrelated to Databricks but it also leads me to my first major recommendation: Put the following code at the top of your Databricks R notebooks to ensure you can install package binaries from your package manager:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">HTTPUserAgent =</span> <span class="fu">sprintf</span>(<span class="st">"R/%s R (%s)"</span>, <span class="fu">getRversion</span>(), <span class="fu">paste</span>(<span class="fu">getRversion</span>(), R.version[<span class="st">"platform"</span>], R.version[<span class="st">"arch"</span>], R.version[<span class="st">"os"</span>])))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>An even better recommendation would be to have your cloud engineering team include the above R code in your company’s global Databricks init script - It would be a moot point to include the above code in your Databricks notebooks if it were included in the global init scripts! So why is that code helpful? If a user calls the function <code>install.packages("xgboost")</code> and they’re pointing to Posit PM, a binary of the <code>xgboost</code> package is served given the OS and R version combination that’s included in your user agent request header. A package binary can be downloaded and installed very quickly compared to building the package from source code. For <code>xgboost</code>, you can download and install the R package binary in ~10 seconds versus ~5 minutes if I need to build it from source code. Sometimes the request header isn’t configured correctly (or is altogether missing on your environment) so the above code sets that configuration for you.</p>
+<p>If you use Posit PM and you’re sensitive about adding <code>options()</code> to your notebooks or init scripts, you can run the following code to determine if you need to configure the user agent header:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">local</span>({</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (.Platform<span class="sc">$</span>OS.type <span class="sc">!=</span> <span class="st">"unix"</span> <span class="sc">||</span> <span class="fu">Sys.info</span>()[<span class="st">"sysname"</span>] <span class="sc">==</span> <span class="st">"Darwin"</span>) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Success! Posit Package Manager does not require additional configuration to install binary packages on macOS or Windows."</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">invisible</span>())</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  dl_method <span class="ot">&lt;-</span> <span class="fu">getOption</span>(<span class="st">"download.file.method"</span>, <span class="st">""</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  dl_extra_args <span class="ot">&lt;-</span> <span class="fu">getOption</span>(<span class="st">"download.file.extra"</span>, <span class="st">""</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  user_agent <span class="ot">&lt;-</span> <span class="fu">getOption</span>(<span class="st">"HTTPUserAgent"</span>, <span class="st">""</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (dl_method <span class="sc">==</span> <span class="st">""</span>) {</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    dl_method <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">isTRUE</span>(<span class="fu">capabilities</span>(<span class="st">"libcurl"</span>))) <span class="st">"libcurl"</span> <span class="cf">else</span> <span class="st">"internal"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  default_ua <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"R (%s)"</span>, <span class="fu">paste</span>(<span class="fu">getRversion</span>(), R.version<span class="sc">$</span>platform, R.version<span class="sc">$</span>arch, R.version<span class="sc">$</span>os))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  instruction_template <span class="ot">&lt;-</span> <span class="st">'You must configure your HTTP user agent in R to install binary packages.</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="st">In your site-wide startup file (Rprofile.site) or user startup file (.Rprofile), add:</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="st">%s</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="st">Then restart your R session and run this diagnostic script again.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">c</span>(</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">"R installation path: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">R.home</span>()),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">"R version: %s</span><span class="sc">\n</span><span class="st">"</span>, R.version.string),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">"OS version: %s</span><span class="sc">\n</span><span class="st">"</span>, utils<span class="sc">::</span><span class="fu">sessionInfo</span>()<span class="sc">$</span>running),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">"HTTPUserAgent: %s</span><span class="sc">\n</span><span class="st">"</span>, user_agent),</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">"Download method: %s</span><span class="sc">\n</span><span class="st">"</span>, dl_method),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">"Download extra args: %s</span><span class="sc">\n</span><span class="st">"</span>, dl_extra_args),</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">----------------------------</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (dl_method <span class="sc">==</span> <span class="st">"libcurl"</span>) {</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">grepl</span>(default_ua, user_agent, <span class="at">fixed =</span> <span class="cn">TRUE</span>) <span class="sc">||</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        (<span class="fu">getRversion</span>() <span class="sc">&gt;=</span> <span class="st">"3.6.0"</span> <span class="sc">&amp;&amp;</span> <span class="fu">substr</span>(user_agent, <span class="dv">1</span>, <span class="dv">3</span>) <span class="sc">==</span> <span class="st">"R ("</span>)) {</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>      config <span class="ot">&lt;-</span> <span class="st">'options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))'</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">sprintf</span>(instruction_template, config))</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="fu">invisible</span>())</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (dl_method <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"curl"</span>, <span class="st">"wget"</span>)) {</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">grepl</span>(<span class="fu">sprintf</span>(<span class="st">"--header </span><span class="sc">\"</span><span class="st">User-Agent: %s</span><span class="sc">\"</span><span class="st">"</span>, default_ua), dl_extra_args, <span class="at">fixed =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>      ua_arg <span class="ot">&lt;-</span> <span class="st">"sprintf(</span><span class="sc">\"</span><span class="st">--header </span><span class="sc">\\\"</span><span class="st">User-Agent: R (%s)</span><span class="sc">\\\"\"</span><span class="st">, paste(getRversion(), R.version[</span><span class="sc">\"</span><span class="st">platform</span><span class="sc">\"</span><span class="st">], R.version[</span><span class="sc">\"</span><span class="st">arch</span><span class="sc">\"</span><span class="st">], R.version[</span><span class="sc">\"</span><span class="st">os</span><span class="sc">\"</span><span class="st">]))"</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (dl_extra_args <span class="sc">==</span> <span class="st">""</span>) {</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        config <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"options(download.file.extra = %s)"</span>, ua_arg)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        config <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"options(download.file.extra = paste(%s, %s))"</span>, <span class="fu">shQuote</span>(dl_extra_args), ua_arg)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="fu">sprintf</span>(instruction_template, config))</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="fu">invisible</span>())</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Success! Your user agent is correctly configured."</span>)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If your user agent is configured correctly, you’ll see the following message in your console: <code>Success! Your user agent is correctly configured.</code> For more information on serving package binaries from Posit PM, visit their admin docs at <a href="https://docs.posit.co/rspm/admin/serving-binaries/" class="uri">https://docs.posit.co/rspm/admin/serving-binaries/</a>.</p>
+<p>One interesting solution for persisting Python and R packages is to write them to Unity Catalog Volumes and simply load them from these locations downstream. This was something that I did for my team prior to realizing that my user-agent header request wasn’t firing off correctly when requesting binaries from Posit PM. This approach has its benefits, namely that you don’t need to install packages every time your cluster starts, but package load time always felt way too long, e.g., 3 minutes for a handful of packages loaded via <code>library(some_package)</code> in your Databricks notebook. Additionally, my experience with Spark processes initiated from packages loaded from Unity Catalog Volumes always ran into weird Spark issues that were difficult for me and my teammates to resolve (and I’m generally good at troubleshooting Linux and R errors). All this said, persisting your packages on Unity Catalog Volumes is not a pattern that I’d recommend today, especially since I’m successfully downloading and installing package binaries once again.</p>
+<p>One last note about package managers - At my workplace, our production services and applications (like Databricks) are prohibited from installing packages on the open web. We can only install packages that exist behind our firewall hence the need for an internal package manager solution. This may not be the case for you, i.e., you might be able to install packages from the web on your Databricks instance and if so, consider yourself lucky! While you’d need to figure out a solution for serving your company’s internally-developed R and Python packages, Posit hosts a free and public Posit PM from which you can download and install package binaries to your heart’s desire! Check out Posit’s public PM here: <a href="https://packagemanager.posit.co/" class="uri">https://packagemanager.posit.co/</a></p>
+</section>
+<section id="spark-with-r" class="level1">
+<h1>Spark with R</h1>
+<p>The best package for interacting with Spark clusters and R is by far <code>sparklyr</code>. While <code>sparklyr</code> is not limited to interacting with Databricks Spark clusters,<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> I almost exclusively use it for this purpose. The <code>sparklyr</code> package uses <code>reticulate</code> to interact with the Python API, it provides a <code>dplyr</code> backend that works great with tidy pipelines, and it offers a <code>DBI</code> backend that integrates well with the RStudio IDE (and Positron?) <em>Connections</em> pane.</p>
+<p>When working with R on the Databricks platform itself (in a notebook), creating a <code>sparklyr</code> connection is a breeze since the Databricks runtime images have all the required Python and R dependencies. Below is a basic pattern to establish a spark connection, copy a dataframe to a spark dataframe, and write it to a Delta Lake Table (or “Delta Table”) on your Unity Catalog:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sparklyr)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Establish spark connection in a Databricks R Notebook</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> sparklyr<span class="sc">::</span><span class="fu">spark_connect</span>(<span class="at">method =</span> <span class="st">"databricks"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the iris dataframe to a Spark df </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>iris <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>(iris)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>spark_iris <span class="ot">&lt;-</span> sparklyr<span class="sc">::</span><span class="fu">copy_to</span>(sc, iris)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Write the Spark df to a Delta Table on Unity Catalog</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: The spark_iris object captures the inherent sc connection</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>sparklyr<span class="sc">::</span><span class="fu">spark_write_table</span>(</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> spark_iris,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"uc_catalog.schema.some_table_name"</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Things get a little more complicated if you want to connect to your Databricks spark cluster using, for example, the RStudio IDE running on a completely different AWS server from the Databricks endpoints. The reason for the complexity is that you’ll need to create and use a local Python virtual environment with the appropriate Spark dependencies that match the Databricks runtime version that you’re wanting to connect to. The <code>sparklyr</code> authors wrote a vignette on how to do this <a href="https://spark.posit.co/deployment/databricks-connect.html">using the “Databricks Connect” method</a> and the following bullet highlight the main to-do’s:</p>
+<ul>
+<li>Set global environment variables <code>DATABRICKS_HOST</code> and <code>DATABRICKS_TOKEN</code><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></li>
+<li>Install the R packages <code>sparklyr</code> and <code>pysparklyr</code></li>
+<li>Create the local Python virtual environment using the Databricks runtime on your Spark cluster</li>
+<li>Connect to your remote Spark cluster</li>
+<li>Copy a local df to Spark and write to a Delta Table on Databricks Unity Catalog</li>
+</ul>
+<p>The following code executes the steps mentioned above for a Spark cluster running Databricks runtime 15.4 LTS:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the following two env vars in your .Renviron:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) DATABRICKS_HOST=your_Databricks_workspace_URL</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) DATABRICKS_TOKEN=your_Databricks_PAT</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Install packages</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"sparklyr"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pysparklyr"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create local Python virtual env w/ all Spark dependencies</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>pysparklyr<span class="sc">::</span><span class="fu">install_databricks</span>(<span class="st">"15.4"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Establish connection to remote Databricks Spark cluster</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sparklyr)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> sparklyr<span class="sc">::</span><span class="fu">spark_connect</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">master =</span> <span class="fu">Sys.getenv</span>(<span class="st">"DATABRICKS_HOST"</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">token =</span> <span class="fu">Sys.getenv</span>(<span class="st">"DATABRICKS_TOKEN"</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster_id =</span> <span class="st">"Enter your cluster ID here"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"databricks_connect"</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the iris dataframe to a Spark df </span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>iris <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>(iris)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>spark_iris <span class="ot">&lt;-</span> sparklyr<span class="sc">::</span><span class="fu">copy_to</span>(sc, iris)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Write the Spark df to a Delta Table on Unity Catalog</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: The spark_iris object captures the inherent sc connection</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>sparklyr<span class="sc">::</span><span class="fu">spark_write_table</span>(</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> spark_iris,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"uc_catalog.schema.some_table_name"</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode =</span> <span class="st">"overwrite"</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Whether you’re utilizing <code>sparklyr</code> on Databricks itself or in a remote IDE, the Spark connection is a pre-requisite for being able to interact with Delta Tables on Unity Catalog, ETL, and model training on Databticks.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+sparklyr::spark_connect()
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>While similar, make note that the <code>method</code> argument in the <code>spark_connect()</code> functions above use two different values: <code>method = "databricks"</code> is required if you’re developing on a Databricks R Notebook, while <code>method = "databricks_connect"</code> is required if remotely connecting to your Databricks cluster.</p>
+</div>
+</div>
+<p>At this point, I believe it’s worth diving more into the nuances of Spark clusters and the ways to tap into distributed computing as an R user. The following text can be found on the <a href="https://docs.databricks.com/en/sparkr/index.html#databricks-for-r-developers">Databricks for R Developers</a> docs:</p>
+<blockquote class="blockquote">
+<p>Databricks clusters consist of an Apache Spark driver node and zero or more Spark worker (also known as executor) nodes. The driver node maintains attached notebook state, maintains the SparkContext, interprets notebook and library commands, and runs the Spark master that coordinates with Spark executors. Worker nodes run the Spark executors, one Spark executor per worker node.</p>
+<p>A single node cluster has one driver node and no worker nodes, with Spark running in local mode to support access to tables managed by Databricks. Single node clusters support RStudio, notebooks, and libraries, and are useful for R projects that don’t depend on Spark for big data or parallel processing.</p>
+<p>For data sizes that R struggles to process (many terabytes or petabytes), you should use multiple-node or distributed clusters instead. Distributed clusters have one driver node and one or more worker nodes. Distributed clusters support not only RStudio, notebooks, and libraries, but R packages such as SparkR and sparklyr, which are uniquely designed to use distributed clusters through the SparkContext. These packages provide familiar SQL and DataFrame APIs, which enable assigning and running various Spark tasks and commands in parallel across worker nodes.</p>
+</blockquote>
+<p>I haven’t yet mentioned the <code>SparkR</code> package since Databricks is deprecating it on runtimes 16.0 and above. But in layman terms, the above highlights that Spark can be used to train large-scale models via distributed and parallelized processes. <strong>However, this only works as expected if and only if you rely on an underlying model algorithm that natively supports Spark.</strong> I want to impress upon you the following point: You shouldn’t expect to see benefits from Spark for model training capabilities if you’re using algorithms like XGBoost. There is no native Spark binding for R and XGBoost so you’d be much better served relying on the gradient boosted model implementation found in the <code>sparklyr</code> package.</p>
+<p>Every project is different and perhaps your desire to use a tried and trusted modeling framework like XGboost trumps the benefits you’d gain from using a gradient boosted tree implementation in <code>sparklyr</code>, but I highly recommend reviewing the <em>Machine Learning</em> pages on the <code>sparklyr</code> website. I am a huge fan of the <a href="https://www.tidymodels.org/">tidymodels</a> framework for reproducible ML, and this <a href="https://spark.posit.co/guides/tidymodels.html">tidymodels &amp; Spark blog post</a> explains how to make the most of Spark within the tidymodels paradigm. This is useful when modeling on Databricks because I’m able to leverage popular algorithms written with full Spark support. That’s not to say I haven’t struggled with these <code>sparklyr</code> ML algos trying to make my workflows conform to a <code>tidymodels</code> style, I <em>have</em> struggled, but it still presents a huge leap forward for R users needing distributed compute capabilities. I’ve struggled with <code>tidymodels</code> and <code>sparklyr</code> with around pre-processing steps, hyperparameter tuning, and downstream model evaluation.&nbsp;For example, hyperparameter tuning with <code>sparklyr</code> requires a bit of a deviation from the tidymodels approach I like, e.g., support for <a href="https://tune.tidymodels.org/">tune</a>, <a href="https://dials.tidymodels.org/">dials</a>, and <a href="https://finetune.tidymodels.org/">finetune</a> are limited when using <code>sparklyr</code>. Evaluating model performance with <a href="https://yardstick.tidymodels.org/">yardstick</a> also feels a bit limiting with the ML model implementations found in <code>sparklyr</code>. That said, <code>sparklyr</code> is singlehandedly making my daily life easier when working with Databricks and Spark, so I recognize my complaints are largely petty.</p>
+<p>I hear this problem often from both Python and R users: “I’m not seeing the alleged benefits of Spark for ML training with Databricks.” Almost always, the core issue is that a Spark-friendly model algorithm is not being used for model training and hyperparameter tuning.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+</section>
+<section id="unity-catalog" class="level1">
+<h1>Unity Catalog</h1>
+<p>The Databricks connect method is the best way to interact with Delta Tables on Unity Catalog, however, it can get annoying that you need to first connect to a spun up Databricks cluster before interacting with Delta Tables via Spark. Things are looking promosing in the near future for being able to read (maybe write?) to Unity Catalog using lazy loading techniques. Delta Tables extend <a href="https://parquet.apache.org/">Apache Parquet</a> with file-based transaction logs and there is already some promising experimentation underway that might let us lazily load or scan Delta Tables - without the need to connect to a Spark cluster - using tools like Apache Arrow, DuckDB, and Polars. I’ve been experimenting with the Unity Catalog DuckDB community extension (still very much experimental) and this could be a big win.</p>
+<p>In addition to interacting with Delta Tables on Unity Catalog, I regularly read and write objects to Unity Catalog Volumes. The thing I love about Volumes is that I can completely leverage the <a href="https://docs.databricks.com/api/workspace/volumes">Databricks REST API</a> to interact with UC Volumes and I don’t need to worry about connecting to any Spark clusters. Prior to October 2024, the <code>brickster</code> package was not on CRAN so I had been maintaining an R package for Databricks users since 2023 that allowed data scientists at my company to interact with objects on UC Volumes. The Databricks team that developed <code>brickster</code> did an amazing job making a wide array of helper functions easily accessible and in fact, I’ve already incorporated many aspects of the <code>brickster</code> package into my internally-developed package. It can do way more than just interact with UC Volumes and here is their package website docs for reference: <a href="https://databrickslabs.github.io/brickster/" class="uri">https://databrickslabs.github.io/brickster/</a></p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>In a Series J investment round in December 2024, Databricks raised $10 billion at a valuation of $62 billion. <em>Series J…!</em><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Databricks gave my company 10 passes for their <a href="https://www.databricks.com/dataaisummit">Data + AI Summit</a> and I was fortunate to attend with 16,000 other people in San Francisco, all under one roof. It was definitely the biggest conference I’ve ever attended and amazing to experience firsthand.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>In the past, Databricks users could attach init scripts to their Spark clusters that’d allow them to launch VS Code or RStudio on top of Databricks. Databricks disabled this feature in 2024 gibven the future promises of the Databricks Lakehouse App Store (<em>I believe this is technically a component of the <a href="https://marketplace.databricks.com/">Databricks Marketplace</a></em>). The Lakehouse App Store will eventually (<em>hopefully</em>) have launchable IDEs on top of Databricks but the details and timing are nebulous. Databricks releases something like 32,164 new features per week so cut them some slack.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><em>Surprise!</em> Databricks serverless compute <a href="https://docs.databricks.com/en/compute/serverless/limitations.html#general-limitations">does not support R</a> and the future of R on Databricks serverless is still unknown.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><code>sparklyr</code> is an amazing package created by Posit’s MLVerse team and has over 75 contributors on the <a href="https://github.com/sparklyr/sparklyr">sparklyr GitHub repository</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The <code>DATABRICKS_HOST</code> env var will match your Databricks workspace instance URL and the <code>DATABRICKS_TOKEN</code> will represent the personal access token that you create in your Databricks user settings.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Several hyperparameter tuning frameworks exist for Python users that don’t quite have a complimentary match for R. One of the benefits of hyperparameter tuning on Databricks with <a href="https://docs.ray.io/en/latest/tune/examples/tune-mlflow.html">MLflow and Ray Tune</a> is that each of your hyperparameter comboninations tested during your tuning procedure can get logged to Databricks Experiments, each with its own <code>run_id</code>, making it a lot easier to use the Databricks platform itself for comparing pros/cons of different hyperparameter combinations.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/www\.javierorracadeatcu\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

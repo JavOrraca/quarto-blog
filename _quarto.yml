@@ -6,6 +6,7 @@ website:
   site-url: https://www.javierorracadeatcu.com
   description: "Javier Orraca-Deatcu's data science website built with R and Quarto"
   open-graph: true
+  draft-mode: unlinked
   google-analytics:
     tracking-id: "G-9L6JEKD131"
     anonymize-ip: true
