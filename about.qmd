@@ -4,45 +4,42 @@ comments: false
 title-block-banner: false
 ---
 
-![A fresh look brought to you by Generative AI](./images/Javier_Wide.jpg)
+![A fresh look brought to you by DALL-E](./images/Javier_Wide.jpg)
 
 ## Professional
 
-My career includes over 18 years of leadership and individual contributor roles across the spectrum of data science, financial strategy, and business analytics for EY, PG&E, KPMG, and Centene. I use tools like R, SQL, Python, GitLab, Posit's Workbench + Connect, and Databricks on a daily basis. My teams apply data science techniques to empower decision makers with descriptive, predictive, and prescriptive insights. As part of Centene's AI Center of Excellence, I develop and deploy automation pipelines, predictive models, interactive web apps, simulations, packages, REST APIs, and more.
-
-## Scatter Podcast
-
-In 2019, I launched [Scatter Podcast](https://soundcloud.com/scatterpodcast) to share career tips and insights from data science leaders for students, business managers, and professionals looking to pivot into data science. It was a fun and incredibly rewarding side project but after 30 episodes, I started to feel fatigued with the amount of time it took to plan, record, edit, market, etc. The podcast is on hold *but not dead!*
+My career includes 20 years of individual contributor and leadership roles across the spectrum of data science, financial modeling, and business analytics for EY, PG&E, KPMG, Bloomreach, and Centene. I use tools like R, SQL, Python, git, VS Code, RStudio Server, Databricks, and Snowflake on a daily basis. My teams apply analytics and data science techniques to empower decision makers with AI tools and prescriptive business insights. As part of Centene's AI Center of Excellence, I productionize data solutions (automation pipelines, models, web apps, simulation studies, REST APIs, etc.) to support Centene's Quality line of business.
 
 ## Data Science & MLOps Toolkit
 
-- **R**: tidyverse, tidymodels, Quarto, XGBoost, Prophet, sparklyr, torch, Keras (+ TensorFlow), Shiny, Plotly, Leaflet, webR, devtools, usethis, dbplyr (communicate with databases by writing in dplyr syntax to create complex [or basic!] ETL and analytics pipelines that convert your dplyr code to SQL in the backend 🚀), and more
+- `R`: tidyverse, Quarto, XGBoost, LightGBM, Prophet, tidymodels, Torch, Keras + TensorFlow, Shiny, Plotly, Leaflet, webR, devtools, usethis, dbplyr, cli, pkgdown, renv, and more
 
-- **DevOps + MLOps**: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash
+- `DevOps + MLOps`: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash
 
-- **Data**: Snowflake, Teradata, Databricks Unity Catalog, Apache Arrow, Apache Parquet, DuckDB, Polars, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery
+- `Data`: Snowflake, Teradata, Databricks Unity Catalog, Apache Arrow, Apache Parquet, DuckDB, Polars, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery
 
-- **Other**: Python (I'm objectively terrible but w/ llama3.1, I've been known to impress myself and my team 🏆), Jupyter Notebooks, Agile Scrum (& the tools that surround it, e.g., Jira, ServiceNow, Miro, etc.), Netlify
+- `Other`: Python, Jupyter Lab, Agile Scrum (& the tools that surround it, e.g., Jira, Miro, etc.), ServiceNow, Netlify, Alation, Microsoft Excel
 
 ## Media + Presentations
 
-* [2024-04-27] UC Irvine hackathon talk on [ETL with Arrow & DuckDB](https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB/#/title-slide)
+* [2025-01-29] CSU Long Beach presentation: [Big Data, Tiny Laptop](http://rrr.is/BigDataTinyLaptop)
 
-* [2023-09-26] SoCal RUG presentation on [Highlights from Posit's 2023 Annual Conference](https://javorraca.github.io/posit-conf-2023-presentation)
+* [2024-04-27] UC Irvine hackathon workshop: [ETL with Arrow & DuckDB](https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB/#/title-slide)
 
-* [2023-09-25] R Consortium interview on [Empowering Healthcare with R: Javier Orraca-Deatcu’s Journey from Finance to Predictive Health Models](https://www.r-consortium.org/blog/2023/09/25/empowering-healthcare-with-r-javier-orraca-deatcus-journey-from-finance-to-predictive-health-models) 
+* [2023-09-26] SoCal RUG presentation: [Highlights from Posit's 2023 Annual Conference](https://javorraca.github.io/posit-conf-2023-presentation)
 
-* [2023-03-21] SoCal RUG presentation on [How to Build a Shiny App Demo as a Cover Letter Accessory](https://www.youtube.com/watch?v=lNn4beRxnbk&t=2321s&ab_channel=SouthernCaliforniaRUsersGroup)
+* [2023-09-25] R Consortium interview: [Empowering Healthcare with R](https://www.r-consortium.org/blog/2023/09/25/empowering-healthcare-with-r-javier-orraca-deatcus-journey-from-finance-to-predictive-health-models) 
 
-* [2022-12-08] Posit hosted me on their _Data Science Hangout_ to discuss [Excel to Data Science to Machine Learning Engineering](https://www.youtube.com/watch?v=-mm5tHQVPY8&t=2858s&ab_channel=PositPBC)
+* [2023-03-21] SoCal RUG presentation: [Build a Shiny App Demo as a Cover Letter Accessory](https://www.youtube.com/watch?v=lNn4beRxnbk&t=2321s&ab_channel=SouthernCaliforniaRUsersGroup)
 
-* [2021-10-15] UC Irvine's inaugural [Latinx Initiative Conference](https://merage.uci.edu/events/2021/10/2021-lxi-conference.html)
+* [2022-12-08] Posit's _Data Science Hangout_: [From Excel to Machine Learning](https://www.youtube.com/watch?v=-mm5tHQVPY8&t=2858s&ab_channel=PositPBC)
 
-* [2021-06-09] [Data Points: Healthcare and Finance](https://datapoints.griddynamics.com/events/data-points-virtual-summit-healthcare-finance-06-09-2021/) virtual conference hosted by Grid Dynamics
-  * Watch my presentation [Healthcare Finance Beyond Excel: R for Automation, Time Series Forecasting, and Interactive Reporting](https://youtu.be/LMaPvd4qMQk)
+* [2021-10-15] UC Irvine panel discussion: [Latinx Initiative Conference](https://merage.uci.edu/events/2021/10/2021-lxi-conference.html)
 
-* [2019-06-13] Scatter Podcast on [UC Irvine News](https://merage.uci.edu/news/2019/06/podcast-launched-by-merage-student-navigates-complex-field-of-data-analytics-and-science.html)
+* [2021-06-09] Grid Dynamics _Data Points Conference_: [Healthcare Finance Beyond Excel](https://youtu.be/LMaPvd4qMQk)
 
-* [2019-05-20] Winner of the [Orange County Predictive Modeling Hackathon](https://twitter.com/oc_rug/status/1130553620456300544?s=20)
+* [2019-06-13] UC Irvine's _Newsroom_: [Scatter Podcast launched by Merage Student](https://merage.uci.edu/news/2019/06/podcast-launched-by-merage-student-navigates-complex-field-of-data-analytics-and-science.html)
 
-* [2019-04-14] Scatter Podcast mention on [Forbes](https://forbes.com/sites/louiscolumbus/2019/04/14/how-to-get-your-data-scientist-career-started)
+* [2019-05-20] Orange County RUG: [About the Predictive Modeling Hackathon Winners](https://twitter.com/oc_rug/status/1130553620456300544?s=20)
+
+* [2019-04-14] Forbes mention: [Scatter Podcast debut](https://forbes.com/sites/louiscolumbus/2019/04/14/how-to-get-your-data-scientist-career-started)

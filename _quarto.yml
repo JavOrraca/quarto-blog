@@ -39,22 +39,8 @@ website:
         target: _blank
       - text: Blog
         href: blog.qmd
-      - text: Resources
-        menu:
-          - text: "Javi's Resources"
-            href: resources.qmd
-          - text: R for Data Science
-            href: https://r4ds.hadley.nz/
-            target: _blank
-          - text: Tidyverse
-            href: https://www.tidyverse.org/
-            target: _blank
-          - text: Tidymodels
-            href: https://www.tidymodels.org/
-            target: _blank
-          - text: Tidyverse Style Guide
-            href: https://style.tidyverse.org/
-            target: _blank
+      - text: Python & R
+        href: resources.qmd
       - text: About
         href: about.qmd
 

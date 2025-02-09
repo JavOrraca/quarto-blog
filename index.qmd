@@ -20,7 +20,7 @@ comments: false
 page-layout: full
 ---
 
-I'm a data scientist and machine learning engineer with experiences in financial modeling, analytics, interactive visualizations, and predictive modeling. For a living, I get to solve problems with data... **Life is good!**
+I'm a data scientist and machine learning engineer with experiences in analytics, financial modeling, and developing AI solutions. For a living, I get to solve problems with data... **_Life is good!_**
 
 ## Data Science & MLOps
 
