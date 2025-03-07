@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Javier Orraca-Deatcu">
-<meta name="dcterms.date" content="2019-12-04">
-<meta name="description" content="Quartz and Google’s Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning.">
+<meta name="dcterms.date" content="2025-01-30">
+<meta name="description" content="Presentation materials from last night’s Tech by the Beach x SoCal RUG x CSULB meetup">
 
-<title>Education Reform and Lessons from Finland – Data Science Bytes</title>
+<title>Big Data, Tiny Laptop – Data Science Bytes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -103,15 +103,19 @@ cookieconsent.run({
   
 
 
-<meta property="og:title" content="Education Reform and Lessons from Finland – Data Science Bytes">
-<meta property="og:description" content="Quartz and Google’s Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning.">
-<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2019-12-04-Finland-Education-System/images/Finland.jpg">
+<meta property="og:title" content="Big Data, Tiny Laptop – Data Science Bytes">
+<meta property="og:description" content="Presentation materials from last night’s Tech by the Beach x SoCal RUG x CSULB meetup">
+<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/Big_Data_Tiny_Laptop.png">
 <meta property="og:site_name" content="Data Science Bytes">
-<meta name="twitter:title" content="Education Reform and Lessons from Finland – Data Science Bytes">
-<meta name="twitter:description" content="Quartz and Google’s Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning.">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2019-12-04-Finland-Education-System/images/Finland.jpg">
+<meta property="og:image:height" content="1314">
+<meta property="og:image:width" content="2342">
+<meta name="twitter:title" content="Big Data, Tiny Laptop – Data Science Bytes">
+<meta name="twitter:description" content="Presentation materials from last night’s Tech by the Beach x SoCal RUG x CSULB meetup">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/Big_Data_Tiny_Laptop.png">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1314">
+<meta name="twitter:image-width" content="2342">
 </head>
 
 <body class="floating nav-fixed">
@@ -189,7 +193,15 @@ cookieconsent.run({
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#doing-more-with-less" id="toc-doing-more-with-less" class="nav-link active" data-scroll-target="#doing-more-with-less">Doing More with Less</a></li>
+  <li><a href="#other-tools-explored" id="toc-other-tools-explored" class="nav-link" data-scroll-target="#other-tools-explored">Other Tools Explored</a></li>
+  <li><a href="#presentation" id="toc-presentation" class="nav-link" data-scroll-target="#presentation">Presentation</a></li>
+  </ul>
+</nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -200,15 +212,19 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Education Reform and Lessons from Finland</h1>
+<h1 class="title">Big Data, Tiny Laptop</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">statistics</div>
+    <div class="quarto-category">positron</div>
+    <div class="quarto-category">arrow</div>
+    <div class="quarto-category">duckdb</div>
+    <div class="quarto-category">polars</div>
+    <div class="quarto-category">quarto</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Quartz and Google’s Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning.
+    Presentation materials from last night’s Tech by the Beach x SoCal RUG x CSULB meetup
   </div>
 </div>
 
@@ -225,7 +241,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 4, 2019</p>
+      <p class="date">January 30, 2025</p>
     </div>
   </div>
   
@@ -237,16 +253,29 @@ cookieconsent.run({
 </header>
 
 
-<p><img src="./images/Finland.jpg" class="img-fluid"></p>
-<p>Despite Finnish students spending the least time per week learning (and starting school later, and having much less homework), their students have some of the highest reading test scores.</p>
-<p>Not captured in this study, but I’d be curious to see how external factors impact these results. We have to assume American parents spend a lot less time helping their kids learn (imagine having parents that work 2 or 3 jobs to make ends meet). Or how does average classroom size differ from country to country? Or distance traveled from home to school? Or distance to local libraries? Either way, the Finnish are doing something right here.</p>
-<p>Links:</p>
+<p><img src="Big_Data_Tiny_Laptop.png" class="preview-image img-fluid"></p>
+<section id="doing-more-with-less" class="level1">
+<h1>Doing More with Less</h1>
+<p>Ever wonder how you can work with “bigger than RAM” datasets on your laptop’s memory without needing a supercomputer? Last night, I had a great time presenting a practical approach to modern data science tooling that is reshaping how data is processed, analyzed, and presented, all from your local machine.</p>
+<p>I shared how language-agnostic, open-source data storage and processing frameworks like Apache Parquet, Apache Arrow, DuckDB, and Polars make it possible to handle enormous data efficiently, whether you’re working with SQL, R, Python, and more. These next-gen frameworks let you process huge datasets faster than ever, right on your laptop. For example, I live-demoed how I’m able to read a 1.1 billion row, 22 column, 40GB data set on my MacBook Air in <em>25 milliseconds</em>. 🚀</p>
+</section>
+<section id="other-tools-explored" class="level1">
+<h1>Other Tools Explored</h1>
 <ul>
-<li><em>Finland has the most efficient education system in the world</em> <a href="https://qz.com/1759598/finland-has-the-most-efficient-education-system-in-the-world/">on Quartz</a></li>
-<li>Google’s Avinash Kaushik’s post <a href="https://www.linkedin.com/posts/akaushik_education-reform-is-a-huge-underappreciated-activity-6608081280791912448-bZ_T">on LinkedIn</a></li>
+<li><a href="https://positron.posit.co/">Positron</a>: A fresh, open-source coding environment purpose-built for data analysis and modeling, including all the best bells and whistles from VS Code and RStudio.</li>
+<li><a href="https://quarto.org/">Quarto</a>: An open source technical publishing system similar in feel to notebooks (like Jupyter Notebooks) for creating beautiful articles, websites, slides, dashboards, and with full support for Python, R, Julia, and Observable</li>
 </ul>
+</section>
+<section id="presentation" class="level1">
+<h1>Presentation</h1>
+<ul>
+<li>Web slides: <a href="http://rrr.is/BigDataTinyLaptop">Big Data, Tiny Laptop</a></li>
+<li>GitHub repo: <a href="https://github.com/JavOrraca/Big-Data-Tiny-Laptop">JavOrraca/Big-Data-Tiny-Laptop</a></li>
+</ul>
+<p>This event was a collaborative effort between <a href="https://www.meetup.com/tech-by-the-beach/">Tech by the Beach</a>, <a href="https://www.meetup.com/socal-rug/">SoCal R Users Group</a>, and <a href="https://www.csulb.edu/cob-graduate-programs/ms-programs/ms-information-systems">CSULB’s Master of Science in Information Systems (MSIS) program</a>.</p>
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Javier Orraca-Deatcu">
-<meta name="dcterms.date" content="2019-12-04">
-<meta name="description" content="Quartz and Google’s Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning.">
+<meta name="dcterms.date" content="2025-03-07">
+<meta name="description" content="Introducing a vector database and Retrieval-Augmented Generation (‘RAG’) system for coding in R, designed to provide bleeding-edge responses from curated documentation.">
 
-<title>Education Reform and Lessons from Finland – Data Science Bytes</title>
+<title>Vector DB + RAG Maker Tool – Data Science Bytes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -103,13 +137,13 @@ cookieconsent.run({
   
 
 
-<meta property="og:title" content="Education Reform and Lessons from Finland – Data Science Bytes">
-<meta property="og:description" content="Quartz and Google’s Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning.">
-<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2019-12-04-Finland-Education-System/images/Finland.jpg">
+<meta property="og:title" content="Vector DB + RAG Maker Tool – Data Science Bytes">
+<meta property="og:description" content="Introducing a vector database and Retrieval-Augmented Generation (‘RAG’) system for coding in R, designed to provide bleeding-edge responses from curated documentation.">
+<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/retro_cartoon_robot.jpg">
 <meta property="og:site_name" content="Data Science Bytes">
-<meta name="twitter:title" content="Education Reform and Lessons from Finland – Data Science Bytes">
-<meta name="twitter:description" content="Quartz and Google’s Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning.">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2019-12-04-Finland-Education-System/images/Finland.jpg">
+<meta name="twitter:title" content="Vector DB + RAG Maker Tool – Data Science Bytes">
+<meta name="twitter:description" content="Introducing a vector database and Retrieval-Augmented Generation (‘RAG’) system for coding in R, designed to provide bleeding-edge responses from curated documentation.">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/retro_cartoon_robot.jpg">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -189,7 +223,22 @@ cookieconsent.run({
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#boosting-llm-performance-with-vector-db-rag-systems" id="toc-boosting-llm-performance-with-vector-db-rag-systems" class="nav-link active" data-scroll-target="#boosting-llm-performance-with-vector-db-rag-systems">Boosting LLM Performance with Vector DB + RAG Systems</a></li>
+  <li><a href="#benefits-of-vector-db-rag-vs-direct-llm-querying" id="toc-benefits-of-vector-db-rag-vs-direct-llm-querying" class="nav-link" data-scroll-target="#benefits-of-vector-db-rag-vs-direct-llm-querying">Benefits of Vector DB + RAG vs Direct LLM Querying</a>
+  <ul class="collapse">
+  <li><a href="#significantly-lower-api-costs" id="toc-significantly-lower-api-costs" class="nav-link" data-scroll-target="#significantly-lower-api-costs">1. Significantly Lower API Costs</a></li>
+  <li><a href="#superior-query-performance" id="toc-superior-query-performance" class="nav-link" data-scroll-target="#superior-query-performance">2. Superior Query Performance</a></li>
+  <li><a href="#scalability" id="toc-scalability" class="nav-link" data-scroll-target="#scalability">3. Scalability</a></li>
+  <li><a href="#higher-accuracy-for-domain-specific-questions" id="toc-higher-accuracy-for-domain-specific-questions" class="nav-link" data-scroll-target="#higher-accuracy-for-domain-specific-questions">4. Higher Accuracy for Domain-Specific Questions</a></li>
+  </ul></li>
+  <li><a href="#try-it-out" id="toc-try-it-out" class="nav-link" data-scroll-target="#try-it-out">Try It Out!</a></li>
+  <li><a href="#about-this-tool" id="toc-about-this-tool" class="nav-link" data-scroll-target="#about-this-tool">About this Tool</a></li>
+  </ul>
+</nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -200,15 +249,18 @@ cookieconsent.run({
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Education Reform and Lessons from Finland</h1>
+<h1 class="title">Vector DB + RAG Maker Tool</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">statistics</div>
+    <div class="quarto-category">python</div>
+    <div class="quarto-category">langchain</div>
+    <div class="quarto-category">huggingface</div>
+    <div class="quarto-category">chromadb</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Quartz and Google’s Avinash Kaushik share insights comparing national education systems, test performance, and time spent on learning.
+    Introducing a vector database and Retrieval-Augmented Generation (‘RAG’) system for coding in R, designed to provide bleeding-edge responses from curated documentation.
   </div>
 </div>
 
@@ -225,7 +277,7 @@ cookieconsent.run({
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 4, 2019</p>
+      <p class="date">March 7, 2025</p>
     </div>
   </div>
   
@@ -237,16 +289,48 @@ cookieconsent.run({
 </header>
 
 
-<p><img src="./images/Finland.jpg" class="img-fluid"></p>
-<p>Despite Finnish students spending the least time per week learning (and starting school later, and having much less homework), their students have some of the highest reading test scores.</p>
-<p>Not captured in this study, but I’d be curious to see how external factors impact these results. We have to assume American parents spend a lot less time helping their kids learn (imagine having parents that work 2 or 3 jobs to make ends meet). Or how does average classroom size differ from country to country? Or distance traveled from home to school? Or distance to local libraries? Either way, the Finnish are doing something right here.</p>
-<p>Links:</p>
-<ul>
-<li><em>Finland has the most efficient education system in the world</em> <a href="https://qz.com/1759598/finland-has-the-most-efficient-education-system-in-the-world/">on Quartz</a></li>
-<li>Google’s Avinash Kaushik’s post <a href="https://www.linkedin.com/posts/akaushik_education-reform-is-a-huge-underappreciated-activity-6608081280791912448-bZ_T">on LinkedIn</a></li>
-</ul>
+<p><img src="retro_cartoon_robot.jpg" class="preview-image img-fluid"></p>
+<section id="boosting-llm-performance-with-vector-db-rag-systems" class="level1">
+<h1>Boosting LLM Performance with Vector DB + RAG Systems</h1>
+<p>If you’re interested in building your own knowledge base from technical documentation, I’ve released a new project on GitHub that might be exactly what you or your enterprise need. My Vector DB and RAG Maker provides a simple yet powerful way to process, store, and query documentation (<em>in my example use case, recent R documentation and tutorials</em>) using vector embeddings and Retrieval-Augmented Generation (or “RAG”).</p>
+</section>
+<section id="benefits-of-vector-db-rag-vs-direct-llm-querying" class="level1">
+<h1>Benefits of Vector DB + RAG vs Direct LLM Querying</h1>
+<p>Let’s say you’re working with specialized documentation (e.g., 30 books on the topics of the R programming language, applied statistics, and machine learning) and you wish your LLM responses had access to this curated information… The benefits of using a vector database with RAG, instead of directly querying an LLM, are substantial:</p>
+<section id="significantly-lower-api-costs" class="level3">
+<h3 class="anchored" data-anchor-id="significantly-lower-api-costs">1. Significantly Lower API Costs</h3>
+<p>Direct LLM queries with large context windows can get expensive, quickly, especially when working with extensive documentation. The vector DB approach only sends the most relevant chunks to the LLM, drastically reducing token usage and API costs.</p>
+</section>
+<section id="superior-query-performance" class="level3">
+<h3 class="anchored" data-anchor-id="superior-query-performance">2. Superior Query Performance</h3>
+<p>RAG systems deliver faster responses given that: - The vector search quickly identifies the most relevant content - The LLM only processes small, highly relevant chunks rather than entire documents - The system caches embeddings, making subsequent similar queries even faster</p>
+</section>
+<section id="scalability" class="level3">
+<h3 class="anchored" data-anchor-id="scalability">3. Scalability</h3>
+<p>As your collection grows (imagine adding more specialized packages or books to your library), a vector DB scales gracefully. The search performance remains consistent whether you have 3 books or 300, while direct LLM approaches would require increasingly larger context windows.</p>
+</section>
+<section id="higher-accuracy-for-domain-specific-questions" class="level3">
+<h3 class="anchored" data-anchor-id="higher-accuracy-for-domain-specific-questions">4. Higher Accuracy for Domain-Specific Questions</h3>
+<p>By retrieving specific, relevant context from your documentation, RAG systems provide more precise answers tailored to your exact versions and implementations rather than the LLM’s general knowledge.</p>
+</section>
+</section>
+<section id="try-it-out" class="level1">
+<h1>Try It Out!</h1>
+<p>I’ve designed this system to be as straightforward as possible to setup and use. You can have it running with your own documentation in just a few minutes:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone JavOrraca/Vector-DB-and-RAG-Maker</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> Vector-DB-and-RAG-Maker</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After setting your API key, you’re ready to ingest your R related files and start querying. Check out the full project on GitHub to see how you can transform your technical documentation into an intelligent knowledge base that provides bleeding-edge responses based on your exact resources.</p>
+<p><a href="https://github.com/JavOrraca/Vector-DB-and-RAG-Maker">→ View the Vector DB and RAG Maker on GitHub</a></p>
+</section>
+<section id="about-this-tool" class="level1">
+<h1>About this Tool</h1>
+<p>This tool was built in approximately 90 minutes with Anthropic’s <a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude 3.7 Sonnet and Claude Code</a>. My personal computer is a 2023 MacBook Air, so nothing fancy. I interacted with Claude Code via the macOS Terminal and I incurred $2.28 in API calls to build this entire tool. I consider this first draft of the tool a huge success given the low amount of effort to develop. Please feel free to reach out to me directly on LinkedIn or file a GitHub Issue if you encounter a bug or have feature requests.</p>
+<p>The code for this tool was written in Python and makes use of <a href="https://www.langchain.com/">LangChain</a>, <a href="https://huggingface.co/">Hugging Face</a>, <a href="https://www.trychroma.com/">Chroma</a> (for the vector database), and the CLI tool expects you to supply an Anthropic API key in order to hit Claude 3.7 Sonnet as the external LLM. If you’re not quite set up yet for Anthropic API billing, here is some information on <a href="https://www.anthropic.com/pricing#anthropic-api">Anthropic API pricing</a> and an <a href="https://support.anthropic.com/en/articles/8977456-how-do-i-pay-for-my-api-usage">FAQ on their API billing</a>.</p>
+<p>Perhaps fine-tuning an LLM is the better long-term solution. There are similar tools out there in the wild, this one is just particularly easy for me to follow and hopefully the same for other R and Python programmers. Eventually, I’d like to expand this tool as a general purpose vector DB + RAG maker, but for now, happy Friday, and happy coding!</p>
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

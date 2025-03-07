@@ -9,8 +9,120 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.6.40</generator>
-<lastBuildDate>Mon, 29 Apr 2024 07:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.42</generator>
+<lastBuildDate>Fri, 07 Mar 2025 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Vector DB + RAG Maker Tool</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><img src="https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/retro_cartoon_robot.jpg" class="preview-image img-fluid"></p>
+<section id="boosting-llm-performance-with-vector-db-rag-systems" class="level1">
+<h1>Boosting LLM Performance with Vector DB + RAG Systems</h1>
+<p>If you’re interested in building your own knowledge base from technical documentation, I’ve released a new project on GitHub that might be exactly what you or your enterprise need. My Vector DB and RAG Maker provides a simple yet powerful way to process, store, and query documentation (<em>in my example use case, recent R documentation and tutorials</em>) using vector embeddings and Retrieval-Augmented Generation (or “RAG”).</p>
+</section>
+<section id="benefits-of-vector-db-rag-vs-direct-llm-querying" class="level1">
+<h1>Benefits of Vector DB + RAG vs Direct LLM Querying</h1>
+<p>Let’s say you’re working with specialized documentation (e.g., 30 books on the topics of the R programming language, applied statistics, and machine learning) and you wish your LLM responses had access to this curated information… The benefits of using a vector database with RAG, instead of directly querying an LLM, are substantial:</p>
+<section id="significantly-lower-api-costs" class="level3">
+<h3 class="anchored" data-anchor-id="significantly-lower-api-costs">1. Significantly Lower API Costs</h3>
+<p>Direct LLM queries with large context windows can get expensive, quickly, especially when working with extensive documentation. The vector DB approach only sends the most relevant chunks to the LLM, drastically reducing token usage and API costs.</p>
+</section>
+<section id="superior-query-performance" class="level3">
+<h3 class="anchored" data-anchor-id="superior-query-performance">2. Superior Query Performance</h3>
+<p>RAG systems deliver faster responses given that: - The vector search quickly identifies the most relevant content - The LLM only processes small, highly relevant chunks rather than entire documents - The system caches embeddings, making subsequent similar queries even faster</p>
+</section>
+<section id="scalability" class="level3">
+<h3 class="anchored" data-anchor-id="scalability">3. Scalability</h3>
+<p>As your collection grows (imagine adding more specialized packages or books to your library), a vector DB scales gracefully. The search performance remains consistent whether you have 3 books or 300, while direct LLM approaches would require increasingly larger context windows.</p>
+</section>
+<section id="higher-accuracy-for-domain-specific-questions" class="level3">
+<h3 class="anchored" data-anchor-id="higher-accuracy-for-domain-specific-questions">4. Higher Accuracy for Domain-Specific Questions</h3>
+<p>By retrieving specific, relevant context from your documentation, RAG systems provide more precise answers tailored to your exact versions and implementations rather than the LLM’s general knowledge.</p>
+</section>
+</section>
+<section id="try-it-out" class="level1">
+<h1>Try It Out!</h1>
+<p>I’ve designed this system to be as straightforward as possible to setup and use. You can have it running with your own documentation in just a few minutes:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> clone JavOrraca/Vector-DB-and-RAG-Maker</span>
+<span id="cb1-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> Vector-DB-and-RAG-Maker</span>
+<span id="cb1-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip</span> install <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> requirements.txt</span></code></pre></div>
+<p>After setting your API key, you’re ready to ingest your R related files and start querying. Check out the full project on GitHub to see how you can transform your technical documentation into an intelligent knowledge base that provides bleeding-edge responses based on your exact resources.</p>
+<p><a href="https://github.com/JavOrraca/Vector-DB-and-RAG-Maker">→ View the Vector DB and RAG Maker on GitHub</a></p>
+</section>
+<section id="about-this-tool" class="level1">
+<h1>About this Tool</h1>
+<p>This tool was built in approximately 90 minutes with Anthropic’s <a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude 3.7 Sonnet and Claude Code</a>. My personal computer is a 2023 MacBook Air, so nothing fancy. I interacted with Claude Code via the macOS Terminal and I incurred $2.28 in API calls to build this entire tool. I consider this first draft of the tool a huge success given the low amount of effort to develop. Please feel free to reach out to me directly on LinkedIn or file a GitHub Issue if you encounter a bug or have feature requests.</p>
+<p>The code for this tool was written in Python and makes use of <a href="https://www.langchain.com/">LangChain</a>, <a href="https://huggingface.co/">Hugging Face</a>, <a href="https://www.trychroma.com/">Chroma</a> (for the vector database), and the CLI tool expects you to supply an Anthropic API key in order to hit Claude 3.7 Sonnet as the external LLM. If you’re not quite set up yet for Anthropic API billing, here is some information on <a href="https://www.anthropic.com/pricing#anthropic-api">Anthropic API pricing</a> and an <a href="https://support.anthropic.com/en/articles/8977456-how-do-i-pay-for-my-api-usage">FAQ on their API billing</a>.</p>
+<p>Perhaps fine-tuning an LLM is the better long-term solution. There are similar tools out there in the wild, this one is just particularly easy for me to follow and hopefully the same for other R and Python programmers. Eventually, I’d like to expand this tool as a general purpose vector DB + RAG maker, but for now, happy Friday, and happy coding!</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>python</category>
+  <category>langchain</category>
+  <category>huggingface</category>
+  <category>chromadb</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/</guid>
+  <pubDate>Fri, 07 Mar 2025 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/retro_cartoon_robot.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Big Data, Tiny Laptop</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><img src="https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/Big_Data_Tiny_Laptop.png" class="preview-image img-fluid"></p>
+<section id="doing-more-with-less" class="level1">
+<h1>Doing More with Less</h1>
+<p>Ever wonder how you can work with “bigger than RAM” datasets on your laptop’s memory without needing a supercomputer? Last night, I had a great time presenting a practical approach to modern data science tooling that is reshaping how data is processed, analyzed, and presented, all from your local machine.</p>
+<p>I shared how language-agnostic, open-source data storage and processing frameworks like Apache Parquet, Apache Arrow, DuckDB, and Polars make it possible to handle enormous data efficiently, whether you’re working with SQL, R, Python, and more. These next-gen frameworks let you process huge datasets faster than ever, right on your laptop. For example, I live-demoed how I’m able to read a 1.1 billion row, 22 column, 40GB data set on my MacBook Air in <em>25 milliseconds</em>. 🚀</p>
+</section>
+<section id="other-tools-explored" class="level1">
+<h1>Other Tools Explored</h1>
+<ul>
+<li><a href="https://positron.posit.co/">Positron</a>: A fresh, open-source coding environment purpose-built for data analysis and modeling, including all the best bells and whistles from VS Code and RStudio.</li>
+<li><a href="https://quarto.org/">Quarto</a>: An open source technical publishing system similar in feel to notebooks (like Jupyter Notebooks) for creating beautiful articles, websites, slides, dashboards, and with full support for Python, R, Julia, and Observable</li>
+</ul>
+</section>
+<section id="presentation" class="level1">
+<h1>Presentation</h1>
+<ul>
+<li>Web slides: <a href="http://rrr.is/BigDataTinyLaptop">Big Data, Tiny Laptop</a></li>
+<li>GitHub repo: <a href="https://github.com/JavOrraca/Big-Data-Tiny-Laptop">JavOrraca/Big-Data-Tiny-Laptop</a></li>
+</ul>
+<p>This event was a collaborative effort between <a href="https://www.meetup.com/tech-by-the-beach/">Tech by the Beach</a>, <a href="https://www.meetup.com/socal-rug/">SoCal R Users Group</a>, and <a href="https://www.csulb.edu/cob-graduate-programs/ms-programs/ms-information-systems">CSULB’s Master of Science in Information Systems (MSIS) program</a>.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>positron</category>
+  <category>arrow</category>
+  <category>duckdb</category>
+  <category>polars</category>
+  <category>quarto</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/</guid>
+  <pubDate>Thu, 30 Jan 2025 08:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/Big_Data_Tiny_Laptop.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
 <item>
   <title>ETL with Arrow &amp; DuckDB</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -6212,61 +6324,6 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <guid>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</guid>
   <pubDate>Fri, 03 Jul 2020 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/images/shiny_logo.png" medium="image" type="image/png" height="69" width="144"/>
-</item>
-<item>
-  <title>Testing dplyr 1.0.0</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/2020-06-20-dplyr-1.0.0.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>I had read about the new <code>across()</code> function hype and now I get it… No more <code>mutate_at()</code> or <code>summarise_at()</code> with the cryptic list-lambdas. As the dplyr documentation states, “<code>across()</code> supersedes the family of”scoped variants” like <code>summarise_at()</code>, <code>summarise_if()</code>, and <code>summarise_all()</code>.”</p>
-<p>Below is an example highlighting the new <code>across()</code> syntax meant to be used within a <code>mutate()</code> function. I tried this on a few columns of the mtcars data set with dplyr’s <code>case_when()</code> a la SQL CASE_WHEN (as opposed to nesting multiple <code>if_else()</code> statements to the point of confusion!). The dplyr changes are subtle but will definitely streamline my data wrangling.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/images/dplyr_1.png" class="img-fluid figure-img"></p>
-<figcaption>dplyr 1.0.0’s new across() function</figcaption>
-</figure>
-</div>
-<p>Source:<br> * <a href="https://dplyr.tidyverse.org/">dplyr, a core tidyverse package</a></p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>tidyverse</category>
-  <category>dplyr</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/2020-06-20-dplyr-1.0.0.html</guid>
-  <pubDate>Sat, 20 Jun 2020 07:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-06-20-dplyr-1.0.0/images/dplyr.jpeg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Lying with Statistics</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Lets explore four plots and see how we can #LieWithStatistics…</p>
-<p><strong>Plot 1</strong>: Police killings by date, by race <br>General observation: Police kill more white people than black people<br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg" class="img-fluid" alt="Police Killings, Plot 1, made with R’s ggplot2"></p>
-<p><strong>Plot 2</strong>: Police killing boxplot showing murder rates, by race, by police department <br><strong>General explanation and takeaway</strong>: The dots on each boxplot show the statistical outliers, box plot lines extend out to the “min” and “max”, and the box lines (from bottom to top of each box) represent the first quartile (25th percentile), median (50th percentile), and third quartile (75th percentile)<br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_2.jpeg" class="img-fluid" alt="Police Killings, Plot 2, made with R’s ggplot2"></p>
-<p><strong>Plot 3</strong>: Police killing boxplot, now log-transforming the murder rates to more easily identify statistical differences, by race <br><strong>General explanation and takeaway</strong>: Log-transforming data points for visualization or modeling purposes is a technique by which you can <em>smooth</em> observed data making it more robust (or resistant) to outliers. I effectively re-wrote the murder rates to show exponential relativity. <br><strong>Important caveat</strong>: Are Native Americans more likely to die by police than other races? Sure looks like it… <em>but see Plot 4 for more thoughts</em><br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_3.jpeg" class="img-fluid" alt="Police Killings, Plot 3, made with R’s ggplot2"></p>
-<p><strong>Plot 4</strong>: Police killing boxplot, now log-transforming the murder rates using a log base 10 (easier interpretability) and “fixing” the Native American data points causing a misleading assumption in Plot 3, i.e., Native American death rates appeared much higher than others in Plot 3 given the fact that log(0) = 1. <br><strong>General takeaway</strong>: There were such few Native American data points that log-transforming all of the zeroes was unintentionally bastardizing the analysis. It would appear black people are almost an order of magnitude more likely to be killed by police than white people.<br><br> <img src="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_3_modified.png" class="img-fluid" alt="Police Killings, Plot 4, made with R’s ggplot2"></p>
-<p>I do not seek to answer questions of “why” systemic injustice exists in the US, but I wanted to analyze police killing data and share these dialectical investigations.</p>
-<p>Source:<br> * <a href="https://mappingpoliceviolence.org/">Samuel Sinyangwe &amp; the Mapping Police Violence team</a></p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>statistics</category>
-  <category>ggplot2</category>
-  <category>visualizations</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/2020-04-19-Police-Killings.html</guid>
-  <pubDate>Sun, 19 Apr 2020 07:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-04-19-Police-Killings/images/Police_Killings_1.jpeg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

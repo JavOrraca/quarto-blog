@@ -1,0 +1,27 @@
+---
+title: "Big Data, Tiny Laptop"
+description: "Presentation materials from last night's Tech by the Beach x SoCal RUG x CSULB meetup"
+date: 01-30-2025
+categories: [positron, arrow, duckdb, polars, quarto]
+image: Big_Data_Tiny_Laptop.png
+---
+
+![](Big_Data_Tiny_Laptop.png){.preview-image}
+
+# Doing More with Less
+
+Ever wonder how you can work with "bigger than RAM" datasets on your laptop’s memory without needing a supercomputer? Last night, I had a great time presenting a practical approach to modern data science tooling that is reshaping how data is processed, analyzed, and presented, all from your local machine.
+
+I shared how language-agnostic, open-source data storage and processing frameworks like Apache Parquet, Apache Arrow, DuckDB, and Polars make it possible to handle enormous data efficiently, whether you’re working with SQL, R, Python, and more. These next-gen frameworks let you process huge datasets faster than ever, right on your laptop. For example, I live-demoed how I'm able to read a 1.1 billion row, 22 column, 40GB data set on my MacBook Air in _25 milliseconds_. 🚀
+
+# Other Tools Explored
+
+- [Positron](https://positron.posit.co/): A fresh, open-source coding environment purpose-built for data analysis and modeling, including all the best bells and whistles from VS Code and RStudio.
+- [Quarto](https://quarto.org/): An open source technical publishing system similar in feel to notebooks (like Jupyter Notebooks) for creating beautiful articles, websites, slides, dashboards, and with full support for Python, R, Julia, and Observable
+
+# Presentation
+
+- Web slides: [Big Data, Tiny Laptop](http://rrr.is/BigDataTinyLaptop)
+- GitHub repo: [JavOrraca/Big-Data-Tiny-Laptop](https://github.com/JavOrraca/Big-Data-Tiny-Laptop)
+
+This event was a collaborative effort between [Tech by the Beach](https://www.meetup.com/tech-by-the-beach/), [SoCal R Users Group](https://www.meetup.com/socal-rug/), and [CSULB’s Master of Science in Information Systems (MSIS) program](https://www.csulb.edu/cob-graduate-programs/ms-programs/ms-information-systems).
