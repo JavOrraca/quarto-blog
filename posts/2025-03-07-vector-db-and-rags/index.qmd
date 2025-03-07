@@ -1,5 +1,5 @@
 ---
-title: "Vector DB + RAG Maker Tool"
+title: "Vector DB + RAG Maker"
 description: "Introducing a vector database and Retrieval-Augmented Generation ('RAG') system for coding in R, designed to provide bleeding-edge responses from curated documentation."
 date: 03-07-2025
 categories: [python, langchain, huggingface, chromadb]
@@ -10,7 +10,7 @@ image: retro_cartoon_robot.jpg
 
 # Boosting LLM Performance with Vector DB + RAG Systems
 
-If you're interested in building your own knowledge base from technical documentation, I've released a new project on GitHub that might be exactly what you or your enterprise need. My Vector DB and RAG Maker provides a simple yet powerful way to process, store, and query documentation (_in my example use case, recent R documentation and tutorials_) using vector embeddings and Retrieval-Augmented Generation (or "RAG").
+If you're looking to create your own knowledge base from technical documentation, check out my [newly released GitHub project](https://github.com/JavOrraca/Vector-DB-and-RAG-Maker){target="_blank"}. My Vector DB and RAG Maker tool offers a straightforward yet powerful method to process, store, and query documentation using vector embeddings and Retrieval-Augmented Generation ("RAG"). In my example, I apply it to recent R documentation and tutorials, making it an ideal solution for individuals and enterprises alike.
 
 # Benefits of Vector DB + RAG vs Direct LLM Querying
 
@@ -47,7 +47,7 @@ pip install -r requirements.txt
 
 After setting your API key, you're ready to ingest your R related files and start querying. Check out the full project on GitHub to see how you can transform your technical documentation into an intelligent knowledge base that provides bleeding-edge responses based on your exact resources.
 
-[→ View the Vector DB and RAG Maker on GitHub](https://github.com/JavOrraca/Vector-DB-and-RAG-Maker)
+- Vector DB and RAG Maker: [JavOrraca/Vector-DB-and-RAG-Maker](https://github.com/JavOrraca/Vector-DB-and-RAG-Maker){target="_blank"}
 
 # About this Tool
 

@@ -12,7 +12,7 @@
 <generator>quarto-1.6.42</generator>
 <lastBuildDate>Fri, 07 Mar 2025 08:00:00 GMT</lastBuildDate>
 <item>
-  <title>Vector DB + RAG Maker Tool</title>
+  <title>Vector DB + RAG Maker</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/</link>
   <description><![CDATA[ 
@@ -23,7 +23,7 @@
 <p><img src="https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/retro_cartoon_robot.jpg" class="preview-image img-fluid"></p>
 <section id="boosting-llm-performance-with-vector-db-rag-systems" class="level1">
 <h1>Boosting LLM Performance with Vector DB + RAG Systems</h1>
-<p>If you’re interested in building your own knowledge base from technical documentation, I’ve released a new project on GitHub that might be exactly what you or your enterprise need. My Vector DB and RAG Maker provides a simple yet powerful way to process, store, and query documentation (<em>in my example use case, recent R documentation and tutorials</em>) using vector embeddings and Retrieval-Augmented Generation (or “RAG”).</p>
+<p>If you’re looking to create your own knowledge base from technical documentation, check out my <a href="https://github.com/JavOrraca/Vector-DB-and-RAG-Maker" target="_blank">newly released GitHub project</a>. My Vector DB and RAG Maker tool offers a straightforward yet powerful method to process, store, and query documentation using vector embeddings and Retrieval-Augmented Generation (“RAG”). In my example, I apply it to recent R documentation and tutorials, making it an ideal solution for individuals and enterprises alike.</p>
 </section>
 <section id="benefits-of-vector-db-rag-vs-direct-llm-querying" class="level1">
 <h1>Benefits of Vector DB + RAG vs Direct LLM Querying</h1>
@@ -60,7 +60,9 @@ font-style: inherit;">pip</span> install <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-r</span> requirements.txt</span></code></pre></div>
 <p>After setting your API key, you’re ready to ingest your R related files and start querying. Check out the full project on GitHub to see how you can transform your technical documentation into an intelligent knowledge base that provides bleeding-edge responses based on your exact resources.</p>
-<p><a href="https://github.com/JavOrraca/Vector-DB-and-RAG-Maker">→ View the Vector DB and RAG Maker on GitHub</a></p>
+<ul>
+<li>Vector DB and RAG Maker: <a href="https://github.com/JavOrraca/Vector-DB-and-RAG-Maker" target="_blank">JavOrraca/Vector-DB-and-RAG-Maker</a></li>
+</ul>
 </section>
 <section id="about-this-tool" class="level1">
 <h1>About this Tool</h1>
