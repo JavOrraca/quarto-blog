@@ -23,9 +23,10 @@ Python and R are open-source programming languages for data analysis, applied st
 * [Pandas](https://pandas.pydata.org/): This is the most popular package for data manipulation and analysis with extended operations available for tabular and time series data
 * [uv](https://docs.astral.sh/uv/guides/install-python/): A modern, high-performance Python package manager / installer written in Rust that serves as a drop-in replacement for traditional Python package management tools like `pip`
 * [Narwhals](https://narwhals-dev.github.io/narwhals/): Extremely lightweight compatibility layer between dataframe libraries with support for pandas, Polars, PyArrow, DuckDB, Ibis, Modin, Vaex, and anything which implements the DataFrame Interchange Protocol
-* [Matplotlib](https://matplotlib.org/): A comprehensive library for creating static, animated, and interactive visualizations in Python
-* [Great Tables](https://posit-dev.github.io/great-tables/articles/intro.html): Absolutely delightful table-making in Python
 * [scikit-learn](https://scikit-learn.org/stable/): Built on top of NumPy, SciPy, and matplotlib, "sklearn" makes the development of predictive analysis workflows a simple and reproducible process
+* [langchain](https://python.langchain.com/): Simplify the creation of applications powered by LLMs, offering modular components for prompt management, memory, and chaining operations
+* [huggingface](https://huggingface.co/): A comprehensive platform and community dedicated to advancing state-of-the-art machine learning, offering tools, datasets, and models for seamless integration into applications
+* [chromadb](https://docs.trychroma.com/): Chroma is the open-source AI application database that makes it easy to build LLM apps by making knowledge, facts, and skills pluggable for LLMs
 
 ## R Books: Classics
 
