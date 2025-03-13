@@ -23,6 +23,7 @@ Direct LLM queries with large context windows can get expensive, quickly, especi
 ### 2. Superior Query Performance
 
 RAG systems deliver faster responses given that:
+
 - The vector search quickly identifies the most relevant content
 - The LLM only processes small, highly relevant chunks rather than entire documents
 - The system caches embeddings, making subsequent similar queries even faster

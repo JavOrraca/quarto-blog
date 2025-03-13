@@ -34,7 +34,12 @@
 </section>
 <section id="superior-query-performance" class="level3">
 <h3 class="anchored" data-anchor-id="superior-query-performance">2. Superior Query Performance</h3>
-<p>RAG systems deliver faster responses given that: - The vector search quickly identifies the most relevant content - The LLM only processes small, highly relevant chunks rather than entire documents - The system caches embeddings, making subsequent similar queries even faster</p>
+<p>RAG systems deliver faster responses given that:</p>
+<ul>
+<li>The vector search quickly identifies the most relevant content</li>
+<li>The LLM only processes small, highly relevant chunks rather than entire documents</li>
+<li>The system caches embeddings, making subsequent similar queries even faster</li>
+</ul>
 </section>
 <section id="scalability" class="level3">
 <h3 class="anchored" data-anchor-id="scalability">3. Scalability</h3>
