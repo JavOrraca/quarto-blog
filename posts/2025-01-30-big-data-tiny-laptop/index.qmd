@@ -19,9 +19,11 @@ I shared how language-agnostic, open-source data storage and processing framewor
 - [Positron](https://positron.posit.co/): A fresh, open-source coding environment purpose-built for data analysis and modeling, including all the best bells and whistles from VS Code and RStudio.
 - [Quarto](https://quarto.org/): An open source technical publishing system similar in feel to notebooks (like Jupyter Notebooks) for creating beautiful articles, websites, slides, dashboards, and with full support for Python, R, Julia, and Observable
 
-# Presentation
+# Embedded Presentation
 
-- Web slides: [Big Data, Tiny Laptop](http://rrr.is/BigDataTinyLaptop)
+<iframe width="780" height="500" src="Big_Data_Tiny_Laptop.html" title="Big Data, Tiny Laptop"></iframe>
+
+- Fullscreen web slides: [Big Data, Tiny Laptop](http://rrr.is/BigDataTinyLaptop)
 - GitHub repo: [JavOrraca/Big-Data-Tiny-Laptop](https://github.com/JavOrraca/Big-Data-Tiny-Laptop)
 
 This event was a collaborative effort between [Tech by the Beach](https://www.meetup.com/tech-by-the-beach/), [SoCal R Users Group](https://www.meetup.com/socal-rug/), and [CSULB’s Master of Science in Information Systems (MSIS) program](https://www.csulb.edu/cob-graduate-programs/ms-programs/ms-information-systems).

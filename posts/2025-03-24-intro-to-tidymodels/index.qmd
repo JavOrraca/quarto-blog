@@ -1,0 +1,44 @@
+---
+title: "Intro to Tidymodels"
+description: "Presentation materials from a recent talk I gave at Loyola Marymount University"
+date: 03-24-2025
+categories: [tidymodels, positron]
+image: intro_to_tidymodels.png
+---
+
+![](intro_to_tidymodels.png){.preview-image}
+
+# About Tidymodels
+
+The [tidymodels](https://tidymodels.org/) framework for R is a collection of packages that brings tidy principles and a unified syntax to machine learning ("ML") for R programmers, enabling end-to-end reproducibility for your ML workflows. I've been using this framework for five years and it continues to improve. Posit PBC funds a software engineering team dedicated to the development of this framework so its packages are feature-rich, regularly maintained, and current with ML trends. For Python users unfamiliar with R tools, the `tidymodels` framework is very similar to Python's `scikit-learn`.
+
+The core `tidymodels` packages include the following:
+
+* [rsample](https://rsample.tidymodels.org/): provides infrastructure for efficient data splitting and resampling
+
+* [parsnip](https://parsnip.tidymodels.org/): a tidy, unified interface to models that can be used to try a range of models without getting bogged down in the syntactical minutiae of the underlying packages
+
+* [recipes](https://recipes.tidymodels.org/): a tidy interface to data pre-processing tools for feature engineering
+
+* [workflows](https://workflows.tidymodels.org/): expands the traditional model-only recipe to a much more holistic blueprint for pre-processing, modeling, post-processing, and evaluation
+
+* [dials](https://dials.tidymodels.org/): creates and manages tuning parameters and parameter grids
+
+* [tune](https://tune.tidymodels.org/): helps you optimize the hyperparameters of your model and pre-processing steps
+
+* [yardstick](https://yardstick.tidymodels.org/): measures the effectiveness of models using performance metrics
+
+* [broom](https://broom.tidymodels.org/): converts the information in common statistical R objects into user-friendly, predictable formats
+
+I was thrilled to present about `tidymodels` last week to the _Department of Mathematics, Statistics and Data Science_ at Loyola Marymount University. Their students and faculty were engaging and I had a great time covering a logistic regression problem with this framework. 
+
+# Other Tools Explored
+
+- [Positron](https://positron.posit.co/): A fresh, open-source coding environment purpose-built for data analysis and modeling, including all the best bells and whistles from VS Code and RStudio.
+
+# Embedded Presentation
+
+<iframe width="780" height="500" src="intro_to_tidymodels.html" title="Intro to Tidymodels"></iframe>
+
+- Fullscreen web slides: [Intro to Tidymodels](http://rrr.is/IntroToTidymodels)
+- GitHub repo: [JavOrraca/intro-to-tidymodels](https://github.com/JavOrraca/intro-to-tidymodels/)

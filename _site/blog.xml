@@ -10,7 +10,58 @@
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
 <generator>quarto-1.6.42</generator>
-<lastBuildDate>Fri, 07 Mar 2025 08:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 24 Mar 2025 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Intro to Tidymodels</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2025-03-24-intro-to-tidymodels/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><img src="https://www.javierorracadeatcu.com/posts/2025-03-24-intro-to-tidymodels/intro_to_tidymodels.png" class="preview-image img-fluid"></p>
+<section id="about-tidymodels" class="level1">
+<h1>About Tidymodels</h1>
+<p>The <a href="https://tidymodels.org/">tidymodels</a> framework for R is a collection of packages that brings tidy principles and a unified syntax to machine learning (“ML”) for R programmers, enabling end-to-end reproducibility for your ML workflows. I’ve been using this framework for five years and it continues to improve. Posit PBC funds a software engineering team dedicated to the development of this framework so its packages are feature-rich, regularly maintained, and current with ML trends. For Python users unfamiliar with R tools, the <code>tidymodels</code> framework is very similar to Python’s <code>scikit-learn</code>.</p>
+<p>The core <code>tidymodels</code> packages include the following:</p>
+<ul>
+<li><p><a href="https://rsample.tidymodels.org/">rsample</a>: provides infrastructure for efficient data splitting and resampling</p></li>
+<li><p><a href="https://parsnip.tidymodels.org/">parsnip</a>: a tidy, unified interface to models that can be used to try a range of models without getting bogged down in the syntactical minutiae of the underlying packages</p></li>
+<li><p><a href="https://recipes.tidymodels.org/">recipes</a>: a tidy interface to data pre-processing tools for feature engineering</p></li>
+<li><p><a href="https://workflows.tidymodels.org/">workflows</a>: expands the traditional model-only recipe to a much more holistic blueprint for pre-processing, modeling, post-processing, and evaluation</p></li>
+<li><p><a href="https://dials.tidymodels.org/">dials</a>: creates and manages tuning parameters and parameter grids</p></li>
+<li><p><a href="https://tune.tidymodels.org/">tune</a>: helps you optimize the hyperparameters of your model and pre-processing steps</p></li>
+<li><p><a href="https://yardstick.tidymodels.org/">yardstick</a>: measures the effectiveness of models using performance metrics</p></li>
+<li><p><a href="https://broom.tidymodels.org/">broom</a>: converts the information in common statistical R objects into user-friendly, predictable formats</p></li>
+</ul>
+<p>I was thrilled to present about <code>tidymodels</code> last week to the <em>Department of Mathematics, Statistics and Data Science</em> at Loyola Marymount University. Their students and faculty were engaging and I had a great time covering a logistic regression problem with this framework.</p>
+</section>
+<section id="other-tools-explored" class="level1">
+<h1>Other Tools Explored</h1>
+<ul>
+<li><a href="https://positron.posit.co/">Positron</a>: A fresh, open-source coding environment purpose-built for data analysis and modeling, including all the best bells and whistles from VS Code and RStudio.</li>
+</ul>
+</section>
+<section id="embedded-presentation" class="level1">
+<h1>Embedded Presentation</h1>
+<iframe width="780" height="500" src="intro_to_tidymodels.html" title="Intro to Tidymodels">
+</iframe>
+<ul>
+<li>Fullscreen web slides: <a href="http://rrr.is/IntroToTidymodels">Intro to Tidymodels</a></li>
+<li>GitHub repo: <a href="https://github.com/JavOrraca/intro-to-tidymodels/">JavOrraca/intro-to-tidymodels</a></li>
+</ul>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>tidymodels</category>
+  <category>positron</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2025-03-24-intro-to-tidymodels/</guid>
+  <pubDate>Mon, 24 Mar 2025 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2025-03-24-intro-to-tidymodels/intro_to_tidymodels.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
 <item>
   <title>Vector DB + RAG Maker</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -109,10 +160,12 @@ font-style: inherit;">-r</span> requirements.txt</span></code></pre></div>
 <li><a href="https://quarto.org/">Quarto</a>: An open source technical publishing system similar in feel to notebooks (like Jupyter Notebooks) for creating beautiful articles, websites, slides, dashboards, and with full support for Python, R, Julia, and Observable</li>
 </ul>
 </section>
-<section id="presentation" class="level1">
-<h1>Presentation</h1>
+<section id="embedded-presentation" class="level1">
+<h1>Embedded Presentation</h1>
+<iframe width="780" height="500" src="Big_Data_Tiny_Laptop.html" title="Big Data, Tiny Laptop">
+</iframe>
 <ul>
-<li>Web slides: <a href="http://rrr.is/BigDataTinyLaptop">Big Data, Tiny Laptop</a></li>
+<li>Fullscreen web slides: <a href="http://rrr.is/BigDataTinyLaptop">Big Data, Tiny Laptop</a></li>
 <li>GitHub repo: <a href="https://github.com/JavOrraca/Big-Data-Tiny-Laptop">JavOrraca/Big-Data-Tiny-Laptop</a></li>
 </ul>
 <p>This event was a collaborative effort between <a href="https://www.meetup.com/tech-by-the-beach/">Tech by the Beach</a>, <a href="https://www.meetup.com/socal-rug/">SoCal R Users Group</a>, and <a href="https://www.csulb.edu/cob-graduate-programs/ms-programs/ms-information-systems">CSULB’s Master of Science in Information Systems (MSIS) program</a>.</p>
@@ -6309,28 +6362,6 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <guid>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</guid>
   <pubDate>Sun, 13 Sep 2020 07:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/methods_bites.png" medium="image" type="image/png" height="167" width="144"/>
-</item>
-<item>
-  <title>Shiny Voice-Activated input</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Hey R Shiny users, want to make your Shiny apps voice-interactive? For example, “Click on Product Toy-2A and then drill-down by Region.” Ummm, yes please. Pretty neat stuff made possible with the <code>heyshiny</code> package. “The <code>heyshiny</code> package provides a new Shiny input, the <code>speechInput()</code>. This new input allows your Shiny app to listen to the microphone, recognize the speech, and return it as text.”</p>
-<p>The main caveat with this package is that it is based on the annyang JavaScript library and therefore requires that 1) you’re online and 2) using a browser that supports speech recognition (I tried this on Chrome and works fine). It’s not on CRAN but check out the GitHub page, below. Here’s an example if you’re getting set up, pulled from their GitHub repo:</p>
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/images/heyshiny_code.png" class="img-fluid"></p>
-<p>Source:<br> * <a href="https://github.com/jcrodriguez1989/heyshiny">heyshiny on GitHub</a></p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>shiny</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/2020-07-03-Shiny-Voice-Input.html</guid>
-  <pubDate>Fri, 03 Jul 2020 07:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-07-03-Shiny-Voice-Input/images/shiny_logo.png" medium="image" type="image/png" height="69" width="144"/>
 </item>
 </channel>
 </rss>
