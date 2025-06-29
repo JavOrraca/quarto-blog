@@ -8,17 +8,23 @@ title-block-banner: false
 
 ## Professional
 
-My career includes 20 years of individual contributor and leadership roles across the spectrum of data science, financial modeling, and business analytics for EY, PG&E, KPMG, Bloomreach, and Centene. I use tools like R, SQL, Python, git, VS Code, RStudio Server, Databricks, and Snowflake on a daily basis. My teams apply analytics and data science techniques to empower decision makers with AI tools and prescriptive business insights. As part of Centene's AI Center of Excellence, I productionize data solutions (automation pipelines, models, web apps, simulation studies, REST APIs, etc.) to support Centene's Quality line of business.
+I’m a data science and GenAI architect with 20 years of hands-on and executive experience at EY, PG&E, KPMG, Bloomreach, and Centene. My teams turn raw data into production-grade AI systems, deploying end-to-end ETL and inference pipelines, simulations and predictive models, interactive web apps, and low-latency APIs that steer strategy for Medicare, Medicaid, and Marketplace programs.
+
+Beyond the day job, I chair the Southern California R Users Group (SoCal RUG), a nonprofit that hosts monthly meetups on R, Python, Julia, all things data science, and GenAI. SoCal RUG also partners with the University of California and Chapman University to deliver SQL/R/Python bootcamps, git workshops, and hackathon support to data science graduate programs.
 
 ## Data Science & MLOps Toolkit
 
-- `R`: tidyverse, Quarto, XGBoost, LightGBM, Prophet, tidymodels, Torch, Keras + TensorFlow, Shiny, Plotly, Leaflet, webR, devtools, usethis, dbplyr, cli, pkgdown, renv, and more
+- `GenAI & LLMs`: Databricks, HuggingFace, Ollama (local development), Cline (open-source autonomous AI coding agent), vector DB + RAG (with LangChain / LangGraph, ChromaDB, DuckDB, Quiver, ragnar), MCP server and agent development, Microsoft's MarkItDown
 
-- `DevOps + MLOps`: GitLab (+ CI/CD), GitHub (+ Actions/Workflows), Databricks (+ MLFlow), Docker, Posit Connect, Kubernetes, Rancher, Ubuntu, Bash, Hugging Face, LangChain, Chroma DB
+- `ML & Analytics`:
+  - `R`: tidyverse, tidymodels, XGBoost, Torch, TensorFlow, Keras, Shiny, leaflet, plotly, Quarto, ellmer, dbplyr, devtools, webR, DuckDB, and more
+  - `Python`: pandas, scikit-learn, PyTorch, Streamlit, PySpark, MLflow, Polars, PyArrow, Shiny for Python, plotly, narwhals, Anyscale Ray, and more
 
-- `Data`: Snowflake, Teradata, Databricks Unity Catalog, Apache Arrow, Apache Parquet, DuckDB, Polars, AWS S3, AWS Redshift, NetApp StorageGRID, Google BigQuery
+- `Data Engineering`: Databricks + Unity Catalog, Snowflake, Redshift, Google BigQuery, Teradata, Apache Arrow & Parquet & ADBC, DuckDB, Iceberg, Polars, AWS S3
 
-- `Other`: Python, Jupyter Lab, Agile Scrum (& the tools that surround it, e.g., Jira, Miro, etc.), ServiceNow, Netlify, Alation, Microsoft Excel
+- `DevOps + MLOps`: git, CI/CD workflows (GitLab / GitHub), MLflow, Docker, Kubernetes, Posit Connect, Rancher
+
+- `Other`: Jupyter Lab, Agile Scrum (& the tools surrounding it, e.g., Jira, Miro, etc.), ServiceNow, Netlify, Alation (data lineage), Excel (_still_ a secret weapon)
 
 ## Media + Presentations
 

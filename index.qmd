@@ -20,19 +20,19 @@ comments: false
 page-layout: full
 ---
 
-I'm a data scientist and machine learning engineer with experiences in analytics, financial modeling, and developing AI solutions. For a living, I get to solve problems with data... **_Life is good!_**
+Hi, I'm Javier! 👋 I’m a data science leader, open-source evangelist, and GenAI engineer who thrives at the intersection of machine learning, modeling, experimentation, and large-scale AI delivery. **_My North Star is simple: Solve real problems with data and share the playbook._**
 
 ## Data Science & MLOps
 
-I initially got into data science to advance my financial modeling skills and found myself developing time series forecasting models with algorithms like [XGBoost](https://xgboost.readthedocs.io/en/stable/) and [Prophet](https://facebook.github.io/prophet/). Shortly after pivoting to healthcare insurance, I became enamored with developing ultra-fast, enterprise-grade [Shiny](https://shiny.rstudio.com/) web apps.
+I first honed my data science skills by enhancing valuation and forecasting models with algos like ARIMA and XGBoost. After moving into health tech, I discovered a passion for building ultra-fast, enterprise-grade Shiny web apps.
 
-Today, I lead machine learning initiatives that enhance healthcare quality and customer experience for over 28 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, and equip our data professionals with tutorials and technical documentation.
+Today, I spearhead machine learning and GenAI initiatives at Centene that enhance healthcare quality and customer experience for over 28 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, document best practices, and publish packages and tutorials that reach 1,000+ data scientists, analysts, and engineers.
 
-On any given day, you'll find me working with the [RStudio IDE](https://posit.co/downloads/), [Databricks](https://www.databricks.com/), [Posit Connect](https://posit.co/products/enterprise/connect/), [JupyterHub](https://jupyter.org/hub), [Docker](https://www.docker.com/), [tidymodels](https://www.tidymodels.org/), [Arrow](https://arrow.apache.org/), [DuckDB](https://duckdb.org/), and more.
+On any given day, you’ll catch me deep in [Databricks](https://www.databricks.com/), [Positron](https://positron.posit.co/) (an OSS VS Code fork), [RStudio IDE](https://posit.co/downloads/), [JupyterHub](https://jupyter.org/hub), [Posit Connect](https://posit.co/products/enterprise/connect/), and the Linux CLI wiring together [Arrow](https://arrow.apache.org/), [DuckDB](https://duckdb.org/), model-serving LLM endpoints, data pipelines, and [Docker](https://www.docker.com/)-ized services.
 
 ## Languages
 
-My daily languages include R, Python, SQL, and Bash, but my preferred language is R. I use R for a wide range of work including ML/AI model development, package creation, communication with data warehouses and REST APIs, automation pipelines, interactive apps, and websites (for example, this site was built with R + [Quarto](https://quarto.org/)).
+My daily languages include R, Python, SQL, and Bash, but my preferred language is R. I use R for a wide range of work including ML/AI model development, package creation, communication with data warehouses and REST APIs, vector DB + RAG solutions, automation pipelines, interactive apps, and websites (for example, this site was built with R + [Quarto](https://quarto.org/)).
 
 ## Data Science Communities
 

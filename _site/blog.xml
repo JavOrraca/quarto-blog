@@ -9,13 +9,14 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.6.42</generator>
+<generator>quarto-1.7.32</generator>
 <lastBuildDate>Mon, 24 Mar 2025 07:00:00 GMT</lastBuildDate>
 <item>
   <title>Intro to Tidymodels</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2025-03-24-intro-to-tidymodels/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -67,6 +68,7 @@
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2025-03-07-vector-db-and-rags/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -147,6 +149,7 @@ font-style: inherit;">-r</span> requirements.txt</span></code></pre></div>
 
 
 
+
 <p><img src="https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/Big_Data_Tiny_Laptop.png" class="preview-image img-fluid"></p>
 <section id="doing-more-with-less" class="level1">
 <h1>Doing More with Less</h1>
@@ -188,6 +191,7 @@ font-style: inherit;">-r</span> requirements.txt</span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -328,6 +332,7 @@ font-style: inherit;">!</span>pip install pyarrow</span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -1590,6 +1595,7 @@ font-style: inherit;">8.7</span>   </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/</link>
   <description><![CDATA[ 
+
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
 <script type="module" id="qwebr-monaco-editor-init">
 
@@ -1796,6 +1802,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 
 
 
+
 <section id="background" class="level1">
 <h1>Background</h1>
 <p>The Southern California R Users Group (“SoCal RUG”) is one of my favorite organizations - Not only is there a lot to be learned from regularly attending our events, it’s a great place to meet and network with other passionate data scientists in the community.</p>
@@ -1880,6 +1887,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2023-01-15-r-goodies-for-2023/2023-01-15-r-goodies-for-2023.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -3334,6 +3342,7 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
 
 
 
+
 <section id="background" class="level1">
 <h1>Background</h1>
 <p>I’ve been attending Posit’s weekly <a href="https://posit.co/data-science-hangout/">Data Science Hangout</a> since 2021 and it’s been one of my favorite standing weekly meetings. This is a great platform to hear how data science leaders are using R to drive business results and the host, Rachael Dempsey, does an excellent job fostering an inclusive and open culture. I was thrilled to be the guest several weeks ago in Dec 2022. 🚀</p>
@@ -3361,6 +3370,7 @@ font-style: inherit;">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -4045,6 +4055,7 @@ font-style: inherit;">2.2</span>              </span></code></pre></div>
 
 
 
+
 <p>Torch for R… wow! 🔥🔥🔥 I was recently having a discussion with a coworker about the benefits of Torch, especially the power of training one global model capable of hierarchical projections (awesome for time series) and predicting multiple group-specific regressions. I went down a Googling rabbit hole last weekend and came across some amazing articles by Sigrid Keydana (see links below) introducing <code>torch</code> to the R community and also recently releasing <code>luz</code>, a high-level R interface to Torch (“<code>luz</code> is to <code>torch</code> what <code>Keras</code> is to <code>TensorFlow</code>”).</p>
 <p>RStudio’s MLVerse team is doing really exciting things for the R machine learning and AI community. With <code>torch</code>, I no longer need to launch a conda environment for complex NNs (although having Python on your system is always handy 😅). And even better, “<code>torch</code> for R is built directly on top of <code>libtorch</code>, a C++ library that provides the tensor-computation and automatic-differentiation capabilities essential to building neural networks.” If you’re looking for fast NNs and deep learning solutions within the <strong>#rstats</strong> framework, give these packages a try. Happy Friday and happy learning! 🤓📚</p>
 <section id="sources" class="level2">
@@ -4072,6 +4083,7 @@ font-style: inherit;">2.2</span>              </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5572,6 +5584,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
 
 
 
+
 <p>This is quite the insightful read on the history of the dataframe. From its origins in the S programming language, to R, to the <code>pandas</code> library for Python (to the <code>tibble</code> for R!)… I couldn’t imagine doing my work without this fundamental data structure, but will it really be defined out of existence? See below link for an excellent overview by <a href="https://devin-petersohn.medium.com/">Devin Petersohn</a>:</p>
 <p><img src="https://www.javierorracadeatcu.com/posts/2021-05-24-dataframe/images/dataframe.jpeg" class="img-fluid"></p>
 <p>Source:</p>
@@ -5594,6 +5607,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-05-03-DT/2021-05-03-DT.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5622,6 +5636,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2021-01-24-rstudio-global/2021-01-24-rstudio-global.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6168,6 +6183,7 @@ font-style: inherit;">grid =</span> glmnet_grid)</span></code></pre></div>
 
 
 
+
 <p>Feel like freshening up your RStudio IDE? Check out the <code>rsthemes</code> package by <a href="https://www.linkedin.com/in/garrick-aden-buie/">Garrick Aden-Buie</a> to explore and apply different themes. For the last year or so, I’ve been enjoying the “base16 Ashes” theme at work and home. I prefer the “One Dark” theme on Atom / Juno for my Julia setup, But I’m starting to feel like I should use “One Dark” across the board. 🤓</p>
 <p>This package is not yet on CRAN, so you’ll have to install via <code>devtools::install_github()</code>. See installation and usage code below, pulled from the <code>rsthemes</code> GitHub:</p>
 <div class="cell">
@@ -6264,6 +6280,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p>Killing a few birds with one stone and getting ready for 2021… <br><br>1) Getting better at Linux / shell commands, <br> 2) Learning Julia (see my Resources tab for some great Julia starter links!), <br> 3) Doing it all on a Raspberry Pi 😜 Happy holidays and Happy New Years to all!</p>
 <p>Below are some pics of my current progress.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -6308,6 +6325,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
 
 
 
+
 <p>Package development should be on every R programmer’s radar in 2021, especially with all the free information available online! Here’s an excellent, concise, ultra-bookmark-worthy tutorial by Shannon Pileggi, PhD, titled “Your first R package in 1 hour”. Folks, she wasn’t lying either. I followed her tutorial and built an R package in roughly 45 minutes (note: I assume you have experience with the R language and understand the basics of <code>devtools</code>, <code>usethis</code>, <code>roxygen2</code>, and <code>rmarkdown</code>).</p>
 <p>Using functions from just the <code>devtools</code> and <code>usethis</code> packages, the whole process is much more streamlined than what I would have thought. Check out the rest of Shannon’s <em>Piping Hot Data</em> website as well… It’s a great resource for R programmers and researchers, and she built it with the newly reintroduced <code>distill</code> package, just like this site. :-)</p>
 <p>Source: <br>* Shannon’s <em>Piping Hot Data</em> <a href="https://www.pipinghotdata.com/posts/2020-10-25-your-first-r-package-in-1-hour/">“Your first R package in 1 hour” post</a> <br>* Shannon’s <a href="https://www.linkedin.com/in/shannon-m-pileggi/">LinkedIn</a></p>
@@ -6325,6 +6343,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6347,6 +6366,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</link>
   <description><![CDATA[ 
+
 
 
 
