@@ -18,7 +18,7 @@
     "href": "about.html#professional",
     "title": "About Me",
     "section": "Professional",
-    "text": "Professional\nI’m a data science and GenAI architect with 20 years of hands-on and executive experience at EY, PG&E, KPMG, Bloomreach, and Centene. My teams turn raw data into production-grade AI systems, deploying end-to-end ETL and inference pipelines, simulations and predictive models, interactive web apps, and low-latency APIs that steer strategy for Medicare, Medicaid, and Marketplace programs.\nBeyond the day job, I chair the Southern California R Users Group (SoCal RUG), a nonprofit that hosts monthly meetups on R, Python, Julia, all things data science, and GenAI. SoCal RUG also partners with the University of California and Chapman University to deliver SQL/R/Python bootcamps, git workshops, and hackathon support to data science graduate programs."
+    "text": "Professional\nI’m a data scientist and AI leader with 20 years of hands-on and executive experience at EY, PG&E, KPMG, Bloomreach, and Centene. My teams turn raw data into production-grade AI systems, deploying end-to-end ETL and inference pipelines, simulations and predictive models, interactive web apps, and low-latency APIs that steer strategy for Medicare, Medicaid, and Marketplace programs.\nBeyond the day job, I chair the Southern California R Users Group (SoCal RUG), a nonprofit that hosts monthly meetups on R, Python, Julia, and all things data science. SoCal RUG also partners with the University of California and Chapman University to deliver SQL/R/Python bootcamps, git workshops, and hackathon support to data science graduate programs."
   },
   {
     "objectID": "about.html#data-science-mlops-toolkit",
@@ -39,14 +39,14 @@
     "href": "index.html",
     "title": "javier",
     "section": "",
-    "text": "Hi, I’m Javier! 👋 I’m a data science leader, open-source evangelist, and GenAI engineer who thrives at the intersection of machine learning, modeling, experimentation, and large-scale AI delivery. My North Star is simple: Solve real problems with data and share the playbook."
+    "text": "Hi, I’m Javier! 👋 I’m a data science leader, open-source evangelist, and machine learning engineer who thrives at the intersection of predictive modeling, experimentation, large-scale AI delivery, and GenAI. My North Star is simple: Solve real problems with data and share the playbook."
   },
   {
     "objectID": "index.html#data-science-mlops",
     "href": "index.html#data-science-mlops",
     "title": "javier",
     "section": "Data Science & MLOps",
-    "text": "Data Science & MLOps\nI first honed my data science skills by enhancing valuation and forecasting models with algos like ARIMA and XGBoost. After moving into health tech, I discovered a passion for building ultra-fast, enterprise-grade Shiny web apps.\nToday, I spearhead machine learning and GenAI initiatives at Centene that enhance healthcare quality and customer experience for over 28 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, document best practices, and publish packages and tutorials that reach 1,000+ data scientists, analysts, and engineers.\nOn any given day, you’ll catch me deep in Databricks, Positron (an OSS VS Code fork), RStudio IDE, JupyterHub, Posit Connect, and the Linux CLI wiring together Arrow, DuckDB, model-serving LLM endpoints, data pipelines, and Docker-ized services."
+    "text": "Data Science & MLOps\nI first honed my data science skills by enhancing valuation and forecasting models with algos like ARIMA and XGBoost. After moving to health tech, I discovered a passion for developing ultra-fast, enterprise-grade Shiny web apps.\nToday, I spearhead machine learning and AI initiatives at Centene that enhance healthcare quality and customer experience for over 28 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, document best practices, and publish internal packages and tutorials that reach 1,000+ data scientists, analysts, and engineers.\nOn any given day, you’ll catch me deep in Databricks, Positron (an OSS VS Code fork), RStudio IDE, JupyterHub, Posit Connect, and the Linux CLI wiring together Arrow, DuckDB, model-serving LLM endpoints, data pipelines, and Docker-ized services."
   },
   {
     "objectID": "index.html#languages",

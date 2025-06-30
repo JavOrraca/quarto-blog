@@ -20,13 +20,13 @@ comments: false
 page-layout: full
 ---
 
-Hi, I'm Javier! 👋 I’m a data science leader, open-source evangelist, and GenAI engineer who thrives at the intersection of machine learning, modeling, experimentation, and large-scale AI delivery. **_My North Star is simple: Solve real problems with data and share the playbook._**
+Hi, I'm Javier! 👋 I’m a data science leader, open-source evangelist, and machine learning engineer who thrives at the intersection of predictive modeling, experimentation, large-scale AI delivery, and GenAI. **_My North Star is simple: Solve real problems with data and share the playbook._**
 
 ## Data Science & MLOps
 
-I first honed my data science skills by enhancing valuation and forecasting models with algos like ARIMA and XGBoost. After moving into health tech, I discovered a passion for building ultra-fast, enterprise-grade Shiny web apps.
+I first honed my data science skills by enhancing valuation and forecasting models with algos like ARIMA and XGBoost. After moving to health tech, I discovered a passion for developing ultra-fast, enterprise-grade Shiny web apps.
 
-Today, I spearhead machine learning and GenAI initiatives at Centene that enhance healthcare quality and customer experience for over 28 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, document best practices, and publish packages and tutorials that reach 1,000+ data scientists, analysts, and engineers.
+Today, I spearhead machine learning and AI initiatives at Centene that enhance healthcare quality and customer experience for over 28 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, document best practices, and publish internal packages and tutorials that reach 1,000+ data scientists, analysts, and engineers.
 
 On any given day, you’ll catch me deep in [Databricks](https://www.databricks.com/), [Positron](https://positron.posit.co/) (an OSS VS Code fork), [RStudio IDE](https://posit.co/downloads/), [JupyterHub](https://jupyter.org/hub), [Posit Connect](https://posit.co/products/enterprise/connect/), and the Linux CLI wiring together [Arrow](https://arrow.apache.org/), [DuckDB](https://duckdb.org/), model-serving LLM endpoints, data pipelines, and [Docker](https://www.docker.com/)-ized services.
 
