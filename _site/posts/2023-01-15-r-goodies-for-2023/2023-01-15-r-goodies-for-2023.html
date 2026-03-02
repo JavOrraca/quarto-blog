@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -72,18 +72,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-686081bf339a793248a69d14323aae95.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-5bc43436d87fdf5b87804434f75fea2a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-686081bf339a793248a69d14323aae95.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-d4fec9902f6d067bf3822acf9073c22f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-77c3fcd0ab4fd6b09444b87c4dd55082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-d4fec9902f6d067bf3822acf9073c22f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -484,7 +485,7 @@ cookieconsent.run({
 </ul>
 <p>Let’s create a basic tidymodels workflow to fit Lending Club loan data to a logistic regression and predict whether a loan is good or bad. The code below was pulled directly from the source example written by Davis Vaughan:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(parsnip)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(parsnip)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(probably)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(rsample)</span>
@@ -540,7 +541,7 @@ cookieconsent.run({
 <span id="cb1-54"><a href="#cb1-54"></a>    <span class="at">y =</span> <span class="st">"Metric Estimate"</span>,</span>
 <span id="cb1-55"><a href="#cb1-55"></a>    <span class="at">title =</span> <span class="st">"Balancing performance by varying the threshold"</span>,</span>
 <span id="cb1-56"><a href="#cb1-56"></a>    <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Sensitivity or specificity alone might not be"</span>,</span>
-<span id="cb1-57"><a href="#cb1-57"></a>                      <span class="st">" enough!</span><span class="sc">\n</span><span class="st">Vertical line = Max J-Index"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-57"><a href="#cb1-57"></a>                      <span class="st">" enough!</span><span class="sc">\n</span><span class="st">Vertical line = Max J-Index"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -588,7 +589,7 @@ cookieconsent.run({
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Installation from source on macOS or Linux requires <a href="https://doc.libsodium.org/">libsodium</a>
+<span class="screen-reader-only">Warning</span>Installation from source on macOS or Linux requires <a href="https://doc.libsodium.org/">libsodium</a>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -609,7 +610,7 @@ Installation from source on macOS or Linux requires <a href="https://doc.libsodi
 <p>The following example uses {sodium} to generate a keypair and encrpt / decrypt a serialized message (representing the iris data set). One major benefit of encrypting objects like this is that you can publicly expose these encrypted objects since you alone hold the key to decrypt them. If you’re working with GitHub Actions, GitLab CI/CD, or another git-backed repository, you can save these encrypted messages in your public repo - If someone forks or clones your repository, they’ll be unable to decrypt the object without the hash key initially created in the keypair generation step.</p>
 <p>The example below was <a href="https://docs.ropensci.org/sodium/#hello-world">written by Jeroen Ooms on rOpenSci</a> and is part of the documentation for the {sodium} package. I added the last step to show how to <code>unserialize()</code> an object previously decrypted.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(sodium)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(sodium)</span>
 <span id="cb2-2"><a href="#cb2-2"></a></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co"># Generate keypair:</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a>key <span class="ot">&lt;-</span> sodium<span class="sc">::</span><span class="fu">keygen</span>()</span>
@@ -623,7 +624,7 @@ Installation from source on macOS or Linux requires <a href="https://doc.libsodi
 <span id="cb2-12"><a href="#cb2-12"></a>out <span class="ot">&lt;-</span> sodium<span class="sc">::</span><span class="fu">simple_decrypt</span>(ciphertext, key)</span>
 <span id="cb2-13"><a href="#cb2-13"></a></span>
 <span id="cb2-14"><a href="#cb2-14"></a><span class="co"># Unserialize the decrypted message &amp; assign iris data to new obj</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a>iris_new <span class="ot">&lt;-</span> <span class="fu">unserialize</span>(out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-15"><a href="#cb2-15"></a>iris_new <span class="ot">&lt;-</span> <span class="fu">unserialize</span>(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="sodium-cyphr" class="level2">
@@ -636,7 +637,7 @@ Installation from source on macOS or Linux requires <a href="https://doc.libsodi
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-GitHub Actions
+<span class="screen-reader-only">Tip</span>GitHub Actions
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -648,7 +649,7 @@ GitHub Actions
 <section id="step-3a-encrypt" class="level2">
 <h2 class="anchored" data-anchor-id="step-3a-encrypt">Step 3a: Encrypt</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># The following is a one-time key encryption setup</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># The following is a one-time key encryption setup</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(sodium)</span>
 <span id="cb3-4"><a href="#cb3-4"></a><span class="fu">library</span>(cyphr)</span>
@@ -687,13 +688,13 @@ GitHub Actions
 <span id="cb3-37"><a href="#cb3-37"></a>  token_path,</span>
 <span id="cb3-38"><a href="#cb3-38"></a>  <span class="at">key =</span> key,</span>
 <span id="cb3-39"><a href="#cb3-39"></a>  <span class="at">dest =</span> <span class="st">"meetupr_secret.rds"</span></span>
-<span id="cb3-40"><a href="#cb3-40"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-40"><a href="#cb3-40"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="step-3b-decrypt" class="level2">
 <h2 class="anchored" data-anchor-id="step-3b-decrypt">Step 3b: Decrypt</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># This script was saved as "meetup_events.R" and it is run as part</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r code-overflow-scroll number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># This script was saved as "meetup_events.R" and it is run as part</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co"># of the GitHub Actions workflow on line 37 of the YAML file covered</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co"># in "Step 3c: GitHub Actions YAML"</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a></span>
@@ -780,13 +781,13 @@ GitHub Actions
 <span id="cb4-85"><a href="#cb4-85"></a>    <span class="at">Time =</span> <span class="fu">format.POSIXct</span>(time, <span class="at">format =</span> <span class="st">"%I:%M %p"</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb4-86"><a href="#cb4-86"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Upcoming, Chapter, Event, Date, <span class="st">"Time (PST)"</span> <span class="ot">=</span> Time)</span>
 <span id="cb4-87"><a href="#cb4-87"></a></span>
-<span id="cb4-88"><a href="#cb4-88"></a><span class="fu">saveRDS</span>(events, <span class="at">file =</span> <span class="st">"events/events_past_and_upcoming.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-88"><a href="#cb4-88"></a><span class="fu">saveRDS</span>(events, <span class="at">file =</span> <span class="st">"events/events_past_and_upcoming.rds"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="step-3c-github-actions-yaml" class="level2">
 <h2 class="anchored" data-anchor-id="step-3c-github-actions-yaml">Step 3c: GitHub Actions YAML</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource bash code-overflow-scroll number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">name:</span> Render and Deploy Quarto Blog</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource bash code-overflow-scroll number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">name:</span> Render and Deploy Quarto Blog</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="ex">on:</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="ex">pull_request:</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a>    <span class="ex">branches:</span> [ master ]</span>
@@ -831,14 +832,14 @@ GitHub Actions
 <span id="cb5-43"><a href="#cb5-43"></a>        <span class="ex">uses:</span> quarto-dev/quarto-actions/publish@v2</span>
 <span id="cb5-44"><a href="#cb5-44"></a>        <span class="ex">with:</span></span>
 <span id="cb5-45"><a href="#cb5-45"></a>          <span class="ex">target:</span> netlify</span>
-<span id="cb5-46"><a href="#cb5-46"></a>          <span class="ex">NETLIFY_AUTH_TOKEN:</span> <span class="va">${</span><span class="er">{ secrets.NETLIFY_AUTH_TOKEN </span><span class="va">}</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-46"><a href="#cb5-46"></a>          <span class="ex">NETLIFY_AUTH_TOKEN:</span> <span class="va">${</span><span class="er">{ secrets.NETLIFY_AUTH_TOKEN </span><span class="va">}</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section id="session-info" class="level1">
 <h1>Session Info</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-overflow-scroll code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> version 4.2.2 <span class="er">(</span><span class="ex">2022-10-31</span><span class="kw">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-overflow-scroll code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> version 4.2.2 <span class="er">(</span><span class="ex">2022-10-31</span><span class="kw">)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Platform:</span> aarch64-apple-darwin20 <span class="er">(</span><span class="ex">64-bit</span><span class="kw">)</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Running</span> under: macOS Ventura 13.1</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -875,7 +876,7 @@ GitHub Actions
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="ex">[40]</span> magrittr_2.0.3    tibble_3.1.8      tidyr_1.2.1      </span>
 <span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="ex">[43]</span> pkgconfig_2.0.3   rmarkdown_2.19    assertthat_0.2.1 </span>
 <span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="ex">[46]</span> yardstick_1.1.0   rstudioapi_0.14   ratelimitr_0.4.1 </span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="ex">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4.2.2   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="ex">[49]</span> R6_2.5.1          globals_0.16.2    compiler_4.2.2   </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
@@ -946,13 +947,14 @@ GitHub Actions
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -72,18 +72,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-686081bf339a793248a69d14323aae95.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-5bc43436d87fdf5b87804434f75fea2a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-686081bf339a793248a69d14323aae95.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-d4fec9902f6d067bf3822acf9073c22f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-77c3fcd0ab4fd6b09444b87c4dd55082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-d4fec9902f6d067bf3822acf9073c22f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -477,12 +478,12 @@ cookieconsent.run({
 <p>I often visit the Databricks docs to know which exact <a href="https://docs.databricks.com/en/release-notes/runtime/15.4lts-ml.html#python-libraries-on-cpu-clusters">Python</a> and <a href="https://docs.databricks.com/en/release-notes/runtime/15.4lts.html#rlibraries">R package versions</a> are pre-installed on my cluster. It is costly to keep Spark clusters “always on” and your Databricks admins likely impose rules to automatically shutoff your Spark clusters if they are inactive for some period of time (for reference, I think my clusters auto-shutoff after an hour of inactivity). Whenever you re-launch your cluster, you need to re-install packages that aren’t part of your Databricks runtime image. On the surface, this is a non-issue, but in reality, I find myself having to re-launch my Spark clusters at least once a day (often multiple times daily) due to conference calls, unscheduled strategy sessions, ad hoc technical work calls, etc. It takes 8-10 minutes to launch a Spark ML cluster using the Databricks 15.4 LTS runtime and if you need to install or update specific R and Python packages, add several extra minutes until you’re ready to work with Databricks. Databricks serverless compute clusters allow you to connect on-demand to pre-launched clusters, but as mentioned briefly above, R is not yet supported on Databricks serverless compute.</p>
 <p>There is no gold standard for managing and/or persisting Python and R package dependencies on Databricks. You can modify your Spark cluster’s configuration to install certain packages every time your cluster launches, but I prefer to simply re-install project-package dependencies after I launch my Spark cluster. If your company implemented Databricks, it’s very likely your company also has an internal package manager that makes it easier for your employees to 1) deploy internally developed packages, and 2) install CRAN and PyPI packages from behind your company’s firewall. I’ve experienced a few package managers over the years and my favorite for Python and R packages is <a href="https://posit.co/products/enterprise/package-manager/">Posit Package Manager</a> (“Posit PM”). This might sound unrelated to Databricks but it also leads me to my first major recommendation: Put the following code at the top of your Databricks R notebooks to ensure you can install package binaries from your package manager:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">HTTPUserAgent =</span> <span class="fu">sprintf</span>(<span class="st">"R/%s R (%s)"</span>, <span class="fu">getRversion</span>(), <span class="fu">paste</span>(<span class="fu">getRversion</span>(), R.version[<span class="st">"platform"</span>], R.version[<span class="st">"arch"</span>], R.version[<span class="st">"os"</span>])))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">HTTPUserAgent =</span> <span class="fu">sprintf</span>(<span class="st">"R/%s R (%s)"</span>, <span class="fu">getRversion</span>(), <span class="fu">paste</span>(<span class="fu">getRversion</span>(), R.version[<span class="st">"platform"</span>], R.version[<span class="st">"arch"</span>], R.version[<span class="st">"os"</span>])))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>An even better recommendation would be to have your cloud engineering team include the above R code in your company’s global Databricks init script - It would be a moot point to include the above code in your Databricks notebooks if it were included in the global init scripts! So why is that code helpful? If a user calls the function <code>install.packages("xgboost")</code> and they’re pointing to Posit PM, a binary of the <code>xgboost</code> package is served given the OS and R version combination that’s included in your user agent request header. A package binary can be downloaded and installed very quickly compared to building the package from source code. For <code>xgboost</code>, you can download and install the R package binary in ~10 seconds versus ~5 minutes if I need to build it from source code. Sometimes the request header isn’t configured correctly (or is altogether missing on your environment) so the above code sets that configuration for you.</p>
 <p>If you use Posit PM and you’re sensitive about adding <code>options()</code> to your notebooks or init scripts, you can run the following code to determine if you need to configure the user agent header:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">local</span>({</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">local</span>({</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (.Platform<span class="sc">$</span>OS.type <span class="sc">!=</span> <span class="st">"unix"</span> <span class="sc">||</span> <span class="fu">Sys.info</span>()[<span class="st">"sysname"</span>] <span class="sc">==</span> <span class="st">"Darwin"</span>) {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Success! Posit Package Manager does not require additional configuration to install binary packages on macOS or Windows."</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">invisible</span>())</span>
@@ -528,7 +529,7 @@ cookieconsent.run({
 <span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Success! Your user agent is correctly configured."</span>)</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If your user agent is configured correctly, you’ll see the following message in your console: <code>Success! Your user agent is correctly configured.</code> For more information on serving package binaries from Posit PM, visit their admin docs at <a href="https://docs.posit.co/rspm/admin/serving-binaries/" class="uri">https://docs.posit.co/rspm/admin/serving-binaries/</a>.</p>
 <p>One interesting solution for persisting Python and R packages is to write them to Unity Catalog Volumes and simply load them from these locations downstream. This was something that I did for my team prior to realizing that my user-agent header request wasn’t firing off correctly when requesting binaries from Posit PM. This approach has its benefits, namely that you don’t need to install packages every time your cluster starts, but package load time always felt way too long, e.g., 3 minutes for a handful of packages loaded via <code>library(some_package)</code> in your Databricks notebook. Additionally, my experience with Spark processes initiated from packages loaded from Unity Catalog Volumes always ran into weird Spark issues that were difficult for me and my teammates to resolve (and I’m generally good at troubleshooting Linux and R errors). All this said, persisting your packages on Unity Catalog Volumes is not a pattern that I’d recommend today, especially since I’m successfully downloading and installing package binaries once again.</p>
@@ -539,7 +540,7 @@ cookieconsent.run({
 <p>The best package for interacting with Spark clusters and R is by far <code>sparklyr</code>. While <code>sparklyr</code> is not limited to interacting with Databricks Spark clusters,<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> I almost exclusively use it for this purpose. The <code>sparklyr</code> package uses <code>reticulate</code> to interact with the Python API, it provides a <code>dplyr</code> backend that works great with tidy pipelines, and it offers a <code>DBI</code> backend that integrates well with the RStudio IDE (and Positron?) <em>Connections</em> pane.</p>
 <p>When working with R on the Databricks platform itself (in a notebook), creating a <code>sparklyr</code> connection is a breeze since the Databricks runtime images have all the required Python and R dependencies. Below is a basic pattern to establish a spark connection, copy a dataframe to a spark dataframe, and write it to a Delta Lake Table (or “Delta Table”) on your Unity Catalog:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sparklyr)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -556,7 +557,7 @@ cookieconsent.run({
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>sparklyr<span class="sc">::</span><span class="fu">spark_write_table</span>(</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> spark_iris,</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"uc_catalog.schema.some_table_name"</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Things get a little more complicated if you want to connect to your Databricks spark cluster using, for example, the RStudio IDE running on a completely different AWS server from the Databricks endpoints. The reason for the complexity is that you’ll need to create and use a local Python virtual environment with the appropriate Spark dependencies that match the Databricks runtime version that you’re wanting to connect to. The <code>sparklyr</code> authors wrote a vignette on how to do this <a href="https://spark.posit.co/deployment/databricks-connect.html">using the “Databricks Connect” method</a> and the following bullet highlight the main to-do’s:</p>
 <ul>
@@ -568,7 +569,7 @@ cookieconsent.run({
 </ul>
 <p>The following code executes the steps mentioned above for a Spark cluster running Databricks runtime 15.4 LTS:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the following two env vars in your .Renviron:</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the following two env vars in your .Renviron:</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) DATABRICKS_HOST=your_Databricks_workspace_URL</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) DATABRICKS_TOKEN=your_Databricks_PAT</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span>
@@ -601,7 +602,7 @@ cookieconsent.run({
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> spark_iris,</span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"uc_catalog.schema.some_table_name"</span>,</span>
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode =</span> <span class="st">"overwrite"</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Whether you’re utilizing <code>sparklyr</code> on Databricks itself or in a remote IDE, the Spark connection is a pre-requisite for being able to interact with Delta Tables on Unity Catalog, ETL, and model training on Databticks.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -610,7 +611,7 @@ cookieconsent.run({
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-sparklyr::spark_connect()
+<span class="screen-reader-only">Tip</span>sparklyr::spark_connect()
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -713,13 +714,14 @@ sparklyr::spark_connect()
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

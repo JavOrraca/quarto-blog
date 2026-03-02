@@ -1,0 +1,145 @@
+---
+title: "Posit Conference 2025 Workshop"
+description: "Key insights and takeaways from the advanced feature engineering workshop at Posit Conference 2025 with instructors Max Kuhn and Emil Hvitfeldt."
+date: 09-16-2025
+categories: [tidymodels]
+image: images/posit_conf_2025.png
+draft: true
+---
+
+![](intro_to_tidymodels.png){.preview-image}
+
+# Overview
+
+Posit Conference 2025, hosted in Atlanta, GA, kicked off today with specialized workshops ranging from introductory data science sessions, to advanced machine learning deep dives, to LLM/GenAI workshops. I attended the _Getting More Out of Feature Engineering and Tuning for Machine Learning_ workshop hosted by some of Posit's open-source data science statisticians / developers, [Max Kuhn](https://max-kuhn.org/) and [Emil Hvitfeldt](https://emilhvitfeldt.com/).
+
+Despite regularly working with the [tidymodels](https://www.tidymodels.org/) framework for reproducible machine learning, I learned so many new methods to evaluate and optimize model performance. The below tips, tricks, and takeaways barely scratch the surface of material covered in the workshop, but I wanted to share some of these useful tips while they were fresh in my mind.
+
+# Tips & Tricks
+
+## Extracting Executable Code from Quarto (`.qmd`) or R Markdown (`.Rmd`) Documents
+
+```{r}
+#| eval: false
+knitr::purl("path/to/slides/here")
+```
+
+The function `knitr::purl()` is a hidden gem. This function takes an input a file path (like a `.qmd` or `.Rmd`), extracts the R code in it according to a list of patterns, evaluates the code and writes the output into another file.  
+
+This is especially useful if:
+
+- You followed a workshop/tutorial and want just the code without slides/markdown
+- You want to version-control code separately from prose
+- You need to quickly test or reuse functions without copy-pasting out of your `.Rmd`
+
+## Exploring Data with PCA
+
+```{r}
+#| eval: true
+
+library(tidymodels)
+
+# Load example workshop data
+"https://raw.githubusercontent.com/tidymodels/" |>
+  paste0("workshops/main/slides/class_data.RData") |>
+  url() |>
+  load()
+
+# PCA recipe, baked, and visualized
+class_data |>
+  recipe(class ~ ., data = class_data) |>
+  step_pca(all_predictors(), num_comp = 2) |>
+  prep() |>
+  bake(new_data = NULL) |>
+  ggplot(aes(PC1, PC2, col = class)) +
+  geom_point(alpha = 0.50)
+```
+
+Here, you’re using [recipes](https://recipes.tidymodels.org/), a tidymodels package for preprocessing steps, to run principal component analysis (PCA).
+
+- `recipe(class ~ ., data = class_data)`: defines the outcome (`class`) and predictors (denoted with the `.`, this represents "all other columns")
+- `step_pca(all_predictors(), num_comp = 2)`: compresses all predictors into two uncorrelated principal components (this will create `PC1` and `PC2`)
+- `prep()` and `bake()`: fit the transformation and apply it to your data  
+- The resulting two-dimensional projection is visualized with `ggplot2`
+
+**Beginner note:** PCA is a dimensionality-reduction technique, that said, it also allows you to **visualize high-dimensional data** in 2D (or 3D). Expect classes that are separable to cluster together; Overlapping classes in PCA space indicate harder classification problems.
+
+## Hyperparameter Tuning Neural Networks with **brulee** and **tune**
+
+[`brulee`](https://brulee.tidymodels.org/) is a tidymodels extension that lets you train **torch-based neural networks directly in R**. You integrate it with `parsnip` for model specification and `tune` for hyperparameter search.
+
+### Example: Multilayer Perceptron with Tuning
+```r
+nnet_spec <-
+  mlp(
+    hidden_units = tune(),
+    penalty = tune(),
+    learn_rate = tune(),
+    epochs = 100,
+    activation = tune()
+  ) |>
+  set_engine("brulee", class_weights = tune(), stop_iter = 10) |>
+  set_mode("classification")
+```
+
+Here you’re telling tidymodels:
+- `hidden_units`, `penalty`, `learn_rate`, `activation`, and `class_weights` are **tunable parameters**.  
+- `brulee` (engine) uses **torch** under the hood, so training is GPU-friendly if available.  
+- `stop_iter = 10` means training halts early if there’s no improvement for 10 iterations.  
+
+### Why Tune Activation Functions?
+
+Different activation functions (ReLU, sigmoid, tanh, etc.) change how neurons fire.
+
+- **ReLU** often works best in deep networks
+- **Sigmoid/tanh** can saturate and slow learning
+
+By tuning across them, you empirically discover what works for your dataset.
+
+👉 **Beginner note:** Expect to see very different performance curves depending on activation choice. Your plots (`autoplot(nnet_res, metric = "roc_auc")`, etc.) make this obvious.
+
+## Parallel Processing with **mirai**
+
+[`mirai`](https://mirai.r-lib.org/) provides **lightweight parallelism** for R. Unlike `future`, it avoids large global state copying and can be more memory-efficient for iterative jobs like cross-validation.
+
+```r
+library(mirai)
+daemons(cores)  # start workers
+
+ctrl <- control_grid(save_pred = TRUE, save_workflow = TRUE)
+```
+
+- `daemons(cores)` launches worker processes.  
+- Once active, tidymodels’ `tune_grid()` distributes resampling and grid search tasks across them.  
+
+👉 **Beginner note:** On multi-core machines, expect **dramatic speedups**—a 10-fold cross-validation with 25 parameter sets could go from hours to minutes.
+
+## Post-Model Calibration and Adjustments with **tailor**
+
+[`tailor`](https://tailor.tidymodels.org/) provides a framework to **adjust model outputs after training** (e.g., calibrating probabilities or shifting thresholds).  
+
+Key workshop notes:
+- **Order matters:** apply adjustments in the correct sequence (e.g., calibrate probabilities before changing thresholds).  
+- **Adjustments affect predictions:** tweaking probabilities also changes hard class predictions.  
+- **Before performance estimation:** you should apply adjustments prior to final evaluation, otherwise metrics reflect unadjusted predictions.  
+- **Thresholds vs metrics:** probability thresholding does not affect metrics like ROC AUC or Brier score (since these are threshold-independent).  
+
+👉 **Beginner note:** Calibration is about making predicted probabilities **better aligned with reality** (e.g., when the model says 0.8, ~80% of those cases should truly be positive). Expect smoother calibration curves and more trustworthy probabilities.
+
+## Probability-Focused Metrics with **desirability2**
+
+[`desirability2`](https://desirability2.tidymodels.org/) adds **desirability functions** to tidymodels tuning. Instead of optimizing one metric (say ROC AUC), you can combine multiple (e.g., ROC AUC + sensitivity + Brier score) into a single desirability score.
+
+👉 **Beginner note:** This is useful when trade-offs matter. For example, in healthcare:  
+- You want **high sensitivity** (catch positives) but also **good calibration** (accurate probabilities).  
+- A single desirability function balances both instead of forcing you to pick one metric.
+
+## Feature Engineering with `step_dummy_extract()`
+
+From the `recipes` package, `step_dummy_extract()` creates **dummy (one-hot) encoded variables but lets you “extract” them by group**.  
+
+Example use case: Suppose you have a categorical variable with hundreds of levels. Rather than keep all of them, you might only extract specific contrasts (like “is level A vs not A”).  
+
+See the [tidymodels advanced workshop slide](https://workshops.tidymodels.org/slides/advanced-04-feature-engineering-part-one.html#/advanced-dummies---extraction-1) for applied examples.
+
+👉 **Beginner note:** Expect this to reduce dataset size and improve model interpretability while still capturing categorical signals.  

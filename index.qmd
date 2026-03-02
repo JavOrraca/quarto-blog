@@ -20,15 +20,13 @@ comments: false
 page-layout: full
 ---
 
-Hi, I'm Javier! 👋 I’m a data science leader, open-source evangelist, and machine learning engineer who thrives at the intersection of predictive modeling, experimentation, large-scale AI delivery, and GenAI. **_My North Star is simple: Solve real problems with data and share the playbook._**
+Hi, I'm Javier! 👋 I’m a data science leader who works at the intersection of analytics, modeling, experimentation, and production-grade AI. **_My North Star is simple: Solve real problems with data and share the playbook._**
 
-## Data Science & MLOps
+## Data Science & Applied AI
 
-I first honed my data science skills by enhancing valuation and forecasting models with algos like ARIMA and XGBoost. After moving to health tech, I discovered a passion for developing ultra-fast, enterprise-grade Shiny web apps.
+I first honed my analytics and modeling skills by building valuation and forecasting solutions using techniques such as ARIMA and gradient-boosted trees, then deepened my craft in health tech by developing applied machine learning and AI products for consumption at scale.
 
-Today, I spearhead machine learning and AI initiatives at Centene that enhance healthcare quality and customer experience for over 28 million members. I architect scalable ML solutions, empower junior team members to deliver value-driven software, document best practices, and publish internal packages and tutorials that reach 1,000+ data scientists, analysts, and engineers.
-
-On any given day, you’ll catch me deep in [Databricks](https://www.databricks.com/), [Positron](https://positron.posit.co/) (an OSS VS Code fork), [RStudio IDE](https://posit.co/downloads/), [JupyterHub](https://jupyter.org/hub), [Posit Connect](https://posit.co/products/enterprise/connect/), and the Linux CLI wiring together [Arrow](https://arrow.apache.org/), [DuckDB](https://duckdb.org/), model-serving LLM endpoints, data pipelines, and [Docker](https://www.docker.com/)-ized services.
+Today, I lead data analytics at Jeppesen ForeFlight, unifying how the organization measures and understands business, product, and financial performance. I partner closely with leadership to turn data into trusted insight, while laying the groundwork for advanced analytics and applied AI as the business evolves.
 
 ## Languages
 

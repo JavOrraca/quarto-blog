@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -72,18 +72,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-686081bf339a793248a69d14323aae95.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-5bc43436d87fdf5b87804434f75fea2a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-686081bf339a793248a69d14323aae95.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-d4fec9902f6d067bf3822acf9073c22f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-77c3fcd0ab4fd6b09444b87c4dd55082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-d4fec9902f6d067bf3822acf9073c22f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -480,7 +481,7 @@ cookieconsent.run({
 <section id="libraries" class="level2">
 <h2 class="anchored" data-anchor-id="libraries">Libraries</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install dev packages</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install dev packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tylermorganwall/rayshader"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"tylermorganwall/rayimage"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -493,14 +494,14 @@ cookieconsent.run({
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Source elevation data</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>laguna <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">raster</span>(<span class="st">"./USGS_one_meter_x42y372_CA_SoCal_Wildfires_B1_2018.tif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>laguna <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">raster</span>(<span class="st">"./USGS_one_meter_x42y372_CA_SoCal_Wildfires_B1_2018.tif"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="eda" class="level2">
 <h2 class="anchored" data-anchor-id="eda">EDA</h2>
 <p>To better explore the data, lets begin by visualizing the elevation data with <code>rayshader</code> defaults to understand the topography that we are working with. Before we can render this visual, we need to transform the <strong>laguna</strong> data object (assigned above) to a matrix. For faster rendering and prototyping, you can also resize the matrix using <code>rayshader::resize_matrix()</code>. This resizing will downscale your full dataset using bilinear interpolation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the spatial data structure into a regular R matrix</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the spatial data structure into a regular R matrix</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>laguna_mat <span class="ot">&lt;-</span> rayshader<span class="sc">::</span><span class="fu">raster_to_matrix</span>(laguna)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create small version of matrix for quick visual prototyping</span></span>
@@ -509,7 +510,7 @@ cookieconsent.run({
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot base map using basic color defaults</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>laguna_small <span class="sc">%&gt;%</span> </span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">height_shade</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -522,7 +523,7 @@ cookieconsent.run({
 <h2 class="anchored" data-anchor-id="cropping">Cropping</h2>
 <p>I wanted to focus on downtown Laguna Beach but this only represents a small fraction of the raw LIDAR. To get the desired lat-long range of downtown Laguna Beach, I used Google Maps to get the endpoints of my desired box. To accomplish this cropping, below, we relied on a custom cropping function that TMW shared on the <code>rayshader</code> site.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop to fit desired box around downtown Laguna Beach</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop to fit desired box around downtown Laguna Beach</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>lat_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">33.541370925562376</span>, <span class="fl">33.55945552155357</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>long_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.79622401045448</span>, <span class="sc">-</span><span class="fl">117.77493476466955</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -549,7 +550,7 @@ cookieconsent.run({
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>laguna_zoom <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">crop</span>(laguna, extent_zoomed)</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>laguna_zoom_mat <span class="ot">&lt;-</span> rayshader<span class="sc">::</span><span class="fu">raster_to_matrix</span>(laguna_zoom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>laguna_zoom_mat <span class="ot">&lt;-</span> rayshader<span class="sc">::</span><span class="fu">raster_to_matrix</span>(laguna_zoom)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -559,7 +560,7 @@ cookieconsent.run({
 <h2 class="anchored" data-anchor-id="base-map">Base Map</h2>
 <p>I was inspired by the relief shading work of Eduard Imhof, Swiss cartographer and mapping visionary. In particular, I loved the blueish-pink palette that Imhof popularized. When you get to this step, try adjusting the settings below to your liking. We will continue to build on top of this initial base map layer.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>base_map <span class="ot">&lt;-</span> laguna_zoom_mat <span class="sc">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>base_map <span class="ot">&lt;-</span> laguna_zoom_mat <span class="sc">%&gt;%</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">height_shade</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">sphere_shade</span>(</span>
@@ -576,7 +577,7 @@ cookieconsent.run({
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">start_transition =</span> <span class="fu">min</span>(laguna_zoom_mat)<span class="sc">-</span><span class="dv">200</span>,</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">end_transition =</span> <span class="fu">max</span>(laguna_zoom_mat)))</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>rayshader<span class="sc">::</span><span class="fu">plot_map</span>(base_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>rayshader<span class="sc">::</span><span class="fu">plot_map</span>(base_map)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -589,7 +590,7 @@ cookieconsent.run({
 <h2 class="anchored" data-anchor-id="openstreetmap">OpenStreetMap</h2>
 <p>OpenStreetMap (OSM) offers an open-source, editable geographic database of the world and the underlying data includes details for roads, buildings, hiking paths, rivers, etc. We’ll leverage the <code>osmdata</code> package for R to import OSM data (and utilizing the <code>overpass</code> API). The <code>osmdata</code> package processes routines in C++ for fast construction and loading into R. We’ll first load several layers of OSM details. Subsequently, we’ll convert those <code>sf</code> objects to the coordinate system we’re working with for this <code>rayshader</code> project.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>osm_bbox <span class="ot">=</span> <span class="fu">c</span>(long_range[<span class="dv">1</span>],lat_range[<span class="dv">1</span>], long_range[<span class="dv">2</span>],lat_range[<span class="dv">2</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>osm_bbox <span class="ot">=</span> <span class="fu">c</span>(long_range[<span class="dv">1</span>],lat_range[<span class="dv">1</span>], long_range[<span class="dv">2</span>],lat_range[<span class="dv">2</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>laguna_highway <span class="ot">&lt;-</span> osmdata<span class="sc">::</span><span class="fu">opq</span>(osm_bbox) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">add_osm_feature</span>(<span class="st">"highway"</span>) <span class="sc">%&gt;%</span> </span>
@@ -603,7 +604,7 @@ cookieconsent.run({
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(laguna_lines, <span class="fu">aes</span>(<span class="at">color =</span> osm_id)) <span class="sc">+</span> </span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Open Street Map `highway` attribute in Laguna Beach"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Open Street Map `highway` attribute in Laguna Beach"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -616,14 +617,14 @@ cookieconsent.run({
 <h2 class="anchored" data-anchor-id="layering">Layering</h2>
 <p>To begin, lets simply layer all the “highway” OSM attributes on top of our base map using white lines to represent the lines.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform sf LINESTRING geometry and create semi-transparent overlay</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform sf LINESTRING geometry and create semi-transparent overlay</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>base_map <span class="sc">%&gt;%</span> </span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">generate_line_overlay</span>(</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      laguna_lines, <span class="at">extent =</span> extent_zoomed,</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"white"</span>,</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">heightmap =</span> laguna_zoom_mat)) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -633,7 +634,7 @@ cookieconsent.run({
 </div>
 <p>I want different styles for different OSM lines so let’s continue by creating several groups of OSM lines.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset layers of laguna_lines</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset layers of laguna_lines</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>laguna_trails <span class="ot">&lt;-</span> laguna_lines <span class="sc">%&gt;%</span> </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(highway <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"path"</span>, <span class="st">"bridleway"</span>, <span class="st">"steps"</span>, <span class="st">"track"</span>))</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -673,11 +674,11 @@ cookieconsent.run({
 <span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    rayshader<span class="sc">::</span><span class="fu">generate_line_overlay</span>(</span>
 <span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>      laguna_roads, <span class="at">extent =</span> extent_zoomed,</span>
 <span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"white"</span>,</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">heightmap =</span> laguna_zoom_mat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">heightmap =</span> laguna_zoom_mat))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We’ll create some additional projections of OSM layers.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>laguna_parking <span class="ot">&lt;-</span> osmdata<span class="sc">::</span><span class="fu">opq</span>(osm_bbox) <span class="sc">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>laguna_parking <span class="ot">&lt;-</span> osmdata<span class="sc">::</span><span class="fu">opq</span>(osm_bbox) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">add_osm_feature</span>(<span class="st">"parking"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">osmdata_sf</span>() </span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -686,14 +687,14 @@ cookieconsent.run({
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  osmdata<span class="sc">::</span><span class="fu">osmdata_sf</span>()</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>laguna_parking_poly <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(laguna_parking<span class="sc">$</span>osm_polygons, <span class="at">crs =</span> <span class="fu">crs</span>(laguna))</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>laguna_building_poly <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(laguna_building<span class="sc">$</span>osm_polygons, <span class="at">crs =</span> <span class="fu">crs</span>(laguna))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>laguna_building_poly <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(laguna_building<span class="sc">$</span>osm_polygons, <span class="at">crs =</span> <span class="fu">crs</span>(laguna))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="final-touches" class="level2">
 <h2 class="anchored" data-anchor-id="final-touches">Final Touches</h2>
 <p>Now we’re ready to build upon our base map and see the 2D visual in action. Let’s create a polygon layer of the parking and building features, and adding the styled <strong>trails_layer</strong> on top of that.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>polygon_layer <span class="ot">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>polygon_layer <span class="ot">&lt;-</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">generate_polygon_overlay</span>(laguna_parking_poly, </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">extent =</span> extent_zoomed,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">heightmap =</span> laguna_zoom_mat, </span>
@@ -707,7 +708,7 @@ cookieconsent.run({
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>base_map <span class="sc">%&gt;%</span> </span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(polygon_layer) <span class="sc">%&gt;%</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(trails_layer) <span class="sc">%&gt;%</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_map</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -724,7 +725,7 @@ cookieconsent.run({
 <p>To render a 3D map, we follow a very similar pipeline to the 2D map but utilizing <code>rayshader::plot_3d()</code>. This function introduces new arguments and I spent much more time than I had anticipated in adjusting the zscale, zoom, rotation, pitch, and water specifications.</p>
 <p>To exaggerate the elevation details in this area, I decided on a <code>zscale</code> &lt; 1 that would still resemble the reality and beauty of the Laguna Beach hills. Too low of a <code>zscale</code>, e.g., <code>zscale = 0.25</code>, was too exaggerated for my liking. Once the 3D viewer renders your visual, enter <code>rayshader::render_snapshot()</code> into your console to take a flat snapshot of your 3D rendering, saving your snapshot if desired.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>base_map <span class="sc">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>base_map <span class="sc">%&gt;%</span> </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(polygon_layer) <span class="sc">%&gt;%</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">add_overlay</span>(trails_layer) <span class="sc">%&gt;%</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  rayshader<span class="sc">::</span><span class="fu">plot_3d</span>(<span class="at">heightmap =</span> laguna_zoom_mat, </span>
@@ -736,7 +737,7 @@ cookieconsent.run({
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">background =</span> <span class="st">"white"</span>)</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create 2D snapshot of 3D rendering</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>rayshader<span class="sc">::</span><span class="fu">render_snapshot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>rayshader<span class="sc">::</span><span class="fu">render_snapshot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -752,7 +753,7 @@ cookieconsent.run({
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">4</span>.<span class="fl">1.1</span> (<span class="dv">2021-08-10</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">4</span>.<span class="fl">1.1</span> (<span class="dv">2021-08-10</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Running under<span class="sc">:</span> Ubuntu <span class="dv">20</span>.<span class="fl">04.3</span> LTS</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -795,7 +796,7 @@ cookieconsent.run({
 <span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>[<span class="dv">65</span>] purrr_0.<span class="fl">3.4</span>        hms_1.<span class="fl">1.0</span>          processx_3.<span class="fl">5.2</span>     pkgload_1.<span class="fl">2.1</span>     </span>
 <span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>[<span class="dv">69</span>] parallel_4.<span class="fl">1.1</span>     fastmap_1.<span class="fl">1.0</span>      colorspace_2<span class="fl">.0</span><span class="dv">-2</span>   sessioninfo_1.<span class="fl">1.1</span> </span>
 <span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>[<span class="dv">73</span>] classInt_0<span class="fl">.4</span><span class="dv">-3</span>     rvest_1.<span class="fl">0.1</span>        memoise_2.<span class="fl">0.0</span>      knitr_1<span class="fl">.33</span>        </span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">77</span>] usethis_2.<span class="fl">0.1</span>     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>[<span class="dv">77</span>] usethis_2.<span class="fl">0.1</span>     </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="resources" class="level2">
@@ -875,13 +876,14 @@ cookieconsent.run({
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,12 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Javier Orraca-Deatcu">
+<meta name="dcterms.date" content="2025-09-16">
+<meta name="description" content="Key insights and takeaways from the advanced feature engineering workshop at Posit Conference 2025 with instructors Max Kuhn and Emil Hvitfeldt.">
 
-<title>Read for Work Referrals – Data Science Bytes</title>
+<title>Posit Conference 2025 Workshop – Data Science Bytes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,33 +23,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-686081bf339a793248a69d14323aae95.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-5bc43436d87fdf5b87804434f75fea2a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-686081bf339a793248a69d14323aae95.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d4fec9902f6d067bf3822acf9073c22f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-77c3fcd0ab4fd6b09444b87c4dd55082.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-d4fec9902f6d067bf3822acf9073c22f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -101,22 +140,21 @@ cookieconsent.run({
 });
 </script> 
   
+<meta name="quarto:status" content="draft">
 
 
-<meta property="og:title" content="Read for Work Referrals – Data Science Bytes">
-<meta property="og:description" content="Javier Orraca-Deatcu’s data science website built with R and Quarto">
-<meta property="og:image" content="https://www.javierorracadeatcu.com/images/work_logo.png">
+<meta property="og:title" content="Posit Conference 2025 Workshop – Data Science Bytes">
+<meta property="og:description" content="Key insights and takeaways from the advanced feature engineering workshop at Posit Conference 2025 with instructors Max Kuhn and Emil Hvitfeldt.">
+<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2025-09-16-posit-conf-workshop/images/posit_conf_2025.png">
 <meta property="og:site_name" content="Data Science Bytes">
-<meta property="og:image:height" content="396">
-<meta property="og:image:width" content="1332">
-<meta name="twitter:title" content="Read for Work Referrals – Data Science Bytes">
-<meta name="twitter:description" content="Javier Orraca-Deatcu’s data science website built with R and Quarto">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/images/Javier_Profile.jpg">
+<meta name="twitter:title" content="Posit Conference 2025 Workshop – Data Science Bytes">
+<meta name="twitter:description" content="Key insights and takeaways from the advanced feature engineering workshop at Posit Conference 2025 with instructors Max Kuhn and Emil Hvitfeldt.">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2025-09-16-posit-conf-workshop/images/posit_conf_2025.png">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -281,11 +319,11 @@ cookieconsent.run({
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Data Science Bytes</span>
     </a>
   </div>
@@ -296,7 +334,7 @@ cookieconsent.run({
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="./blog.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../blog.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -330,15 +368,15 @@ cookieconsent.run({
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./resources.html"> 
+    <a class="nav-link" href="../../resources.html"> 
 <span class="menu-text">Python &amp; R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -352,22 +390,67 @@ cookieconsent.run({
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#tips-tricks" id="toc-tips-tricks" class="nav-link" data-scroll-target="#tips-tricks">Tips &amp; Tricks</a>
+  <ul class="collapse">
+  <li><a href="#extracting-executable-code-from-quarto-.qmd-or-r-markdown-.rmd-documents" id="toc-extracting-executable-code-from-quarto-.qmd-or-r-markdown-.rmd-documents" class="nav-link" data-scroll-target="#extracting-executable-code-from-quarto-.qmd-or-r-markdown-.rmd-documents">Extracting Executable Code from Quarto (<code>.qmd</code>) or R Markdown (<code>.Rmd</code>) Documents</a></li>
+  <li><a href="#exploring-data-with-pca" id="toc-exploring-data-with-pca" class="nav-link" data-scroll-target="#exploring-data-with-pca">Exploring Data with PCA</a></li>
+  <li><a href="#hyperparameter-tuning-neural-networks-with-brulee-and-tune" id="toc-hyperparameter-tuning-neural-networks-with-brulee-and-tune" class="nav-link" data-scroll-target="#hyperparameter-tuning-neural-networks-with-brulee-and-tune">Hyperparameter Tuning Neural Networks with <strong>brulee</strong> and <strong>tune</strong></a>
+  <ul class="collapse">
+  <li><a href="#example-multilayer-perceptron-with-tuning" id="toc-example-multilayer-perceptron-with-tuning" class="nav-link" data-scroll-target="#example-multilayer-perceptron-with-tuning">Example: Multilayer Perceptron with Tuning</a></li>
+  <li><a href="#why-tune-activation-functions" id="toc-why-tune-activation-functions" class="nav-link" data-scroll-target="#why-tune-activation-functions">Why Tune Activation Functions?</a></li>
+  </ul></li>
+  <li><a href="#parallel-processing-with-mirai" id="toc-parallel-processing-with-mirai" class="nav-link" data-scroll-target="#parallel-processing-with-mirai">Parallel Processing with <strong>mirai</strong></a></li>
+  <li><a href="#post-model-calibration-and-adjustments-with-tailor" id="toc-post-model-calibration-and-adjustments-with-tailor" class="nav-link" data-scroll-target="#post-model-calibration-and-adjustments-with-tailor">Post-Model Calibration and Adjustments with <strong>tailor</strong></a></li>
+  <li><a href="#probability-focused-metrics-with-desirability2" id="toc-probability-focused-metrics-with-desirability2" class="nav-link" data-scroll-target="#probability-focused-metrics-with-desirability2">Probability-Focused Metrics with <strong>desirability2</strong></a></li>
+  <li><a href="#feature-engineering-with-step_dummy_extract" id="toc-feature-engineering-with-step_dummy_extract" class="nav-link" data-scroll-target="#feature-engineering-with-step_dummy_extract">Feature Engineering with <code>step_dummy_extract()</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Read for Work Referrals</h1>
-</div>
+<h1 class="title">Posit Conference 2025 Workshop</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">tidymodels</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Key insights and takeaways from the advanced feature engineering workshop at Posit Conference 2025 with instructors Max Kuhn and Emil Hvitfeldt.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://www.javierorracadeatcu.com/">Javier Orraca-Deatcu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 16, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -377,49 +460,136 @@ cookieconsent.run({
 </header>
 
 
-<p><em>Disclaimer: Before we get to the good stuff below, please note that the views expressed below are mine alone and do not reflect the views of my employer.</em></p>
-<section id="hello-world" class="level2">
-<h2 class="anchored" data-anchor-id="hello-world">Hello, World!</h2>
-<p>If you’re reading this, I truly appreciate you connecting with me about work at <a href="https://www.centene.com/">Centene Corporation</a>. Whether you’re approaching the end of your education, looking to switch jobs, perhaps you’re desiring a mid-career pivot to “data science” (<em>something I did later in my career</em>)… It is never easy, it is uncomfortable and repetitive, and generally the whole process feels broken. I feel for you, and please know that I legitimately want to try to help you if I can.</p>
+<p><img src="intro_to_tidymodels.png" class="preview-image img-fluid"></p>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>Posit Conference 2025, hosted in Atlanta, GA, kicked off today with specialized workshops ranging from introductory data science sessions, to advanced machine learning deep dives, to LLM/GenAI workshops. I attended the <em>Getting More Out of Feature Engineering and Tuning for Machine Learning</em> workshop hosted by some of Posit’s open-source data science statisticians / developers, <a href="https://max-kuhn.org/">Max Kuhn</a> and <a href="https://emilhvitfeldt.com/">Emil Hvitfeldt</a>.</p>
+<p>Despite regularly working with the <a href="https://www.tidymodels.org/">tidymodels</a> framework for reproducible machine learning, I learned so many new methods to evaluate and optimize model performance. The below tips, tricks, and takeaways barely scratch the surface of material covered in the workshop, but I wanted to share some of these useful tips while they were fresh in my mind.</p>
 </section>
-<section id="a-bit-about-centene" class="level2">
-<h2 class="anchored" data-anchor-id="a-bit-about-centene">A Bit About Centene</h2>
-<p><img src="./images/work_logo.png" class="img-fluid"></p>
-<p>Centene is a huge company. We have approximately 70,000 employees and provide healthcare insurance to 28 million members. We operate a bit like a portfolio management company, albeit, somewhat under the radar - By that I mean, despite Centene generating revenues of $154 billion (USD) in 2023 and landing us on the Fortune 25 list, “Centene” is not particularly a household name like other national health insurance companies such as Aetna, BlueCross BlueShield, Kaiser Permanente, or United Healthcare… This is largely by design and also because of the inorganic growth (via acquisitions) that Centene has made over the last 10 years.</p>
-<p>Centene operates its health plans at the State level and it is these brand names that have become household names in the respective communities they serve, e.g., Health Net (our California offering), Peach State Health Plan (our Georgia plan), Superior HealthPlan (our Texas plan), Fidelis (our New York plan), WellCare, Ambetter, etc.</p>
-<p>Centene is a publicly traded, “managed care” health insurance carrier that primarily works with government-sponsored insurance products. The bulk of our members are on Medicaid (low-income households) and Medicare (65 and older). Managed care is a type of health insurance plan that aims to reduce costs while maintaining high quality of care. Managed care plans have contracts with medical facilities and health care providers to provide care for members at reduced costs.</p>
-</section>
-<section id="a-bit-about-data-science-at-centene" class="level2">
-<h2 class="anchored" data-anchor-id="a-bit-about-data-science-at-centene">A Bit About Data Science at Centene</h2>
-<p>As stated in the above section, we have almost 70,000 employees. While I work for Centene’s Data Science Center of Excellence (we call it the <em>Data Science &amp; AI Hub</em>), we make up a small fraction of the data science horsepower at Centene - There are Data Analysts, Data Scientists, Analytics Engineers, Machine Learning Engineers, Cloud Engineers, Statistical Programmers, Biostatisticians, Business Analysts, Actuaries and Finance professionals, and many other ad hoc teams that code or work in data science adjacent spaces.</p>
-<p>If you truly enjoy analytics, data science, machine learning, engineering, etc., you’ll <em>love</em> the stack that is at our disposal. On a regular basis, I get to work with GitLab (git repos and CI/CD), Jupyter Hub, VS Code (for Python), RStudio (for R), Databricks (for experimentation, training with Spark clusters, feature store management, model registry, and serving LLM model endpoints), Snowflake (data warehouse), Kubernetes (orchestration), AWS (storage), and those are just some of the many tools that I regularly use. Some teams develop more on the Microsoft Azure stack, some are more focused on chat bots, statistics, web app development, several teams are already developing and deploying GenAI + LLM solutions… LOTS of interesting things going on at Centene and I’d recommend this place to anybody who is driven and eager to learn/share new methods around data and ML/AI.</p>
-<p>I help plan meetups and workshops with Centene’s R User Group and we have 100-150 regular attendees from across the country. There are <em>many</em> more Python developers. There is a ton of collaboration but even then, I likely won’t know specifics of the role that you’re interested in. This leads me to my next section…</p>
-</section>
-<section id="help-me-help-you" class="level2">
-<h2 class="anchored" data-anchor-id="help-me-help-you">Help Me Help You</h2>
-<p>I receive about 1-5 LinkedIn messages per day asking if I can refer them to a Centene position. Unfortunately, I do not run a recruiting or hiring agency (although maybe I should 😅). That said, I do want to help you!</p>
-<p>Centene does not have a formal internal referral application system. If the position you’re interested in turns out to be in my org or for a close colleague’s team, I will certainly reach back out to you to discuss in more detail.</p>
-<p>It goes without saying but given the competitive landscape, it is in your best interest to revise your resume to highlight your skills and experiences in a way that addresses the requirements of the position you’re interested in.</p>
-<p>Please follow the steps below and let me know if you have any questions or concerns:</p>
-<ol type="1">
-<li>Apply for the role you found on the Centene careers site
+<section id="tips-tricks" class="level1">
+<h1>Tips &amp; Tricks</h1>
+<section id="extracting-executable-code-from-quarto-.qmd-or-r-markdown-.rmd-documents" class="level2">
+<h2 class="anchored" data-anchor-id="extracting-executable-code-from-quarto-.qmd-or-r-markdown-.rmd-documents">Extracting Executable Code from Quarto (<code>.qmd</code>) or R Markdown (<code>.Rmd</code>) Documents</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">purl</span>(<span class="st">"path/to/slides/here"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The function <code>knitr::purl()</code> is a hidden gem. This function takes an input a file path (like a <code>.qmd</code> or <code>.Rmd</code>), extracts the R code in it according to a list of patterns, evaluates the code and writes the output into another file.</p>
+<p>This is especially useful if:</p>
 <ul>
-<li>If I <em>do actually know you</em> from a networking event, UC workshop, SoCal RUG meetup, or some other way we’ve met, then of course I’ll give the hiring team a heads up about how we met</li>
-</ul></li>
-<li>Once your application is submitted, forward your confirmation email to <a href="mailto:javier.orraca@centene.com">javier.orraca@centene.com</a>
+<li>You followed a workshop/tutorial and want just the code without slides/markdown</li>
+<li>You want to version-control code separately from prose</li>
+<li>You need to quickly test or reuse functions without copy-pasting out of your <code>.Rmd</code></li>
+</ul>
+</section>
+<section id="exploring-data-with-pca" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-data-with-pca">Exploring Data with PCA</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load example workshop data</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">"https://raw.githubusercontent.com/tidymodels/"</span> <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">"workshops/main/slides/class_data.RData"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">url</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">load</span>()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA recipe, baked, and visualized</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>class_data <span class="sc">|&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> class_data) <span class="sc">|&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pca</span>(<span class="fu">all_predictors</span>(), <span class="at">num_comp =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC1, PC2, <span class="at">col =</span> class)) <span class="sc">+</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here, you’re using <a href="https://recipes.tidymodels.org/">recipes</a>, a tidymodels package for preprocessing steps, to run principal component analysis (PCA).</p>
 <ul>
-<li>Attach a copy of your resume</li>
-<li>Write a few sentences in that email explaining why you’re interested in the position that you applied to and also what interests you about Centene (or healthcare in general)</li>
-<li>I want to be able to forward your email to Recruiting and the hiring team, and this will really help me help you!</li>
-<li>When Recruiting or the hiring team ask me how I know you, please understand that I plan to be honest and say that we don’t actually know each other if we’re strictly LinkedIn connections</li>
-</ul></li>
-</ol>
-<p>Best of luck!</p>
+<li><code>recipe(class ~ ., data = class_data)</code>: defines the outcome (<code>class</code>) and predictors (denoted with the <code>.</code>, this represents “all other columns”)</li>
+<li><code>step_pca(all_predictors(), num_comp = 2)</code>: compresses all predictors into two uncorrelated principal components (this will create <code>PC1</code> and <code>PC2</code>)</li>
+<li><code>prep()</code> and <code>bake()</code>: fit the transformation and apply it to your data<br>
+</li>
+<li>The resulting two-dimensional projection is visualized with <code>ggplot2</code></li>
+</ul>
+<p><strong>Beginner note:</strong> PCA is a dimensionality-reduction technique, that said, it also allows you to <strong>visualize high-dimensional data</strong> in 2D (or 3D). Expect classes that are separable to cluster together; Overlapping classes in PCA space indicate harder classification problems.</p>
+</section>
+<section id="hyperparameter-tuning-neural-networks-with-brulee-and-tune" class="level2">
+<h2 class="anchored" data-anchor-id="hyperparameter-tuning-neural-networks-with-brulee-and-tune">Hyperparameter Tuning Neural Networks with <strong>brulee</strong> and <strong>tune</strong></h2>
+<p><a href="https://brulee.tidymodels.org/"><code>brulee</code></a> is a tidymodels extension that lets you train <strong>torch-based neural networks directly in R</strong>. You integrate it with <code>parsnip</code> for model specification and <code>tune</code> for hyperparameter search.</p>
+<section id="example-multilayer-perceptron-with-tuning" class="level3">
+<h3 class="anchored" data-anchor-id="example-multilayer-perceptron-with-tuning">Example: Multilayer Perceptron with Tuning</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nnet_spec <span class="ot">&lt;-</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mlp</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">hidden_units =</span> <span class="fu">tune</span>(),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">penalty =</span> <span class="fu">tune</span>(),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">learn_rate =</span> <span class="fu">tune</span>(),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">epochs =</span> <span class="dv">100</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">activation =</span> <span class="fu">tune</span>()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"brulee"</span>, <span class="at">class_weights =</span> <span class="fu">tune</span>(), <span class="at">stop_iter =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here you’re telling tidymodels: - <code>hidden_units</code>, <code>penalty</code>, <code>learn_rate</code>, <code>activation</code>, and <code>class_weights</code> are <strong>tunable parameters</strong>.<br>
+- <code>brulee</code> (engine) uses <strong>torch</strong> under the hood, so training is GPU-friendly if available.<br>
+- <code>stop_iter = 10</code> means training halts early if there’s no improvement for 10 iterations.</p>
+</section>
+<section id="why-tune-activation-functions" class="level3">
+<h3 class="anchored" data-anchor-id="why-tune-activation-functions">Why Tune Activation Functions?</h3>
+<p>Different activation functions (ReLU, sigmoid, tanh, etc.) change how neurons fire.</p>
+<ul>
+<li><strong>ReLU</strong> often works best in deep networks</li>
+<li><strong>Sigmoid/tanh</strong> can saturate and slow learning</li>
+</ul>
+<p>By tuning across them, you empirically discover what works for your dataset.</p>
+<p>👉 <strong>Beginner note:</strong> Expect to see very different performance curves depending on activation choice. Your plots (<code>autoplot(nnet_res, metric = "roc_auc")</code>, etc.) make this obvious.</p>
+</section>
+</section>
+<section id="parallel-processing-with-mirai" class="level2">
+<h2 class="anchored" data-anchor-id="parallel-processing-with-mirai">Parallel Processing with <strong>mirai</strong></h2>
+<p><a href="https://mirai.r-lib.org/"><code>mirai</code></a> provides <strong>lightweight parallelism</strong> for R. Unlike <code>future</code>, it avoids large global state copying and can be more memory-efficient for iterative jobs like cross-validation.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mirai)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">daemons</span>(cores)  <span class="co"># start workers</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">control_grid</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>, <span class="at">save_workflow =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>daemons(cores)</code> launches worker processes.<br>
+</li>
+<li>Once active, tidymodels’ <code>tune_grid()</code> distributes resampling and grid search tasks across them.</li>
+</ul>
+<p>👉 <strong>Beginner note:</strong> On multi-core machines, expect <strong>dramatic speedups</strong>—a 10-fold cross-validation with 25 parameter sets could go from hours to minutes.</p>
+</section>
+<section id="post-model-calibration-and-adjustments-with-tailor" class="level2">
+<h2 class="anchored" data-anchor-id="post-model-calibration-and-adjustments-with-tailor">Post-Model Calibration and Adjustments with <strong>tailor</strong></h2>
+<p><a href="https://tailor.tidymodels.org/"><code>tailor</code></a> provides a framework to <strong>adjust model outputs after training</strong> (e.g., calibrating probabilities or shifting thresholds).</p>
+<p>Key workshop notes: - <strong>Order matters:</strong> apply adjustments in the correct sequence (e.g., calibrate probabilities before changing thresholds).<br>
+- <strong>Adjustments affect predictions:</strong> tweaking probabilities also changes hard class predictions.<br>
+- <strong>Before performance estimation:</strong> you should apply adjustments prior to final evaluation, otherwise metrics reflect unadjusted predictions.<br>
+- <strong>Thresholds vs metrics:</strong> probability thresholding does not affect metrics like ROC AUC or Brier score (since these are threshold-independent).</p>
+<p>👉 <strong>Beginner note:</strong> Calibration is about making predicted probabilities <strong>better aligned with reality</strong> (e.g., when the model says 0.8, ~80% of those cases should truly be positive). Expect smoother calibration curves and more trustworthy probabilities.</p>
+</section>
+<section id="probability-focused-metrics-with-desirability2" class="level2">
+<h2 class="anchored" data-anchor-id="probability-focused-metrics-with-desirability2">Probability-Focused Metrics with <strong>desirability2</strong></h2>
+<p><a href="https://desirability2.tidymodels.org/"><code>desirability2</code></a> adds <strong>desirability functions</strong> to tidymodels tuning. Instead of optimizing one metric (say ROC AUC), you can combine multiple (e.g., ROC AUC + sensitivity + Brier score) into a single desirability score.</p>
+<p>👉 <strong>Beginner note:</strong> This is useful when trade-offs matter. For example, in healthcare:<br>
+- You want <strong>high sensitivity</strong> (catch positives) but also <strong>good calibration</strong> (accurate probabilities).<br>
+- A single desirability function balances both instead of forcing you to pick one metric.</p>
+</section>
+<section id="feature-engineering-with-step_dummy_extract" class="level2">
+<h2 class="anchored" data-anchor-id="feature-engineering-with-step_dummy_extract">Feature Engineering with <code>step_dummy_extract()</code></h2>
+<p>From the <code>recipes</code> package, <code>step_dummy_extract()</code> creates <strong>dummy (one-hot) encoded variables but lets you “extract” them by group</strong>.</p>
+<p>Example use case: Suppose you have a categorical variable with hundreds of levels. Rather than keep all of them, you might only extract specific contrasts (like “is level A vs not A”).</p>
+<p>See the <a href="https://workshops.tidymodels.org/slides/advanced-04-feature-engineering-part-one.html#/advanced-dummies---extraction-1">tidymodels advanced workshop slide</a> for applied examples.</p>
+<p>👉 <strong>Beginner note:</strong> Expect this to reduce dataset size and improve model interpretability while still capturing categorical signals.</p>
 
 
 </section>
+</section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -484,13 +654,14 @@ cookieconsent.run({
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
