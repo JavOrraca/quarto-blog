@@ -1,0 +1,74 @@
+---
+title: "Three Open Source Tools to Bookmark"
+description: "A roundup of msgvault, RTK, and ducklake-r. Three tools that put practitioners back in control of their data and AI agent workflows."
+date: 03-15-2026
+categories: [duckdb, r, arrow]
+image: rtkgain02.png
+draft: false
+---
+
+# The Open-Source Data + AI Tooling Ecosystem Is Having a Moment
+
+Every few weeks, a handful of tools land in my bookmarks at the same time and I realize they're all pointing at the same underlying shift. These three projects - all open-source, all practitioner-first - all push back against the idea that good infrastructure has to be complicated or cloud-hosted.
+
+Here's what I've been digging into.
+
+## msgvault: Your Email Archive, Powered by DuckDB
+
+I've spent more time than I'd like to admit trying to search my own email. Gmail's built-in search is fine for recent messages, but try querying three years of threads about a specific project and you'll quickly hit its limits.
+
+[msgvault](https://www.msgvault.io/){target="_blank"}, developed by Wes McKinney (the creator of Python's pandas!), is a local email archiving tool that syncs your Gmail (with IMAP support coming) to your machine - raw MIME, labels, attachments and all - and then lets you search it via a terminal UI, a REST API, or an MCP server for AI assistant integration. Under the hood it uses **SQLite FTS5** for full-text search and **DuckDB over Parquet** for analytics, which the project claims is "hundreds of times faster than SQL JOINs" for aggregate queries over large archives.
+
+The MCP angle is the part I find most interesting. Plugging your complete email history into a local AI assistant context - without shipping any of it to a third-party API - is exactly the kind of privacy-preserving workflow I want to see more of. Installation is a single `curl` command, and it's MIT-licensed and open-source on GitHub.
+
+::: {.callout-tip}
+## DuckDB + Parquet keeps showing up everywhere
+msgvault, Arrow-backed data frames, DuckLake (see below) - if you haven't made DuckDB a core part of your analytics stack yet, 2026 is the year.
+:::
+
+## RTK (Rust Token Killer): Stop Feeding Your AI Agent Noise
+
+If you're running AI coding assistants like Claude Code, Cursor, or Codex on the regular, you've probably hit the wall where a long session starts to degrade because the context window fills up with verbose CLI output. `git status` alone can dump hundreds of lines. Multiply that by a full dev workflow and you're paying for a lot of tokens that aren't helping anyone reason about your code.
+
+[RTK](https://www.rtk-ai.app/){target="_blank"} is a Rust-built CLI proxy that intercepts command output before it hits your AI agent's context window and compresses it. The project reports **89% average noise reduction** across 2,900+ real commands, with one user clocking 138 million tokens saved. On pay-per-token models, the project estimates up to 70% of your bill is "noise the LLM doesn't need" - that resonates with my own intuition after months of Claude Code-heavy development.
+
+It works via a `PreToolUse` hook (`rtk init --global`), and supports git, cargo, npm, docker, kubectl filtering out of the box. A `rtk gain` dashboard shows you exactly how much you're saving. I'm planning to try it against some of my data pipeline workflows where `dbt` logs get verbose fast.
+
+## ducklake-r: Versioned Data Lakes in R, Built on DuckDB
+
+If you work in regulated industries or on any project where reproducibility matters - and really, what data science project *doesn't* benefit from reproducibility - you've probably cobbled together some version of a "save a dated CSV" workflow and felt vaguely uncomfortable about it.
+
+[ducklake-r](https://tgerke.github.io/ducklake-r/){target="_blank"}, maintained by Travis Gerke, is an experimental R package that brings proper versioned data lake infrastructure into your R workflow. It's built on DuckDB and implements ACID transactions, automatic change tracking, medallion architecture (bronze/silver/gold layers), and time travel queries - all with `dplyr`-compatible syntax.
+
+```{r}
+#| eval: false
+library(ducklake)
+
+# Write to a bronze layer with author attribution
+with_transaction(con, author = "javier", {
+  replace_table(con, "raw_claims", new_data, layer = "bronze")
+})
+
+# Time-travel: query the table as it was last Tuesday
+get_ducklake_table_version(con, "raw_claims", as_of = "2026-03-08")
+```
+
+The combination of `with_transaction()` for authorship and `list_table_snapshots()` for auditing gives you the kind of audit trail that's genuinely useful for collaborative work - or for the moment six months from now when someone asks "what changed between these two model runs?"
+
+It's early-stage (experimental lifecycle), but the design is thoughtful and Travis's documentation is excellent. Worth watching closely if you do any serious data pipeline work in R.
+
+## The Common Thread
+
+What strikes me about all three of these tools is that they're not selling you a platform - they're handing you back control. Your email. Your token budget. Your data history. The best open-source tooling right now is quietly making it easier to own your own stack, keep your data local, and work more intentionally with AI agents rather than just throwing more compute at the problem.
+
+These are exactly the kinds of projects I want to highlight here more regularly. If you're building something in this spirit, drop me a note - I'd love to hear about it.
+
+## Learn More
+
+- [msgvault](https://www.msgvault.io/){target="_blank"} - local email archive with DuckDB analytics and MCP integration
+- [RTK (Rust Token Killer)](https://www.rtk-ai.app/){target="_blank"} - CLI proxy for AI agent token compression
+- [ducklake-r](https://tgerke.github.io/ducklake-r/){target="_blank"} - versioned R data lake package by Travis Gerke
+
+---
+
+Happy Sunday, and happy coding!

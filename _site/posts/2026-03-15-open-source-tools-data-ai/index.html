@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Javier Orraca-Deatcu">
+<meta name="dcterms.date" content="2026-03-15">
+<meta name="description" content="A roundup of msgvault, RTK, and ducklake-r. Three tools that put practitioners back in control of their data and AI agent workflows.">
 
-<title>About Me – Data Science Bytes</title>
+<title>Three Open Source Tools to Bookmark – Data Science Bytes</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,33 +26,68 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/cookie-consent/cookie-consent.js"></script>
-<link href="site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-46f66b053e56abd73bb6e954d61a315b.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-22b4aaf4c2978829df3684e8f2c068db.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-46f66b053e56abd73bb6e954d61a315b.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7c3523df50d8747b55fd647a4e1fe010.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-708b439ab856a99821a14afd861070e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-7c3523df50d8747b55fd647a4e1fe010.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-46f66b053e56abd73bb6e954d61a315b.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-22b4aaf4c2978829df3684e8f2c068db.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-46f66b053e56abd73bb6e954d61a315b.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7c3523df50d8747b55fd647a4e1fe010.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-708b439ab856a99821a14afd861070e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-7c3523df50d8747b55fd647a4e1fe010.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -106,18 +144,22 @@ cookieconsent.run({
   
 
 
-<meta property="og:title" content="About Me – Data Science Bytes">
-<meta property="og:description" content="Javier Orraca-Deatcu’s data science website built with R and Quarto">
-<meta property="og:image" content="https://www.javierorracadeatcu.com/images/Javier_Wide.jpg">
+<meta property="og:title" content="Three Open Source Tools to Bookmark – Data Science Bytes">
+<meta property="og:description" content="A roundup of msgvault, RTK, and ducklake-r. Three tools that put practitioners back in control of their data and AI agent workflows.">
+<meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2026-03-15-open-source-tools-data-ai/rtkgain02.png">
 <meta property="og:site_name" content="Data Science Bytes">
-<meta name="twitter:title" content="About Me – Data Science Bytes">
-<meta name="twitter:description" content="Javier Orraca-Deatcu’s data science website built with R and Quarto">
-<meta name="twitter:image" content="https://www.javierorracadeatcu.com/images/Javier_Profile.jpg">
+<meta property="og:image:height" content="840">
+<meta property="og:image:width" content="1370">
+<meta name="twitter:title" content="Three Open Source Tools to Bookmark – Data Science Bytes">
+<meta name="twitter:description" content="A roundup of msgvault, RTK, and ducklake-r. Three tools that put practitioners back in control of their data and AI agent workflows.">
+<meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2026-03-15-open-source-tools-data-ai/rtkgain02.png">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="840">
+<meta name="twitter:image-width" content="1370">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -286,7 +328,7 @@ cookieconsent.run({
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Data Science Bytes</span>
     </a>
   </div>
@@ -297,7 +339,7 @@ cookieconsent.run({
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="./blog.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../blog.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -331,15 +373,15 @@ cookieconsent.run({
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./resources.html"> 
+    <a class="nav-link" href="../../resources.html"> 
 <span class="menu-text">Python &amp; R</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./about.html" aria-current="page"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -353,22 +395,62 @@ cookieconsent.run({
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#the-open-source-data-ai-tooling-ecosystem-is-having-a-moment" id="toc-the-open-source-data-ai-tooling-ecosystem-is-having-a-moment" class="nav-link active" data-scroll-target="#the-open-source-data-ai-tooling-ecosystem-is-having-a-moment">The Open-Source Data + AI Tooling Ecosystem Is Having a Moment</a>
+  <ul class="collapse">
+  <li><a href="#msgvault-your-email-archive-powered-by-duckdb" id="toc-msgvault-your-email-archive-powered-by-duckdb" class="nav-link" data-scroll-target="#msgvault-your-email-archive-powered-by-duckdb">msgvault: Your Email Archive, Powered by DuckDB</a></li>
+  <li><a href="#rtk-rust-token-killer-stop-feeding-your-ai-agent-noise" id="toc-rtk-rust-token-killer-stop-feeding-your-ai-agent-noise" class="nav-link" data-scroll-target="#rtk-rust-token-killer-stop-feeding-your-ai-agent-noise">RTK (Rust Token Killer): Stop Feeding Your AI Agent Noise</a></li>
+  <li><a href="#ducklake-r-versioned-data-lakes-in-r-built-on-duckdb" id="toc-ducklake-r-versioned-data-lakes-in-r-built-on-duckdb" class="nav-link" data-scroll-target="#ducklake-r-versioned-data-lakes-in-r-built-on-duckdb">ducklake-r: Versioned Data Lakes in R, Built on DuckDB</a></li>
+  <li><a href="#the-common-thread" id="toc-the-common-thread" class="nav-link" data-scroll-target="#the-common-thread">The Common Thread</a></li>
+  <li><a href="#learn-more" id="toc-learn-more" class="nav-link" data-scroll-target="#learn-more">Learn More</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About Me</h1>
-</div>
+<h1 class="title">Three Open Source Tools to Bookmark</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">duckdb</div>
+    <div class="quarto-category">r</div>
+    <div class="quarto-category">arrow</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    A roundup of msgvault, RTK, and ducklake-r. Three tools that put practitioners back in control of their data and AI agent workflows.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p><a href="https://www.javierorracadeatcu.com/">Javier Orraca-Deatcu</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 15, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -378,52 +460,73 @@ cookieconsent.run({
 </header>
 
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/Javier_Wide.jpg" class="img-fluid figure-img"></p>
-<figcaption>A fresh look brought to you by DALL-E</figcaption>
-</figure>
+<section id="the-open-source-data-ai-tooling-ecosystem-is-having-a-moment" class="level1">
+<h1>The Open-Source Data + AI Tooling Ecosystem Is Having a Moment</h1>
+<p>Every few weeks, a handful of tools land in my bookmarks at the same time and I realize they’re all pointing at the same underlying shift. These three projects - all open-source, all practitioner-first - all push back against the idea that good infrastructure has to be complicated or cloud-hosted.</p>
+<p>Here’s what I’ve been digging into.</p>
+<section id="msgvault-your-email-archive-powered-by-duckdb" class="level2">
+<h2 class="anchored" data-anchor-id="msgvault-your-email-archive-powered-by-duckdb">msgvault: Your Email Archive, Powered by DuckDB</h2>
+<p>I’ve spent more time than I’d like to admit trying to search my own email. Gmail’s built-in search is fine for recent messages, but try querying three years of threads about a specific project and you’ll quickly hit its limits.</p>
+<p><a href="https://www.msgvault.io/" target="_blank">msgvault</a>, developed by Wes McKinney (the creator of Python’s pandas!), is a local email archiving tool that syncs your Gmail (with IMAP support coming) to your machine - raw MIME, labels, attachments and all - and then lets you search it via a terminal UI, a REST API, or an MCP server for AI assistant integration. Under the hood it uses <strong>SQLite FTS5</strong> for full-text search and <strong>DuckDB over Parquet</strong> for analytics, which the project claims is “hundreds of times faster than SQL JOINs” for aggregate queries over large archives.</p>
+<p>The MCP angle is the part I find most interesting. Plugging your complete email history into a local AI assistant context - without shipping any of it to a third-party API - is exactly the kind of privacy-preserving workflow I want to see more of. Installation is a single <code>curl</code> command, and it’s MIT-licensed and open-source on GitHub.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<section id="professional" class="level2">
-<h2 class="anchored" data-anchor-id="professional">Professional</h2>
-<p>I’m a data scientist and AI leader with 20 years of hands-on and executive experience at EY, PG&amp;E, KPMG, Centene, and Jeppesen ForeFlight. My teams turn raw data into production-grade AI systems, deploying end-to-end ETL and inference pipelines, simulations and predictive models, interactive web apps, and low-latency APIs that steer strategy for internal business partner and executive leadership.</p>
-<p>Beyond the day job, I chair the Southern California R Users Group (SoCal RUG), a nonprofit that hosts monthly meetups on R, Python, Julia, and all things data science. SoCal RUG also partners with the University of California and Chapman University to deliver SQL/R/Python bootcamps, git workshops, and hackathon support to data science graduate programs.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>DuckDB + Parquet keeps showing up everywhere
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>msgvault, Arrow-backed data frames, DuckLake (see below) - if you haven’t made DuckDB a core part of your analytics stack yet, 2026 is the year.</p>
+</div>
+</div>
 </section>
-<section id="data-science-mlops-toolkit" class="level2">
-<h2 class="anchored" data-anchor-id="data-science-mlops-toolkit">Data Science &amp; MLOps Toolkit</h2>
+<section id="rtk-rust-token-killer-stop-feeding-your-ai-agent-noise" class="level2">
+<h2 class="anchored" data-anchor-id="rtk-rust-token-killer-stop-feeding-your-ai-agent-noise">RTK (Rust Token Killer): Stop Feeding Your AI Agent Noise</h2>
+<p>If you’re running AI coding assistants like Claude Code, Cursor, or Codex on the regular, you’ve probably hit the wall where a long session starts to degrade because the context window fills up with verbose CLI output. <code>git status</code> alone can dump hundreds of lines. Multiply that by a full dev workflow and you’re paying for a lot of tokens that aren’t helping anyone reason about your code.</p>
+<p><a href="https://www.rtk-ai.app/" target="_blank">RTK</a> is a Rust-built CLI proxy that intercepts command output before it hits your AI agent’s context window and compresses it. The project reports <strong>89% average noise reduction</strong> across 2,900+ real commands, with one user clocking 138 million tokens saved. On pay-per-token models, the project estimates up to 70% of your bill is “noise the LLM doesn’t need” - that resonates with my own intuition after months of Claude Code-heavy development.</p>
+<p>It works via a <code>PreToolUse</code> hook (<code>rtk init --global</code>), and supports git, cargo, npm, docker, kubectl filtering out of the box. A <code>rtk gain</code> dashboard shows you exactly how much you’re saving. I’m planning to try it against some of my data pipeline workflows where <code>dbt</code> logs get verbose fast.</p>
+</section>
+<section id="ducklake-r-versioned-data-lakes-in-r-built-on-duckdb" class="level2">
+<h2 class="anchored" data-anchor-id="ducklake-r-versioned-data-lakes-in-r-built-on-duckdb">ducklake-r: Versioned Data Lakes in R, Built on DuckDB</h2>
+<p>If you work in regulated industries or on any project where reproducibility matters - and really, what data science project <em>doesn’t</em> benefit from reproducibility - you’ve probably cobbled together some version of a “save a dated CSV” workflow and felt vaguely uncomfortable about it.</p>
+<p><a href="https://tgerke.github.io/ducklake-r/" target="_blank">ducklake-r</a>, maintained by Travis Gerke, is an experimental R package that brings proper versioned data lake infrastructure into your R workflow. It’s built on DuckDB and implements ACID transactions, automatic change tracking, medallion architecture (bronze/silver/gold layers), and time travel queries - all with <code>dplyr</code>-compatible syntax.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ducklake)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Write to a bronze layer with author attribution</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">with_transaction</span>(con, <span class="at">author =</span> <span class="st">"javier"</span>, {</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_table</span>(con, <span class="st">"raw_claims"</span>, new_data, <span class="at">layer =</span> <span class="st">"bronze"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Time-travel: query the table as it was last Tuesday</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">get_ducklake_table_version</span>(con, <span class="st">"raw_claims"</span>, <span class="at">as_of =</span> <span class="st">"2026-03-08"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The combination of <code>with_transaction()</code> for authorship and <code>list_table_snapshots()</code> for auditing gives you the kind of audit trail that’s genuinely useful for collaborative work - or for the moment six months from now when someone asks “what changed between these two model runs?”</p>
+<p>It’s early-stage (experimental lifecycle), but the design is thoughtful and Travis’s documentation is excellent. Worth watching closely if you do any serious data pipeline work in R.</p>
+</section>
+<section id="the-common-thread" class="level2">
+<h2 class="anchored" data-anchor-id="the-common-thread">The Common Thread</h2>
+<p>What strikes me about all three of these tools is that they’re not selling you a platform - they’re handing you back control. Your email. Your token budget. Your data history. The best open-source tooling right now is quietly making it easier to own your own stack, keep your data local, and work more intentionally with AI agents rather than just throwing more compute at the problem.</p>
+<p>These are exactly the kinds of projects I want to highlight here more regularly. If you’re building something in this spirit, drop me a note - I’d love to hear about it.</p>
+</section>
+<section id="learn-more" class="level2">
+<h2 class="anchored" data-anchor-id="learn-more">Learn More</h2>
 <ul>
-<li><p><code>GenAI &amp; LLMs</code>: Databricks, HuggingFace, Ollama (local development), Cline (open-source autonomous AI coding agent), vector DB + RAG (with LangChain / LangGraph, ChromaDB, DuckDB, Quiver, ragnar), MCP server and agent development, Microsoft’s MarkItDown</p></li>
-<li><p><code>ML &amp; Analytics</code>:</p>
-<ul>
-<li><code>R</code>: tidyverse, tidymodels, XGBoost, Torch, TensorFlow, Keras, Shiny, leaflet, plotly, Quarto, ellmer, dbplyr, devtools, webR, DuckDB, and more</li>
-<li><code>Python</code>: pandas, scikit-learn, PyTorch, Streamlit, PySpark, MLflow, Polars, PyArrow, Shiny for Python, plotly, narwhals, Anyscale Ray, and more</li>
-</ul></li>
-<li><p><code>Data Engineering</code>: Databricks + Unity Catalog, Snowflake, Redshift, Google BigQuery, Teradata, Apache Arrow &amp; Parquet &amp; ADBC, DuckDB, Iceberg, Polars, AWS S3</p></li>
-<li><p><code>DevOps + MLOps</code>: git, CI/CD workflows (GitLab / GitHub), MLflow, Docker, Kubernetes, Posit Connect, Rancher</p></li>
-<li><p><code>Other</code>: Jupyter Lab, Agile Scrum (&amp; the tools surrounding it, e.g., Jira, Miro, etc.), ServiceNow, Netlify, Alation (data lineage), Excel (<em>still</em> a secret weapon)</p></li>
+<li><a href="https://www.msgvault.io/" target="_blank">msgvault</a> - local email archive with DuckDB analytics and MCP integration</li>
+<li><a href="https://www.rtk-ai.app/" target="_blank">RTK (Rust Token Killer)</a> - CLI proxy for AI agent token compression</li>
+<li><a href="https://tgerke.github.io/ducklake-r/" target="_blank">ducklake-r</a> - versioned R data lake package by Travis Gerke</li>
 </ul>
-</section>
-<section id="media-presentations" class="level2">
-<h2 class="anchored" data-anchor-id="media-presentations">Media + Presentations</h2>
-<ul>
-<li><p>[2025-03-18] Loyola presentation: <a href="https://rrr.is/IntroToTidymodels">Tidymodels: A Brief Intro to Modern Modeling with R</a></p></li>
-<li><p>[2025-01-29] CSU Long Beach presentation: <a href="http://rrr.is/BigDataTinyLaptop">Big Data, Tiny Laptop</a></p></li>
-<li><p>[2024-04-27] UC Irvine hackathon workshop: <a href="https://javorraca.github.io/UCI-2024-Hackathon-Workshop-Arrow-DuckDB/#/title-slide">ETL with Arrow &amp; DuckDB</a></p></li>
-<li><p>[2023-09-26] SoCal RUG presentation: <a href="https://javorraca.github.io/posit-conf-2023-presentation">Highlights from Posit’s 2023 Annual Conference</a></p></li>
-<li><p>[2023-09-25] R Consortium interview: <a href="https://www.r-consortium.org/blog/2023/09/25/empowering-healthcare-with-r-javier-orraca-deatcus-journey-from-finance-to-predictive-health-models">Empowering Healthcare with R</a></p></li>
-<li><p>[2023-03-21] SoCal RUG presentation: <a href="https://www.youtube.com/watch?v=lNn4beRxnbk&amp;t=2321s&amp;ab_channel=SouthernCaliforniaRUsersGroup">Build a Shiny App Demo as a Cover Letter Accessory</a></p></li>
-<li><p>[2022-12-08] Posit’s <em>Data Science Hangout</em>: <a href="https://www.youtube.com/watch?v=-mm5tHQVPY8&amp;t=2858s&amp;ab_channel=PositPBC">From Excel to Machine Learning</a></p></li>
-<li><p>[2021-10-15] UC Irvine panel discussion: <a href="https://merage.uci.edu/events/2021/10/2021-lxi-conference.html">Latinx Initiative Conference</a></p></li>
-<li><p>[2021-06-09] Grid Dynamics <em>Data Points Conference</em>: <a href="https://youtu.be/LMaPvd4qMQk">Healthcare Finance Beyond Excel</a></p></li>
-<li><p>[2019-06-13] UC Irvine’s <em>Newsroom</em>: <a href="https://merage.uci.edu/news/2019/06/podcast-launched-by-merage-student-navigates-complex-field-of-data-analytics-and-science.html">Scatter Podcast launched by Merage Student</a></p></li>
-<li><p>[2019-05-20] Orange County RUG: <a href="https://twitter.com/oc_rug/status/1130553620456300544?s=20">About the Predictive Modeling Hackathon Winners</a></p></li>
-<li><p>[2019-04-14] Forbes mention: <a href="https://forbes.com/sites/louiscolumbus/2019/04/14/how-to-get-your-data-scientist-career-started">Scatter Podcast debut</a></p></li>
-</ul>
+<hr>
+<p>Happy Sunday, and happy coding!</p>
 
 
 </section>
+</section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

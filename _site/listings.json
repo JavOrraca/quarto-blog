@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/2026-03-15-open-source-tools-data-ai/index.html",
       "/posts/2025-03-24-intro-to-tidymodels/index.html",
       "/posts/2025-03-07-vector-db-and-rags/index.html",
       "/posts/2025-01-30-big-data-tiny-laptop/index.html",

@@ -9,8 +9,120 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
-<generator>quarto-1.8.27</generator>
-<lastBuildDate>Mon, 24 Mar 2025 07:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.35</generator>
+<lastBuildDate>Sun, 15 Mar 2026 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Three Open Source Tools to Bookmark</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2026-03-15-open-source-tools-data-ai/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="the-open-source-data-ai-tooling-ecosystem-is-having-a-moment" class="level1">
+<h1>The Open-Source Data + AI Tooling Ecosystem Is Having a Moment</h1>
+<p>Every few weeks, a handful of tools land in my bookmarks at the same time and I realize they’re all pointing at the same underlying shift. These three projects - all open-source, all practitioner-first - all push back against the idea that good infrastructure has to be complicated or cloud-hosted.</p>
+<p>Here’s what I’ve been digging into.</p>
+<section id="msgvault-your-email-archive-powered-by-duckdb" class="level2">
+<h2 class="anchored" data-anchor-id="msgvault-your-email-archive-powered-by-duckdb">msgvault: Your Email Archive, Powered by DuckDB</h2>
+<p>I’ve spent more time than I’d like to admit trying to search my own email. Gmail’s built-in search is fine for recent messages, but try querying three years of threads about a specific project and you’ll quickly hit its limits.</p>
+<p><a href="https://www.msgvault.io/" target="_blank">msgvault</a>, developed by Wes McKinney (the creator of Python’s pandas!), is a local email archiving tool that syncs your Gmail (with IMAP support coming) to your machine - raw MIME, labels, attachments and all - and then lets you search it via a terminal UI, a REST API, or an MCP server for AI assistant integration. Under the hood it uses <strong>SQLite FTS5</strong> for full-text search and <strong>DuckDB over Parquet</strong> for analytics, which the project claims is “hundreds of times faster than SQL JOINs” for aggregate queries over large archives.</p>
+<p>The MCP angle is the part I find most interesting. Plugging your complete email history into a local AI assistant context - without shipping any of it to a third-party API - is exactly the kind of privacy-preserving workflow I want to see more of. Installation is a single <code>curl</code> command, and it’s MIT-licensed and open-source on GitHub.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>DuckDB + Parquet keeps showing up everywhere
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>msgvault, Arrow-backed data frames, DuckLake (see below) - if you haven’t made DuckDB a core part of your analytics stack yet, 2026 is the year.</p>
+</div>
+</div>
+</section>
+<section id="rtk-rust-token-killer-stop-feeding-your-ai-agent-noise" class="level2">
+<h2 class="anchored" data-anchor-id="rtk-rust-token-killer-stop-feeding-your-ai-agent-noise">RTK (Rust Token Killer): Stop Feeding Your AI Agent Noise</h2>
+<p>If you’re running AI coding assistants like Claude Code, Cursor, or Codex on the regular, you’ve probably hit the wall where a long session starts to degrade because the context window fills up with verbose CLI output. <code>git status</code> alone can dump hundreds of lines. Multiply that by a full dev workflow and you’re paying for a lot of tokens that aren’t helping anyone reason about your code.</p>
+<p><a href="https://www.rtk-ai.app/" target="_blank">RTK</a> is a Rust-built CLI proxy that intercepts command output before it hits your AI agent’s context window and compresses it. The project reports <strong>89% average noise reduction</strong> across 2,900+ real commands, with one user clocking 138 million tokens saved. On pay-per-token models, the project estimates up to 70% of your bill is “noise the LLM doesn’t need” - that resonates with my own intuition after months of Claude Code-heavy development.</p>
+<p>It works via a <code>PreToolUse</code> hook (<code>rtk init --global</code>), and supports git, cargo, npm, docker, kubectl filtering out of the box. A <code>rtk gain</code> dashboard shows you exactly how much you’re saving. I’m planning to try it against some of my data pipeline workflows where <code>dbt</code> logs get verbose fast.</p>
+</section>
+<section id="ducklake-r-versioned-data-lakes-in-r-built-on-duckdb" class="level2">
+<h2 class="anchored" data-anchor-id="ducklake-r-versioned-data-lakes-in-r-built-on-duckdb">ducklake-r: Versioned Data Lakes in R, Built on DuckDB</h2>
+<p>If you work in regulated industries or on any project where reproducibility matters - and really, what data science project <em>doesn’t</em> benefit from reproducibility - you’ve probably cobbled together some version of a “save a dated CSV” workflow and felt vaguely uncomfortable about it.</p>
+<p><a href="https://tgerke.github.io/ducklake-r/" target="_blank">ducklake-r</a>, maintained by Travis Gerke, is an experimental R package that brings proper versioned data lake infrastructure into your R workflow. It’s built on DuckDB and implements ACID transactions, automatic change tracking, medallion architecture (bronze/silver/gold layers), and time travel queries - all with <code>dplyr</code>-compatible syntax.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ducklake)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Write to a bronze layer with author attribution</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with_transaction</span>(con, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">author =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"javier"</span>, {</span>
+<span id="cb1-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">replace_table</span>(con, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"raw_claims"</span>, new_data, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">layer =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bronze"</span>)</span>
+<span id="cb1-6">})</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Time-travel: query the table as it was last Tuesday</span></span>
+<span id="cb1-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_ducklake_table_version</span>(con, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"raw_claims"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">as_of =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2026-03-08"</span>)</span></code></pre></div></div>
+</div>
+<p>The combination of <code>with_transaction()</code> for authorship and <code>list_table_snapshots()</code> for auditing gives you the kind of audit trail that’s genuinely useful for collaborative work - or for the moment six months from now when someone asks “what changed between these two model runs?”</p>
+<p>It’s early-stage (experimental lifecycle), but the design is thoughtful and Travis’s documentation is excellent. Worth watching closely if you do any serious data pipeline work in R.</p>
+</section>
+<section id="the-common-thread" class="level2">
+<h2 class="anchored" data-anchor-id="the-common-thread">The Common Thread</h2>
+<p>What strikes me about all three of these tools is that they’re not selling you a platform - they’re handing you back control. Your email. Your token budget. Your data history. The best open-source tooling right now is quietly making it easier to own your own stack, keep your data local, and work more intentionally with AI agents rather than just throwing more compute at the problem.</p>
+<p>These are exactly the kinds of projects I want to highlight here more regularly. If you’re building something in this spirit, drop me a note - I’d love to hear about it.</p>
+</section>
+<section id="learn-more" class="level2">
+<h2 class="anchored" data-anchor-id="learn-more">Learn More</h2>
+<ul>
+<li><a href="https://www.msgvault.io/" target="_blank">msgvault</a> - local email archive with DuckDB analytics and MCP integration</li>
+<li><a href="https://www.rtk-ai.app/" target="_blank">RTK (Rust Token Killer)</a> - CLI proxy for AI agent token compression</li>
+<li><a href="https://tgerke.github.io/ducklake-r/" target="_blank">ducklake-r</a> - versioned R data lake package by Travis Gerke</li>
+</ul>
+<hr>
+<p>Happy Sunday, and happy coding!</p>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>duckdb</category>
+  <category>r</category>
+  <category>arrow</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2026-03-15-open-source-tools-data-ai/</guid>
+  <pubDate>Sun, 15 Mar 2026 07:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2026-03-15-open-source-tools-data-ai/rtkgain02.png" medium="image" type="image/png" height="88" width="144"/>
+</item>
 <item>
   <title>Intro to Tidymodels</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -6360,28 +6472,6 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div></d
   <guid>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</guid>
   <pubDate>Wed, 04 Nov 2020 08:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/images/dbplyr_what_is_new.jpg_large" medium="image"/>
-</item>
-<item>
-  <title>Detailed R Package Development Tutorial from Method Bites</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>I’ll keep this short since all credit should go towards the amazing Cosima Meyer and Dennis Hammerschmidton… They compressed some of the most valuable steps for creating and deploying a package. This duo’s work was published for the MZES Social Science Data Lab. If you want a detailed and easy-to-follow how-to for R package development, bookmark this step-by-step guide!</p>
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/package_dev.png" class="img-fluid"></p>
-<p>Source:<br> * Methods Bites: <a href="https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/">How to write your own R package and publish it on CRAN</a></p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>packages</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/2020-09-13-R-Package-Detailed-Tutorial.html</guid>
-  <pubDate>Sun, 13 Sep 2020 07:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-09-13-R-Package-Detailed-Tutorial/images/methods_bites.png" medium="image" type="image/png" height="167" width="144"/>
 </item>
 </channel>
 </rss>
