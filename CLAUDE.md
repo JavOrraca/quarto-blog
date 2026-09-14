@@ -26,11 +26,19 @@ Stack: Quarto + R -themes Flatly (light) / Darkly (dark)
 
 ## Rendering
 
-The user renders the site manually. **Claude must never run `quarto render`.**
+GitHub Actions (`.github/workflows/quarto-render.yml`) renders the site on
+pull requests and on pushes to `main`. Default remains `freeze: true` with
+committed `_freeze/`; CI can evaluate R when freeze is missing or stale. The
+workflow uploads a `_site` artifact but does not deploy. Netlify still serves
+the live site from the committed `_site/` directory.
+
+Local `quarto::quarto_render(as_job = FALSE)` is still how Javier drafts and
+refreshes freeze. **Do not run a full `quarto render` unless Javier asks.**
 
 When a post draft is complete, tell the user:
 > "Draft created at `posts/YYYY-MM-DD-slug/index.qmd`. Add a preview image,
-> review the content, remove `draft: true` when ready, then run `quarto render`."
+> review the content, remove `draft: true` when ready, then push; CI will
+> render. Local render remains optional for freeze or eval."
 
 ---
 
