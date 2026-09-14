@@ -1,0 +1,95 @@
+# Render the Quarto site on PRs and on pushes to main.
+#
+# Freeze: posts/_metadata.yml has freeze: true and _freeze/ is committed, so a
+# project-wide `quarto render` reuses frozen computations when they exist.
+# R is still installed so knitr can run when freeze is missing or a chunk
+# must evaluate (do not invent renv; this repo has no lockfile).
+#
+# Deploy: this workflow does not publish to Netlify. The live site is still
+# git-backed and serves the committed _site/ directory. Do not gitignore or
+# delete _site/ until Netlify is rewired (see the PR that added this file).
+
+name: Quarto Render
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: quarto-render-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.10.18
+
+      - name: Confirm Quarto version
+        run: |
+          quarto --version
+          test "$(quarto --version)" = "1.10.18"
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.6.1"
+          use-public-rspm: true
+
+      # No renv.lock / DESCRIPTION in this repo. Install knitr + rmarkdown
+      # (Quarto's knitr engine) and packages from posts whose R chunks are
+      # eval: true or default-eval (would run if freeze misses):
+      #   tidymodels — posts/2025-09-16-posit-conf-workshop
+      #   probably, sodium — posts/2023-01-15-r-goodies-for-2023
+      #   R6 — posts/2023-11-23-oop-with-r (also uses purrr via tidymodels)
+      - name: Install R packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          install-quarto: false
+          install-pandoc: false
+          packages: |
+            any::knitr
+            any::rmarkdown
+            any::tidymodels
+            any::probably
+            any::sodium
+            any::R6
+
+      - name: Render site
+        run: quarto render
+
+      - name: Note freeze status
+        run: |
+          if git diff --quiet -- _freeze; then
+            echo "Freeze reused; _freeze/ unchanged."
+          else
+            echo "Freeze updated during render (missing freeze or a chunk executed)."
+            git status --short -- _freeze
+            git diff --stat -- _freeze
+          fi
+
+      - name: Check render output
+        run: |
+          test -f _site/index.html
+          grep -q 'quarto-1.10.18' _site/index.html
+
+      - name: Upload rendered site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: _site
+          if-no-files-found: error
+          retention-days: 7
