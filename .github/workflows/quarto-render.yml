@@ -1,9 +1,10 @@
 # Render the Quarto site on PRs and on pushes to main.
 #
-# Freeze: posts/_metadata.yml has freeze: true and _freeze/ is committed, so a
-# project-wide `quarto render` reuses frozen computations when they exist.
-# R is still installed so knitr can run when freeze is missing or a chunk
-# must evaluate (do not invent renv; this repo has no lockfile).
+# Freeze: posts/_metadata.yml has freeze: auto and _freeze/ is committed, so a
+# project-wide `quarto render` reuses frozen computations unless source changed.
+# Drafts set freeze: false so they always re-knit. R is still installed so knitr
+# can run when freeze is missing, stale, or a draft forces execution (do not
+# invent renv; this repo has no lockfile).
 #
 # Deploy: this workflow does not publish to Netlify. The live site is still
 # git-backed and serves the committed _site/ directory. Do not gitignore or

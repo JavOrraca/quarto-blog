@@ -5,6 +5,7 @@ date: 09-16-2025
 categories: [tidymodels]
 image: images/posit_conf_2025.png
 draft: true
+freeze: false
 ---
 
 ![](intro_to_tidymodels.png){.preview-image}
