@@ -10,7 +10,676 @@
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Sun, 15 Mar 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 14 Sep 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>One DuckDB, Many Analysts: Serving an S3 DuckLake with Quack</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><img src="https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/preview.png" class="preview-image img-fluid"></p>
+<section id="stop-copying-parquet-files-around" class="level1">
+<h1>Stop Copying Parquet Files Around</h1>
+<p>DuckDB continues to innovate in meaningful ways. Quack landed as a core extension around DuckDB 1.5.3, and the <a href="https://duckdb.org/2026/08/17/duckdb-20-highlights.html" target="_blank">v2.0 Cyanoptera preview</a> already said it would graduate to stable this fall.</p>
+<p><a href="https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html" target="_blank">v2.0-alpha is generally available now</a>, with a feature freeze and a second-half-of-October target, so the “DuckDB as a server” story is in motion rather than just a headline.</p>
+<p>I recently got to contribute that protocol support to Travis Gerke’s <a href="https://tgerke.github.io/ducklake-r/" target="_blank"><code>ducklake</code></a> package for R users. It’s a tidy-friendly wrapper around <a href="https://ducklake.select/" target="_blank">DuckLake</a>, DuckDB’s lakehouse format, and it can serve a lake over the network.</p>
+<p>Every time I’ve recently explained this to a friend, the same question comes back: <em>“So I convert my Parquet files into a DuckDB and put that on S3?”</em> Not quite, and untangling that is honestly half the value of this post.</p>
+<p>So let’s build the whole thing end to end. But first, some groundwork on the problem this actually solves, because Quack only makes sense as an answer to a specific pain.</p>
+</section>
+<section id="how-teams-share-analytical-data-today" class="level1">
+<h1>How Teams Share Analytical Data Today</h1>
+<p>Here’s the ladder most organizations climb. See where you sit.</p>
+<p><strong>Level 0 - Nobody shares anything.</strong> Datasets move as CSV, XPT, or Excel attachments. Somebody has <code>analysis_final_v3_USE_THIS.parquet</code> on their desktop. There’s no audit trail, no versioning, and the answer to “which copy is current?” is whoever spoke last. This is still, by a wide margin, the most common state of affairs.</p>
+<p><strong>Level 1 - A bucket everyone reads.</strong> Parquet lands on S3, and each analyst runs DuckDB locally against it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># The status quo for a lot of teams</span></span>
+<span id="cb1-2">con <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbConnect</span>(duckdb<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">duckdb</span>())</span>
+<span id="cb1-3">DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbExecute</span>(con, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"CREATE SECRET (TYPE s3, PROVIDER credential_chain)"</span>)</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">DBI<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbGetQuery</span>(con, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  SELECT carrier, AVG(arr_delay)</span></span>
+<span id="cb1-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FROM read_parquet('s3://dsb-flights-lake/legacy/*.parquet')</span></span>
+<span id="cb1-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  GROUP BY carrier</span></span>
+<span id="cb1-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+</div>
+<p>This is a genuine improvement and it’s fast. But look at what’s missing. There’s no catalog, so there are no snapshots, no schema evolution, no record of who changed what. Every analyst needs their own IAM credentials. Two people writing at the same time will happily clobber each other. And “which prefix is the current one” quietly becomes tribal knowledge again - you’ve moved the <code>_v3_FINAL</code> problem from a filename to an S3 path.</p>
+<p><strong>Level 2 - DuckLake with a shared catalog.</strong> This is where the <code>ducklake</code> package normally lives. You put a small catalog database (PostgreSQL or SQLite) next to the S3 prefix, and suddenly you have versioning, time travel, ACID transactions, author-attributed commit messages, and safe concurrent writers. It’s a real lakehouse, and for a lot of teams it’s the right stopping point.</p>
+<p>The constraint that remains: <strong>every client still needs direct read and write access to the storage path.</strong> Each analyst mounts the bucket. The credential sprawl from Level 1 is still there - you’ve fixed correctness, not access.</p>
+<p><strong>Level 3 - A warehouse.</strong> Redshift, Snowflake, Databricks. Governance is solved, permissions are centralized, and someone else runs the thing. You’re also paying for a cluster whether or not anyone queries it, and your analysts are back to shipping SQL over a network API instead of doing local columnar scans.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Where Quack fits
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Between Level 2 and Level 3. You keep the lakehouse semantics and the DuckDB speed, but you get one governed door in front of the storage instead of fifteen sets of credentials, without standing up a warehouse.</p>
+</div>
+</div>
+<section id="why-this-is-a-notable-change-for-duckdb" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-is-a-notable-change-for-duckdb">Why this is a notable change for DuckDB</h2>
+<p>DuckDB’s entire design premise is that it’s <em>embedded</em> - no server, no daemon, it runs inside your R session (or Python, Go, Java, Rust, Node, etc.) like SQLite does. That’s why it’s so pleasant to use, and it’s also precisely why sharing has always been the awkward part. An embedded database has nothing for a second machine to connect to.</p>
+<p><a href="https://duckdb.org/docs/current/quack/overview" target="_blank">Quack</a>, a core extension as of DuckDB 1.5.3, lets one DuckDB instance optionally act as a server while others connect to it as clients. That’s a meaningful departure from the embedded-only story, and it’s why I think this is worth your attention even if you don’t need it today.</p>
+</section>
+</section>
+<section id="the-two-axes-people-conflate" class="level1">
+<h1>The Two Axes People Conflate</h1>
+<p>With that background, here’s the framing that makes the rest of this click. There are two independent questions, and mixing them up is what produces the “convert my Parquet into a DuckDB” confusion.</p>
+<p><strong>Where do the bytes live?</strong> A DuckLake is not a file format. It’s a <em>catalog</em> - a small database of metadata about tables, snapshots, and which Parquet file holds which rows - plus a <em>data path</em> full of ordinary Parquet files. The data path can be a local directory or <code>s3://your-bucket/prefix</code>. Nothing is ever converted into “a DuckDB.”</p>
+<p><strong>Who does the reading?</strong> By default, every analyst’s own DuckDB process reaches storage directly and needs credentials to do it. With Quack, one DuckDB instance holds the credentials and everyone else talks to it.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Without Quack (Level 2)</th>
+<th>With Quack</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>What the client connects to</td>
+<td>The catalog DB <em>and</em> the Parquet storage</td>
+<td>One DuckDB server</td>
+</tr>
+<tr class="even">
+<td>Storage access each client needs</td>
+<td>Read/write on the same data path</td>
+<td>None - only the server touches files</td>
+</tr>
+<tr class="odd">
+<td>Extra service to run</td>
+<td>A PostgreSQL server (SQLite needs none)</td>
+<td>A DuckDB server process</td>
+</tr>
+<tr class="even">
+<td>Good fit when</td>
+<td>Everyone can mount the same storage</td>
+<td>Data sits in one place and you want to share access to it</td>
+</tr>
+</tbody>
+</table>
+<p>So: <strong>S3 answers “where is the data?” Quack answers “who is allowed to read it, and from where?”</strong> You can use either alone. Using both is where it gets interesting.</p>
+<p>That second axis is the part I find genuinely useful in a corporate setting. Handing out bucket credentials to fifteen analysts so they can each mount storage is a governance headache with a large surface area. One server that holds the credentials and hands back result sets is a much smaller one.</p>
+<p>Enough prose. Let’s try this out.</p>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>Quack itself arrived as a core extension around DuckDB 1.5.3, so both ends still need at least that engine. For the R <code>ducklake</code> path, I would pin <code>duckdb</code> to <strong>1.5.5 or newer</strong>.</p>
+<p>DuckDB 1.5.2 ships the DuckLake 1.0 spec, and 1.5.5 is where the R package settled extension storage, which <code>ducklake</code> relies on. The package errors clearly on older engines, but save yourself the trip:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ducklake"</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># CRAN; wants duckdb &gt;= 1.5.5</span></span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># pak::pak("tgerke/ducklake-r")  # GitHub remotes, if you need them</span></span>
+<span id="cb2-3"></span>
+<span id="cb2-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ducklake)</span>
+<span id="cb2-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(dplyr)</span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">packageVersion</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"duckdb"</span>)</span>
+<span id="cb2-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] '1.5.5'</span></span>
+<span id="cb2-9"></span>
+<span id="cb2-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># attach_ducklake() downloads the DuckLake extension on first use</span></span>
+<span id="cb2-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install_ducklake</span>()  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># optional, for container images and offline hosts</span></span>
+<span id="cb2-12"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install_quack</span>()     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Quack is core; pre-install it if the host will be offline</span></span></code></pre></div></div>
+</div>
+<p>I’ll use <code>nycflights13::flights</code> as the demo dataset - 336k rows is small enough to run on a laptop and big enough that pulling it across a network to filter it locally is obviously the wrong move.</p>
+</section>
+<section id="step-1-point-the-lake-at-s3" class="level1">
+<h1>Step 1: Point the Lake at S3</h1>
+<p>Here’s the first real gotcha, and it took me a beat to internalize. With the default <code>backend = "duckdb"</code>, the catalog is a <em>DuckDB database file</em>, so <code>lake_path</code> has to be local. If you want your Parquet on S3, you need a catalog backend that isn’t a file sitting next to the data - SQLite for a single writer, PostgreSQL for many.</p>
+<p>Credentials first. Register them with DuckDB’s secrets manager:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_storage_secret</span>(</span>
+<span id="cb3-2">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s3"</span>,</span>
+<span id="cb3-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">provider =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"credential_chain"</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># picks up env vars, profiles, instance metadata</span></span>
+<span id="cb3-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">scope =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s3://dsb-flights-lake"</span></span>
+<span id="cb3-5">)</span></code></pre></div></div>
+</div>
+<p>I’d push hard on <code>provider = "credential_chain"</code> over pasting keys into a script. On an EC2 box or ECS task it resolves the instance role and there is nothing to leak. If you must pass keys explicitly, pull them from the environment and leave <code>persistent = FALSE</code> so they stay in memory:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_storage_secret</span>(</span>
+<span id="cb4-2">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s3"</span>,</span>
+<span id="cb4-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">key_id =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.getenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AWS_ACCESS_KEY_ID"</span>),</span>
+<span id="cb4-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">secret =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.getenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AWS_SECRET_ACCESS_KEY"</span>),</span>
+<span id="cb4-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">region =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"us-west-2"</span>,</span>
+<span id="cb4-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">scope =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s3://dsb-flights-lake"</span></span>
+<span id="cb4-7">)</span></code></pre></div></div>
+</div>
+<p>Now attach the lake. The SQLite file is the catalog; <code>lake_path</code> is where the Parquet goes:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">attach_ducklake</span>(</span>
+<span id="cb5-2">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"flights_lake"</span>,</span>
+<span id="cb5-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">backend =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sqlite"</span>,</span>
+<span id="cb5-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">catalog_connection_string =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"~/lakes/flights_catalog.sqlite"</span>,</span>
+<span id="cb5-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lake_path =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s3://dsb-flights-lake/data/"</span></span>
+<span id="cb5-6">)</span></code></pre></div></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Catalog and data are separate concerns
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The catalog is small, transactional, and the thing that must not be lost - back it up like a database. The S3 prefix is bulk columnar storage. If you’re using PostgreSQL as the catalog backend, note that the <code>postgres</code> and <code>mysql</code> DuckDB extensions don’t build on Windows; SQLite and DuckDB backends do.</p>
+</div>
+</div>
+</section>
+<section id="step-2-get-data-in-two-ways" class="level1">
+<h1>Step 2: Get Data In (Two Ways)</h1>
+<p><strong>If you’re starting from a data frame</strong>, <code>create_table()</code> writes Parquet straight to the S3 data path, wrapped in a versioned transaction:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(nycflights13)</span>
+<span id="cb6-2"></span>
+<span id="cb6-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with_transaction</span>(</span>
+<span id="cb6-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_table</span>(flights, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"flights_raw"</span>),</span>
+<span id="cb6-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">author =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Javier Orraca-Deatcu"</span>,</span>
+<span id="cb6-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">commit_message =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Initial load of 2013 NYC flights"</span></span>
+<span id="cb6-7">)</span>
+<span id="cb6-8"></span>
+<span id="cb6-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with_transaction</span>(</span>
+<span id="cb6-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_ducklake_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"flights_raw"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-11">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(arr_delay)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-12">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">delayed =</span> arr_delay <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-13">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"flights_clean"</span>),</span>
+<span id="cb6-14">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">author =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Javier Orraca-Deatcu"</span>,</span>
+<span id="cb6-15">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">commit_message =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Drop cancelled flights, add delay flag"</span></span>
+<span id="cb6-16">)</span></code></pre></div></div>
+</div>
+<p><strong>If you already have Parquet on S3</strong> - which describes most teams stuck at Level 1 - do <em>not</em> rewrite it. <code>add_data_files()</code> registers files in place, no copy, no re-encode. This is the actual migration path off the status quo:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Table must exist first with a compatible schema</span></span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create_table</span>(</span>
+<span id="cb7-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb7-4">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">year =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">integer</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">month =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">integer</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">carrier =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">character</span>(),</span>
+<span id="cb7-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">arr_delay =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">numeric</span>()</span>
+<span id="cb7-6">  ),</span>
+<span id="cb7-7">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"flights_history"</span></span>
+<span id="cb7-8">)</span>
+<span id="cb7-9"></span>
+<span id="cb7-10"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_data_files</span>(</span>
+<span id="cb7-11">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"flights_history"</span>,</span>
+<span id="cb7-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb7-13">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s3://dsb-flights-lake/legacy/flights_2011.parquet"</span>,</span>
+<span id="cb7-14">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s3://dsb-flights-lake/legacy/flights_2012.parquet"</span></span>
+<span id="cb7-15">  ),</span>
+<span id="cb7-16">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ignore_extra_columns =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span id="cb7-17">)</span></code></pre></div></div>
+</div>
+<p>One caveat worth reading twice in the docs: ownership of those files transfers to DuckLake. A later compaction step can rewrite and delete them. Don’t register files that another pipeline still reads directly.</p>
+<p>At this point you have a versioned lake with a full audit trail - the thing Level 1 could never give you:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list_table_snapshots</span>()</span>
+<span id="cb8-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt;   snapshot_id       snapshot_time                     author</span></span>
+<span id="cb8-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; 1           0 2026-08-08 09:14:02                       &lt;NA&gt;</span></span>
+<span id="cb8-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; 2           1 2026-08-08 09:14:03  Javier Orraca-Deatcu</span></span>
+<span id="cb8-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; 3           2 2026-08-08 09:14:07  Javier Orraca-Deatcu</span></span></code></pre></div></div>
+</div>
+</section>
+<section id="step-3-serve-it" class="level1">
+<h1>Step 3: Serve It</h1>
+<p>Everything so far assumed <em>you</em> have S3 access - that’s Level 2. Now let’s make it so nobody else needs it. From the same session holding the lake:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">quack_serve</span>(</span>
+<span id="cb9-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">uri =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"quack:lake.internal.example.org"</span>,</span>
+<span id="cb9-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">token =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.getenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"QUACK_TOKEN"</span>)</span>
+<span id="cb9-4">)</span>
+<span id="cb9-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Quack server listening on "quack:lake.internal.example.org".</span></span></code></pre></div></div>
+</div>
+<p>Two things I appreciate here. The server runs in the background of the DuckDB instance, so your R session stays usable - this isn’t a blocking <code>plumber::pr_run()</code> situation. And the default <code>uri</code> is <code>quack:localhost</code>, which means the safe thing happens if you fat-finger the config: you’ve served it to yourself and nobody else.</p>
+<p>The token is the entire access control story, so treat it accordingly. Serving without one raises a warning, and rightly so. On anything other than a trusted internal network, put it behind TLS or a reverse proxy.</p>
+</section>
+<section id="step-4-the-analysts-side" class="level1">
+<h1>Step 4: The Analyst’s Side</h1>
+<p>This is the payoff. On a laptop with <code>duckdb</code> and <code>ducklake</code> installed and no AWS configuration whatsoever:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ducklake)</span>
+<span id="cb10-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(dplyr)</span>
+<span id="cb10-3"></span>
+<span id="cb10-4">delays <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">quack_query</span>(</span>
+<span id="cb10-5">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"quack:lake.internal.example.org"</span>,</span>
+<span id="cb10-6">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"SELECT carrier, month,</span></span>
+<span id="cb10-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">          COUNT(*) AS n,</span></span>
+<span id="cb10-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">          AVG(arr_delay) AS mean_delay</span></span>
+<span id="cb10-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">   FROM flights_lake.flights_clean</span></span>
+<span id="cb10-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">   WHERE delayed</span></span>
+<span id="cb10-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">   GROUP BY carrier, month"</span>,</span>
+<span id="cb10-12">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">token =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.getenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"QUACK_TOKEN"</span>)</span>
+<span id="cb10-13">)</span>
+<span id="cb10-14"></span>
+<span id="cb10-15">delays <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb10-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(</span>
+<span id="cb10-17">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">worst_month =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">first</span>(month, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">order_by =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">desc</span>(mean_delay)),</span>
+<span id="cb10-18">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.by =</span> carrier</span>
+<span id="cb10-19">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb10-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">arrange</span>(carrier)</span></code></pre></div></div>
+</div>
+<p>Note <code>flights_lake.flights_clean</code> - the query runs <em>on the server</em>, so tables are addressed by the catalog name the lake was attached under. And note what came back: a summarized data frame, not 336,000 rows. Let the server do the aggregation. That’s the whole point of pushing compute to where the data is.</p>
+<p>Because Quack supports concurrent writers, this also works, which surprised me the first time:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">quack_query</span>(</span>
+<span id="cb11-2">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"quack:lake.internal.example.org"</span>,</span>
+<span id="cb11-3">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"INSERT INTO flights_lake.flights_clean</span></span>
+<span id="cb11-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">   SELECT * FROM read_parquet('...')"</span>,</span>
+<span id="cb11-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">token =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.getenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"QUACK_TOKEN"</span>)</span>
+<span id="cb11-6">)</span></code></pre></div></div>
+</div>
+<p>Several analysts can write at once without locking each other out, and every write lands as a snapshot in the same audit trail.</p>
+<section id="the-gotcha-that-will-cost-you-an-hour" class="level2">
+<h2 class="anchored" data-anchor-id="the-gotcha-that-will-cost-you-an-hour">The gotcha that will cost you an hour</h2>
+<p>If the server is sharing a <em>plain DuckDB database</em> rather than a DuckLake, you get the nicer dbplyr path:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">attach_quack</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"warehouse"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"quack:data.example.org"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">token =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Sys.getenv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"QUACK_TOKEN"</span>))</span>
+<span id="cb12-2"></span>
+<span id="cb12-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">get_ducklake_table</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"warehouse.sales"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb12-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(region <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"EMEA"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb12-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">collect</span>()</span>
+<span id="cb12-6"></span>
+<span id="cb12-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">detach_quack</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"warehouse"</span>)</span></code></pre></div></div>
+</div>
+<p>But a <strong>served DuckLake is a separate catalog on the server, not part of its default database</strong>, so its tables aren’t reachable this way. For a lake, you use <code>quack_query()</code> with the catalog name. I burned real time on this before it clicked, so: <code>attach_quack()</code> for plain databases, <code>quack_query()</code> for lakes.</p>
+</section>
+</section>
+<section id="so-when-would-i-actually-use-this" class="level1">
+<h1>So When Would I Actually Use This?</h1>
+<p>Quack is not a replacement for a real warehouse, and the package docs are refreshingly honest about that - for very high write volumes, use a purpose-built database.</p>
+<p>Where it fits, in my view:</p>
+<ul>
+<li><strong>Analysts who can’t mount the storage.</strong> This is the big one, and it’s the Level 2 constraint. The data sits on one machine or one bucket, and you want a governed door in front of it rather than fifteen sets of credentials.</li>
+<li><strong>A small team on one versioned dataset.</strong> Time travel plus author-attributed commit messages is a genuinely nice property for anything that gets audited.</li>
+<li><strong>Alongside a shared catalog, not instead of it.</strong> PostgreSQL catalog so the lake supports many writers, Quack in front so people who can’t reach the storage can still connect. That combination is what I keep coming back to.</li>
+</ul>
+<p>If everyone on your team can already mount the same bucket, stop at Level 2 - a shared PostgreSQL or SQLite catalog is simpler and there’s no server to babysit.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Preview on 1.5.x, stable with 2.0
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On the DuckDB 1.5.x path, Quack is still beta/preview. It graduates to stable in v2.0 (the extension moves from 0.x to 1.0), and <a href="https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html" target="_blank">v2.0-alpha is already out</a> if you want to try it.</p>
+<p>The alpha is not production-ready. I’d run Quack for internal team sharing on 1.5.5 today, but I would pin versions and wait for 2.0 to ship before I leaned on it in a production pipeline.</p>
+</div>
+</div>
+</section>
+<section id="whats-next" class="level1">
+<h1>What’s Next</h1>
+<p>Two things I am watching, and they are not the same product.</p>
+<p><strong>Quack going stable with DuckDB 2.0.</strong> Cyanoptera is targeted for this fall. The <a href="https://duckdb.org/2026/08/17/duckdb-20-highlights.html" target="_blank">v2.0 highlights</a> frame it as “DuckDB as a server,” and the <a href="https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html" target="_blank">alpha announcement</a> says the Quack extension moves from 0.x to 1.0 with higher throughput and better compatibility.</p>
+<p>If you write SQL by hand, <code>CONNECT</code> is the cleaner client story (the successor to <code>remote.query</code>). The R helpers in <a href="https://tgerke.github.io/ducklake-r/" target="_blank"><code>ducklake</code></a> stay the right interface for this walkthrough. I’d try the alpha on a scratch lake, not as a production cutover.</p>
+<p><strong>Async I/O against Parquet on S3.</strong> This one is not Quack-specific, and it might be the more useful 2.0 change for a lot of us who already point DuckDB at a lake. v2.0 adds <a href="https://duckdb.org/2026/07/31/asynchronous-io.html" target="_blank">asynchronous reads of Parquet and CSV</a>. The big win is EC2 talking to S3, where synchronous requests leave bandwidth on the table.</p>
+<p>Their TPC-H Q6 benchmark on remote Parquet landed around 3 times faster. It also helps when a lake is a pile of small Parquet files. DuckLake on Parquet picks this up automatically.</p>
+<p>That is the part I find exciting for R and Python data scientists, and for MLOps jobs that scan S3 Parquet for features, training extracts, or batch scores. You do not have to stand up Quack to get it. Local DuckDB against the lake gets faster. Quack is how you share access. Async I/O is how the engine spends less time waiting on object storage.</p>
+</section>
+<section id="learn-more" class="level1">
+<h1>Learn More</h1>
+<ul>
+<li><a href="https://tgerke.github.io/ducklake-r/" target="_blank"><code>ducklake</code> R package</a> by <a href="https://github.com/tgerke" target="_blank">Travis Gerke</a> - the pkgdown site is excellent</li>
+<li><a href="https://tgerke.github.io/ducklake-r/articles/quack-remote-access.html" target="_blank">Quack Remote Access vignette</a> - the source material for most of this post</li>
+<li><a href="https://duckdb.org/docs/current/quack/overview" target="_blank">DuckDB Quack documentation</a> - deployment options, TLS, reverse proxies</li>
+<li><a href="https://ducklake.select/docs/stable/specification/introduction" target="_blank">DuckLake specification</a></li>
+<li><a href="https://github.com/tgerke/dplyneage" target="_blank"><code>dplyneage</code></a> - column-level lineage for dbplyr pipelines, pairs nicely with lake tables</li>
+<li><a href="https://duckdb.org/2026/08/17/duckdb-20-highlights.html" target="_blank">A Preview of DuckDB v2.0</a> - Cyanoptera highlights, including Quack going stable and <code>CONNECT</code></li>
+<li><a href="https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html" target="_blank">Try DuckDB v2.0-alpha</a> - feature freeze, October target, Quack 1.0</li>
+<li><a href="https://duckdb.org/2026/07/31/asynchronous-io.html" target="_blank">Asynchronous I/O in DuckDB</a> - faster Parquet/CSV reads on S3, including DuckLake lakes</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sessionInfo</span>()</span></code></pre></div></div>
+</div>
+<hr>
+<p>If you’re sitting at Level 0 or Level 1 with a pile of Parquet in S3 and a team that keeps emailing each other CSVs, this is a genuinely small amount of setup for a big change in how people work. Try it on one dataset first - the medallion pattern in the package docs is a good template.</p>
+<p>And if you already live at Level 1, pointing DuckDB at S3 from R or Python, the async I/O work in 2.0 is worth a look even if you never stand up a Quack server.</p>
+<p>Happy Monday, and happy coding!</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>duckdb</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/</guid>
+  <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/preview.png" medium="image" type="image/png" height="76" width="144"/>
+</item>
 <item>
   <title>Three Open Source Tools to Bookmark</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -6449,29 +7118,6 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div></d
   <guid>https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/2020-12-19-R-Package-One-Hour-Tutorial.html</guid>
   <pubDate>Sat, 19 Dec 2020 00:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/images/package_workshop.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>What’s New in dbplyr 2.0.0</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p><code>dbplyr</code> 2.0.0 comes loaded with improvements including the translation of <code>dplyr</code>’s new <code>across()</code> function. If you aren’t familiar with this library, <code>dbplyr</code> translates your <code>dplyr</code> syntax to SQL. I regularly connect to enterprise databases using R and have almost completely transitioned from SQL. Yes, SQL is awesome. Yes, using <code>dplyr</code> is a lot more fun!</p>
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/images/dbplyr.jpeg" class="img-fluid"></p>
-<p>Source:<br> * tidyverse blog’s <a href="https://www.tidyverse.org/blog/2020/11/dbplyr-2-0-0/">dbplyr 2.0.0 Official Announcement</a></p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>tidyverse</category>
-  <category>dplyr</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/2020-11-04-dbplyr-2.0.0.html</guid>
-  <pubDate>Wed, 04 Nov 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-11-04-dbplyr-2.0.0/images/dbplyr_what_is_new.jpg_large" medium="image"/>
 </item>
 </channel>
 </rss>
