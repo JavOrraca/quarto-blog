@@ -2,6 +2,8 @@
 
 Every few years, I like to update my personal data science website using bleeding-edge web frameworks. Several years back, I built my first data science blog using the R Markdown + [blogdown](https://bookdown.org/yihui/blogdown/) framework, then I ported it to the R Markdown + [distill](https://rstudio.github.io/distill/) framework, and this latest iteration of my site is built with Quarto.
 
+I draft locally with `quarto::quarto_render(as_job = FALSE)` so I can preview posts and refresh `_freeze/`. GitHub Actions also renders on pull requests and on pushes to `main`. The live site is still served by Netlify from the committed `_site/` directory; Actions uploads a `_site` artifact but does not deploy.
+
 # About Quarto
 
 [Quarto](https://quarto.org/) is "an open-source scientific and publishing system built on Pandoc" that allows you to natively write and render code chunks with Python, R, Julia, Observable, and more. With Quarto, you can publish high-quality articles, reports, presentations, websites, blogs, and books in HTML, PDF, MS Word, ePub, and more.
