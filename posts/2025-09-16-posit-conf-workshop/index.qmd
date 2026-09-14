@@ -36,7 +36,7 @@ This is especially useful if:
 ## Exploring Data with PCA
 
 ```{r}
-#| eval: true
+#| eval: false
 
 library(tidymodels)
 
