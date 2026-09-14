@@ -1,6 +1,6 @@
 ---
 title: "One DuckDB, Many Analysts: Serving an S3 DuckLake with Quack"
-description: "Why sharing a data lake has always been awkward, and how DuckDB's new Quack protocol changes it. This is a complete walkthrough for from Parquet on S3 to a live server your colleagues can query from R."
+description: "Why sharing a data lake has always been awkward, and how DuckDB's Quack protocol changes it. A walkthrough from Parquet on S3 to a live server your colleagues can query from R, plus what v2.0 means for Quack and remote Parquet."
 date: 09-14-2026
 categories: [duckdb]
 image: preview.png
@@ -11,7 +11,11 @@ draft: true
 
 # Stop Copying Parquet Files Around
 
-DuckDB continues to innovate in meaningful ways and with the recent release of their Quack protocol (_including recent headlines that [Quack is going LTS as a core capability in DuckDB 2.0](https://duckdb.org/2026/08/17/duckdb-20-highlights), dropping this Fall_), I recently got to contribute that protocol support to Travis Gerke's [`ducklake`](https://tgerke.github.io/ducklake-r/){target="_blank"} package for R users. It's a tidy-friendly wrapper around [DuckLake](https://ducklake.select/){target="_blank"}, DuckDB's lakehouse format, and as of DuckDB 1.5.3, it can now serve a lake over the network.
+DuckDB continues to innovate in meaningful ways. Quack landed as a core extension around DuckDB 1.5.3, and the [v2.0 Cyanoptera preview](https://duckdb.org/2026/08/17/duckdb-20-highlights.html){target="_blank"} already said it would graduate to stable this fall.
+
+[v2.0-alpha is generally available now](https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html){target="_blank"}, with a feature freeze and a second-half-of-October target, so the "DuckDB as a server" story is in motion rather than just a headline.
+
+I recently got to contribute that protocol support to Travis Gerke's [`ducklake`](https://tgerke.github.io/ducklake-r/){target="_blank"} package for R users. It's a tidy-friendly wrapper around [DuckLake](https://ducklake.select/){target="_blank"}, DuckDB's lakehouse format, and it can serve a lake over the network.
 
 Every time I've recently explained this to a friend, the same question comes back: *"So I convert my Parquet files into a DuckDB and put that on S3?"* Not quite, and untangling that is honestly half the value of this post.
 
@@ -80,22 +84,24 @@ Enough prose. Let's try this out.
 
 # Setup
 
-Quack needs DuckDB 1.5.3 or newer on **both** ends. The `ducklake` package checks this and errors clearly on older engines, but save yourself the trip:
+Quack itself arrived as a core extension around DuckDB 1.5.3, so both ends still need at least that engine. For the R `ducklake` path, I would pin `duckdb` to **1.5.5 or newer**.
+
+DuckDB 1.5.2 ships the DuckLake 1.0 spec, and 1.5.5 is where the R package settled extension storage, which `ducklake` relies on. The package errors clearly on older engines, but save yourself the trip:
 
 ```{r}
 #| eval: false
-# duckdb 1.5.4+ is on CRAN
-install.packages("duckdb")
-pak::pak("tgerke/ducklake-r")
+install.packages("ducklake")  # CRAN; wants duckdb >= 1.5.5
+# pak::pak("tgerke/ducklake-r")  # GitHub remotes, if you need them
 
 library(ducklake)
 library(dplyr)
 
 packageVersion("duckdb")
-#> [1] '1.5.4'
+#> [1] '1.5.5'
 
-install_ducklake()  # DuckLake extension
-install_quack()     # Quack extension (core, but pre-install for offline hosts)
+# attach_ducklake() downloads the DuckLake extension on first use
+install_ducklake()  # optional, for container images and offline hosts
+install_quack()     # Quack is core; pre-install it if the host will be offline
 ```
 
 I'll use `nycflights13::flights` as the demo dataset - 336k rows is small enough to run on a laptop and big enough that pulling it across a network to filter it locally is obviously the wrong move.
@@ -296,9 +302,25 @@ Where it fits, in my view:
 If everyone on your team can already mount the same bucket, stop at Level 2 - a shared PostgreSQL or SQLite catalog is simpler and there's no server to babysit.
 
 ::: {.callout-important}
-## Quack is beta
-The DuckDB team expects to settle the protocol, function names, and default settings before a stable release in DuckDB 2.0. Pin your versions if this lands in a production pipeline. I'd run it for internal team sharing today; I wouldn't build a customer-facing dependency on it yet.
+## Preview on 1.5.x, stable with 2.0
+On the DuckDB 1.5.x path, Quack is still beta/preview. It graduates to stable in v2.0 (the extension moves from 0.x to 1.0), and [v2.0-alpha is already out](https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html){target="_blank"} if you want to try it.
+
+The alpha is not production-ready. I'd run Quack for internal team sharing on 1.5.5 today, but I would pin versions and wait for 2.0 to ship before I leaned on it in a production pipeline.
 :::
+
+# What's Next
+
+Two things I am watching, and they are not the same product.
+
+**Quack going stable with DuckDB 2.0.** Cyanoptera is targeted for this fall. The [v2.0 highlights](https://duckdb.org/2026/08/17/duckdb-20-highlights.html){target="_blank"} frame it as "DuckDB as a server," and the [alpha announcement](https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html){target="_blank"} says the Quack extension moves from 0.x to 1.0 with higher throughput and better compatibility.
+
+If you write SQL by hand, `CONNECT` is the cleaner client story (the successor to `remote.query`). The R helpers in [`ducklake`](https://tgerke.github.io/ducklake-r/){target="_blank"} stay the right interface for this walkthrough. I'd try the alpha on a scratch lake, not as a production cutover.
+
+**Async I/O against Parquet on S3.** This one is not Quack-specific, and it might be the more useful 2.0 change for a lot of us who already point DuckDB at a lake. v2.0 adds [asynchronous reads of Parquet and CSV](https://duckdb.org/2026/07/31/asynchronous-io.html){target="_blank"}. The big win is EC2 talking to S3, where synchronous requests leave bandwidth on the table.
+
+Their TPC-H Q6 benchmark on remote Parquet landed around 3 times faster. It also helps when a lake is a pile of small Parquet files. DuckLake on Parquet picks this up automatically.
+
+That is the part I find exciting for R and Python data scientists, and for MLOps jobs that scan S3 Parquet for features, training extracts, or batch scores. You do not have to stand up Quack to get it. Local DuckDB against the lake gets faster. Quack is how you share access. Async I/O is how the engine spends less time waiting on object storage.
 
 # Learn More
 
@@ -307,6 +329,9 @@ The DuckDB team expects to settle the protocol, function names, and default sett
 - [DuckDB Quack documentation](https://duckdb.org/docs/current/quack/overview){target="_blank"} - deployment options, TLS, reverse proxies
 - [DuckLake specification](https://ducklake.select/docs/stable/specification/introduction){target="_blank"}
 - [`dplyneage`](https://github.com/tgerke/dplyneage){target="_blank"} - column-level lineage for dbplyr pipelines, pairs nicely with lake tables
+- [A Preview of DuckDB v2.0](https://duckdb.org/2026/08/17/duckdb-20-highlights.html){target="_blank"} - Cyanoptera highlights, including Quack going stable and `CONNECT`
+- [Try DuckDB v2.0-alpha](https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html){target="_blank"} - feature freeze, October target, Quack 1.0
+- [Asynchronous I/O in DuckDB](https://duckdb.org/2026/07/31/asynchronous-io.html){target="_blank"} - faster Parquet/CSV reads on S3, including DuckLake lakes
 
 ```{r}
 #| eval: false
@@ -317,4 +342,6 @@ sessionInfo()
 
 If you're sitting at Level 0 or Level 1 with a pile of Parquet in S3 and a team that keeps emailing each other CSVs, this is a genuinely small amount of setup for a big change in how people work. Try it on one dataset first - the medallion pattern in the package docs is a good template.
 
-Happy coding!
+And if you already live at Level 1, pointing DuckDB at S3 from R or Python, the async I/O work in 2.0 is worth a look even if you never stand up a Quack server.
+
+Happy Monday, and happy coding!
