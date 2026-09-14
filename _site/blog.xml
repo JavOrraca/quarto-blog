@@ -12,6 +12,355 @@
 <generator>quarto-1.10.18</generator>
 <lastBuildDate>Mon, 14 Sep 2026 00:00:00 GMT</lastBuildDate>
 <item>
+  <title>Agentic Quarto: Shipping a Personal Site with GitHub, Actions, and Grok Bot</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><img src="https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/preview.png" class="preview-image img-fluid"></p>
+<section id="the-publishing-stack-was-never-the-hard-part" class="level1">
+<h1>The publishing stack was never the hard part</h1>
+<p>I have rebuilt this site more times than I like to admit. R Markdown plus <a href="https://bookdown.org/yihui/blogdown/" target="_blank">blogdown</a>, then <a href="https://rstudio.github.io/distill/" target="_blank">distill</a>, then <a href="https://quarto.org/" target="_blank">Quarto</a>. Each stack was a genuine upgrade. None of them fixed the thing that kept posts from going live.</p>
+<p>The bottleneck was shipping. I could draft a post on a Sunday night, render it locally, and still leave it sitting in a folder because the last mile felt like chores: freeze files, listings, a preview image, a pull request, a deploy that I only half trusted.</p>
+<p>This week I finally wired the last mile in a way I will actually use. Quarto and GitHub stay in front. Agents are optional, and they stay behind a human gate. If you only take one thing from this post, make it that order.</p>
+<p>I am writing this as a practitioner who still publishes from a laptop. The setup is not a platform pitch. It is a shipping loop I can explain to a colleague over coffee.</p>
+</section>
+<section id="why-quarto-still-wins-for-a-personal-site" class="level1">
+<h1>Why Quarto still wins for a personal site</h1>
+<p>I recommend Quarto for a personal data science site because it lets me keep the writing next to the code. A post can be prose, a <code>dplyr</code> pipeline, a plot, and a bibliography without me switching tools. If you already think in <code>.Rmd</code> or Jupyter, the jump is small.</p>
+<p>It is also honest about formats. The same project can be a website, a slide deck, a PDF, or a dashboard. I do not need a CMS for a site that is mostly essays and talks.</p>
+<p>The other reason is community. The people who maintain it keep showing up. That matters more than a prettier theme.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Keep the site boring on purpose
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I want the publishing machinery to be the least interesting part of the week. Quarto plus git plus a pull request is boring in the best way. Fancy editors are optional. The source of truth is still a folder of <code>.qmd</code> files.</p>
+</div>
+</div>
+<p>If you are choosing a stack in 2026, I would start here even if you never touch an agent. Agents only help if the site is already simple enough to review.</p>
+</section>
+<section id="the-foundation-a-git-backed-quarto-blog-with-ci-as-a-check" class="level1">
+<h1>The foundation: a git-backed Quarto blog, with CI as a check</h1>
+<p>The live site is <a href="https://www.javierorracadeatcu.com" target="_blank">Data Science Bytes</a>. The source lives at <a href="https://github.com/JavOrraca/quarto-blog" target="_blank">JavOrraca/quarto-blog</a>. That repo is the whole system: posts, freeze cache, theme, and the rendered HTML.</p>
+<p>I need to be honest about deploy. Netlify still serves the committed <code>_site/</code> directory from git. GitHub Actions renders on pull requests and on pushes to <code>main</code>, then uploads a <code>_site</code> artifact. It does <strong>not</strong> publish. Until Netlify is rewired, a green CI run is not the same thing as a live update.</p>
+<p>If I were greenfield, I would not commit <code>_site/</code> at all. I would let CI render and let the host publish that artifact. GitHub Pages, Netlify from Actions, or Posit Connect would all be cleaner than what I have today. I am not there yet, and pretending otherwise would waste your time.</p>
+<p>The render pin is Quarto <strong>1.10.18</strong>. The workflow uses <a href="https://github.com/quarto-dev/quarto-actions" target="_blank"><code>quarto-dev/quarto-actions</code></a> to install that version and <a href="https://github.com/r-lib/actions" target="_blank"><code>r-lib/actions</code></a> to set up R 4.6.1 plus the packages a project render might need. There is no <code>renv.lock</code> here, so the Action installs <code>knitr</code>, <code>rmarkdown</code>, and a short list of post packages explicitly.</p>
+<p>A shortened version of the job looks like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># .github/workflows/quarto-render.yml</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">on</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pull_request</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">push</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">branches</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">]</span></span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-8"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">render</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-9"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runs-on</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> ubuntu-latest</span></span>
+<span id="cb1-10"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">steps</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-11"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> actions/checkout@v5</span></span>
+<span id="cb1-12"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> quarto-dev/quarto-actions/setup@v2</span></span>
+<span id="cb1-13"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-14"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">version</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.10.18</span></span>
+<span id="cb1-15"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb1-16"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-17"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">r-version</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"4.6.1"</span></span>
+<span id="cb1-18"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">run</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> quarto render</span></span></code></pre></div></div>
+<p>The pull request is the human gate. Agents can open the PR. I still read the diff, check the preview image, and decide whether <code>draft: true</code> comes off. CI tells me the site renders. It does not get to hit publish.</p>
+<p>Published posts inherit <code>freeze: auto</code> from <code>posts/_metadata.yml</code>, and <code>_freeze/</code> is committed. Drafts set <code>freeze: false</code> so they re-knit on a project render. Local <code>quarto::quarto_render(as_job = FALSE)</code> is still how I refresh freeze when I draft by hand.</p>
+</section>
+<section id="what-agentic-means-here-harness-orchestrator-tools" class="level1">
+<h1>What “agentic” means here: harness, orchestrator, tools</h1>
+<p>I do not think of this as “the AI writes my blog.” I think of it as three layers that I can name.</p>
+<p><strong>The harness</strong> is the thing that actually edits the repo. In my case that is <a href="https://cursor.com/docs/cloud-agent" target="_blank">Cursor Cloud Agents</a>. They clone the repo onto an isolated VM, work on a branch, run commands, and open a pull request. They are the intern with a laptop.</p>
+<p><strong>The orchestrator</strong> is a small Grok Bot team. One coordinator routes the work. Specialists own lanes: drafting in my voice, reviewing the YAML and Quarto conventions, checking that CI is the source of truth for render, keeping agents out of files they should not touch. Bots can talk to each other. They can also kick a cloud agent the same way I would.</p>
+<p><strong>The tools</strong> are ordinary. GitHub. The Actions workflow. Skills. Repo guides. A handful of MCP connectors when a task needs email or a calendar, which a blog post usually does not.</p>
+<p>That split comes straight out of how <a href="https://x.ai/bot/guides/grok-bot-101" target="_blank">Grok Bot</a> is designed. Matt Palmer’s writeup is the clearest version I have read: the bot is the outer loop that writes the prompt I would have written. The cloud agent is the inner loop that builds in a clean environment. Mixing those jobs in one window is how you get a draft that also tries to rewrite <code>_quarto.yml</code>.</p>
+<p>Cursor Pro is about $20 a month, and that seat is what unlocked this for me. Grok Bot and Cloud Agents are included on paid Cursor plans. The weekly usage is not unlimited. The entry price is no longer an Ultra-only experiment.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Specialists beat one mega-bot
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A coordinator that can delegate is more useful than a single bot that tries to remember every rule. Keep the drafter focused on prose. Keep the reviewer focused on front matter, links, and the files that are off limits. Let the cloud agent own the branch and the PR.</p>
+</div>
+</div>
+<p>The coordinator does not merge. The specialist does not deploy. The cloud agent does not remove <code>draft: true</code> unless I say so. Those are product decisions, not model settings.</p>
+</section>
+<section id="voice-of-javier-and-the-quarto-specific-guide" class="level1">
+<h1>Voice of Javier, and the Quarto-specific guide</h1>
+<p>The easiest way to get a bad draft is to ask a general model to “write like me” with no artifacts. My fix is a shared <strong>Voice of Javier</strong> skill. It is a portable playbook: first person, no emoji, no em dashes, short paragraphs, soft hedging, practitioner-first, warm closing. Cloud agents can use it because skills sync. Grok Bot can invoke it the same way.</p>
+<p>That skill is about <em>how it sounds</em>. It is not about how this repo is laid out.</p>
+<p>The Quarto specifics live in <code>posts/CLAUDE.md</code>. Folder names, YAML, inherited fields, the <code>{target="_blank"}</code> rule, known categories, the preview image line, the quality checklist. The root <code>CLAUDE.md</code> is even narrower: what agents may touch, what they must not touch, and the reminder that a full <code>quarto render</code> is not a casual command.</p>
+<p>I like that split. Voice travels with me across projects. Repo guides stay next to the files they protect.</p>
+<p>If you steal one idea, steal the protected-path list. <code>_quarto.yml</code>, <code>_site/</code>, <code>_freeze/</code>, <code>_extensions/</code>, and the top-level pages are easy for an eager agent to “helpfully” edit.</p>
+</section>
+<section id="skills-memory-and-repo-guides-are-not-the-same-drawer" class="level1">
+<h1>Skills, memory, and repo guides are not the same drawer</h1>
+<p>I kept stuffing everything into one instructions file. That does not scale.</p>
+<p><strong>Skills</strong> are on-demand playbooks. Cursor discovers them from <code>.cursor/skills/</code> or <code>~/.cursor/skills/</code>, and the agent loads one when the task matches. <a href="https://cursor.com/docs/skills" target="_blank">Agent Skills</a> are progressive on purpose. A “draft this post” skill can be long. It should not sit in every chat about a CSS tweak.</p>
+<p><strong>Memory</strong> is durable facts across sessions: my name, that this site is git-backed, that Netlify still reads <code>_site/</code>. It is a poor place for a 200-line style guide. Memory drifts. A skill is a file you can diff.</p>
+<p><strong>Repo guides</strong> are always-on project context. <code>CLAUDE.md</code>, <code>posts/CLAUDE.md</code>, an <code>AGENTS.md</code> if you want something tool-agnostic. These are the “do not touch <code>_quarto.yml</code>” rules. They belong in git so every cloud agent sees them, not only the bot that happened to remember.</p>
+<p>My rule of thumb:</p>
+<ul>
+<li>If every session on this repo needs it, put it in a repo guide.</li>
+<li>If only some tasks need it, make a skill.</li>
+<li>If it is a fact about me that should survive a new chat, that can be memory.</li>
+<li>If it has to happen every time no matter what the model thinks, that is CI or a hook, not a paragraph of advice.</li>
+</ul>
+<p>The Voice of Javier skill is the second bucket. The freeze policy is the first. “Javier prefers a Monday closing” can live in memory. “Render must pin 1.10.18” belongs in the workflow file, where a test can fail.</p>
+</section>
+<section id="the-lifecycle-idea-draft-pr-review-publish" class="level1">
+<h1>The lifecycle: idea, draft, PR, review, publish</h1>
+<p>Here is the loop I want, including on weeks I am tired.</p>
+<ol type="1">
+<li><strong>Idea.</strong> A URL, a talk, a note from SoCal RUG, or a sentence I cannot stop repeating. I send that to the coordinator, not to a blank editor.</li>
+<li><strong>Draft.</strong> A specialist invokes the voice skill, reads <code>posts/CLAUDE.md</code>, and asks a cloud agent to create <code>posts/YYYY-MM-DD-slug/index.qmd</code> with <code>draft: true</code> and <code>freeze: false</code>. Preview image in the same folder. No inherited YAML fields duplicated.</li>
+<li><strong>PR.</strong> The cloud agent opens a pull request. Actions renders. I get a <code>_site</code> artifact I can inspect. Nothing is live yet.</li>
+<li><strong>Review.</strong> I read it like I would read a colleague’s draft. Does the H1 differ from the title? Do external links open in a new tab? Is the claim in my voice, or did the model get confident about a library I have not used? I leave comments. The agent can patch. I can also just edit the <code>.qmd</code>.</li>
+<li><strong>Publish.</strong> I take <code>draft: true</code> and the <code>freeze: false</code> override off when I am ready. Because Netlify still reads git-backed <code>_site/</code>, I also commit a regenerated site (or accept that the live page will lag). Then I merge.</li>
+</ol>
+<p>The important part is which person is in which step. Agents are great at 2 and 3. They are useful in 4 if you treat them like a copy editor. Step 5 is mine.</p>
+<p>I would rather ship a slightly late post than let an agent undraft something I have not sat with.</p>
+</section>
+<section id="a-real-week-actions-a-duckdb-refresh-and-a-stale-_site" class="level1">
+<h1>A real week: Actions, a DuckDB refresh, and a stale <code>_site</code></h1>
+<p>This is not a hypothetical architecture. It is what landed on <code>main</code> today.</p>
+<p>First the <a href="https://github.com/JavOrraca/quarto-blog/blob/main/.github/workflows/quarto-render.yml" target="_blank">Actions workflow</a>. Pin Quarto, install R, render, upload the artifact, and say out loud in the YAML comments that this job does not deploy. That PR was the foundation. Without it, every agent-rendered site is a local snowflake.</p>
+<p>Then the docs pass: when to render locally, when freeze is <code>auto</code>, when a draft forces a re-knit. Agents need that in the repo, not in a chat I already closed.</p>
+<p>Then the DuckDB work. I had a Quack draft that needed to catch <a href="https://tgerke.github.io/ducklake-r/" target="_blank">ducklake</a> at 1.5.5 and the DuckDB 2.0 story. Cloud agents refreshed the post, fixed freeze, and then published it into the listings. You can read the result as <a href="https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/" target="_blank">One DuckDB, Many Analysts</a>. The technical content is mine. The shipping muscle was the new loop.</p>
+<p>The lesson I almost had to learn twice is <code>_site/</code>. CI can be green while the live site is stale, because Netlify is still serving whatever HTML is in the repo. If you only merge the <code>.qmd</code> and forget to commit the regenerated site, readers do not see the post. If you gitignore <code>_site/</code> before you rewire the host, you go dark.</p>
+<p>I do not love that. I am documenting it so the next agent (and the next human) does not treat a render artifact as a deploy.</p>
+</section>
+<section id="pitfalls-i-would-budget-for" class="level1">
+<h1>Pitfalls I would budget for</h1>
+<p>A few of these bit me. The rest I have watched other people hit.</p>
+<p><strong>The host and the CI job disagree.</strong> Green checks feel like production. They are not, until you connect them. Prefer artifact publish on a new site. On this site, treat committed <code>_site/</code> as the live contract.</p>
+<p><strong>Freeze looks like a cache bug when it is a policy bug.</strong> <code>freeze: true</code> never re-knits on a project render. <code>auto</code> re-knits when source changes. Drafts should opt into <code>false</code> until they publish. If an agent “helpfully” copies freeze from a neighbor post, you will debug the wrong layer.</p>
+<p><strong>Agents love to edit the wrong files.</strong> Give them a short allow-list. Posts live under <code>posts/</code>. Site config is not a draft.</p>
+<p><strong>Voice drift is real.</strong> Without the skill, I get emoji, em dashes, and a tone that sounds like a product blog. With the skill, I still have to read the H1 and the claims. A style guide is not a fact checker.</p>
+<p><strong>Context mixing.</strong> If the same agent both researches a URL and writes the <code>.qmd</code>, it will smuggle in leftover instructions. Outer loop for research and prompting. Inner loop for the branch. Human for merge.</p>
+<p><strong>Cost and attention.</strong> Pro at about $20 a month is the seat. Cloud agent tokens and Grok Bot weekly usage are extra if you lean on them all day. Start with one specialist and one coordinator, not a simulated department.</p>
+<p><strong>Drafts are not private, they are unlinked.</strong> This site uses Quarto <code>draft-mode: unlinked</code>. That is enough for a personal blog.</p>
+</section>
+<section id="who-this-is-for" class="level1">
+<h1>Who this is for</h1>
+<p>This is for people who already write, or want to write, in Quarto (or R Markdown) and are tired of the last mile.</p>
+<p>It is a good fit if you:</p>
+<ul>
+<li>Keep a personal site next to real analysis work, not as a separate WordPress hobby</li>
+<li>Are comfortable with git, even if you are not a full-time platform engineer</li>
+<li>Want agents as drafters and reviewers, not as the author of record</li>
+<li>Care enough about voice that a shared skill is worth maintaining</li>
+</ul>
+<p>It is a weaker fit if you need a CMS with non-technical editors, or if you want fully automatic publishing. I would not point a student at Grok Bot before they can render a Quarto project locally. The agents make a working loop faster. They do not replace knowing what a pull request is.</p>
+<p>If you are an R user still on a 2019 blogdown site, start with Quarto and GitHub. Add CI before you add bots.</p>
+</section>
+<section id="positconf2026-and-why-i-am-watching-quarto-2" class="level1">
+<h1>posit::conf(2026), and why I am watching Quarto 2</h1>
+<p><a href="https://conf.posit.co/2026/" target="_blank">posit::conf(2026)</a> runs September 14 through 16 in Houston, with a virtual track. Workshop day is today. If you are there, Charlotte Wickham and Mine Çetinkaya-Rundel’s <a href="https://posit.co/blog/workshops-at-positconf2026" target="_blank">Level up your Quarto</a> session is the one I would have put on my calendar first: patterns, brands, Positron, and practical LLM use in a Quarto workflow.</p>
+<p>I am also watching <a href="https://opensource.posit.co/blog/2026-04-06_whats-next-quarto-2/" target="_blank">What’s next: Quarto 2</a> from Carlos Scheidegger. Quarto 2 is a Rust rewrite of the CLI, with a long-term bet on a collaborative editor and better performance. The April post is careful, and I appreciate that. Quarto 1 is not going anywhere for a while. There is no public 2.x I would pin a personal site to today.</p>
+<p>My interest is selfish. A faster render and better editor diagnostics would make the CI loop nicer. Collaborative editing might matter more for workshop notes than for this blog. I would rather keep my source in <code>.qmd</code> files that a future CLI can still read.</p>
+<p>Nothing in this post depends on Quarto 2. That is the point. The shipping loop should survive a major version, the same way it survived blogdown to distill to Quarto 1.</p>
+</section>
+<section id="learn-more" class="level1">
+<h1>Learn More</h1>
+<ul>
+<li><a href="https://quarto.org/" target="_blank">Quarto</a> - the publishing system this site is built on</li>
+<li><a href="https://github.com/quarto-dev/quarto-actions" target="_blank">quarto-dev/quarto-actions</a> - GitHub Actions to install and render Quarto in CI</li>
+<li><a href="https://github.com/r-lib/actions" target="_blank">r-lib/actions</a> - GitHub Actions for R, including <code>setup-r</code> and package install</li>
+<li><a href="https://opensource.posit.co/blog/2026-04-06_whats-next-quarto-2/" target="_blank">What’s next: Quarto 2</a> - Carlos Scheidegger on the Rust rewrite and the collaborative editor bet</li>
+<li><a href="https://github.com/JavOrraca/quarto-blog" target="_blank">JavOrraca/quarto-blog</a> - the git-backed source for Data Science Bytes</li>
+<li><a href="https://cursor.com/" target="_blank">Cursor</a> - Cloud Agents, skills, and the Pro seat that includes Grok Bot</li>
+</ul>
+<p>If you want the outer-loop framing in more detail, Matt Palmer’s <a href="https://x.ai/bot/guides/grok-bot-101" target="_blank">Grok Bot 101</a> is the piece I keep sending people.</p>
+<hr>
+<p>This draft was prepared by the Grok Bot setup I described: a coordinator, a voice skill, repo guides, and a Cursor cloud agent that opened the pull request. I still read every paragraph. Human-in-the-loop is not a slogan here. It is the merge button.</p>
+<p>If you try a version of this and you find a sharper split between skills and repo guides, I would like to hear it. The stack should stay boring. The posts should not.</p>
+<p>Happy Monday, and happy coding!</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>quarto</category>
+  <category>r</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/</guid>
+  <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/preview.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
+<item>
   <title>One DuckDB, Many Analysts: Serving an S3 DuckLake with Quack</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
   <link>https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/</link>
@@ -7096,28 +7445,6 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div></d
   <guid>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</guid>
   <pubDate>Thu, 31 Dec 2020 00:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi-banner.png" medium="image" type="image/png" height="76" width="144"/>
-</item>
-<item>
-  <title>One-Hour R Package Development Tutorial by Shannon Pileggi, PhD</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/2020-12-19-R-Package-One-Hour-Tutorial.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Package development should be on every R programmer’s radar in 2021, especially with all the free information available online! Here’s an excellent, concise, ultra-bookmark-worthy tutorial by Shannon Pileggi, PhD, titled “Your first R package in 1 hour”. Folks, she wasn’t lying either. I followed her tutorial and built an R package in roughly 45 minutes (note: I assume you have experience with the R language and understand the basics of <code>devtools</code>, <code>usethis</code>, <code>roxygen2</code>, and <code>rmarkdown</code>).</p>
-<p>Using functions from just the <code>devtools</code> and <code>usethis</code> packages, the whole process is much more streamlined than what I would have thought. Check out the rest of Shannon’s <em>Piping Hot Data</em> website as well… It’s a great resource for R programmers and researchers, and she built it with the newly reintroduced <code>distill</code> package, just like this site. :-)</p>
-<p>Source: <br>* Shannon’s <em>Piping Hot Data</em> <a href="https://www.pipinghotdata.com/posts/2020-10-25-your-first-r-package-in-1-hour/">“Your first R package in 1 hour” post</a> <br>* Shannon’s <a href="https://www.linkedin.com/in/shannon-m-pileggi/">LinkedIn</a></p>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>packages</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/2020-12-19-R-Package-One-Hour-Tutorial.html</guid>
-  <pubDate>Sat, 19 Dec 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-19-R-Package-One-Hour-Tutorial/images/package_workshop.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

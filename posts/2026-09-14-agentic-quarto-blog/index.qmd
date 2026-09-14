@@ -4,8 +4,6 @@ description: "How I run Data Science Bytes on Quarto + GitHub + CI, and how a Cu
 date: 09-14-2026
 categories: [quarto, r]
 image: preview.png
-draft: true
-freeze: false
 ---
 
 ![](preview.png){.preview-image}
