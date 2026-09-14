@@ -1,6 +1,7 @@
 # freeze computational output
 ## Source: https://quarto.org/docs/projects/code-execution.html#freeze
-freeze: true
+## auto re-knits when source changes; true never re-knits on project render
+freeze: auto
 
 # Disable banner style title blocks
 title-block-banner: false

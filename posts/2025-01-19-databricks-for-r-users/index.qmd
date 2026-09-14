@@ -5,6 +5,7 @@ date: 01-19-2025
 categories: [brickster, httr2, mlflow, sparklyr]
 image: this_is_fine.gif
 draft: true
+freeze: false
 ---
 
 # What is Databricks?

@@ -15,17 +15,20 @@ date: MM-DD-YYYY
 categories: [tag1, tag2, tag3]
 image: preview.jpg
 draft: true
+freeze: false
 ---
 ```
 
 Rules:
 - `draft: true` on every new post -the user removes it before publishing
+- `freeze: false` on drafts so they always re-knit on project render; drop it when publishing so the post inherits `freeze: auto`
 - Date format: `MM-DD-YYYY` (e.g., `03-14-2026`)
 - Categories: lowercase, hyphens for multi-word tags
 - `image` must match an actual file in the post folder
 
 **Fields inherited from `_metadata.yml` -do NOT include in post front matter:**
-`author`, `freeze`, `license`, `toc`, `toc-title`, `toc-location`, `execute`
+`author`, `license`, `toc`, `toc-title`, `toc-location`, `execute`
+(`freeze` is inherited as `auto` for published posts; drafts override with `freeze: false`)
 
 ---
 
@@ -153,9 +156,9 @@ image line whenever creating a new post:
 
 Before finishing any draft, verify:
 
-- [ ] YAML has `draft: true`
+- [ ] YAML has `draft: true` and `freeze: false`
 - [ ] Date is `MM-DD-YYYY` format
-- [ ] Inherited fields (`author`, `freeze`, etc.) not duplicated in YAML
+- [ ] Inherited fields (`author`, `license`, etc.) not duplicated in YAML
 - [ ] Image placeholder comment present; `![](preview.jpg){.preview-image}` on line after
 - [ ] H1 hook header differs from YAML title
 - [ ] Opening paragraph is personal and explains why this matters

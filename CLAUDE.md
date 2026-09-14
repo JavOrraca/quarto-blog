@@ -27,18 +27,23 @@ Stack: Quarto + R -themes Flatly (light) / Darkly (dark)
 ## Rendering
 
 GitHub Actions (`.github/workflows/quarto-render.yml`) renders the site on
-pull requests and on pushes to `main`. Default remains `freeze: true` with
-committed `_freeze/`; CI can evaluate R when freeze is missing or stale. The
-workflow uploads a `_site` artifact but does not deploy. Netlify still serves
-the live site from the committed `_site/` directory.
+pull requests and on pushes to `main`. Published posts use `freeze: auto`
+from `posts/_metadata.yml` with committed `_freeze/` (Quarto re-knits when
+source changes; `freeze: true` never re-knits on a project render). Drafts
+should set `freeze: false` until published so they always re-knit on project
+render. CI can evaluate R when freeze is missing, stale, or a draft forces
+execution. The workflow uploads a `_site` artifact but does not deploy.
+Netlify still serves the live site from the committed `_site/` directory, so
+commit regenerated `_site/` until a Netlify cutover.
 
 Local `quarto::quarto_render(as_job = FALSE)` is still how Javier drafts and
 refreshes freeze. **Do not run a full `quarto render` unless Javier asks.**
 
 When a post draft is complete, tell the user:
 > "Draft created at `posts/YYYY-MM-DD-slug/index.qmd`. Add a preview image,
-> review the content, remove `draft: true` when ready, then push; CI will
-> render. Local render remains optional for freeze or eval."
+> review the content, remove `draft: true` and `freeze: false` when ready,
+> then push; CI will render. Commit updated `_site/` so Netlify shows the
+> draft. Local render remains optional for freeze or eval."
 
 ---
 

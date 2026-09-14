@@ -8,7 +8,7 @@
 
 <meta name="author" content="Javier Orraca-Deatcu">
 <meta name="dcterms.date" content="2026-09-14">
-<meta name="description" content="Why sharing a data lake has always been awkward, and how DuckDB’s new Quack protocol changes it. This is a complete walkthrough for from Parquet on S3 to a live server your colleagues can query from R.">
+<meta name="description" content="Why sharing a data lake has always been awkward, and how DuckDB’s Quack protocol changes it. A walkthrough from Parquet on S3 to a live server your colleagues can query from R, plus what v2.0 means for Quack and remote Parquet.">
 
 <title>One DuckDB, Many Analysts: Serving an S3 DuckLake with Quack – Data Science Bytes</title>
 <style>
@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-fde5b6bff8e3c7fc816bcb8ae3975066.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-792033a5e005a9b07ae59e37a459aa09.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-fde5b6bff8e3c7fc816bcb8ae3975066.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-72450d464922759dd3deadb056ee04f8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-18c1774521b59f3b2a3eb9424e5dc523.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-72450d464922759dd3deadb056ee04f8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -149,13 +149,13 @@ cookieconsent.run({
 
 
 <meta property="og:title" content="One DuckDB, Many Analysts: Serving an S3 DuckLake with Quack – Data Science Bytes">
-<meta property="og:description" content="Why sharing a data lake has always been awkward, and how DuckDB’s new Quack protocol changes it. This is a complete walkthrough for from Parquet on S3 to a live server your colleagues can query from R.">
+<meta property="og:description" content="Why sharing a data lake has always been awkward, and how DuckDB’s Quack protocol changes it. A walkthrough from Parquet on S3 to a live server your colleagues can query from R, plus what v2.0 means for Quack and remote Parquet.">
 <meta property="og:image" content="https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/preview.png">
 <meta property="og:site_name" content="Data Science Bytes">
 <meta property="og:image:height" content="909">
 <meta property="og:image:width" content="1731">
 <meta name="twitter:title" content="One DuckDB, Many Analysts: Serving an S3 DuckLake with Quack – Data Science Bytes">
-<meta name="twitter:description" content="Why sharing a data lake has always been awkward, and how DuckDB’s new Quack protocol changes it. This is a complete walkthrough for from Parquet on S3 to a live server your colleagues can query from R.">
+<meta name="twitter:description" content="Why sharing a data lake has always been awkward, and how DuckDB’s Quack protocol changes it. A walkthrough from Parquet on S3 to a live server your colleagues can query from R, plus what v2.0 means for Quack and remote Parquet.">
 <meta name="twitter:image" content="https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/preview.png">
 <meta name="twitter:creator" content="@JavierOrraca">
 <meta name="twitter:card" content="summary_large_image">
@@ -419,6 +419,7 @@ cookieconsent.run({
   <li><a href="#the-gotcha-that-will-cost-you-an-hour" id="toc-the-gotcha-that-will-cost-you-an-hour" class="nav-link" data-scroll-target="#the-gotcha-that-will-cost-you-an-hour">The gotcha that will cost you an hour</a></li>
   </ul></li>
   <li><a href="#so-when-would-i-actually-use-this" id="toc-so-when-would-i-actually-use-this" class="nav-link" data-scroll-target="#so-when-would-i-actually-use-this">So When Would I Actually Use This?</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s Next</a></li>
   <li><a href="#learn-more" id="toc-learn-more" class="nav-link" data-scroll-target="#learn-more">Learn More</a></li>
   </ul>
 </nav>
@@ -441,7 +442,7 @@ cookieconsent.run({
 
 <div>
   <div class="description">
-    Why sharing a data lake has always been awkward, and how DuckDB’s new Quack protocol changes it. This is a complete walkthrough for from Parquet on S3 to a live server your colleagues can query from R.
+    Why sharing a data lake has always been awkward, and how DuckDB’s Quack protocol changes it. A walkthrough from Parquet on S3 to a live server your colleagues can query from R, plus what v2.0 means for Quack and remote Parquet.
   </div>
 </div>
 
@@ -473,7 +474,9 @@ cookieconsent.run({
 <p><img src="preview.png" class="preview-image img-fluid"></p>
 <section id="stop-copying-parquet-files-around" class="level1">
 <h1>Stop Copying Parquet Files Around</h1>
-<p>DuckDB continues to innovate in meaningful ways and with the recent release of their Quack protocol (<em>including recent headlines that <a href="https://duckdb.org/2026/08/17/duckdb-20-highlights">Quack is going LTS as a core capability in DuckDB 2.0</a>, dropping this Fall</em>), I recently got to contribute that protocol support to Travis Gerke’s <a href="https://tgerke.github.io/ducklake-r/" target="_blank"><code>ducklake</code></a> package for R users. It’s a tidy-friendly wrapper around <a href="https://ducklake.select/" target="_blank">DuckLake</a>, DuckDB’s lakehouse format, and as of DuckDB 1.5.3, it can now serve a lake over the network.</p>
+<p>DuckDB continues to innovate in meaningful ways. Quack landed as a core extension around DuckDB 1.5.3, and the <a href="https://duckdb.org/2026/08/17/duckdb-20-highlights.html" target="_blank">v2.0 Cyanoptera preview</a> already said it would graduate to stable this fall.</p>
+<p><a href="https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html" target="_blank">v2.0-alpha is generally available now</a>, with a feature freeze and a second-half-of-October target, so the “DuckDB as a server” story is in motion rather than just a headline.</p>
+<p>I recently got to contribute that protocol support to Travis Gerke’s <a href="https://tgerke.github.io/ducklake-r/" target="_blank"><code>ducklake</code></a> package for R users. It’s a tidy-friendly wrapper around <a href="https://ducklake.select/" target="_blank">DuckLake</a>, DuckDB’s lakehouse format, and it can serve a lake over the network.</p>
 <p>Every time I’ve recently explained this to a friend, the same question comes back: <em>“So I convert my Parquet files into a DuckDB and put that on S3?”</em> Not quite, and untangling that is honestly half the value of this post.</p>
 <p>So let’s build the whole thing end to end. But first, some groundwork on the problem this actually solves, because Quack only makes sense as an answer to a specific pain.</p>
 </section>
@@ -563,20 +566,21 @@ cookieconsent.run({
 </section>
 <section id="setup" class="level1">
 <h1>Setup</h1>
-<p>Quack needs DuckDB 1.5.3 or newer on <strong>both</strong> ends. The <code>ducklake</code> package checks this and errors clearly on older engines, but save yourself the trip:</p>
+<p>Quack itself arrived as a core extension around DuckDB 1.5.3, so both ends still need at least that engine. For the R <code>ducklake</code> path, I would pin <code>duckdb</code> to <strong>1.5.5 or newer</strong>.</p>
+<p>DuckDB 1.5.2 ships the DuckLake 1.0 spec, and 1.5.5 is where the R package settled extension storage, which <code>ducklake</code> relies on. The package errors clearly on older engines, but save yourself the trip:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># duckdb 1.5.4+ is on CRAN</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"duckdb"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"tgerke/ducklake-r"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ducklake)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"duckdb"</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] '1.5.4'</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">install_ducklake</span>()  <span class="co"># DuckLake extension</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">install_quack</span>()     <span class="co"># Quack extension (core, but pre-install for offline hosts)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ducklake"</span>)  <span class="co"># CRAN; wants duckdb &gt;= 1.5.5</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pak::pak("tgerke/ducklake-r")  # GitHub remotes, if you need them</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ducklake)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"duckdb"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] '1.5.5'</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># attach_ducklake() downloads the DuckLake extension on first use</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">install_ducklake</span>()  <span class="co"># optional, for container images and offline hosts</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">install_quack</span>()     <span class="co"># Quack is core; pre-install it if the host will be offline</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>I’ll use <code>nycflights13::flights</code> as the demo dataset - 336k rows is small enough to run on a laptop and big enough that pulling it across a network to filter it locally is obviously the wrong move.</p>
 </section>
@@ -755,13 +759,23 @@ cookieconsent.run({
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Quack is beta
+<span class="screen-reader-only">Important</span>Preview on 1.5.x, stable with 2.0
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The DuckDB team expects to settle the protocol, function names, and default settings before a stable release in DuckDB 2.0. Pin your versions if this lands in a production pipeline. I’d run it for internal team sharing today; I wouldn’t build a customer-facing dependency on it yet.</p>
+<p>On the DuckDB 1.5.x path, Quack is still beta/preview. It graduates to stable in v2.0 (the extension moves from 0.x to 1.0), and <a href="https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html" target="_blank">v2.0-alpha is already out</a> if you want to try it.</p>
+<p>The alpha is not production-ready. I’d run Quack for internal team sharing on 1.5.5 today, but I would pin versions and wait for 2.0 to ship before I leaned on it in a production pipeline.</p>
 </div>
 </div>
+</section>
+<section id="whats-next" class="level1">
+<h1>What’s Next</h1>
+<p>Two things I am watching, and they are not the same product.</p>
+<p><strong>Quack going stable with DuckDB 2.0.</strong> Cyanoptera is targeted for this fall. The <a href="https://duckdb.org/2026/08/17/duckdb-20-highlights.html" target="_blank">v2.0 highlights</a> frame it as “DuckDB as a server,” and the <a href="https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html" target="_blank">alpha announcement</a> says the Quack extension moves from 0.x to 1.0 with higher throughput and better compatibility.</p>
+<p>If you write SQL by hand, <code>CONNECT</code> is the cleaner client story (the successor to <code>remote.query</code>). The R helpers in <a href="https://tgerke.github.io/ducklake-r/" target="_blank"><code>ducklake</code></a> stay the right interface for this walkthrough. I’d try the alpha on a scratch lake, not as a production cutover.</p>
+<p><strong>Async I/O against Parquet on S3.</strong> This one is not Quack-specific, and it might be the more useful 2.0 change for a lot of us who already point DuckDB at a lake. v2.0 adds <a href="https://duckdb.org/2026/07/31/asynchronous-io.html" target="_blank">asynchronous reads of Parquet and CSV</a>. The big win is EC2 talking to S3, where synchronous requests leave bandwidth on the table.</p>
+<p>Their TPC-H Q6 benchmark on remote Parquet landed around 3 times faster. It also helps when a lake is a pile of small Parquet files. DuckLake on Parquet picks this up automatically.</p>
+<p>That is the part I find exciting for R and Python data scientists, and for MLOps jobs that scan S3 Parquet for features, training extracts, or batch scores. You do not have to stand up Quack to get it. Local DuckDB against the lake gets faster. Quack is how you share access. Async I/O is how the engine spends less time waiting on object storage.</p>
 </section>
 <section id="learn-more" class="level1">
 <h1>Learn More</h1>
@@ -771,13 +785,17 @@ cookieconsent.run({
 <li><a href="https://duckdb.org/docs/current/quack/overview" target="_blank">DuckDB Quack documentation</a> - deployment options, TLS, reverse proxies</li>
 <li><a href="https://ducklake.select/docs/stable/specification/introduction" target="_blank">DuckLake specification</a></li>
 <li><a href="https://github.com/tgerke/dplyneage" target="_blank"><code>dplyneage</code></a> - column-level lineage for dbplyr pipelines, pairs nicely with lake tables</li>
+<li><a href="https://duckdb.org/2026/08/17/duckdb-20-highlights.html" target="_blank">A Preview of DuckDB v2.0</a> - Cyanoptera highlights, including Quack going stable and <code>CONNECT</code></li>
+<li><a href="https://duckdb.org/2026/09/02/try-duckdb-20-alpha.html" target="_blank">Try DuckDB v2.0-alpha</a> - feature freeze, October target, Quack 1.0</li>
+<li><a href="https://duckdb.org/2026/07/31/asynchronous-io.html" target="_blank">Asynchronous I/O in DuckDB</a> - faster Parquet/CSV reads on S3, including DuckLake lakes</li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
 <p>If you’re sitting at Level 0 or Level 1 with a pile of Parquet in S3 and a team that keeps emailing each other CSVs, this is a genuinely small amount of setup for a big change in how people work. Try it on one dataset first - the medallion pattern in the package docs is a good template.</p>
-<p>Happy coding!</p>
+<p>And if you already live at Level 1, pointing DuckDB at S3 from R or Python, the async I/O work in 2.0 is worth a look even if you never stand up a Quack server.</p>
+<p>Happy Monday, and happy coding!</p>
 
 
 </section>
