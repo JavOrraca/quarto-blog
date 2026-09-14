@@ -5,7 +5,7 @@ date: 08-23-2023
 categories:
   - webR
   - dplyr
-image: images/webR.png
+image: images/webR.jpg
 engine: knitr
 filters:
   - webr

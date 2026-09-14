@@ -6,7 +6,7 @@ categories:
   - r6
   - tidyverse
   - tidymodels
-image: charlie.png
+image: charlie.jpg
 ---
 
 ![Python friends discussing OOP](charlie.png){.preview-image}

@@ -3,7 +3,7 @@ title: "ETL with Arrow & DuckDB"
 description: "Presentation materials from this weekend's SoCal RUG x UC Irvine hackathon️"
 date: 04-29-2024
 categories: [dplyr, arrow, duckdb, duckplyr]
-image: ArrowHackathonTalk.png
+image: ArrowHackathonTalk.jpg
 ---
 
 # Ultra-Fast ETL

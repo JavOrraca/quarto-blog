@@ -3,7 +3,7 @@ title: "Beautiful Maps with Rayshader"
 description: "If you love beautiful 2D and 3D maps, now you can create your own with elevation data, the rayshader package, OpenStreetMap, and ggplot2."
 date: 09-07-2021
 categories: [rayshader, ggplot2, visualizations]
-image: images/smallhobart.gif
+image: images/smallhobart.jpg
 ---
 
 # Overview

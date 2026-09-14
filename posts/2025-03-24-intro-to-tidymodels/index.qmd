@@ -3,7 +3,7 @@ title: "Intro to Tidymodels"
 description: "Presentation materials from a recent talk I gave at Loyola Marymount University"
 date: 03-24-2025
 categories: [tidymodels, positron]
-image: intro_to_tidymodels.png
+image: intro_to_tidymodels.jpg
 ---
 
 ![](intro_to_tidymodels.png){.preview-image}

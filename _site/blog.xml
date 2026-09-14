@@ -9,6 +9,11 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 <atom:link href="https://www.javierorracadeatcu.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Javier Orraca-Deatcu&#39;s data science website built with R and Quarto</description>
+<image>
+<url>https://www.javierorracadeatcu.com/images/og-default.jpg</url>
+<title>Data Science Bytes</title>
+<link>https://www.javierorracadeatcu.com/blog.html</link>
+</image>
 <generator>quarto-1.10.18</generator>
 <lastBuildDate>Mon, 14 Sep 2026 00:00:00 GMT</lastBuildDate>
 <item>
@@ -358,7 +363,7 @@ font-style: inherit;"> quarto render</span></span></code></pre></div></div>
   <category>r</category>
   <guid>https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/</guid>
   <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/preview.png" medium="image" type="image/png" height="81" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/preview.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>One DuckDB, Many Analysts: Serving an S3 DuckLake with Quack</title>
@@ -1027,7 +1032,7 @@ font-style: inherit;">sessionInfo</span>()</span></code></pre></div></div>
   <category>duckdb</category>
   <guid>https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/</guid>
   <pubDate>Mon, 14 Sep 2026 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/preview.png" medium="image" type="image/png" height="76" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/preview.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Three Open Source Tools to Bookmark</title>
@@ -1191,7 +1196,7 @@ font-style: inherit;">"2026-03-08"</span>)</span></code></pre></div></div>
   <category>positron</category>
   <guid>https://www.javierorracadeatcu.com/posts/2025-03-24-intro-to-tidymodels/</guid>
   <pubDate>Mon, 24 Mar 2025 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2025-03-24-intro-to-tidymodels/intro_to_tidymodels.png" medium="image" type="image/png" height="81" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2025-03-24-intro-to-tidymodels/intro_to_tidymodels.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Vector DB + RAG Maker</title>
@@ -1314,7 +1319,7 @@ font-style: inherit;">-r</span> requirements.txt</span></code></pre></div></div>
   <category>quarto</category>
   <guid>https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/</guid>
   <pubDate>Thu, 30 Jan 2025 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/Big_Data_Tiny_Laptop.png" medium="image" type="image/png" height="81" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2025-01-30-big-data-tiny-laptop/Big_Data_Tiny_Laptop.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>ETL with Arrow &amp; DuckDB</title>
@@ -1455,7 +1460,7 @@ font-style: inherit;">!</span>pip install pyarrow</span></code></pre></div></div
   <category>duckplyr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/</guid>
   <pubDate>Mon, 29 Apr 2024 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/ArrowHackathonTalk.png" medium="image" type="image/png" height="75" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2024-04-29-arrow-and-duckdb-talk/ArrowHackathonTalk.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>You Don’t Need OOP for Data Science</title>
@@ -2473,10 +2478,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2023-11-28 14:49:54.173788 : Borrowed The Great Gatsby"
+[1] "2026-09-14 23:19:50.089362 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2023-11-28 14:49:54.175161 : Returned The Great Gatsby"</code></pre>
+[1] "2026-09-14 23:19:50.091764 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -2718,7 +2723,7 @@ font-style: inherit;">8.7</span>   </span></code></pre></div></div>
   <category>tidymodels</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/</guid>
   <pubDate>Thu, 23 Nov 2023 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/charlie.png" medium="image" type="image/png" height="108" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-11-23-oop-with-r/charlie.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>webR via Quarto Extensions</title>
@@ -2921,7 +2926,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   <category>dplyr</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/</guid>
   <pubDate>Wed, 23 Aug 2023 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/images/webR.png" medium="image" type="image/png" height="143" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-08-23-webr-via-quarto-extensions/images/webR.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Impressing Hiring Teams with a Shiny App Demo</title>
@@ -3010,7 +3015,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   <category>bslib</category>
   <guid>https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/2023-03-28-shiny-bslib-socal-rug.html</guid>
   <pubDate>Tue, 28 Mar 2023 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/images/presentation_cover_slide.png" medium="image" type="image/png" height="80" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2023-03-28-shiny-bslib-socal-rug/images/presentation_cover_slide.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>R Goodies for 2023</title>
@@ -5174,7 +5179,7 @@ font-style: inherit;">2.2</span>              </span></code></pre></div></div>
   <category>docker</category>
   <guid>https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/2022-11-15-shiny-bslib-demo.html</guid>
   <pubDate>Tue, 15 Nov 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/Shiny_Demo_Preview.png" medium="image" type="image/png" height="76" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2022-11-15-shiny-bslib-demo/images/Shiny_Demo_Preview.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Torch for R + luz</title>
@@ -6703,7 +6708,7 @@ font-style: inherit;">0.1</span>     </span></code></pre></div></div>
   <category>visualizations</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/2021-09-07-rayshader.html</guid>
   <pubDate>Tue, 07 Sep 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/smallhobart.gif" medium="image" type="image/gif"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2021-09-07-rayshader/images/smallhobart.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>A Brief History of the Dataframe</title>
@@ -7399,7 +7404,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div></d
   <category>quick tips</category>
   <guid>https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/2021-01-19-rsthemes.html</guid>
   <pubDate>Tue, 19 Jan 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/images/rsthemes.gif" medium="image" type="image/gif"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/images/rsthemes.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Preparing for 2021 Goals with a Raspberry Pi</title>
@@ -7444,7 +7449,7 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div></d
   <category>linux</category>
   <guid>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</guid>
   <pubDate>Thu, 31 Dec 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi-banner.png" medium="image" type="image/png" height="76" width="144"/>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi-banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

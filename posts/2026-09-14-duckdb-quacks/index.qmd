@@ -3,7 +3,7 @@ title: "One DuckDB, Many Analysts: Serving an S3 DuckLake with Quack"
 description: "Why sharing a data lake has always been awkward, and how DuckDB's Quack protocol changes it. A walkthrough from Parquet on S3 to a live server your colleagues can query from R, plus what v2.0 means for Quack and remote Parquet."
 date: 09-14-2026
 categories: [duckdb]
-image: preview.png
+image: preview.jpg
 ---
 
 ![](preview.png){.preview-image}
