@@ -53,6 +53,7 @@ install.packages('arrow', repos = 'https://apache.r-universe.dev')
 
 ```{python}
 #| eval: false
+#| python.reticulate: false
 # Install full PyArrow w/ S3 and GCS support
 
 # Set required env vars

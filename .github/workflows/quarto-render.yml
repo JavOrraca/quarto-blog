@@ -56,6 +56,8 @@ jobs:
       #   tidymodels — posts/2025-09-16-posit-conf-workshop
       #   probably, sodium — posts/2023-01-15-r-goodies-for-2023
       #   R6 — posts/2023-11-23-oop-with-r (also uses purrr via tidymodels)
+      # knitr's {python} engine loads reticulate even when eval: false unless
+      # the chunk sets python.reticulate: false (arrow-and-duckdb-talk).
       - name: Install R packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
