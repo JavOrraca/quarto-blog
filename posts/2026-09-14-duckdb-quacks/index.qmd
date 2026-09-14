@@ -4,8 +4,6 @@ description: "Why sharing a data lake has always been awkward, and how DuckDB's 
 date: 09-14-2026
 categories: [duckdb]
 image: preview.png
-draft: true
-freeze: false
 ---
 
 ![](preview.png){.preview-image}
