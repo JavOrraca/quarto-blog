@@ -3,7 +3,7 @@ title: "Agentic Quarto: Shipping a Personal Site with GitHub, Actions, and Grok 
 description: "How I run Data Science Bytes on Quarto + GitHub + CI, and how a Cursor Pro Grok Bot team (plus a Voice of Javier skill and cloud agents) drafts, reviews, and ships posts without giving up human judgment."
 date: 09-14-2026
 categories: [quarto, r]
-image: preview.png
+image: preview.jpg
 ---
 
 ![](preview.png){.preview-image}

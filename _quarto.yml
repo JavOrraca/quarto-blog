@@ -1,10 +1,13 @@
 project:
   type: website
+  post-render:
+    - python3 scripts/inject-og-meta.py
 
 website:
   title: "Data Science Bytes"
   site-url: https://www.javierorracadeatcu.com
   description: "Javier Orraca-Deatcu's data science website built with R and Quarto"
+  image: images/og-default.jpg
   open-graph: true
   draft-mode: unlinked
   google-analytics:

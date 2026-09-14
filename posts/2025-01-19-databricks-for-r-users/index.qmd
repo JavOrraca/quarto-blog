@@ -3,7 +3,7 @@ title: "Databricks for R Users"
 description: "Getting started with Databricks and R. Tips after two years of use."
 date: 01-19-2025
 categories: [brickster, httr2, mlflow, sparklyr]
-image: this_is_fine.gif
+image: this_is_fine.jpg
 draft: true
 freeze: false
 ---

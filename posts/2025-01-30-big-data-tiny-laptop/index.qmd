@@ -3,7 +3,7 @@ title: "Big Data, Tiny Laptop"
 description: "Presentation materials from last night's Tech by the Beach x SoCal RUG x CSULB meetup"
 date: 01-30-2025
 categories: [positron, arrow, duckdb, polars, quarto]
-image: Big_Data_Tiny_Laptop.png
+image: Big_Data_Tiny_Laptop.jpg
 ---
 
 ![](Big_Data_Tiny_Laptop.png){.preview-image}

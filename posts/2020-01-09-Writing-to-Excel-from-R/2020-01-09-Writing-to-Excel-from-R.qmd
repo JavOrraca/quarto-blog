@@ -3,7 +3,7 @@ title: "Writing to Excel from R"
 description: "Spending your days R but working closely with analysts and leadership that live in Excel? Get familiar with openxlsx."
 date: 01-09-2020
 categories: [quick tips]
-image: images/openxlsx.png
+image: images/openxlsx.jpg
 ---
 
 `openxlsx` is an awesome package for writing multiple datasets to multiple sheets of an Excel workbook, and allows for robust styling and cell formatting. I found a tutorial on RPubs written by [Ezekiel Adebayo Ogundepo](https://www.linkedin.com/in/ezekiel-ogundepo/) covering this package that I often use at work. Definitely bookmark worthy.
