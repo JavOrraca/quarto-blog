@@ -1,0 +1,215 @@
+---
+title: "Agentic Quarto: Shipping a Personal Site with GitHub, Actions, and Grok Bot"
+description: "How I run Data Science Bytes on Quarto + GitHub + CI, and how a Cursor Pro Grok Bot team (plus a Voice of Javier skill and cloud agents) drafts, reviews, and ships posts without giving up human judgment."
+date: 09-14-2026
+categories: [quarto, r]
+image: preview.png
+draft: true
+freeze: false
+---
+
+![](preview.png){.preview-image}
+
+# The publishing stack was never the hard part
+
+I have rebuilt this site more times than I like to admit. R Markdown plus [blogdown](https://bookdown.org/yihui/blogdown/){target="_blank"}, then [distill](https://rstudio.github.io/distill/){target="_blank"}, then [Quarto](https://quarto.org/){target="_blank"}. Each stack was a genuine upgrade. None of them fixed the thing that kept posts from going live.
+
+The bottleneck was shipping. I could draft a post on a Sunday night, render it locally, and still leave it sitting in a folder because the last mile felt like chores: freeze files, listings, a preview image, a pull request, a deploy that I only half trusted.
+
+This week I finally wired the last mile in a way I will actually use. Quarto and GitHub stay in front. Agents are optional, and they stay behind a human gate. If you only take one thing from this post, make it that order.
+
+I am writing this as a practitioner who still publishes from a laptop. The setup is not a platform pitch. It is a shipping loop I can explain to a colleague over coffee.
+
+# Why Quarto still wins for a personal site
+
+I recommend Quarto for a personal data science site because it lets me keep the writing next to the code. A post can be prose, a `dplyr` pipeline, a plot, and a bibliography without me switching tools. If you already think in `.Rmd` or Jupyter, the jump is small.
+
+It is also honest about formats. The same project can be a website, a slide deck, a PDF, or a dashboard. I do not need a CMS for a site that is mostly essays and talks.
+
+The other reason is community. The people who maintain it keep showing up. That matters more than a prettier theme.
+
+::: {.callout-tip}
+## Keep the site boring on purpose
+I want the publishing machinery to be the least interesting part of the week. Quarto plus git plus a pull request is boring in the best way. Fancy editors are optional. The source of truth is still a folder of `.qmd` files.
+:::
+
+If you are choosing a stack in 2026, I would start here even if you never touch an agent. Agents only help if the site is already simple enough to review.
+
+# The foundation: a git-backed Quarto blog, with CI as a check
+
+The live site is [Data Science Bytes](https://www.javierorracadeatcu.com){target="_blank"}. The source lives at [JavOrraca/quarto-blog](https://github.com/JavOrraca/quarto-blog){target="_blank"}. That repo is the whole system: posts, freeze cache, theme, and the rendered HTML.
+
+I need to be honest about deploy. Netlify still serves the committed `_site/` directory from git. GitHub Actions renders on pull requests and on pushes to `main`, then uploads a `_site` artifact. It does **not** publish. Until Netlify is rewired, a green CI run is not the same thing as a live update.
+
+If I were greenfield, I would not commit `_site/` at all. I would let CI render and let the host publish that artifact. GitHub Pages, Netlify from Actions, or Posit Connect would all be cleaner than what I have today. I am not there yet, and pretending otherwise would waste your time.
+
+The render pin is Quarto **1.10.18**. The workflow uses [`quarto-dev/quarto-actions`](https://github.com/quarto-dev/quarto-actions){target="_blank"} to install that version and [`r-lib/actions`](https://github.com/r-lib/actions){target="_blank"} to set up R 4.6.1 plus the packages a project render might need. There is no `renv.lock` here, so the Action installs `knitr`, `rmarkdown`, and a short list of post packages explicitly.
+
+A shortened version of the job looks like this:
+
+```yaml
+# .github/workflows/quarto-render.yml
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.10.18
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.6.1"
+      - run: quarto render
+```
+
+The pull request is the human gate. Agents can open the PR. I still read the diff, check the preview image, and decide whether `draft: true` comes off. CI tells me the site renders. It does not get to hit publish.
+
+Published posts inherit `freeze: auto` from `posts/_metadata.yml`, and `_freeze/` is committed. Drafts set `freeze: false` so they re-knit on a project render. Local `quarto::quarto_render(as_job = FALSE)` is still how I refresh freeze when I draft by hand.
+
+# What "agentic" means here: harness, orchestrator, tools
+
+I do not think of this as "the AI writes my blog." I think of it as three layers that I can name.
+
+**The harness** is the thing that actually edits the repo. In my case that is [Cursor Cloud Agents](https://cursor.com/docs/cloud-agent){target="_blank"}. They clone the repo onto an isolated VM, work on a branch, run commands, and open a pull request. They are the intern with a laptop.
+
+**The orchestrator** is a small Grok Bot team. One coordinator routes the work. Specialists own lanes: drafting in my voice, reviewing the YAML and Quarto conventions, checking that CI is the source of truth for render, keeping agents out of files they should not touch. Bots can talk to each other. They can also kick a cloud agent the same way I would.
+
+**The tools** are ordinary. GitHub. The Actions workflow. Skills. Repo guides. A handful of MCP connectors when a task needs email or a calendar, which a blog post usually does not.
+
+That split comes straight out of how [Grok Bot](https://x.ai/bot/guides/grok-bot-101){target="_blank"} is designed. Matt Palmer's writeup is the clearest version I have read: the bot is the outer loop that writes the prompt I would have written. The cloud agent is the inner loop that builds in a clean environment. Mixing those jobs in one window is how you get a draft that also tries to rewrite `_quarto.yml`.
+
+Cursor Pro is about $20 a month, and that seat is what unlocked this for me. Grok Bot and Cloud Agents are included on paid Cursor plans. The weekly usage is not unlimited. The entry price is no longer an Ultra-only experiment.
+
+::: {.callout-tip}
+## Specialists beat one mega-bot
+A coordinator that can delegate is more useful than a single bot that tries to remember every rule. Keep the drafter focused on prose. Keep the reviewer focused on front matter, links, and the files that are off limits. Let the cloud agent own the branch and the PR.
+:::
+
+The coordinator does not merge. The specialist does not deploy. The cloud agent does not remove `draft: true` unless I say so. Those are product decisions, not model settings.
+
+# Voice of Javier, and the Quarto-specific guide
+
+The easiest way to get a bad draft is to ask a general model to "write like me" with no artifacts. My fix is a shared **Voice of Javier** skill. It is a portable playbook: first person, no emoji, no em dashes, short paragraphs, soft hedging, practitioner-first, warm closing. Cloud agents can use it because skills sync. Grok Bot can invoke it the same way.
+
+That skill is about *how it sounds*. It is not about how this repo is laid out.
+
+The Quarto specifics live in `posts/CLAUDE.md`. Folder names, YAML, inherited fields, the `{target="_blank"}` rule, known categories, the preview image line, the quality checklist. The root `CLAUDE.md` is even narrower: what agents may touch, what they must not touch, and the reminder that a full `quarto render` is not a casual command.
+
+I like that split. Voice travels with me across projects. Repo guides stay next to the files they protect.
+
+If you steal one idea, steal the protected-path list. `_quarto.yml`, `_site/`, `_freeze/`, `_extensions/`, and the top-level pages are easy for an eager agent to "helpfully" edit.
+
+# Skills, memory, and repo guides are not the same drawer
+
+I kept stuffing everything into one instructions file. That does not scale.
+
+**Skills** are on-demand playbooks. Cursor discovers them from `.cursor/skills/` or `~/.cursor/skills/`, and the agent loads one when the task matches. [Agent Skills](https://cursor.com/docs/skills){target="_blank"} are progressive on purpose. A "draft this post" skill can be long. It should not sit in every chat about a CSS tweak.
+
+**Memory** is durable facts across sessions: my name, that this site is git-backed, that Netlify still reads `_site/`. It is a poor place for a 200-line style guide. Memory drifts. A skill is a file you can diff.
+
+**Repo guides** are always-on project context. `CLAUDE.md`, `posts/CLAUDE.md`, an `AGENTS.md` if you want something tool-agnostic. These are the "do not touch `_quarto.yml`" rules. They belong in git so every cloud agent sees them, not only the bot that happened to remember.
+
+My rule of thumb:
+
+- If every session on this repo needs it, put it in a repo guide.
+- If only some tasks need it, make a skill.
+- If it is a fact about me that should survive a new chat, that can be memory.
+- If it has to happen every time no matter what the model thinks, that is CI or a hook, not a paragraph of advice.
+
+The Voice of Javier skill is the second bucket. The freeze policy is the first. "Javier prefers a Monday closing" can live in memory. "Render must pin 1.10.18" belongs in the workflow file, where a test can fail.
+
+# The lifecycle: idea, draft, PR, review, publish
+
+Here is the loop I want, including on weeks I am tired.
+
+1. **Idea.** A URL, a talk, a note from SoCal RUG, or a sentence I cannot stop repeating. I send that to the coordinator, not to a blank editor.
+2. **Draft.** A specialist invokes the voice skill, reads `posts/CLAUDE.md`, and asks a cloud agent to create `posts/YYYY-MM-DD-slug/index.qmd` with `draft: true` and `freeze: false`. Preview image in the same folder. No inherited YAML fields duplicated.
+3. **PR.** The cloud agent opens a pull request. Actions renders. I get a `_site` artifact I can inspect. Nothing is live yet.
+4. **Review.** I read it like I would read a colleague's draft. Does the H1 differ from the title? Do external links open in a new tab? Is the claim in my voice, or did the model get confident about a library I have not used? I leave comments. The agent can patch. I can also just edit the `.qmd`.
+5. **Publish.** I take `draft: true` and the `freeze: false` override off when I am ready. Because Netlify still reads git-backed `_site/`, I also commit a regenerated site (or accept that the live page will lag). Then I merge.
+
+The important part is which person is in which step. Agents are great at 2 and 3. They are useful in 4 if you treat them like a copy editor. Step 5 is mine.
+
+I would rather ship a slightly late post than let an agent undraft something I have not sat with.
+
+# A real week: Actions, a DuckDB refresh, and a stale `_site`
+
+This is not a hypothetical architecture. It is what landed on `main` today.
+
+First the [Actions workflow](https://github.com/JavOrraca/quarto-blog/blob/main/.github/workflows/quarto-render.yml){target="_blank"}. Pin Quarto, install R, render, upload the artifact, and say out loud in the YAML comments that this job does not deploy. That PR was the foundation. Without it, every agent-rendered site is a local snowflake.
+
+Then the docs pass: when to render locally, when freeze is `auto`, when a draft forces a re-knit. Agents need that in the repo, not in a chat I already closed.
+
+Then the DuckDB work. I had a Quack draft that needed to catch [ducklake](https://tgerke.github.io/ducklake-r/){target="_blank"} at 1.5.5 and the DuckDB 2.0 story. Cloud agents refreshed the post, fixed freeze, and then published it into the listings. You can read the result as [One DuckDB, Many Analysts](https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/){target="_blank"}. The technical content is mine. The shipping muscle was the new loop.
+
+The lesson I almost had to learn twice is `_site/`. CI can be green while the live site is stale, because Netlify is still serving whatever HTML is in the repo. If you only merge the `.qmd` and forget to commit the regenerated site, readers do not see the post. If you gitignore `_site/` before you rewire the host, you go dark.
+
+I do not love that. I am documenting it so the next agent (and the next human) does not treat a render artifact as a deploy.
+
+# Pitfalls I would budget for
+
+A few of these bit me. The rest I have watched other people hit.
+
+**The host and the CI job disagree.** Green checks feel like production. They are not, until you connect them. Prefer artifact publish on a new site. On this site, treat committed `_site/` as the live contract.
+
+**Freeze looks like a cache bug when it is a policy bug.** `freeze: true` never re-knits on a project render. `auto` re-knits when source changes. Drafts should opt into `false` until they publish. If an agent "helpfully" copies freeze from a neighbor post, you will debug the wrong layer.
+
+**Agents love to edit the wrong files.** Give them a short allow-list. Posts live under `posts/`. Site config is not a draft.
+
+**Voice drift is real.** Without the skill, I get emoji, em dashes, and a tone that sounds like a product blog. With the skill, I still have to read the H1 and the claims. A style guide is not a fact checker.
+
+**Context mixing.** If the same agent both researches a URL and writes the `.qmd`, it will smuggle in leftover instructions. Outer loop for research and prompting. Inner loop for the branch. Human for merge.
+
+**Cost and attention.** Pro at about $20 a month is the seat. Cloud agent tokens and Grok Bot weekly usage are extra if you lean on them all day. Start with one specialist and one coordinator, not a simulated department.
+
+**Drafts are not private, they are unlinked.** This site uses Quarto `draft-mode: unlinked`. That is enough for a personal blog.
+
+# Who this is for
+
+This is for people who already write, or want to write, in Quarto (or R Markdown) and are tired of the last mile.
+
+It is a good fit if you:
+
+- Keep a personal site next to real analysis work, not as a separate WordPress hobby
+- Are comfortable with git, even if you are not a full-time platform engineer
+- Want agents as drafters and reviewers, not as the author of record
+- Care enough about voice that a shared skill is worth maintaining
+
+It is a weaker fit if you need a CMS with non-technical editors, or if you want fully automatic publishing. I would not point a student at Grok Bot before they can render a Quarto project locally. The agents make a working loop faster. They do not replace knowing what a pull request is.
+
+If you are an R user still on a 2019 blogdown site, start with Quarto and GitHub. Add CI before you add bots.
+
+# posit::conf(2026), and why I am watching Quarto 2
+
+[posit::conf(2026)](https://conf.posit.co/2026/){target="_blank"} runs September 14 through 16 in Houston, with a virtual track. Workshop day is today. If you are there, Charlotte Wickham and Mine Çetinkaya-Rundel's [Level up your Quarto](https://posit.co/blog/workshops-at-positconf2026){target="_blank"} session is the one I would have put on my calendar first: patterns, brands, Positron, and practical LLM use in a Quarto workflow.
+
+I am also watching [What's next: Quarto 2](https://opensource.posit.co/blog/2026-04-06_whats-next-quarto-2/){target="_blank"} from Carlos Scheidegger. Quarto 2 is a Rust rewrite of the CLI, with a long-term bet on a collaborative editor and better performance. The April post is careful, and I appreciate that. Quarto 1 is not going anywhere for a while. There is no public 2.x I would pin a personal site to today.
+
+My interest is selfish. A faster render and better editor diagnostics would make the CI loop nicer. Collaborative editing might matter more for workshop notes than for this blog. I would rather keep my source in `.qmd` files that a future CLI can still read.
+
+Nothing in this post depends on Quarto 2. That is the point. The shipping loop should survive a major version, the same way it survived blogdown to distill to Quarto 1.
+
+# Learn More
+
+- [Quarto](https://quarto.org/){target="_blank"} - the publishing system this site is built on
+- [quarto-dev/quarto-actions](https://github.com/quarto-dev/quarto-actions){target="_blank"} - GitHub Actions to install and render Quarto in CI
+- [r-lib/actions](https://github.com/r-lib/actions){target="_blank"} - GitHub Actions for R, including `setup-r` and package install
+- [What's next: Quarto 2](https://opensource.posit.co/blog/2026-04-06_whats-next-quarto-2/){target="_blank"} - Carlos Scheidegger on the Rust rewrite and the collaborative editor bet
+- [JavOrraca/quarto-blog](https://github.com/JavOrraca/quarto-blog){target="_blank"} - the git-backed source for Data Science Bytes
+- [Cursor](https://cursor.com/){target="_blank"} - Cloud Agents, skills, and the Pro seat that includes Grok Bot
+
+If you want the outer-loop framing in more detail, Matt Palmer's [Grok Bot 101](https://x.ai/bot/guides/grok-bot-101){target="_blank"} is the piece I keep sending people.
+
+---
+
+This draft was prepared by the Grok Bot setup I described: a coordinator, a voice skill, repo guides, and a Cursor cloud agent that opened the pull request. I still read every paragraph. Human-in-the-loop is not a slogan here. It is the merge button.
+
+If you try a version of this and you find a sharper split between skills and repo guides, I would like to hear it. The stack should stay boring. The posts should not.
+
+Happy Monday, and happy coding!
