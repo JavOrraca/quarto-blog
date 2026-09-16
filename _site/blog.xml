@@ -15,7 +15,227 @@
 <link>https://www.javierorracadeatcu.com/blog.html</link>
 </image>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Mon, 14 Sep 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 15 Sep 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Start a Data Science User Group (Not Just an R Meetup)</title>
+  <dc:creator>Javier Orraca-Deatcu</dc:creator>
+  <link>https://www.javierorracadeatcu.com/posts/2026-09-15-start-a-data-science-user-group/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><img src="https://www.javierorracadeatcu.com/posts/2026-09-15-start-a-data-science-user-group/preview.jpg" class="preview-image img-fluid"></p>
+<section id="the-user-group-i-keep-recommending-is-not-an-r-meetup" class="level1">
+<h1>The user group I keep recommending is not an R meetup</h1>
+<p>I am in Houston for <a href="https://conf.posit.co/2026/" target="_blank">posit::conf(2026)</a>, and I ended up at the AWS + Posit <code>conf::rewind</code> 80s party looking like I had wandered out of a synthwave music video. That is <a href="https://www.linkedin.com/in/dcogburn" target="_blank">Derrick Cogburn</a> on the left, a professor at American University. I am the one in the hat.</p>
+<p>I showed him the <a href="https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/" target="_blank">Grok Bot loop I use to draft and ship posts</a> on this site. The conversation did not stay on blogging for long. Derrick wants a community data science organization that is polyglot, diverse in topic, and open to AI. He was not asking me how to stand up another R-only meetup.</p>
+<p>I have founded and run a company data science user group at Centene. I also help run the <a href="https://www.meetup.com/socal-rug/" target="_blank">Southern California R Users Group</a> (SoCal RUG). Those groups taught me a lot. They are also the wrong thing to copy if what you actually want is a local or company community where R, Python, SQL, BI, and AI agents can share a room.</p>
+<p>This post is the template I wish I could have handed Derrick at the party. It is also for you, if you have been waiting for permission to start one.</p>
+<p>The spine comes from Posit’s <a href="https://posit.co/champions/community-building" target="_blank">Champions community-building guide</a>. I am paraphrasing their ideas into a playbook you can steal tomorrow. I am not rewriting their page. If you only click one link after this, click that one.</p>
+</section>
+<section id="what-kind-of-community-are-you-building" class="level1">
+<h1>What kind of community are you building?</h1>
+<p>Posit’s first question is the one people skip: what do you want people to get out of this?</p>
+<p>In my experience, most “we should start a user group” conversations collapse three different goals into one calendar invite.</p>
+<p><strong>Learning.</strong> People leave with a skill, a pattern, or a dataset they can reuse on Monday.</p>
+<p><strong>Networking.</strong> People leave knowing two new names and one person they might actually email.</p>
+<p><strong>Internal enablement.</strong> People leave less stuck on the company’s stack, and the org gets a cheaper way to spread practice than another training vendor.</p>
+<p>The Centene group was mostly enablement plus learning. SoCal RUG is mostly learning plus networking. Both work. They do not work if you pretend they are the same meeting.</p>
+<p>Write the goal in one sentence before you book a room. Here are three I would actually use:</p>
+<ul>
+<li>“A monthly company hour where analysts show how they solved a real problem, in whatever language they used.”</li>
+<li>“A city meetup for data people who want one talk, one conversation, and a reason to leave the house.”</li>
+<li>“A low-stakes practice room for first talks, including people who have never presented outside their team.”</li>
+</ul>
+<p>If you cannot pick one, pick learning. Learning gives newcomers a reason to come back. Networking happens around a useful hour. A mixer with no spine is a happy hour that dies in month three.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Write the goal where other people can see it
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Put the one-sentence goal in the Meetup description, the Slack topic, and the first slide. If a speaker pitch does not serve that sentence, it is a different event. Protect the sentence.</p>
+</div>
+</div>
+<p>A polyglot group still needs a boundary. “Everyone who touches data” is not a community. It is a conference. I recommend a sharper line: practitioners who want to share work, including students and career-switchers, in any language that helps them do the job.</p>
+</section>
+<section id="a-starter-template-you-can-copy" class="level1">
+<h1>A starter template you can copy</h1>
+<p>Posit’s guide is refreshingly anti-perfectionist. It does not have to be perfect. Experiment. Start small. Be consistent. I agree with all three, and I would add a fourth: decide the defaults before you ask the internet what you should do.</p>
+<p>Here is the starter I would hand someone tomorrow.</p>
+<section id="people" class="level2">
+<h2 class="anchored" data-anchor-id="people">People</h2>
+<p>Find a core group of about five, and be intentional about who is in it. Posit is right that diverse perspectives should be in the room from day one. For a polyglot data science group, that means more than job titles.</p>
+<p>I would look for:</p>
+<ul>
+<li>At least one Python person and one R person who respect each other</li>
+<li>Someone who lives in SQL or a BI tool and does not apologize for it</li>
+<li>Someone closer to the business than to the models</li>
+<li>One person who will actually send the calendar invite when you are tired</li>
+</ul>
+<p>You do not need a board. You need people who will show up when the first speaker cancels.</p>
+</section>
+<section id="cadence" class="level2">
+<h2 class="anchored" data-anchor-id="cadence">Cadence</h2>
+<p>Pick a monthly slot and keep it. Same week, same weekday, same rough format. SoCal RUG works because people can put it on a recurring calendar. The Centene group worked when we treated it like a standing meeting, not a pop-up.</p>
+<p>Weekly is heroic. Quarterly is how a group becomes a rumor. Monthly is the default I recommend unless you are running office hours.</p>
+<p>Consistency does more than branding. Once the day is fixed, you plan speakers a few months out instead of rearranging the universe around one person’s Thursday.</p>
+</section>
+<section id="formats-that-stay-language-agnostic" class="level2">
+<h2 class="anchored" data-anchor-id="formats-that-stay-language-agnostic">Formats that stay language-agnostic</h2>
+<p>Steal these from Posit and strip the language lock off them.</p>
+<ul>
+<li><strong>One talk.</strong> 25 to 35 minutes, plus questions. The default monthly meeting.</li>
+<li><strong>Three lightning talks.</strong> Eight to ten minutes each. This is how you get first-time speakers to say yes.</li>
+<li><strong>Shared-dataset night.</strong> TidyTuesday energy, any language. One public or company-safe dataset, people show what they did, and nobody loses because they used Polars instead of dplyr.</li>
+<li><strong>Casual social.</strong> Coffee, a brewery, a walk. No slides. This is how the Slack stops feeling like a broadcast channel.</li>
+<li><strong>Member spotlight.</strong> A short “10 questions” interview in the newsletter or at the start of a meetup. Cheap, human, and easy to schedule.</li>
+<li><strong>Annual meetup day.</strong> A workshop in the morning, member talks in the afternoon. Do this after you have a year of monthly muscle, not before.</li>
+</ul>
+<p>I recommend alternating a single talk with a lightning night. The single talk raises the ceiling. The lightning night lowers the floor.</p>
+</section>
+<section id="channels" class="level2">
+<h2 class="anchored" data-anchor-id="channels">Channels</h2>
+<p>Community is not one Meetup page. Posit calls this multi-pronged, and that matches what I have seen.</p>
+<p>You want four things, even if two of them are ugly at first:</p>
+<ol type="1">
+<li>A place to RSVP (Meetup, Luma, or an internal calendar)</li>
+<li>A place to talk between events (Slack, Discord, or Teams)</li>
+<li>A way to reach people who will not join chat (a monthly email)</li>
+<li>A place where talks live after the night ends (a GitHub repo or a simple site)</li>
+</ol>
+<p>If you only have the event page, every meeting starts from zero. If you only have Slack, you will confuse activity with community.</p>
+</section>
+<section id="venues" class="level2">
+<h2 class="anchored" data-anchor-id="venues">Venues</h2>
+<p>You do not need your own office. Posit’s list is the same one I would give you:</p>
+<ul>
+<li>Companies hiring data scientists (they host, you bring the room)</li>
+<li>Colleges and university labs</li>
+<li>Coworking spaces</li>
+<li>A member’s office after hours</li>
+<li>Coffee shops or breweries for the no-agenda nights</li>
+</ul>
+<p>Virtual is fine, especially for a company group or a city that does not want a 90-minute commute. I still bias toward at least some in-person time. The hallway conversation is half the product.</p>
+</section>
+<section id="standardize-the-boring-parts" class="level2">
+<h2 class="anchored" data-anchor-id="standardize-the-boring-parts">Standardize the boring parts</h2>
+<p>Once the cadence is fixed, make an invitation template, a simple logo, and a run-of-show you reuse. I would rather have a slightly boring logo than a new Canva emergency every month.</p>
+<p>A speaker invite that has worked for me looks like this:</p>
+<blockquote class="blockquote">
+<p>We are lining up the next few months of the data science user group. Would you be open to a 10-minute lightning talk on [specific thing I already know you did]? Happy to sketch an outline with you. The room is friendly, and first talks are welcome.</p>
+</blockquote>
+<p>That is not a call for volunteers. It is a personal ask. Posit says do not wait for people to raise their hands. Invite them. I have never filled a quarter of talks by posting “speakers wanted” and walking away.</p>
+</section>
+</section>
+<section id="what-transferred-from-centene-and-socal-rug" class="level1">
+<h1>What transferred from Centene and SoCal RUG</h1>
+<p>I am not trying to turn your group into an R user group with extra steps. I am trying to save you the lessons that were not about R.</p>
+<p><strong>A clear goal beats a clever name.</strong> The Centene group made more sense when we said it was for sharing internal practice, not for becoming a mini-conference. SoCal RUG makes more sense because people know they will see applied talks and meet other data people in Southern California. If the name is cute and the goal is fuzzy, the cute name wins for about six weeks.</p>
+<p><strong>Pick a cadence you can keep when work gets ugly.</strong> I have overbuilt a calendar and then traveled for three weeks. The group felt abandoned even though I was “busy with good reasons.” If you cannot host next month, a co-organizer should be able to run the same format without you.</p>
+<p><strong>Invite speakers personally.</strong> Conference talks, an internal brown bag, a blog post that stuck with you, someone you met at a Data Science Hangout: those are openings. LinkedIn is useful after you have exhausted the people you already kind of know. Warm outreach beats a polished landing page.</p>
+<p><strong>Keep the bar for first talks low.</strong> Lightning talks did more for SoCal RUG than any note that said “we welcome beginners.” People believe the format, not the slogan. Offer to do a 20-minute dry run on a video call. That one habit has unlocked more speakers than a speaker guide ever did.</p>
+<p><strong>Welcome people like a house party.</strong> Posit uses that image and I keep stealing it. When someone walks into your house, you do not hand them a microphone. You get them a drink, tell them where the bathroom is, and introduce them to one person. In a meetup that looks like: say hello at the door, explain how questions work, and tell people it is fine to just listen.</p>
+<p><strong>Write the night down somewhere findable.</strong> A repo of slides, a short recap in the newsletter, a link in Slack. SoCal RUG’s <a href="https://github.com/socalrug/presentations" target="_blank">presentations repo</a> is not fancy. It is why a talk still has a second life in month eight. If the only record is a fading Zoom chat, you built a vibe, not a library.</p>
+<p><strong>You cannot please everyone, and trying will stall you.</strong> The company group had people who wanted deep modeling and people who wanted Excel-to-Python survival skills. We did both over a quarter, not in one hour. The polyglot version of that trap is trying to make every night equally interesting to the R crowd, the Python crowd, and the dashboard crowd. Rotate. Tell people the rotation out loud.</p>
+</section>
+<section id="make-it-inclusive-and-ai-curious-without-becoming-an-ai-meetup" class="level1">
+<h1>Make it inclusive, and AI-curious, without becoming an AI meetup</h1>
+<p>Derrick’s brief to me was not “start an LLM club.” It was a community that can talk about AI without making AI the only identity.</p>
+<p>I recommend a simple content mix for the first year:</p>
+<ul>
+<li>Four applied talks that are not about AI (SQL, experimentation, visualization, production messy data)</li>
+<li>Three talks that use AI as a tool inside a real workflow</li>
+<li>Two lightning nights that are open-format</li>
+<li>One social with no slides</li>
+<li>One shared-dataset night where an AI-assisted analysis is welcome and not required</li>
+</ul>
+<p>That mix keeps the group honest. Practitioners are already using copilots, agents, and RAG prototypes. Ignoring that is nostalgia. Making every agenda item a model launch is how you lose the analyst who came to talk about a warehouse migration.</p>
+<p>A few inclusion habits I would put in the run-of-show, not in a values slide:</p>
+<ul>
+<li>Say out loud that the space is open across languages, experience levels, and job titles</li>
+<li>Explain how to ask questions, and offer an anonymous option (a shared doc, a Slack thread, or a note to the host)</li>
+<li>Define acronyms in chat the first time they appear</li>
+<li>Tell people they can listen without performing</li>
+<li>After a few months, ask two newer members how they found you and how long they lurked before they came</li>
+</ul>
+<p>The last one is the feedback loop Posit suggests, and it is more useful than a post-event CSAT. People will tell you the room felt like a club if you ask them privately.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>AI talks need a demo, a dataset, or a failure
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If a proposed AI talk cannot show a workflow, a prompt pattern against real data, or a thing that broke, it is a keynote. Save it for a conference. User groups get better when the speaker is still close to the work.</p>
+</div>
+</div>
+</section>
+<section id="first-90-days" class="level1">
+<h1>First 90 days</h1>
+<p>This is the part I would print.</p>
+<p><strong>Days 1 to 14</strong></p>
+<ul>
+<li>Write the one-sentence goal</li>
+<li>Ask four people to be the core group, including at least one person who does not share your primary language</li>
+<li>Pick a monthly day and a first venue (virtual counts)</li>
+<li>Create the RSVP page, the chat space, and an empty talks repo</li>
+<li>Draft the speaker invite and the newcomer welcome script (60 seconds is enough)</li>
+</ul>
+<p><strong>Days 15 to 45</strong></p>
+<ul>
+<li>Personally invite two speakers for month one and month two</li>
+<li>Prefer one lightning night in the first two meetings</li>
+<li>Host one casual social or a 30-minute virtual coffee so the first “real” meetup is not also the first hello</li>
+<li>Send a short note to a few local companies, a college, and one coworking space about hosting later</li>
+<li>Put the goal and the “all languages welcome” line in every public description</li>
+</ul>
+<p><strong>Days 46 to 90</strong></p>
+<ul>
+<li>Run two meetups on the same weekday</li>
+<li>Publish recaps and slides within a week</li>
+<li>Ship one newsletter, even if it is five links and a thank-you</li>
+<li>Lock speakers for months three and four</li>
+<li>Ask two newcomers what almost kept them from coming</li>
+<li>Stop. Do not add a hackathon, a conference, or a certification track yet</li>
+</ul>
+<p>If month two happens, you have a group. If month four happens without you heroically filling every slot, you have a community with a chance.</p>
+</section>
+<section id="learn-more" class="level1">
+<h1>Learn more</h1>
+<ul>
+<li><a href="https://posit.co/champions/community-building" target="_blank">Posit Champions: Community Building</a> - the guide this playbook leans on</li>
+<li><a href="https://www.linkedin.com/in/dcogburn" target="_blank">Derrick Cogburn on LinkedIn</a> - professor at American University, and the person who pushed me to write this as a polyglot template</li>
+<li><a href="https://posit.co/data-science-hangout/" target="_blank">Posit Data Science Hangout</a> - a weekly, welcoming Q&amp;A if you want to see a consistent community hour done well</li>
+<li><a href="https://www.meetup.com/socal-rug/" target="_blank">SoCal RUG on Meetup</a> - the regional R group I help run, useful as a cadence reference even if your group will not be R-specific</li>
+<li><a href="https://github.com/socalrug/presentations" target="_blank">SoCal RUG presentations</a> - a simple repo pattern for keeping talks findable</li>
+<li><a href="https://www.javierorracadeatcu.com/posts/2026-09-14-agentic-quarto-blog/" target="_blank">Agentic Quarto on this site</a> - the workflow I showed Derrick at <code>conf::rewind</code></li>
+</ul>
+<p>If you already have a language-specific meetup that is healthy, do not burn it down. Add a shared-dataset night. Invite a Python talk. Host a social with the local BI group. Polyglot can start as a habit inside a group that already works.</p>
+<hr>
+<p>I wrote this because the 80s party conversation felt unfinished until I had something Derrick, or you, could actually use. If you start a group and you find a sharper 90-day version, I want to hear it.</p>
+<p>Happy Tuesday, and happy coding!</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
+  <category>community</category>
+  <category>r</category>
+  <category>python</category>
+  <guid>https://www.javierorracadeatcu.com/posts/2026-09-15-start-a-data-science-user-group/</guid>
+  <pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://www.javierorracadeatcu.com/posts/2026-09-15-start-a-data-science-user-group/preview.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Agentic Quarto: Shipping a Personal Site with GitHub, Actions, and Grok Bot</title>
   <dc:creator>Javier Orraca-Deatcu</dc:creator>
@@ -1406,7 +1626,7 @@ font-style: inherit;">'https://apache.r-universe.dev'</span>)</span></code></pre
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
-<div class="cell">
+<div class="cell" data-python.reticulate="false">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Install full PyArrow w/ S3 and GCS support</span></span>
@@ -2478,10 +2698,10 @@ background-color: null;
 font-style: inherit;">get_transaction_history</span>())</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-[1] "2026-09-14 23:19:50.089362 : Borrowed The Great Gatsby"
+[1] "2026-09-16 00:53:34.202364 : Borrowed The Great Gatsby"
 
 [[2]]
-[1] "2026-09-14 23:19:50.091764 : Returned The Great Gatsby"</code></pre>
+[1] "2026-09-16 00:53:34.203816 : Returned The Great Gatsby"</code></pre>
 </div>
 </div>
 <p>In the above example:</p>
@@ -7405,51 +7625,6 @@ font-style: inherit;">"One Dark {rsthemes}"</span>)</span></code></pre></div></d
   <guid>https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/2021-01-19-rsthemes.html</guid>
   <pubDate>Tue, 19 Jan 2021 00:00:00 GMT</pubDate>
   <media:content url="https://www.javierorracadeatcu.com/posts/2021-01-19-rsthemes/images/rsthemes.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Preparing for 2021 Goals with a Raspberry Pi</title>
-  <dc:creator>Javier Orraca-Deatcu</dc:creator>
-  <link>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>Killing a few birds with one stone and getting ready for 2021… <br><br>1) Getting better at Linux / shell commands, <br> 2) Learning Julia (see my Resources tab for some great Julia starter links!), <br> 3) Doing it all on a Raspberry Pi 😜 Happy holidays and Happy New Years to all!</p>
-<p>Below are some pics of my current progress.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi1.jpg" class="img-fluid figure-img"></p>
-<figcaption>Raspberry Pi 4, Model B, 8GB RAM, &amp; Super Cute Tiny Heat Sinks</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi2.jpg" class="img-fluid figure-img"></p>
-<figcaption>Enclosing the Pi 4 in a CanaKit case + fan</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi3.jpg" class="img-fluid figure-img"></p>
-<figcaption>Raspberry Pi OS, a Debian distro for the Pi</figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi4.jpeg" class="img-fluid figure-img"></p>
-<figcaption>Jupyter Lab server on the Pi set up w/ Python, R, and Julia</figcaption>
-</figure>
-</div>
-
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section></div> ]]></description>
-  <category>linux</category>
-  <guid>https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/2020-12-31-Raspberry-Pi.html</guid>
-  <pubDate>Thu, 31 Dec 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://www.javierorracadeatcu.com/posts/2020-12-31-Raspberry-Pi/images/Pi-banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
