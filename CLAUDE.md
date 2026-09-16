@@ -10,11 +10,14 @@ Stack: Quarto + R -themes Flatly (light) / Darkly (dark)
 ## CRITICAL: What Claude May and May Not Touch
 
 ### Allowed
-- Create and edit files inside `/posts/` only
+- Create and edit files inside `/posts/`
+- Commit Quarto-generated `_site/posts/<slug>/` HTML for new drafts (full page
+  with the Draft banner). Do not hand-edit compiled HTML.
 
 ### Prohibited -never modify these
 - `_quarto.yml` -site config; editing breaks the build
-- `_site/` -compiled output; never edit directly
+- `_site/` -compiled output; never hand-edit HTML (committing Quarto-generated
+  `_site/posts/<slug>/` for drafts is required so Netlify can serve the URL)
 - `_freeze/` -cached computation; never edit directly
 - `_extensions/` -Quarto extensions
 - `index.qmd`, `about.qmd`, `blog.qmd`, `resources.qmd` -top-level pages
@@ -27,23 +30,29 @@ Stack: Quarto + R -themes Flatly (light) / Darkly (dark)
 ## Rendering
 
 GitHub Actions (`.github/workflows/quarto-render.yml`) renders the site on
-pull requests and on pushes to `main`. Published posts use `freeze: auto`
-from `posts/_metadata.yml` with committed `_freeze/` (Quarto re-knits when
-source changes; `freeze: true` never re-knits on a project render). Drafts
-should set `freeze: false` until published so they always re-knit on project
-render. CI can evaluate R when freeze is missing, stale, or a draft forces
-execution. The workflow uploads a `_site` artifact but does not deploy.
-Netlify still serves the live site from the committed `_site/` directory, so
-commit regenerated `_site/` until a Netlify cutover.
+pull requests and on pushes to `main`. Posts inherit `freeze: auto` from
+`posts/_metadata.yml` with committed `_freeze/` (Quarto re-knits when source
+changes; `freeze: true` never re-knits on a project render). Do not set
+`freeze: false` on drafts; freeze only controls knitr, not whether HTML is
+emitted. CI can evaluate R when freeze is missing or stale. The workflow
+uploads a `_site` artifact but does not deploy.
+
+`website.draft-mode: unlinked` in `_quarto.yml` is required. Quarto 1.10
+renders `draft: true` posts as full HTML with a Draft banner (`#quarto-draft-alert`)
+and keeps them out of nav/listings/search/sitemap. Netlify still serves the
+live site from the committed `_site/` directory, so a draft PR **must**
+include `_site/posts/<slug>/index.html` (full page, not empty) or the
+production URL 404s. GitHub Actions does not publish.
 
 Local `quarto::quarto_render(as_job = FALSE)` is still how Javier drafts and
 refreshes freeze. **Do not run a full `quarto render` unless Javier asks.**
 
 When a post draft is complete, tell the user:
 > "Draft created at `posts/YYYY-MM-DD-slug/index.qmd`. Add a preview image,
-> review the content, remove `draft: true` and `freeze: false` when ready,
-> then push; CI will render. Commit updated `_site/` so Netlify shows the
-> draft. Local render remains optional for freeze or eval."
+> review the content, and keep `draft: true` (freeze inherits `auto`). The
+> draft PR must include rendered `_site/posts/<slug>/` HTML with Quarto's
+> Draft banner; Netlify deploys committed `_site/`, not the Actions artifact.
+> Remove `draft: true` when ready to publish."
 
 ---
 

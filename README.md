@@ -2,7 +2,7 @@
 
 Every few years, I like to update my personal data science website using bleeding-edge web frameworks. Several years back, I built my first data science blog using the R Markdown + [blogdown](https://bookdown.org/yihui/blogdown/) framework, then I ported it to the R Markdown + [distill](https://rstudio.github.io/distill/) framework, and this latest iteration of my site is built with Quarto.
 
-I draft locally with `quarto::quarto_render(as_job = FALSE)` so I can preview posts and refresh `_freeze/`. GitHub Actions also renders on pull requests and on pushes to `main`. Published posts inherit `freeze: auto`; drafts set `freeze: false` so they re-knit on project render. The live site is still served by Netlify from the committed `_site/` directory; Actions uploads a `_site` artifact but does not deploy.
+I draft locally with `quarto::quarto_render(as_job = FALSE)` so I can preview posts and refresh `_freeze/`. GitHub Actions also renders on pull requests and on pushes to `main`. Posts inherit `freeze: auto` from `posts/_metadata.yml` (including drafts; freeze only controls code execution). `_quarto.yml` sets `website.draft-mode: unlinked`, so a `draft: true` post is rendered with Quarto's Draft banner and kept off the Blog listing, search, and sitemap, but the live URL still 404s unless the rendered HTML is committed under `_site/posts/<slug>/`. Netlify serves that committed `_site/` directory; Actions uploads a `_site` artifact but does not deploy.
 
 # About Quarto
 

@@ -15,20 +15,31 @@ date: MM-DD-YYYY
 categories: [tag1, tag2, tag3]
 image: preview.jpg
 draft: true
-freeze: false
 ---
 ```
 
 Rules:
 - `draft: true` on every new post -the user removes it before publishing
-- `freeze: false` on drafts so they always re-knit on project render; drop it when publishing so the post inherits `freeze: auto`
+- Do **not** set `freeze: false` on drafts. Freeze inherits `auto` from `_metadata.yml`. Freeze only controls whether knitr re-runs, not whether the HTML file is written.
 - Date format: `MM-DD-YYYY` (e.g., `03-14-2026`)
 - Categories: lowercase, hyphens for multi-word tags
 - `image` must match an actual file in the post folder
 
 **Fields inherited from `_metadata.yml` -do NOT include in post front matter:**
-`author`, `license`, `toc`, `toc-title`, `toc-location`, `execute`
-(`freeze` is inherited as `auto` for published posts; drafts override with `freeze: false`)
+`author`, `license`, `toc`, `toc-title`, `toc-location`, `execute`, `freeze`
+(`freeze: auto` applies to drafts and published posts)
+
+**Netlify deploy (required for a live draft URL):**
+This site uses Quarto `website.draft-mode: unlinked`. A `draft: true` post is
+rendered as a full page with Quarto's Draft banner (`#quarto-draft-alert`,
+Bootstrap `alert alert-warning`, text "Draft") and is kept off the Blog
+listing, search, and sitemap. GitHub Actions `quarto render` only uploads an
+artifact; it does **not** publish. Netlify serves committed `_site/`.
+
+A draft PR **must** include `_site/posts/<slug>/index.html` (full HTML with
+the Draft banner, not an empty page). Missing that file 404s
+`https://www.javierorracadeatcu.com/posts/<slug>/` (this is what happened in
+PR #41). Do not hand-edit the compiled HTML; commit Quarto's output.
 
 ---
 
@@ -156,9 +167,9 @@ image line whenever creating a new post:
 
 Before finishing any draft, verify:
 
-- [ ] YAML has `draft: true` and `freeze: false`
+- [ ] YAML has `draft: true` (do not set `freeze: false`; inherit `auto`)
 - [ ] Date is `MM-DD-YYYY` format
-- [ ] Inherited fields (`author`, `license`, etc.) not duplicated in YAML
+- [ ] Inherited fields (`author`, `license`, `freeze`, etc.) not duplicated in YAML
 - [ ] Image placeholder comment present; `![](preview.jpg){.preview-image}` on line after
 - [ ] H1 hook header differs from YAML title
 - [ ] Opening paragraph is personal and explains why this matters
@@ -168,4 +179,6 @@ Before finishing any draft, verify:
 - [ ] Source URL credited with a link
 - [ ] Closing is warm (ends with "happy coding!" or similar)
 - [ ] Categories are lowercase, from known list where possible
-- [ ] No files created or modified outside `posts/YYYY-MM-DD-slug/`
+- [ ] Draft PR includes `_site/posts/<slug>/index.html` with Quarto's Draft banner
+- [ ] Draft does not appear as a card on `_site/blog.html`
+- [ ] No files created or modified outside `posts/YYYY-MM-DD-slug/` except the generated `_site/posts/<slug>/` HTML
