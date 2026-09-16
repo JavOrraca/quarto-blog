@@ -2,13 +2,18 @@
 #
 # Freeze: posts/_metadata.yml has freeze: auto and _freeze/ is committed, so a
 # project-wide `quarto render` reuses frozen computations unless source changed.
-# Drafts set freeze: false so they always re-knit. R is still installed so knitr
-# can run when freeze is missing, stale, or a draft forces execution (do not
+# Drafts inherit freeze: auto (do not set freeze: false just because a post is
+# a draft). freeze only controls knitr execution, not whether HTML is emitted.
+# R is still installed so knitr can run when freeze is missing or stale (do not
 # invent renv; this repo has no lockfile).
 #
-# Deploy: this workflow does not publish to Netlify. The live site is still
-# git-backed and serves the committed _site/ directory. Do not gitignore or
-# delete _site/ until Netlify is rewired (see the PR that added this file).
+# Drafts: website.draft-mode is unlinked in _quarto.yml. Quarto 1.10 still
+# writes full HTML plus the Draft banner for draft: true posts; they stay out
+# of listings/search/sitemap. Netlify serves committed _site/, so a draft PR
+# must include `_site/posts/<slug>/` (this workflow does not deploy).
+#
+# Deploy: this workflow uploads a _site artifact but does not publish to
+# Netlify. Do not gitignore or delete _site/ until Netlify is rewired.
 
 name: Quarto Render
 
@@ -33,6 +38,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
+
+      - name: Self-test draft post checker
+        run: python3 scripts/check-draft-posts.py --self-test
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -88,6 +96,12 @@ jobs:
         run: |
           test -f _site/index.html
           grep -q 'quarto-1.10.18' _site/index.html
+
+      # Quarto unlinked drafts are rendered (banner) but not listed. Netlify
+      # still deploys only committed _site/, so missing git-tracked HTML 404s
+      # the live URL (PR #41). This check fails in that case.
+      - name: Check draft posts are rendered, committed, and unlinked
+        run: python3 scripts/check-draft-posts.py
 
       - name: Upload rendered site
         uses: actions/upload-artifact@v4
