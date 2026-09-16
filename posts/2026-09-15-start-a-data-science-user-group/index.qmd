@@ -4,8 +4,6 @@ description: "A reusable template for a polyglot data science community: cadence
 date: 09-15-2026
 categories: [community, r, python]
 image: preview.jpg
-draft: true
-freeze: false
 ---
 
 ![](preview.jpg){.preview-image}
