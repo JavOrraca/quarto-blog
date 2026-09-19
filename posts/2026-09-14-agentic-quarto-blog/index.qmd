@@ -230,6 +230,12 @@ My interest is selfish. A faster render and better editor diagnostics would make
 
 Nothing in this post depends on Quarto 2. The shipping loop should survive a major version, the same way it survived blogdown to distill to Quarto 1.
 
+# A template if you want the outer loop
+
+If you want to copy this shipping loop without starting from a blank repo, start from my [Quarto Grok Bot](https://x.ai/bot/05wMUj_-QOR1l3f2bbXxA){target="_blank"} public template. It is built for the same pattern: draft a post, open a PR via a coding agent, let Actions render, then publish the already-rendered `_site` to Netlify.
+
+Gitignore `/_site/`. Keep freeze committed when knitr actually re-ran. Leave `draft: true` until a human undrafts. The template is polyglot-friendly: R and `renv` are optional, not required. It is Netlify-first, with room for an equivalent host if that is what you already run.
+
 # Learn More
 
 - [Quarto](https://quarto.org/){target="_blank"} - the publishing system this site is built on
@@ -240,6 +246,7 @@ Nothing in this post depends on Quarto 2. The shipping loop should survive a maj
 - [r-lib/actions](https://github.com/r-lib/actions){target="_blank"} - GitHub Actions for R, including `setup-r` and `setup-renv`
 - [What's next: Quarto 2](https://opensource.posit.co/blog/2026-04-06_whats-next-quarto-2/){target="_blank"} - Carlos Scheidegger on the Rust rewrite and the collaborative editor bet
 - [JavOrraca/quarto-blog](https://github.com/JavOrraca/quarto-blog){target="_blank"} - the git-backed source for Data Science Bytes
+- [Quarto Grok Bot template](https://x.ai/bot/05wMUj_-QOR1l3f2bbXxA){target="_blank"} - a shareable starting point for the agentic Quarto shipping loop
 - [Cursor](https://cursor.com/){target="_blank"} - Cloud Agents, skills, and the Pro seat that includes Grok Bot
 
 If you want the outer-loop framing in more detail, Matt Palmer's [Grok Bot 101](https://x.ai/bot/guides/grok-bot-101){target="_blank"} is the piece I keep sending people.
