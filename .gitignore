@@ -40,6 +40,7 @@ vignettes/*.pdf
 # macOS files
 .DS_Store
 /.quarto/
+/_site/
 
 # Large Parquet files
 /data/

@@ -1,0 +1,6 @@
+# Publishing destination for `quarto publish netlify` / quarto-actions/publish.
+# Site API ID from Netlify (sweet-froyo-4f5490 → https://www.javierorracadeatcu.com).
+- source: project
+  netlify:
+    - id: "748571a3-27b8-4bee-85d9-2f49a33bb809"
+      url: "https://www.javierorracadeatcu.com"
