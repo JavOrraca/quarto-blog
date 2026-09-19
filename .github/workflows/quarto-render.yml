@@ -1,21 +1,24 @@
-# Render the Quarto site on PRs and on pushes to main.
+# Render the Quarto site on PRs and on pushes to main; publish to Netlify from main.
 #
 # Freeze: posts/_metadata.yml has freeze: auto and _freeze/ is committed, so a
 # project-wide `quarto render` reuses frozen computations unless source changed.
 # Drafts inherit freeze: auto (do not set freeze: false just because a post is
 # a draft). freeze only controls knitr execution, not whether HTML is emitted.
-# R is still installed so knitr can run when freeze is missing or stale (do not
-# invent renv; this repo has no lockfile).
+# R 4.6.1 + renv.lock (r-lib/actions/setup-renv) restore knitr when freeze is
+# missing or stale.
 #
 # Drafts: website.draft-mode is unlinked in _quarto.yml. Quarto 1.10 still
 # writes full HTML plus the Draft banner for draft: true posts; they stay out
-# of listings/search/sitemap. Netlify serves committed _site/, so a draft PR
-# must include `_site/posts/<slug>/` (this workflow does not deploy).
+# of listings/search/sitemap. After render, scripts/check-draft-posts.py
+# verifies Draft-banner HTML in the rendered `_site` (not git-tracked HTML).
 #
-# Deploy: this workflow uploads a _site artifact but does not publish to
-# Netlify. Do not gitignore or delete _site/ until Netlify is rewired.
+# Deploy: `_site/` is gitignored. GitHub Actions publishes to Netlify on push
+# to main and workflow_dispatch (from main) via quarto-dev/quarto-actions/publish@v2
+# with render: false, so inject-og-meta.py (project.post-render) and the draft
+# checks apply to the `_site` that gets published. PRs render, check, and
+# upload a `_site` artifact; they do not publish.
 
-name: Quarto Render
+name: Quarto Render and Publish
 
 on:
   pull_request:
@@ -58,26 +61,13 @@ jobs:
           r-version: "4.6.1"
           use-public-rspm: true
 
-      # No renv.lock / DESCRIPTION in this repo. Install knitr + rmarkdown
-      # (Quarto's knitr engine) and packages from posts whose R chunks are
-      # eval: true or default-eval (would run if freeze misses):
-      #   tidymodels — posts/2025-09-16-posit-conf-workshop
-      #   probably, sodium — posts/2023-01-15-r-goodies-for-2023
-      #   R6 — posts/2023-11-23-oop-with-r (also uses purrr via tidymodels)
-      # knitr's {python} engine loads reticulate even when eval: false unless
-      # the chunk sets python.reticulate: false (arrow-and-duckdb-talk).
-      - name: Install R packages
-        uses: r-lib/actions/setup-r-dependencies@v2
+      - name: Install system libraries
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libsodium-dev
+
+      - name: Install R dependencies from renv.lock
+        uses: r-lib/actions/setup-renv@v2
         with:
-          install-quarto: false
-          install-pandoc: false
-          packages: |
-            any::knitr
-            any::rmarkdown
-            any::tidymodels
-            any::probably
-            any::sodium
-            any::R6
+          cache-version: 1
 
       - name: Render site
         run: quarto render
@@ -97,10 +87,9 @@ jobs:
           test -f _site/index.html
           grep -q 'quarto-1.10.18' _site/index.html
 
-      # Quarto unlinked drafts are rendered (banner) but not listed. Netlify
-      # still deploys only committed _site/, so missing git-tracked HTML 404s
-      # the live URL (PR #41). This check fails in that case.
-      - name: Check draft posts are rendered, committed, and unlinked
+      # Unlinked drafts must render with the Draft banner and stay off the Blog
+      # listing. `_site/` is not git-tracked; CI publishes the rendered output.
+      - name: Check draft posts are rendered and unlinked
         run: python3 scripts/check-draft-posts.py
 
       - name: Upload rendered site
@@ -110,3 +99,14 @@ jobs:
           path: _site
           if-no-files-found: error
           retention-days: 7
+
+      # quarto-actions/publish@v2 with render != true runs
+      # `quarto publish netlify --no-render --no-browser`, so this uploads the
+      # `_site` we just rendered (OG post-render + draft checks included).
+      - name: Publish to Netlify
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: netlify
+          render: false
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

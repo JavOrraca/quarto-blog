@@ -1,0 +1,6 @@
+# Skip git-triggered Netlify builds. GitHub Actions publishes the rendered
+# `_site` with `quarto publish netlify` (see .github/workflows/quarto-render.yml).
+# Without this, removing `_site/` from git would blank production on merge
+# before the Actions publish step finishes.
+[build]
+  ignore = "exit 0"

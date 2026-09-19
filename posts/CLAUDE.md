@@ -29,17 +29,16 @@ Rules:
 `author`, `license`, `toc`, `toc-title`, `toc-location`, `execute`, `freeze`
 (`freeze: auto` applies to drafts and published posts)
 
-**Netlify deploy (required for a live draft URL):**
+**Draft render and deploy:**
 This site uses Quarto `website.draft-mode: unlinked`. A `draft: true` post is
 rendered as a full page with Quarto's Draft banner (`#quarto-draft-alert`,
 Bootstrap `alert alert-warning`, text "Draft") and is kept off the Blog
-listing, search, and sitemap. GitHub Actions `quarto render` only uploads an
-artifact; it does **not** publish. Netlify serves committed `_site/`.
-
-A draft PR **must** include `_site/posts/<slug>/index.html` (full HTML with
-the Draft banner, not an empty page). Missing that file 404s
-`https://www.javierorracadeatcu.com/posts/<slug>/` (this is what happened in
-PR #41). Do not hand-edit the compiled HTML; commit Quarto's output.
+listing, search, and sitemap. `_site/` is gitignored. PR CI runs
+`quarto render` and `scripts/check-draft-posts.py` against the rendered HTML
+(Draft banner present; not a Blog listing card). Merge to `main` publishes
+that rendered `_site` to Netlify via GitHub Actions. Do not commit `_site/`
+and do not hand-edit compiled HTML. The live draft URL is served after CI
+publish on `main`, not from git-tracked HTML (the old PR #41 failure mode).
 
 ---
 
@@ -179,6 +178,6 @@ Before finishing any draft, verify:
 - [ ] Source URL credited with a link
 - [ ] Closing is warm (ends with "happy coding!" or similar)
 - [ ] Categories are lowercase, from known list where possible
-- [ ] Draft PR includes `_site/posts/<slug>/index.html` with Quarto's Draft banner
+- [ ] After render, `_site/posts/<slug>/index.html` has Quarto's Draft banner (do not commit `_site/`)
 - [ ] Draft does not appear as a card on `_site/blog.html`
-- [ ] No files created or modified outside `posts/YYYY-MM-DD-slug/` except the generated `_site/posts/<slug>/` HTML
+- [ ] No files created or modified outside `posts/YYYY-MM-DD-slug/` (commit `_freeze/` only if knitr re-ran)

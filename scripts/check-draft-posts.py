@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Fail CI if draft posts are missing committed Draft-banner HTML or appear in listings.
+"""Fail CI if draft posts are missing rendered Draft-banner HTML or appear in listings.
 
-Netlify serves the committed `_site/` directory. GitHub Actions `quarto render`
-uploads an artifact but does not deploy. Quarto 1.10 with `website.draft-mode:
-unlinked` still writes full HTML for `draft: true` posts, including the Draft
-banner from `format-html.ts`:
+GitHub Actions `quarto render`s the site; `website.draft-mode: unlinked` in
+`_quarto.yml` still writes full HTML for `draft: true` posts, including the
+Draft banner from `format-html.ts`:
 
   <meta name="quarto:status" content="draft">
   <div id="quarto-draft-alert" class="alert alert-warning">
     <i class="bi bi-pencil-square"></i>Draft
   </div>
 
-Those pages must be committed under `_site/posts/<slug>/` or the live URL 404s
-(as in PR #41). Unlinked drafts must not appear as Blog listing cards.
+`_site/` is gitignored. After render, each draft must have that banner HTML
+on disk and must not appear as a Blog listing card. Netlify is published from
+CI on main, not from git-tracked HTML.
 
 Usage:
   python3 scripts/check-draft-posts.py
@@ -106,28 +106,6 @@ def banner_ok(html: str) -> tuple[bool, str]:
     return True, "ok"
 
 
-def git_ls_files(root: Path, rel: str) -> bool:
-    result = subprocess.run(
-        ["git", "ls-files", "--error-unmatch", rel],
-        cwd=root,
-        capture_output=True,
-        text=True,
-    )
-    return result.returncode == 0
-
-
-def git_show_head(root: Path, rel: str) -> str | None:
-    result = subprocess.run(
-        ["git", "show", f"HEAD:{rel}"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-    )
-    if result.returncode != 0:
-        return None
-    return result.stdout
-
-
 def listing_card_hrefs(blog_html: str) -> list[str]:
     hrefs = []
     for raw in LISTING_TITLE_HREF_RE.findall(blog_html):
@@ -177,8 +155,8 @@ def check_repo(root: Path) -> list[str]:
         if not html_path.is_file():
             errors.append(
                 f"{qmd_rel}: rendered HTML missing at {rel}. "
-                "With draft-mode: unlinked, quarto render must emit a full page. "
-                "Commit `_site/posts/<slug>/` so Netlify can serve the live URL."
+                "With draft-mode: unlinked, quarto render must emit a full page "
+                "with the Draft banner (CI publishes `_site`; do not commit it)."
             )
             continue
 
@@ -189,25 +167,6 @@ def check_repo(root: Path) -> list[str]:
                 f"{qmd_rel}: {rel} is not a full unlinked draft page ({reason}). "
                 "Empty HTML means draft-mode: gone, not unlinked."
             )
-
-        if not git_ls_files(root, rel):
-            errors.append(
-                f"{qmd_rel}: {rel} is not committed. Netlify deploys git-backed "
-                "`_site/`, not the Actions artifact, so the live URL will 404 "
-                "(this is the PR #41 failure)."
-            )
-        else:
-            committed = git_show_head(root, rel)
-            if committed is None:
-                errors.append(f"{qmd_rel}: git show HEAD:{rel} failed")
-            else:
-                ok, reason = banner_ok(committed)
-                if not ok:
-                    errors.append(
-                        f"{qmd_rel}: committed {rel} is what Netlify serves and "
-                        f"is missing the Draft banner ({reason}). Re-render and "
-                        "commit the full HTML."
-                    )
 
         if slug in listing_hrefs:
             errors.append(
@@ -229,7 +188,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--self-test",
         action="store_true",
-        help="Run fixture tests (includes a PR #41 missing-_site case)",
+        help="Run fixture tests (rendered Draft banner, unlinked listing)",
     )
     args = parser.parse_args(argv)
     if args.self_test:
@@ -305,8 +264,8 @@ class DraftCheckTests(unittest.TestCase):
         )
         self.assertEqual(check_repo(root), [])
 
-    def test_pr41_missing_committed_html_fails(self) -> None:
-        # Source is committed; render produced HTML on disk; _site was not git-added.
+    def test_rendered_html_need_not_be_git_tracked(self) -> None:
+        # Source is committed; render produced HTML on disk; _site is gitignored.
         root = self._repo(
             {
                 "_quarto.yml": "website:\n  draft-mode: unlinked\n",
@@ -321,8 +280,22 @@ class DraftCheckTests(unittest.TestCase):
         rendered = root / "_site/posts/2026-09-15-example-draft/index.html"
         rendered.parent.mkdir(parents=True, exist_ok=True)
         rendered.write_text(SAMPLE_BANNER, encoding="utf-8")
+        self.assertEqual(check_repo(root), [])
+
+    def test_missing_rendered_html_fails(self) -> None:
+        root = self._repo(
+            {
+                "_quarto.yml": "website:\n  draft-mode: unlinked\n",
+                "posts/2026-09-15-example-draft/index.qmd": (
+                    "---\ntitle: Example\ndraft: true\n---\n\nHello\n"
+                ),
+                "_site/blog.html": (
+                    '<div class="list quarto-listing-default"></div>\n'
+                ),
+            }
+        )
         errors = check_repo(root)
-        self.assertTrue(any("not committed" in e for e in errors), errors)
+        self.assertTrue(any("rendered HTML missing" in e for e in errors), errors)
 
     def test_empty_html_without_banner_fails(self) -> None:
         root = self._repo(
