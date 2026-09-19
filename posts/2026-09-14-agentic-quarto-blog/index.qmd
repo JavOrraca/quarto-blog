@@ -37,25 +37,26 @@ If you are choosing a stack in 2026, I would start here even if you never touch 
 
 The live site is [Data Science Bytes](https://www.javierorracadeatcu.com){target="_blank"}. The source lives at [JavOrraca/quarto-blog](https://github.com/JavOrraca/quarto-blog){target="_blank"}. That repo is the whole system: posts, `_freeze/`, theme, `renv.lock`, and the Actions workflow.
 
-I need to be honest about how we got here. I first shipped this loop by committing the rendered `_site/` directory and letting Netlify serve that HTML from git. Actions rendered on pull requests and on `main`, then uploaded an artifact. It did **not** publish.
+The pattern I would copy tomorrow is the one this repo uses:
 
-A green CI run was not a live update. That got posts out the door. It was also a split brain: agents (and I) had to remember to commit HTML, or readers saw a stale site.
-
-That phase was a stepping stone. I do not recommend it now.
-
-The pattern I would copy tomorrow is the one this repo uses: commit source and `_freeze/`, gitignore `/_site/`, let GitHub Actions render, and let Actions publish that already-rendered `_site` to Netlify.
+- Commit `.qmd` source and `_freeze/`
+- Gitignore `/_site/`
+- Pin Quarto **1.10.18** and R **4.6.1** in GitHub Actions; restore packages from `renv.lock`
+- On pull requests: render, check drafts, upload a `_site` artifact. Do not publish.
+- On `main`: the same render, then publish that already-rendered `_site` to Netlify
+- Stop Netlify's own builds so production comes from Actions, not Netlify's build bot
 
 It matches the [Quarto CI continuum](https://quarto.org/docs/publishing/ci.html){target="_blank"} (local execution, freeze, CI render and publish) and the [Posit / Quarto Netlify guidance](https://quarto.org/docs/publishing/netlify.html){target="_blank"}: commit `_freeze/`, gitignore `_site/`, publish from Actions.
 
-The render pin is Quarto **1.10.18**. The workflow uses [`quarto-dev/quarto-actions`](https://github.com/quarto-dev/quarto-actions){target="_blank"} to install that version and [`r-lib/actions`](https://github.com/r-lib/actions){target="_blank"} to set up R 4.6.1. Packages come from `renv.lock` via `r-lib/actions/setup-renv@v2`. There is no hand-maintained install list in the YAML.
+The workflow uses [`quarto-dev/quarto-actions`](https://github.com/quarto-dev/quarto-actions){target="_blank"} to install the pinned Quarto version and [`r-lib/actions`](https://github.com/r-lib/actions){target="_blank"} to set up R. Packages come from `renv.lock` via `r-lib/actions/setup-renv@v2`. There is no hand-maintained install list in the YAML.
 
-The workflow is named **Quarto Render and Publish**. On pull requests it renders, runs `scripts/check-draft-posts.py` against the rendered output, and uploads a `_site` artifact. It does not publish.
+The workflow is named **Quarto Render and Publish**. On pull requests it renders, runs `scripts/check-draft-posts.py` against the rendered output, and uploads a `_site` artifact.
 
-On a push to `main`, or `workflow_dispatch` from `main`, the same render and checks run, then [`quarto-dev/quarto-actions/publish@v2`](https://github.com/quarto-dev/quarto-actions){target="_blank"} publishes to Netlify with `target: netlify` and `render: false`.
+On a push to `main`, or `workflow_dispatch` from `main`, the same render and checks run, then [`quarto-dev/quarto-actions/publish@v2`](https://github.com/quarto-dev/quarto-actions){target="_blank"} publishes to Netlify with `target: netlify` and `render: false`. The token is `NETLIFY_AUTH_TOKEN`.
 
 That last flag matters. `scripts/inject-og-meta.py` is a project post-render, so we publish the `_site` we already built, not a second render that would skip those tags.
 
-`_publish.yml` points at the Netlify site for [https://www.javierorracadeatcu.com](https://www.javierorracadeatcu.com){target="_blank"}. `netlify.toml` ignores git-triggered Netlify builds. In the Netlify UI, Build status should be **Stopped builds** so production comes from Actions, not Netlify's build bot.
+`_publish.yml` points at the Netlify site for [https://www.javierorracadeatcu.com](https://www.javierorracadeatcu.com){target="_blank"}. `netlify.toml` ignores git-triggered Netlify builds (`ignore = "exit 0"`). In the Netlify UI, Build status should be **Stopped builds**.
 
 A shortened version of the job looks like this:
 
@@ -85,18 +86,22 @@ jobs:
       # PRs stop after render + draft checks + artifact.
       # Publish only from main (push or workflow_dispatch).
       - uses: quarto-dev/quarto-actions/publish@v2
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         with:
           target: netlify
           render: false
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 ```
 
-The pull request is still the human gate. Agents can open the PR. I still read the diff, check the preview image, and decide whether `draft: true` comes off. CI on the PR tells me the site renders. Merge to `main` is what publishes.
+The pull request is the human gate. Agents can open the PR. I still read the diff, check the preview image, and decide whether `draft: true` comes off. CI on the PR tells me the site renders. Merge to `main` is what publishes.
 
-Posts inherit `freeze: auto` from `posts/_metadata.yml`, including drafts. `_freeze/` is committed. Do not set `freeze: false` on a draft. Freeze only controls whether knitr re-runs, not whether HTML is written. Local `quarto::quarto_render(as_job = FALSE)` is still how I refresh freeze when I draft by hand.
+Posts inherit `freeze: auto` from `posts/_metadata.yml`, including drafts. `_freeze/` is committed. Do not set `freeze: false` on a draft. Freeze only controls whether knitr re-runs, not whether HTML is written.
 
-This site uses Quarto `website.draft-mode: unlinked`. A `draft: true` post still gets a live URL with Quarto's Draft banner (`#quarto-draft-alert`) after CI publishes `main`. It stays off the Blog listing, search, and sitemap. CI verifies that banner in the rendered `_site`, not in git-tracked HTML.
+Local `quarto::quarto_render(as_job = FALSE)` is still how I refresh freeze when I draft by hand.
+
+This site uses Quarto `website.draft-mode: unlinked`. A `draft: true` post still gets a live URL with Quarto's Draft banner (`#quarto-draft-alert`) after CI publishes `main`. It stays off the Blog listing, search, and sitemap.
+
+CI verifies that banner in the rendered `_site`. `_site/` is gitignored.
 
 # What "agentic" means here: harness, orchestrator, tools
 
@@ -121,7 +126,9 @@ The coordinator does not merge. The specialist does not deploy. The cloud agent 
 
 # Voice of Javier, and the Quarto-specific guide
 
-The easiest way to get a bad draft is to ask a general model to "write like me" with no artifacts. My fix is a shared **Voice of Javier** skill. It is a portable playbook: first person, no emoji, no em dashes, short paragraphs, soft hedging, practitioner-first, warm closing. Cloud agents can use it because skills sync. Grok Bot can invoke it the same way.
+The easiest way to get a bad draft is to ask a general model to "write like me" with no artifacts. My fix is a shared **Voice of Javier** skill. It is a portable playbook: first person, no emoji, no em dashes, short paragraphs, practitioner-first, warm closing, concrete claims instead of sincerity filler.
+
+Cloud agents can use it because skills sync. Grok Bot can invoke it the same way.
 
 That skill is about *how it sounds*. It is not about how this repo is laid out.
 
@@ -164,31 +171,27 @@ The important part is which person is in which step. Agents are great at 2 and 3
 
 I would rather ship a slightly late post than let an agent undraft something I have not sat with.
 
-# A real week: Actions, a DuckDB refresh, and why we stopped committing `_site`
+# A real week: Actions, freeze, and a DuckDB refresh
 
-This is not a hypothetical architecture. It is the loop that landed, and then got corrected.
+This is the loop on a week I actually used it.
 
-First the [Actions workflow](https://github.com/JavOrraca/quarto-blog/blob/main/.github/workflows/quarto-render.yml){target="_blank"}. Pin Quarto, set up R, render, upload the artifact. At first the YAML even said out loud that the job does not deploy.
-
-That PR was the foundation. Without it, every agent-rendered site is a local snowflake.
+First the [Actions workflow](https://github.com/JavOrraca/quarto-blog/blob/main/.github/workflows/quarto-render.yml){target="_blank"}. Pin Quarto, restore R from `renv.lock`, render, check drafts, publish from `main`. Without that job, every agent-rendered site is a local snowflake.
 
 Then the docs pass: when to render locally, when freeze is `auto`, why a draft should not set `freeze: false`. Agents need that in the repo, not in a chat I already closed.
 
-Then the DuckDB work. I had a Quack draft that needed to catch [ducklake](https://tgerke.github.io/ducklake-r/){target="_blank"} at 1.5.5 and the DuckDB 2.0 story. Cloud agents refreshed the post, fixed freeze, and then published it into the listings. You can read the result as [One DuckDB, Many Analysts](https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/){target="_blank"}. The technical content is mine. The shipping muscle was the new loop.
+Then the DuckDB work. I had a Quack draft that needed to catch [ducklake](https://tgerke.github.io/ducklake-r/){target="_blank"} at 1.5.5 and the DuckDB 2.0 story. Cloud agents refreshed the post, fixed freeze, and opened the PR.
 
-The lesson I almost had to learn twice is `_site/`. While Netlify still served committed HTML, CI could be green and the live site could be stale.
-
-If you only merged the `.qmd` and forgot to commit the regenerated site, readers did not see the post. If you gitignored `_site/` before you rewired the host, you went dark.
-
-We hit that footgun. Then we cut over: `_site/` left git, `renv.lock` became the package source of truth, Actions became the publisher, and agents no longer need to commit HTML. That is the pattern I want someone to copy tomorrow.
+You can read the result as [One DuckDB, Many Analysts](https://www.javierorracadeatcu.com/posts/2026-09-14-duckdb-quacks/){target="_blank"}. The technical content is mine. The shipping muscle was the loop: undraft, merge, CI publishes.
 
 # Pitfalls I would budget for
 
 A few of these bit me. The rest I have watched other people hit.
 
-**This site publishes from CI. The remaining footguns are credentials, the host, and freeze.** Forget `NETLIFY_AUTH_TOKEN` and `main` renders a beautiful artifact that never leaves GitHub.
+**Credentials, the host, and freeze.** Forget `NETLIFY_AUTH_TOKEN` and `main` renders a beautiful artifact that never leaves GitHub.
 
-Leave Netlify on Active builds after you gitignore `_site/` and a git-triggered build can blank production before Actions finishes. Forget to commit `_freeze/` after knitr actually re-ran and CI will try to re-execute code it may not be ready for.
+Leave Netlify on Active builds and a git-triggered build can blank production before Actions finishes. Stop Netlify builds, and keep `ignore = "exit 0"` in `netlify.toml`.
+
+Forget to commit `_freeze/` after knitr actually re-ran and CI will try to re-execute code it may not be ready for.
 
 **Freeze looks like a cache bug when it is a policy bug.** `freeze: true` never re-knits on a project render. `auto` re-knits when source changes. Drafts inherit `auto`. Do not set `freeze: false` just because a post is a draft. If an agent "helpfully" copies freeze from a neighbor post, you will debug the wrong layer.
 
@@ -215,7 +218,7 @@ It is a good fit if you:
 
 It is a weaker fit if you need a CMS with non-technical editors, or if you want fully automatic publishing. I would not point a student at Grok Bot before they can render a Quarto project locally. The agents make a working loop faster. They do not replace knowing what a pull request is.
 
-If you are an R user still on a 2019 blogdown site, start with Quarto and GitHub. Add CI that publishes `_site` from Actions before you add bots. Do not start by committing HTML.
+If you are an R user still on a 2019 blogdown site, start with Quarto and GitHub. Gitignore `/_site/` from day one. Add CI that publishes from Actions before you add bots.
 
 # posit::conf(2026), and why I am watching Quarto 2
 
@@ -225,7 +228,7 @@ I am also watching [What's next: Quarto 2](https://opensource.posit.co/blog/2026
 
 My interest is selfish. A faster render and better editor diagnostics would make the CI loop nicer. Collaborative editing might matter more for workshop notes than for this blog. I would rather keep my source in `.qmd` files that a future CLI can still read.
 
-Nothing in this post depends on Quarto 2. That is the point. The shipping loop should survive a major version, the same way it survived blogdown to distill to Quarto 1.
+Nothing in this post depends on Quarto 2. The shipping loop should survive a major version, the same way it survived blogdown to distill to Quarto 1.
 
 # Learn More
 
@@ -243,7 +246,7 @@ If you want the outer-loop framing in more detail, Matt Palmer's [Grok Bot 101](
 
 ---
 
-This draft was prepared by the Grok Bot setup I described: a coordinator, a voice skill, repo guides, and a Cursor cloud agent that opened the pull request. I still read every paragraph. Human-in-the-loop is not a slogan here. It is the merge button.
+This post was prepared by the Grok Bot setup I described: a coordinator, a voice skill, repo guides, and a Cursor cloud agent that opened the pull request. I still read every paragraph. The merge button stays mine.
 
 If you try a version of this and you find a sharper split between skills and repo guides, I would like to hear it. The stack should stay boring. The posts should not.
 
