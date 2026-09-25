@@ -15,9 +15,25 @@ draft: true
 
 I learned these calibration methods at the advanced tidymodels workshop [Max Kuhn](https://max-kuhn.org/){target="_blank"} and [Emil Hvitfeldt](https://emilhvitfeldt.com/){target="_blank"} taught at posit::conf 2025. I came to tidymodels early from caret, and I still see pipelines that stop once [`brier_class()`](https://yardstick.tidymodels.org/reference/brier_class.html){target="_blank"} looks acceptable.
 
+A classifier offers two outputs. The hard class is the label it assigns, for example `class_1` or `class_2`. The classification probability is a number from 0 to 1 for how likely the event is. The event is the positive class, the outcome being counted.
+
+Calibrated means that probability matches the frequency. When the model says 0.7, about 70% of those rows are events.
+
 That is too early when the probabilities are the product. A tree can rank rows well, land under the 0.25 Brier score I treat as a poor classifier, and still predict 0 and 1 for groups whose event rates are nowhere near 0 and 1. The fix belongs in the same workflow as the recipe and the model.
 
-The rows are a simulated set from modeldata. The folded chunk is the split. The workflow in the next section is the part worth copying.
+Brier score is the mean squared error of those probabilities. Lower is better. Always predicting 0.5 scores 0.25. Always predicting the event rate, the share of rows that are events, is the tighter reference, because it knows the base rate and nothing about the predictors.
+
+On this test set the event rate rounds to 0.25, and the base-rate Brier (that rate times one minus that rate) rounds to 0.188. The scoring chunk prints both numbers again from the test rows.
+
+The rows are a simulated set from modeldata. The folded chunk loads the packages, simulates 2,000 rows, and splits them twice with `prop = 0.75`, stratified on `class`. The first split holds out the test set. The second holds the calibration set out of the remaining rows.
+
+Model rows fit the tree. Calibration rows are what the post-processor uses to learn a correction from the tree's probabilities to observed event rates. Test rows are only for the final score.
+
+Fitting the calibrator on the model rows teaches the wrong mapping. The tree has memorized those rows, so its probabilities there are overconfident, pushed toward 0 and 1. The calibrator pairs those scores with outcomes the tree already fit, and it learns a correction that is too small for new rows.
+
+Test rows have to stay out of both fits. Once they train the calibrator, the test score is no longer an honest estimate of new data.
+
+The printed table should show model, calibration, and test, and the row counts should sum to 2,000. The workflow in the next section is the part worth copying.
 
 ```{r}
 #| label: setup
@@ -57,6 +73,16 @@ I pass `smooth = FALSE` so the method is a logistic regression (`stats::glm()`),
 
 [`modeldata::sim_classification()`](https://modeldata.tidymodels.org/reference/sim_classification.html){target="_blank"} ships with the package, so render time does not download anything. `intercept = -8` puts the event (`class_1`, the first factor level, so yardstick's default event) near a quarter of the rows. The three sets in that table are disjoint: model, calibration, and test.
 
+`event_level = "first"` in the metrics later tells yardstick to score `.pred_class_1` against that first factor level.
+
+A recipe is the preprocessing plan, run before the model. This one is `step_normalize()` on the numeric predictors. A model spec is the algorithm and its hyperparameters before any fit. The spec below is `decision_tree()` with `tree_depth = 15`, `min_n = 2`, and `cost_complexity = 1e-8`, engine `rpart`, mode classification.
+
+A tailor is a post-processor. It adjusts the model's predictions, and it is trained on its own rows. This tailor is logistic calibration. A workflow is the recipe, the spec, and the tailor bundled into one object.
+
+I want that bundle in production. `predict()` then runs the same steps in the same order: normalize, predict with the tree, then calibrate. One object is how I avoid train/serve skew, where serving drops a step or reimplements it differently.
+
+The chunk prints the unfitted workflow. Expect the recipe, the tree spec, and a tailor that has not been trained yet.
+
 ```{r}
 #| label: pattern
 
@@ -87,6 +113,8 @@ The recipe and the model train on `data`. The calibrator trains on predictions f
 
 In-sample probabilities sit closer to the outcome than probabilities on new data. A calibrator fit on the training predictions looks finished when it is not.
 
+This chunk fits that tree twice and prints nothing. `tree_raw_fit` is the recipe and the tree on `model_data` only. `tree_cal_fit` trains the tailor on `calibration_data`. The next section scores both on the test set, which neither fit has seen.
+
 ```{r}
 #| label: fit-tree
 #| code-fold: true
@@ -112,7 +140,11 @@ Omitting `data_calibration` is an error: "The workflow requires `data_calibratio
 
 # The score looked fine
 
-`min_n = 2` and a deep tree are deliberate. The leaves go pure, so `rpart` reports class probabilities of 0 and 1. That is the failure mode I want on the page. A tuned depth comes later.
+`min_n = 2` and a deep tree are deliberate. `tree_depth = 15` lets splits continue for 15 levels, and `cost_complexity = 1e-8` is small enough that rpart keeps them. `min_n = 2` means a node with two rows can still be split, so the leaves are tiny and pure.
+
+The leaves go pure, so `rpart` reports class probabilities of 0 and 1. A pure leaf is all one class, and rpart stores that class's share of the leaf, which is 0 or 1. That is the failure mode I want on the page. A tuned depth comes later.
+
+This chunk scores both fits on the test set and hides the printout. It stores accuracy, ROC AUC, Brier score, and a ten-bin `calibration_gap` on `tree_scores`. The next chunk prints that table.
 
 ```{r}
 #| label: score-helpers
@@ -176,6 +208,8 @@ tree_scores <- bind_rows(tree_before$scores, tree_after$scores) |>
 
 Brier score is a mean squared error on the probabilities. It punishes a bad ranking and a bad scale at the same time. Predicting 0.5 for every row scores 0.25. Predicting this test set's base rate (`r round(test_base_rate, 3)`) for every row scores `r round(test_base_brier, 3)`.
 
+This chunk prints `tree_scores`, rounded to three decimals. I want accuracy and ROC AUC to match across the two rows, and I want Brier score and `calibration_gap` to drop after calibration.
+
 ```{r}
 #| label: tree-scores
 #| code-fold: true
@@ -184,11 +218,17 @@ Brier score is a mean squared error on the probabilities. It punishes a bad rank
 tree_scores
 ```
 
-Accuracy is `r tree_scores$accuracy[1]` either way, against a majority-class baseline of `r round(majority_accuracy, 3)`. ROC AUC stays at `r tree_scores$roc_auc[1]`. The hard class matches on `r sum(tree_before$predictions$.pred_class == tree_after$predictions$.pred_class)` of `r nrow(test_data)` test rows. Both calibrated probabilities sit on the same side of 0.5 as the raw 0 and 1.
+Accuracy is the share of test rows whose hard class matches the truth. It is `r tree_scores$accuracy[1]` either way, against a majority-class baseline of `r round(majority_accuracy, 3)`. That baseline is the accuracy from ignoring the model and always predicting the majority class, `class_2`.
+
+ROC AUC measures ranking only. It asks whether events get higher probabilities than non-events, and it ignores whether those probabilities are on the right scale. ROC AUC stays at `r tree_scores$roc_auc[1]`.
+
+The hard class matches on `r sum(tree_before$predictions$.pred_class == tree_after$predictions$.pred_class)` of `r nrow(test_data)` test rows. Both calibrated probabilities sit on the same side of 0.5 as the raw 0 and 1.
 
 Brier score moves from `r tree_scores$brier_class[1]` to `r tree_scores$brier_class[2]`. `calibration_gap` is the average absolute difference between predicted probability and observed event rate, inside ten equal-width bins.
 
 Before calibration that gap equals the Brier score. Predictions stuck at 0 and 1 make a squared error the same as an absolute error, so the whole `r tree_scores$brier_class[1]` is miscalibration. After calibration the gap falls to `r tree_scores$calibration_gap[2]`. What remains in the Brier score is the part a probability adjustment cannot reorder away.
+
+This chunk lists every distinct predicted probability on the test set, with the row count and the observed event rate. Before calibration I expect only 0 and 1. The `observed` column is the rate those predictions should have matched.
 
 ```{r}
 #| label: reliability-table
@@ -212,6 +252,10 @@ probability_summary
 ```
 
 Every test row is a 0 or a 1 before calibration. Rows scored 0 are events `r probability_summary$observed[probability_summary$stage == "Before calibration" & probability_summary$predicted == 0]` of the time. Rows scored 1 are events `r probability_summary$observed[probability_summary$stage == "Before calibration" & probability_summary$predicted == 1]` of the time. After calibration those two piles move to `r probability_summary$predicted[probability_summary$stage == "After calibration"][1]` and `r probability_summary$predicted[probability_summary$stage == "After calibration"][2]`, next to those same observed rates. Same rows, same order, usable numbers.
+
+This chunk plots those piles. Each point is one distinct predicted probability, sized by how many test rows share it. The x-axis is the predicted probability of `class_1`. The y-axis is the observed event rate for that point. The gap above used ten equal-width bins. This tree only emits two probabilities, so the honest picture is two points, which is what the plot should show.
+
+The dashed diagonal is perfect calibration: predicted probability equals the observed rate. A point below the line means the model is overpredicting events (the score is higher than the rate in that group). A point above the line means it is underpredicting. Before calibration the points sit at the edges, off the diagonal. After calibration they should sit close to it.
 
 ```{r}
 #| label: calibration-plot
@@ -261,6 +305,8 @@ ggsave(
 calibration_plot
 ```
 
+This chunk is the histogram of those same predicted probabilities, drawn as bar height for the row counts. Piles at 0 and at 1 are the overconfidence signal: the model is claiming certainty for large groups of rows. After calibration those bars should move in from the edges, toward the observed event rates. The row counts in the two piles should stay the same, because calibration does not reshuffle which rows are high and which are low.
+
 ```{r}
 #| label: probability-histogram
 #| code-fold: true
@@ -283,6 +329,8 @@ ggplot(calibration_points, aes(predicted, rows)) +
 
 Same split, same logistic calibrator, a logistic regression instead of the tree.
 
+This chunk fits that logistic regression with and without the calibrator, and it prints nothing. A logistic regression already fits probabilities with a logistic curve, so I expect little systematic bend left for the tailor to remove. The next table is the check.
+
 ```{r}
 #| label: logistic
 #| code-fold: true
@@ -304,6 +352,8 @@ logit_scores <- bind_rows(logit_before$scores, logit_after$scores) |>
   mutate(across(where(is.numeric), \(x) round(x, 3)))
 ```
 
+This chunk prints the same four metrics for the logistic regression. I am looking for a Brier score and a calibration gap that do not improve, and for an ROC AUC that stays put.
+
 ```{r}
 #| label: logit-scores
 #| code-fold: true
@@ -314,9 +364,11 @@ logit_scores
 
 I recommend keeping the calibrator when the probability histogram is piled on the edges, or when `calibration_gap` is large next to the Brier score. I take it out when the model already speaks in probabilities and the gap is small. This logistic regression is that second case. Brier goes from `r logit_scores$brier_class[1]` to `r logit_scores$brier_class[2]`, a small step in the wrong direction, and the calibration gap does not improve. A second logistic fit on a few hundred calibration rows has no systematic bend to remove.
 
+I do not calibrate by default. This model is already calibrated. The extra fit adds variance, and the calibration split is data the model never sees, for little or no gain.
+
 A few rules I use on top of that plot:
 
-- ROC AUC is unchanged for both models here. This calibrator is a function of the predicted probability only, so it does not reorder rows. If I only need a ranking, I skip it.
+- ROC AUC is unchanged for both models here. Logistic calibration is a monotonic transform of the predicted probability only, so the ranking of rows is unchanged. If I only need a ranking, I skip it.
 - Accuracy stayed flat for the tree. For the logistic regression it moved from `r logit_scores$accuracy[1]` to `r logit_scores$accuracy[2]`, because a few probabilities crossed 0.5. A hard label is a blunt summary of a probability.
 - Thresholds do not repair calibration. [`adjust_probability_threshold()`](https://tailor.tidymodels.org/reference/adjust_probability_threshold.html){target="_blank"} changes the hard class, and it leaves Brier score and ROC AUC alone. Put it after calibration.
 - Isotonic regression (`method = "isotonic"`) is the other base-R option, and it is a step function. Beta calibration is available too, through the [betacal](https://cran.r-project.org/package=betacal){target="_blank"} package. I start with logistic, then look at the plot.
@@ -326,6 +378,8 @@ A few rules I use on top of that plot:
 ## Calibrate, then threshold
 
 tailor stops if a threshold or an equivocal zone is declared before the probability update. Those steps rewrite the hard class. On this tree the calibrated probabilities sit near 0.09 and 0.72, so any cutoff between them assigns the same class the raw 0 and 1 did.
+
+The chunk builds the tailor in the wrong order and catches the error. The message should say that adjustments which change the hard class have to come after the probability update.
 
 ```{r}
 #| label: order-check
@@ -346,6 +400,10 @@ threshold_first
 # One workflow, with the tune included
 
 The depth-15 tree was a demonstration of pure leaves. I would not ship it only because the calibrator patched the scale. With the tailor already attached, `tune_grid()` scores candidates after post-processing, which is the comparison I want. Three depths, five folds, on the training data. tune holds out the calibration rows inside each analysis set, so this call does not take `data_calibration`.
+
+The gain is a depth chosen for the probabilities I will actually ship. Each resample fits its own calibrator on rows held out from that resample's model fit, so the tree's training rows do not leak into the calibration.
+
+This chunk tunes `tree_depth` over 4, 8, and 15, with `min_n` still 2 and `cost_complexity` still `1e-8`. The table is mean Brier score and ROC AUC across folds, plus the standard error. I take the lowest Brier score.
 
 ```{r}
 #| label: tune-depth
@@ -383,6 +441,8 @@ depth_metrics <-
 depth_metrics
 ```
 
+This chunk locks in the best depth with `select_best()` and `finalize_workflow()`, then fits once on `model_data` and `calibration_data`. I want `tree_depth` filled in on the spec. I want `extract_postprocessor()` to show a trained calibrator where the earlier printout had `NA`.
+
 ```{r}
 #| label: finalize
 #| code-fold: true
@@ -405,7 +465,9 @@ extract_postprocessor(final_fit)
 
 Depth `r best_depth$tree_depth` wins on resampled Brier score. Calibration did not promote the overgrown tree. I still keep the calibrator in `final_wflow`: the object that gets predicted from runs the recipe, the tree, and the logistic adjustment, in that order. `predict(final_fit, new_data, type = "prob")` is the whole path.
 
-[orbital](https://orbital.tidymodels.org/articles/supported-models.html){target="_blank"} 0.7.0 translates this `step_normalize()` recipe and this `decision_tree(engine = "rpart")` model to SQL, including class and probability predictions. `adjust_probability_calibration()` is outside that list (orbital's tailor support is `adjust_probability_threshold()`, `adjust_equivocal_zone()`, `adjust_numeric_range()`, and `adjust_predictions_custom()`), so this calibrated workflow stays in R.
+[orbital](https://orbital.tidymodels.org/articles/supported-models.html){target="_blank"} translates a fitted workflow into SQL, so predictions can run inside the database without R. Version 0.7.0 covers this `step_normalize()` recipe and this `decision_tree(engine = "rpart")` model, including class and probability predictions.
+
+`adjust_probability_calibration()` is outside that list (orbital's tailor support is `adjust_probability_threshold()`, `adjust_equivocal_zone()`, `adjust_numeric_range()`, and `adjust_predictions_custom()`). The calibration step is what orbital cannot translate yet, so this calibrated workflow stays in R.
 
 # Learn more
 
@@ -417,6 +479,14 @@ Depth `r best_depth$tree_depth` wins on resampled Brier score. Calibration did n
 - [orbital's supported models, recipes, and tailor steps](https://orbital.tidymodels.org/articles/supported-models.html){target="_blank"}.
 
 The pattern I want in production is the fitted `final_wflow`: preprocess, model, then calibrate, scored after the adjustment. If your probability histogram is already a smooth ramp along the diagonal, delete the tailor and keep the simpler object.
+
+When an agent writes the model for me, I check:
+
+- Calibration rows that were not used to fit the model, and a test set that was used for neither.
+- A calibration plot, points against the diagonal. A metric on its own can still hide probabilities stuck at 0 and 1.
+- Brier score next to the base-rate reference (0.188 on this test set) and next to the 0.25 from always predicting 0.5.
+- Post-processing order: calibrate, then set a threshold. A cutoff rewrites the hard class and leaves the probabilities alone.
+- One workflow object for `predict()`, so the recipe, the model, and the calibrator run in that order.
 
 Happy Thursday, and happy coding!
 
