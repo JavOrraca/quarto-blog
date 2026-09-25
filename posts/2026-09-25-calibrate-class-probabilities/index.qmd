@@ -1,10 +1,11 @@
 ---
-title: "Calibrate Class Probabilities in the Workflow"
+title: "Calibrate Class Probabilities in the ML Workflow"
 description: "How I add probability calibration to one tidymodels workflow with tailor, and how I decide whether that post-processing step is worth keeping."
-date: 09-24-2026
+date: 09-25-2026
 categories: [tidymodels, r]
 image: preview.png
-draft: true
+aliases:
+  - /posts/2026-09-24-calibrate-class-probabilities/index.html
 ---
 
 <!-- Preview image is preview.png, saved from the calibration plot in this post. -->
