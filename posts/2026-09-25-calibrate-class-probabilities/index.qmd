@@ -4,8 +4,6 @@ description: "How I add probability calibration to one tidymodels workflow with 
 date: 09-25-2026
 categories: [tidymodels, r]
 image: preview.png
-aliases:
-  - /posts/2026-09-24-calibrate-class-probabilities/index.html
 ---
 
 <!-- Preview image is preview.png, saved from the calibration plot in this post. -->
