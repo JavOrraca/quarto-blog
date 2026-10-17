@@ -1,10 +1,9 @@
 ---
-title: "I Archived tidymodels-mcp"
+title: "Tidymodels MCP Archived - Official tidymodels Skills for the Win"
 description: "I archived the local MCP server I built in March 2025. Here is what it did, why a personal copy goes stale, and the official tidymodels skills, function catalog, and Posit packages I recommend instead."
 date: 10-17-2026
 categories: [r, tidymodels, mcp, ai-agents]
-image: preview.png
-draft: true
+image: tidymodels-mcp-preview.jpg
 ---
 
 <!-- preview.png is the text card in this folder. -->
