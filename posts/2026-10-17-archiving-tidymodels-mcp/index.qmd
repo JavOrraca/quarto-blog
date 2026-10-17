@@ -6,9 +6,9 @@ categories: [r, tidymodels, mcp, ai-agents]
 image: tidymodels-mcp-preview.jpg
 ---
 
-<!-- preview.png is the text card in this folder. -->
+<!-- tidymodels-mcp-preview.jpg is the preview image in this folder. -->
 
-![](preview.png){.preview-image}
+![](tidymodels-mcp-preview.jpg){.preview-image}
 
 # The gap I filled in March 2025 is closed
 
