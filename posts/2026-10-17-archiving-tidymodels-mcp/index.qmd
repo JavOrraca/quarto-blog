@@ -112,7 +112,7 @@ The framework itself is still [tidymodels.org](https://www.tidymodels.org/){targ
 install.packages("tidymodels")
 ```
 
-Release notes land on the [Posit Open Source blog](https://opensource.posit.co/blog/){target="_blank"}. When parsnip or recipes ships, I read it there.
+Release notes land on the [Posit Open Source blog](https://opensource.posit.co/blog/){target="_blank"} and the [tidyverse blog](https://www.tidyverse.org/blog/){target="_blank"}, and I read both when parsnip or recipes ships. I also hear about a lot of package updates from open source devs I follow on LinkedIn.
 
 # The templates taught agents to leak
 
