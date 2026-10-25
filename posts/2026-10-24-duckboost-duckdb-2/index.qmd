@@ -1,10 +1,9 @@
 ---
-title: "SQL-Native Gradient Boosting in DuckDB 2.0 with duckboost"
-description: "Install the duckboost community extension, train regression and multi-class gradient-boosted trees in plain SQL, then save the model and export it as SQL that runs without the extension."
+title: "duckboost: Native gradient boosting trainer in DuckDB"
+description: "Install the duckboost community extension, use its native trainer to predict penguin body mass and species with gradient-boosted trees in plain SQL, then save the models and export them as SQL that runs without the extension."
 date: 10-24-2026
 categories: [duckdb, machine-learning, sql, r]
 image: preview.jpg
-draft: true
 ---
 
 ![](preview.jpg){.preview-image}
@@ -18,7 +17,7 @@ INSTALL duckboost FROM community;
 LOAD duckboost;
 ```
 
-And here is the smallest train-and-predict loop I know how to write: fifty rows, one feature, and a perfectly linear target.
+And here is the smallest train-and-predict loop I know how to write, in fewer than 15 lines of SQL. The data is a table of 50 rows with one feature and a perfectly linear target.
 
 ```sql
 CREATE TABLE tiny AS
@@ -65,113 +64,150 @@ None of those are what duckboost builds on. Three smaller facts from the announc
 - The old single-arrow lambda syntax is disabled by default. The one lambda below uses the `lambda p:` form.
 - DuckDB versions before 2.0 cannot read database files created by 2.0. The model store in this post is a `.duckdb` file, so read the [migration guide](https://duckdb.org/docs/2.0/operations_manual/migration){target="_blank"} before you point an older client at it.
 
-# Multivariate Regression in Plain SQL
+# The Data: Palmer Penguins
 
-Both examples use synthetic tables built with SQL, so nothing downloads and a render never touches the network. Instead of `random()`, I derive every column from `hash()` of the row number, which builds the same 3,000 rows however many threads DuckDB uses.^[The numbers below reproduced exactly across repeated runs on DuckDB 2.0.0. I would not promise that `hash()` output stays identical in future DuckDB versions, so read the metrics as "about this", not as a contract.]
+Both models in this post use the Palmer penguins data, measurements of 344 adult foraging penguins from three species near Palmer Station, Antarctica. Dr. Kristen Gorman and the Palmer Station Antarctica LTER collected the data. Allison Horst, Alison Hill, and Kristen Gorman packaged it as the R package [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/){target="_blank"}, which is also [on CRAN](https://cran.r-project.org/package=palmerpenguins){target="_blank"}. The data is released under a CC0 license, and the package asks you to cite it like this:
 
-The target is deliberately non-linear: a linear term, a sine of `x2`, a threshold on `x3` that switches on an `x4` effect, an `x1 * x2` interaction, and uniform noise. The noise has a standard deviation of about 0.82, so no model should be expected to land far below a holdout RMSE of 0.82.
+> Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0. doi: [10.5281/zenodo.3960218](https://doi.org/10.5281/zenodo.3960218){target="_blank"}
 
-For the split I use `duckboost_initial_split()`, a table macro that adds a `split` column holding `'train'` or `'test'`. It borrows the idea (not the code) of [rsample](https://rsample.tidymodels.org/){target="_blank"}'s `initial_split()`. The assignment is a hash of the row values plus the seed, so the same rows and seed give the same split.
+You do not need R for the SQL examples. DuckDB reads the CSV file from the package's GitHub repository over HTTPS, and `nullstr = 'NA'` turns R's missing-value marker into a proper `NULL`. That is the load I ran for every result below. I also exported `palmerpenguins::penguins` from R to a CSV and compared it with the GitHub file using `EXCEPT` in both directions. Both have 344 rows and neither has a row the other lacks.
+
+The model needs complete rows and numeric features, so the first queries count the missing values, drop those rows, and encode two columns. `sex` becomes an `is_male` column of 1.0 and 0.0, and `species` also gets a class index (Adelie 0, Chinstrap 1, Gentoo 2) that the classification section uses.
 
 ```sql
--- 3,000 synthetic rows. hash() gives reproducible uniforms (no random() ordering surprises).
-CREATE TABLE reg_data AS
-WITH u AS (
-  SELECT i AS id,
-         (hash(i * 10 + 1) % 1000000) / 1000000.0 AS x1,
-         (hash(i * 10 + 2) % 1000000) / 1000000.0 AS x2,
-         (hash(i * 10 + 3) % 1000000) / 1000000.0 AS x3,
-         (hash(i * 10 + 4) % 1000000) / 1000000.0 AS x4,
-         (hash(i * 10 + 5) % 1000000) / 1000000.0 AS e1,
-         (hash(i * 10 + 6) % 1000000) / 1000000.0 AS e2
-  FROM range(3000) t(i)
-)
-SELECT id, x1, x2, x3, x4,
-       (10 * x1 + 6 * sin(6 * x2) + 8 * (x3 > 0.5)::INT * x4 - 4 * x1 * x2
-        + 2.0 * (e1 + e2 - 1))::DOUBLE AS y
-FROM u;
+-- Palmer penguins straight from the palmerpenguins GitHub repo, read over HTTPS
+CREATE TABLE penguins_raw AS
+FROM read_csv(
+  'https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv',
+  nullstr = 'NA'
+);
 
--- 75/25 train/test split, reproducible with a seed
-CREATE TABLE reg_split AS
-FROM duckboost_initial_split('reg_data', prop := 0.75, seed := 42);
+-- How many rows survive the NA handling?
+SELECT count(*) AS total_rows,
+       count(*) FILTER (WHERE body_mass_g IS NULL OR bill_length_mm IS NULL
+                           OR bill_depth_mm IS NULL OR flipper_length_mm IS NULL
+                           OR sex IS NULL) AS rows_with_na,
+       count(*) FILTER (WHERE body_mass_g IS NOT NULL AND bill_length_mm IS NOT NULL
+                           AND bill_depth_mm IS NOT NULL AND flipper_length_mm IS NOT NULL
+                           AND sex IS NOT NULL) AS rows_kept
+FROM penguins_raw;
 
-SELECT split, count(*) AS n, round(avg(y), 3) AS mean_y
-FROM reg_split GROUP BY split ORDER BY split;
+-- Keep complete rows. Features must be numbers, so sex becomes 0/1 and species becomes 0/1/2.
+CREATE TABLE penguins AS
+SELECT row_number() OVER () AS id,
+       species,
+       CASE species WHEN 'Adelie' THEN 0 WHEN 'Chinstrap' THEN 1 WHEN 'Gentoo' THEN 2 END::DOUBLE AS species_id,
+       bill_length_mm,
+       bill_depth_mm,
+       flipper_length_mm::DOUBLE AS flipper_length_mm,
+       body_mass_g::DOUBLE AS body_mass_g,
+       (sex = 'male')::DOUBLE AS is_male
+FROM penguins_raw
+WHERE body_mass_g IS NOT NULL AND bill_length_mm IS NOT NULL
+  AND bill_depth_mm IS NOT NULL AND flipper_length_mm IS NOT NULL
+  AND sex IS NOT NULL;
 ```
 
 ```text
-┌─────────┬───────┬────────┐
-│  split  │   n   │ mean_y │
-│ varchar │ int64 │ double │
-├─────────┼───────┼────────┤
-│ test    │   750 │  5.948 │
-│ train   │  2250 │  5.914 │
-└─────────┴───────┴────────┘
+┌────────────┬──────────────┬───────────┐
+│ total_rows │ rows_with_na │ rows_kept │
+│   int64    │    int64     │   int64   │
+├────────────┼──────────────┼───────────┤
+│        344 │           11 │       333 │
+└────────────┴──────────────┴───────────┘
 ```
 
-That is 2,250 training rows and 750 test rows, with similar means on both sides. I like to see that before I train anything.
+That is 11 incomplete rows out of 344, and I drop them in the open rather than let a model quietly skip them. It leaves 333 penguins to work with.
+
+# Multivariate Regression in Plain SQL
+
+The first model predicts `body_mass_g`, a penguin's weight in grams, from bill length, bill depth, flipper length, and sex.
+
+For the split I use `duckboost_initial_split()`, a table macro that adds a `split` column holding `'train'` or `'test'`. It borrows the idea (not the code) of [rsample](https://rsample.tidymodels.org/){target="_blank"}'s `initial_split()`. The assignment is a hash of the row values plus the seed, so the same rows and seed give the same split. I stratify on `species`, so each species lands in train and test in about the same proportions, and I use one split for both models in this post.
+
+```sql
+-- 75/25 train/test split, stratified by species and reproducible with a seed
+CREATE TABLE penguins_split AS
+FROM duckboost_initial_split('penguins', prop := 0.75, strata := species, seed := 42);
+
+SELECT split, count(*) AS n, round(avg(body_mass_g), 1) AS mean_body_mass_g
+FROM penguins_split GROUP BY split ORDER BY split;
+```
+
+```text
+┌─────────┬───────┬──────────────────┐
+│  split  │   n   │ mean_body_mass_g │
+│ varchar │ int64 │      double      │
+├─────────┼───────┼──────────────────┤
+│ test    │    83 │           4213.3 │
+│ train   │   250 │           4205.0 │
+└─────────┴───────┴──────────────────┘
+```
+
+That is 250 training penguins and 83 test penguins, with similar average body mass on both sides. I like to see that before I train anything.
 
 Now the model. Options travel in a `MAP` of strings, so numbers are quoted. Unknown keys raise an error instead of being ignored, so a typo in `'learning_rate'` fails loudly.
 
-`'backend': 'native'` selects the built-in trainer. The docs describe it as dependency-free, single-threaded, and aimed at SQL-native workflows rather than replacing XGBoost, LightGBM, or CatBoost at every scale. That matches how I would use it.
+`'backend': 'native'` selects the built-in trainer. The docs describe it as dependency-free, single-threaded, and aimed at SQL-native workflows rather than replacing XGBoost, LightGBM, or CatBoost at every scale. That matches how I would use it. I picked round-number settings (100 trees, depth 3), and a few nearby settings gave similar holdout errors, so I did not go hunting for the best combination.
 
 ```sql
 -- Train on the training rows only
 CREATE TABLE reg_models AS
 SELECT duckboost_train(
-  y, [x1, x2, x3, x4],
+  body_mass_g, [bill_length_mm, bill_depth_mm, flipper_length_mm, is_male],
   MAP {
     'backend': 'native',
     'task': 'regression',
-    'n_estimators': '200',
-    'max_depth': '4',
+    'n_estimators': '100',
+    'max_depth': '3',
     'learning_rate': '0.1',
     'min_samples_leaf': '5',
     'seed': '42',
-    'feature_names': 'x1,x2,x3,x4'
+    'feature_names': 'bill_length_mm,bill_depth_mm,flipper_length_mm,is_male'
   }
 ) AS model
-FROM reg_split
+FROM penguins_split
 WHERE split = 'train';
 ```
 
-Predicting on the holdout is a cross join between the one-row model table and the test rows. Here are five predictions next to the truth:
+Predicting on the holdout is a cross join between the one-row model table and the test rows. Here are five predictions next to the measured body mass in grams:
 
 ```sql
 -- Predict on the holdout
 CREATE TABLE reg_preds AS
-SELECT id, y, duckboost_predict(model, [x1, x2, x3, x4]) AS pred
-FROM reg_models, reg_split
+SELECT id, species, body_mass_g,
+       duckboost_predict(model, [bill_length_mm, bill_depth_mm, flipper_length_mm, is_male]) AS pred
+FROM reg_models, penguins_split
 WHERE split = 'test';
 
-SELECT id, round(y, 3) AS y, round(pred, 3) AS pred
+SELECT id, species, body_mass_g, round(pred, 1) AS pred
 FROM reg_preds ORDER BY id LIMIT 5;
 ```
 
 ```text
-┌───────┬────────┬────────┐
-│  id   │   y    │  pred  │
-│ int64 │ double │ double │
-├───────┼────────┼────────┤
-│     3 │  6.356 │  5.236 │
-│     8 │ 13.186 │ 14.225 │
-│    17 │ 11.676 │  14.39 │
-│    20 │  0.476 │  1.759 │
-│    30 │  8.797 │  8.976 │
-└───────┴────────┴────────┘
+┌───────┬─────────┬─────────────┬────────┐
+│  id   │ species │ body_mass_g │  pred  │
+│ int64 │ varchar │   double    │ double │
+├───────┼─────────┼─────────────┼────────┤
+│     1 │ Adelie  │      3750.0 │ 3943.5 │
+│     3 │ Adelie  │      3250.0 │ 3721.0 │
+│     4 │ Adelie  │      3450.0 │ 3700.7 │
+│    15 │ Adelie  │      4200.0 │ 4254.4 │
+│    22 │ Adelie  │      3550.0 │ 3776.2 │
+└───────┴─────────┴─────────────┴────────┘
 ```
 
-Metrics are ordinary SQL, which I prefer because I can group them by segment later. The baseline column is the RMSE you get by predicting the training mean for every test row.
+Metrics are ordinary SQL, which I prefer because I can group them by segment later. The baseline column is the RMSE you get by predicting the training mean for every test row. An 83-penguin holdout is small, so read these numbers as a rough guide rather than a precise score.
 
 ```sql
 -- Holdout metrics in plain SQL, next to a "predict the training mean" baseline
-WITH train_mean AS (SELECT avg(y) AS m FROM reg_split WHERE split = 'train'),
-     test_mean  AS (SELECT avg(y) AS ybar FROM reg_preds)
+WITH train_mean AS (SELECT avg(body_mass_g) AS m FROM penguins_split WHERE split = 'train'),
+     test_mean  AS (SELECT avg(body_mass_g) AS ybar FROM reg_preds)
 SELECT
-  round(sqrt(avg((y - pred) ^ 2)), 3)                  AS rmse,
-  round(avg(abs(y - pred)), 3)                         AS mae,
-  round(1 - sum((y - pred) ^ 2) / sum((y - ybar) ^ 2), 3) AS r2,
-  round(sqrt(avg((y - m) ^ 2)), 3)                     AS baseline_rmse
+  round(sqrt(avg((body_mass_g - pred) ^ 2)), 1)                         AS rmse,
+  round(avg(abs(body_mass_g - pred)), 1)                                AS mae,
+  round(1 - sum((body_mass_g - pred) ^ 2) / sum((body_mass_g - ybar) ^ 2), 3) AS r2,
+  round(sqrt(avg((body_mass_g - m) ^ 2)), 1)                            AS baseline_rmse
 FROM reg_preds, train_mean, test_mean;
 ```
 
@@ -180,18 +216,27 @@ FROM reg_preds, train_mean, test_mean;
 │  rmse  │  mae   │   r2   │ baseline_rmse │
 │ double │ double │ double │    double     │
 ├────────┼────────┼────────┼───────────────┤
-│  0.989 │  0.785 │  0.974 │         6.095 │
+│  314.5 │  258.0 │  0.842 │         791.8 │
 └────────┴────────┴────────┴───────────────┘
 ```
 
-The model removes most of the error: RMSE falls from 6.095 to 0.989, which sits about 0.17 above the noise floor, and R2 is 0.974. The built-in evaluator should agree with the hand-written SQL, so I check:
+::: {.callout-note}
+## Reading the regression metrics
+**RMSE** is the typical size of a prediction miss, in the same units as the target. Here that means grams: the model is typically off by about 315 grams (314.5), while the baseline is typically off by about 790 grams (791.8). For scale, the average penguin in the test rows weighs about 4,200 grams.
+
+The **baseline RMSE** is what you get if you always predict the average of the training weights, so it is the score to beat. **MAE** is the average absolute miss, 258.0 grams here. **R2** is the share of the variation in body mass that the model explains: 0.842 means about 84%, and 0 means no better than predicting the mean.
+:::
+
+The model cuts the typical miss from about 790 grams to about 315 grams. The built-in evaluator should agree with the hand-written SQL, so I check:
 
 ```sql
 -- Same numbers from duckboost's own evaluator
 SELECT
-  round(duckboost_evaluate_agg(model, y, [x1, x2, x3, x4], MAP {'metric': 'rmse'}), 3) AS rmse,
-  round(duckboost_evaluate_agg(model, y, [x1, x2, x3, x4], MAP {'metric': 'mae'}), 3)  AS mae
-FROM reg_models, reg_split
+  round(duckboost_evaluate_agg(model, body_mass_g, [bill_length_mm, bill_depth_mm, flipper_length_mm, is_male],
+                               MAP {'metric': 'rmse'}), 1) AS rmse,
+  round(duckboost_evaluate_agg(model, body_mass_g, [bill_length_mm, bill_depth_mm, flipper_length_mm, is_male],
+                               MAP {'metric': 'mae'}), 1)  AS mae
+FROM reg_models, penguins_split
 WHERE split = 'test';
 ```
 
@@ -200,7 +245,7 @@ WHERE split = 'test';
 │  rmse  │  mae   │
 │ double │ double │
 ├────────┼────────┤
-│  0.989 │  0.785 │
+│  314.5 │  258.0 │
 └────────┴────────┘
 ```
 
@@ -208,68 +253,43 @@ Same RMSE and MAE. The `metric` option also accepts `accuracy`, `logloss`, `brie
 
 # Multivariate Multi-Class Classification
 
-Multi-class labels must be integer class indices from 0 to `n_classes - 1`, passed as `DOUBLE`. Map string labels with a `CASE` first. Set `'task': 'multiclass'` and duckboost fits one tree per class per boosting round, so 60 rounds on 3 classes is 180 trees.
+Multi-class labels must be integer class indices from 0 to `n_classes - 1`, passed as `DOUBLE`. The `penguins` table already maps the species names with a `CASE`. Set `'task': 'multiclass'` and duckboost fits one tree per class per boosting round, so 50 rounds on 3 classes is 150 trees.
 
-The synthetic table has four features and three classes with a noisy, non-linear boundary. This time the split is stratified on `label`, so each class lands in train and test in the same proportions.
+This model predicts `species` from bill length, bill depth, flipper length, and body mass. It uses the same stratified split as the regression, so Adelie, Chinstrap, and Gentoo all appear on both sides.
 
 ```sql
--- 3,000 synthetic rows, three classes (0, 1, 2) with a noisy, non-linear boundary
-CREATE TABLE clf_data AS
-WITH u AS (
-  SELECT i AS id,
-         (hash(i * 10 + 11) % 1000000) / 1000000.0 AS x1,
-         (hash(i * 10 + 12) % 1000000) / 1000000.0 AS x2,
-         (hash(i * 10 + 13) % 1000000) / 1000000.0 AS x3,
-         (hash(i * 10 + 14) % 1000000) / 1000000.0 AS x4,
-         (hash(i * 10 + 15) % 1000000) / 1000000.0 AS e1,
-         (hash(i * 10 + 16) % 1000000) / 1000000.0 AS e2
-  FROM range(3000) t(i)
-),
-s AS (
-  SELECT *,
-         3 * x1 + 2 * sin(5 * x2) + 0.6 * (e1 - 0.5) AS score_a,
-         4 * x3 * x4 + 0.6 * (e2 - 0.5)              AS score_b
-  FROM u
-)
-SELECT id, x1, x2, x3, x4,
-       CASE WHEN score_a < 1.6 THEN 0
-            WHEN score_b > 1.2 THEN 2
-            ELSE 1 END::DOUBLE AS label
-FROM s;
-
-SELECT label::INT AS label, count(*) AS n FROM clf_data GROUP BY label ORDER BY label;
-
-CREATE TABLE clf_split AS
-FROM duckboost_initial_split('clf_data', prop := 0.75, strata := label, seed := 42);
+-- Species as a class index: Adelie = 0, Chinstrap = 1, Gentoo = 2 (already built into the penguins table)
+SELECT species, species_id::INT AS species_id, count(*) AS n
+FROM penguins GROUP BY ALL ORDER BY species_id;
 ```
 
 ```text
-┌───────┬───────┐
-│ label │   n   │
-│ int32 │ int64 │
-├───────┼───────┤
-│     0 │  1290 │
-│     1 │  1135 │
-│     2 │   575 │
-└───────┴───────┘
+┌───────────┬────────────┬───────┐
+│  species  │ species_id │   n   │
+│  varchar  │   int32    │ int64 │
+├───────────┼────────────┼───────┤
+│ Adelie    │          0 │   146 │
+│ Chinstrap │          1 │    68 │
+│ Gentoo    │          2 │   119 │
+└───────────┴────────────┴───────┘
 ```
 
 ```sql
 CREATE TABLE clf_models AS
 SELECT duckboost_train(
-  label, [x1, x2, x3, x4],
+  species_id, [bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g],
   MAP {
     'backend': 'native',
     'task': 'multiclass',
-    'n_estimators': '60',
-    'max_depth': '3',
+    'n_estimators': '50',
+    'max_depth': '2',
     'learning_rate': '0.15',
-    'min_samples_leaf': '5',
+    'min_samples_leaf': '3',
     'seed': '42',
-    'feature_names': 'x1,x2,x3,x4'
+    'feature_names': 'bill_length_mm,bill_depth_mm,flipper_length_mm,body_mass_g'
   }
 ) AS model
-FROM clf_split
+FROM penguins_split
 WHERE split = 'train';
 ```
 
@@ -277,39 +297,41 @@ WHERE split = 'train';
 
 ```sql
 CREATE TABLE clf_preds AS
-SELECT id, label,
-       duckboost_predict(model, [x1, x2, x3, x4])       AS pred_class,
-       duckboost_predict_proba(model, [x1, x2, x3, x4]) AS proba
-FROM clf_models, clf_split
+SELECT id, species, species_id,
+       duckboost_predict(model, [bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g])       AS pred_class,
+       duckboost_predict_proba(model, [bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g]) AS proba
+FROM clf_models, penguins_split
 WHERE split = 'test';
 
-SELECT id, label::INT AS label, pred_class::INT AS pred_class,
+SELECT id, species, pred_class::INT AS pred_class,
        list_transform(proba, lambda p: round(p, 3)) AS proba
 FROM clf_preds ORDER BY id LIMIT 5;
 ```
 
 ```text
-┌───────┬───────┬────────────┬───────────────────────┐
-│  id   │ label │ pred_class │         proba         │
-│ int64 │ int32 │   int32    │       double[]        │
-├───────┼───────┼────────────┼───────────────────────┤
-│     2 │     1 │          1 │ [0.231, 0.767, 0.002] │
-│     3 │     0 │          0 │ [0.999, 0.001, 0.0]   │
-│     4 │     2 │          2 │ [0.116, 0.088, 0.796] │
-│     8 │     2 │          2 │ [0.004, 0.052, 0.944] │
-│    10 │     0 │          0 │ [1.0, 0.0, 0.0]       │
-└───────┴───────┴────────────┴───────────────────────┘
+┌───────┬─────────┬────────────┬─────────────────────┐
+│  id   │ species │ pred_class │        proba        │
+│ int64 │ varchar │   int32    │      double[]       │
+├───────┼─────────┼────────────┼─────────────────────┤
+│     1 │ Adelie  │          0 │ [1.0, 0.0, 0.0]     │
+│     3 │ Adelie  │          0 │ [1.0, 0.0, 0.0]     │
+│     4 │ Adelie  │          0 │ [1.0, 0.0, 0.0]     │
+│    15 │ Adelie  │          1 │ [0.005, 0.995, 0.0] │
+│    22 │ Adelie  │          0 │ [1.0, 0.0, 0.0]     │
+└───────┴─────────┴────────────┴─────────────────────┘
 ```
 
-Now the holdout metrics. Accuracy and log loss are one query. The majority-class accuracy is the floor to beat, meaning what you get by always predicting the most common training class.
+All five rows are Adelie penguins. Four are scored as Adelie with a rounded probability of 1.0. Row 15 is also an Adelie, but the model gave it a probability of about 0.995 for Chinstrap, so it is a confident miss. Keep that row in mind when we get to log loss.
+
+Now the holdout metrics. Accuracy and log loss are one query. The majority-class accuracy is the baseline to beat, meaning what you get by always predicting the most common training species.
 
 ```sql
-SELECT round(avg((pred_class = label)::INT), 4) AS accuracy,
-       round(-avg(ln(greatest(proba[(label + 1)::INT], 1e-15))), 4) AS log_loss
+SELECT round(avg((pred_class = species_id)::INT), 4) AS accuracy,
+       round(-avg(ln(greatest(proba[(species_id + 1)::INT], 1e-15))), 4) AS log_loss
 FROM clf_preds;
 
--- Baseline: always predict the most common training class
-SELECT round(avg((label = (SELECT mode(label) FROM clf_split WHERE split = 'train'))::INT), 4)
+-- Baseline: always predict the most common training species
+SELECT round(avg((species_id = (SELECT mode(species_id) FROM penguins_split WHERE split = 'train'))::INT), 4)
          AS majority_class_accuracy
 FROM clf_preds;
 ```
@@ -319,44 +341,51 @@ FROM clf_preds;
 │ accuracy │ log_loss │
 │  double  │  double  │
 ├──────────┼──────────┤
-│    0.944 │   0.1452 │
+│   0.9518 │   0.1885 │
 └──────────┴──────────┘
 ┌─────────────────────────┐
 │ majority_class_accuracy │
 │         double          │
 ├─────────────────────────┤
-│                  0.4293 │
+│                  0.4337 │
 └─────────────────────────┘
 ```
 
-Accuracy is 0.944 against a 0.4293 floor, and log loss is 0.1452. A confusion matrix is one `PIVOT` away, with true classes in rows and predicted classes in columns:
+Accuracy is 0.9518 against a 0.4337 baseline, and log loss is 0.1885. A confusion matrix is one `PIVOT` away, with true species in rows and predicted species in columns:
 
 ```sql
--- Confusion matrix: rows are the true class, columns are the predicted class
-PIVOT (SELECT label::INT AS actual, pred_class::INT AS predicted FROM clf_preds)
+-- Confusion matrix: rows are the true species, columns are the predicted species
+PIVOT (
+  SELECT species AS actual,
+         CASE pred_class::INT WHEN 0 THEN 'Adelie' WHEN 1 THEN 'Chinstrap' ELSE 'Gentoo' END AS predicted
+  FROM clf_preds
+)
 ON predicted USING count(*) GROUP BY actual ORDER BY actual;
 ```
 
 ```text
-┌────────┬───────┬───────┬───────┐
-│ actual │   0   │   1   │   2   │
-│ int32  │ int64 │ int64 │ int64 │
-├────────┼───────┼───────┼───────┤
-│      0 │   308 │    11 │     3 │
-│      1 │     9 │   268 │     7 │
-│      2 │     3 │     9 │   132 │
-└────────┴───────┴───────┴───────┘
+┌───────────┬────────┬───────────┬────────┐
+│  actual   │ Adelie │ Chinstrap │ Gentoo │
+│  varchar  │ int64  │   int64   │ int64  │
+├───────────┼────────┼───────────┼────────┤
+│ Adelie    │     33 │         3 │      0 │
+│ Chinstrap │      1 │        16 │      0 │
+│ Gentoo    │      0 │         0 │     30 │
+└───────────┴────────┴───────────┴────────┘
 ```
 
-Most mistakes are between neighboring classes, 11 true zeros predicted as ones and 9 true ones predicted as zeros, which is what I expect from a boundary I blurred with noise. The built-in evaluator reports the same accuracy and log loss, plus a one-vs-rest AUC:
+The model got 79 of the 83 holdout penguins right. All 30 Gentoo penguins are correct, and the four misses are three Adelie predicted as Chinstrap and one Chinstrap predicted as Adelie. The built-in evaluator reports the same accuracy and log loss, plus a one-vs-rest AUC:
 
 ```sql
 -- duckboost's own evaluator on the same holdout
 SELECT
-  round(duckboost_evaluate_agg(model, label, [x1, x2, x3, x4], MAP {'metric': 'accuracy'}), 4) AS accuracy,
-  round(duckboost_evaluate_agg(model, label, [x1, x2, x3, x4], MAP {'metric': 'logloss'}), 4)  AS log_loss,
-  round(duckboost_evaluate_agg(model, label, [x1, x2, x3, x4], MAP {'metric': 'roc_auc_ovr'}), 4) AS auc_ovr
-FROM clf_models, clf_split
+  round(duckboost_evaluate_agg(model, species_id, [bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g],
+                               MAP {'metric': 'accuracy'}), 4) AS accuracy,
+  round(duckboost_evaluate_agg(model, species_id, [bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g],
+                               MAP {'metric': 'logloss'}), 4)  AS log_loss,
+  round(duckboost_evaluate_agg(model, species_id, [bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g],
+                               MAP {'metric': 'roc_auc_ovr'}), 4) AS auc_ovr
+FROM clf_models, penguins_split
 WHERE split = 'test';
 ```
 
@@ -365,9 +394,14 @@ WHERE split = 'test';
 │ accuracy │ log_loss │ auc_ovr │
 │  double  │  double  │ double  │
 ├──────────┼──────────┼─────────┤
-│    0.944 │   0.1452 │  0.9931 │
+│   0.9518 │   0.1885 │  0.9975 │
 └──────────┴──────────┴─────────┘
 ```
+
+::: {.callout-note}
+## Reading the classification metrics
+**Accuracy** is the share of holdout penguins whose predicted species is right: 0.9518 means about 95 of every 100. The majority-class baseline (0.4337) is the score to beat, and it is what you would get by calling every penguin an Adelie. **Log loss** punishes confident wrong probabilities, so lower is better, and that Adelie scored as a 0.995 Chinstrap is a big part of the 0.1885. **AUC** (one-vs-rest) measures how well the predicted probabilities rank the right species above the others: 1.0 is perfect and 0.5 is a coin flip, so 0.9975 is close to perfect.
+:::
 
 # Saving the Model: As an Object and as SQL
 
@@ -376,39 +410,51 @@ A duckboost model is a `VARCHAR` containing JSON. The docs call it an opaque doc
 ```sql
 -- 1) The model object is a VARCHAR holding JSON, so a table is a model store
 CREATE TABLE saved_models AS
-SELECT 'reg_gbdt_v1' AS model_name, now() AS saved_at, model FROM reg_models
+SELECT 'penguin_mass_v1' AS model_name, now() AS saved_at, model FROM reg_models
 UNION ALL
-SELECT 'clf_gbdt_v1', now(), model FROM clf_models;
+SELECT 'penguin_species_v1', now(), model FROM clf_models;
 
 SELECT model_name, length(model) AS json_chars, left(model, 60) AS model_prefix
 FROM saved_models ORDER BY model_name;
 ```
 
 ```text
-┌─────────────┬────────────┬──────────────────────────────────────────────────────────────┐
-│ model_name  │ json_chars │                         model_prefix                         │
-│   varchar   │   int64    │                           varchar                            │
-├─────────────┼────────────┼──────────────────────────────────────────────────────────────┤
-│ clf_gbdt_v1 │     328571 │ {"duckboost_version":1,"backend":"reference","task":"multicl │
-│ reg_gbdt_v1 │     632561 │ {"duckboost_version":1,"backend":"reference","task":"regress │
-└─────────────┴────────────┴──────────────────────────────────────────────────────────────┘
+┌────────────────────┬────────────┬──────────────────────────────────────────────────────────────┐
+│     model_name     │ json_chars │                         model_prefix                         │
+│      varchar       │   int64    │                           varchar                            │
+├────────────────────┼────────────┼──────────────────────────────────────────────────────────────┤
+│ penguin_mass_v1    │     140911 │ {"duckboost_version":1,"backend":"reference","task":"regress │
+│ penguin_species_v1 │     127856 │ {"duckboost_version":1,"backend":"reference","task":"multicl │
+└────────────────────┴────────────┴──────────────────────────────────────────────────────────────┘
 ```
 
-Because that table lives in a database file, a new process can reuse the model. I quit the shell, reopened `duckdb duckboost_demo.duckdb`, and scored the test rows again with the stored regression model:
+Because that table lives in a database file, a new process can reuse the model. I quit the shell, reopened `duckdb demo.duckdb`, and scored the test penguins again with both stored models:
 
 ```sql
--- New process, new connection. Load duckboost and reuse the stored model object.
+-- New process, new connection. Load duckboost and reuse the stored model objects.
 LOAD duckboost;
 
 CREATE TABLE reg_preds_reloaded AS
-SELECT s.id, duckboost_predict(m.model, [s.x1, s.x2, s.x3, s.x4]) AS pred
-FROM saved_models m, reg_split s
-WHERE m.model_name = 'reg_gbdt_v1' AND s.split = 'test';
+SELECT s.id,
+       duckboost_predict(m.model, [s.bill_length_mm, s.bill_depth_mm, s.flipper_length_mm, s.is_male]) AS pred
+FROM saved_models m, penguins_split s
+WHERE m.model_name = 'penguin_mass_v1' AND s.split = 'test';
+
+CREATE TABLE clf_preds_reloaded AS
+SELECT s.id,
+       duckboost_predict(m.model, [s.bill_length_mm, s.bill_depth_mm, s.flipper_length_mm, s.body_mass_g]) AS pred_class,
+       duckboost_predict_proba(m.model, [s.bill_length_mm, s.bill_depth_mm, s.flipper_length_mm, s.body_mass_g]) AS proba
+FROM saved_models m, penguins_split s
+WHERE m.model_name = 'penguin_species_v1' AND s.split = 'test';
 
 SELECT count(*) AS n_rows,
        count(*) FILTER (WHERE a.pred = b.pred) AS identical_rows,
        max(abs(a.pred - b.pred)) AS max_abs_diff
 FROM reg_preds a JOIN reg_preds_reloaded b USING (id);
+
+SELECT count(*) AS n_rows,
+       count(*) FILTER (WHERE a.pred_class = b.pred_class AND a.proba = b.proba) AS identical_rows
+FROM clf_preds a JOIN clf_preds_reloaded b USING (id);
 ```
 
 ```text
@@ -416,11 +462,17 @@ FROM reg_preds a JOIN reg_preds_reloaded b USING (id);
 │ n_rows │ identical_rows │ max_abs_diff │
 │ int64  │     int64      │    double    │
 ├────────┼────────────────┼──────────────┤
-│    750 │            750 │          0.0 │
+│     83 │             83 │          0.0 │
 └────────┴────────────────┴──────────────┘
+┌────────┬────────────────┐
+│ n_rows │ identical_rows │
+│ int64  │     int64      │
+├────────┼────────────────┤
+│     83 │             83 │
+└────────┴────────────────┘
 ```
 
-All 750 predictions are identical to the ones from before the restart. The extension is still needed for this path, because `duckboost_predict()` does the scoring.
+All 83 regression predictions are identical to the ones from before the restart, and so are all 83 predicted species. The extension is still needed for this path, because `duckboost_predict()` does the scoring.
 
 The second form needs no extension at all. `duckboost_to_sql()` takes the model, a table name, and the feature column names, and returns a `SELECT` that scores that table. `separate_trees` computes one column per tree and sums them, `keep_columns` carries your ID column through, and `proba` adds one `proba_k` column per class for classifiers.
 
@@ -428,27 +480,32 @@ Here I write each query to a file. Casting to `BLOB` and using `FORMAT blob` wri
 
 ```sql
 -- 2) Export to plain SQL. Views name the holdout rows so the SQL has a table to score.
-CREATE VIEW reg_test AS SELECT id, x1, x2, x3, x4 FROM reg_split WHERE split = 'test';
-CREATE VIEW clf_test AS SELECT id, x1, x2, x3, x4 FROM clf_split WHERE split = 'test';
+CREATE VIEW mass_test AS
+SELECT id, bill_length_mm, bill_depth_mm, flipper_length_mm, is_male
+FROM penguins_split WHERE split = 'test';
+
+CREATE VIEW species_test AS
+SELECT id, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g
+FROM penguins_split WHERE split = 'test';
 
 COPY (
   SELECT duckboost_to_sql(
-    model, 'reg_test', ['x1', 'x2', 'x3', 'x4'],
+    model, 'mass_test', ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'is_male'],
     MAP {'separate_trees': 'true', 'prediction_alias': 'pred', 'keep_columns': 'id'}
   )::BLOB
-  FROM saved_models WHERE model_name = 'reg_gbdt_v1'
-) TO 'reg_model.sql' (FORMAT blob);
+  FROM saved_models WHERE model_name = 'penguin_mass_v1'
+) TO 'mass_model.sql' (FORMAT blob);
 
 COPY (
   SELECT duckboost_to_sql(
-    model, 'clf_test', ['x1', 'x2', 'x3', 'x4'],
+    model, 'species_test', ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g'],
     MAP {'separate_trees': 'true', 'prediction_alias': 'pred_class', 'keep_columns': 'id', 'proba': 'true'}
   )::BLOB
-  FROM saved_models WHERE model_name = 'clf_gbdt_v1'
-) TO 'clf_model.sql' (FORMAT blob);
+  FROM saved_models WHERE model_name = 'penguin_species_v1'
+) TO 'species_model.sql' (FORMAT blob);
 ```
 
-The regression export is 919,180 bytes of SQL text and the classifier export is 312,361 bytes. That is a lot to read and no trouble to ship.
+The regression export is 179,092 bytes of SQL text and the classifier export is 106,733 bytes. That is a lot to read and no trouble to ship.
 
 Now the part that matters. In a fresh process, without loading duckboost, I ran the exported text as-is and compared it with the predictions `duckboost_predict()` made earlier. The exported query spells every number as a `DOUBLE` literal such as `0.10000000000000001e0`, so DuckDB does the same arithmetic that `duckboost_predict()` does.
 
@@ -459,11 +516,11 @@ The first query confirms that the extension is not loaded:
 SELECT count(*) FILTER (WHERE extension_name = 'duckboost' AND loaded) AS duckboost_loaded
 FROM duckdb_extensions();
 
-SET VARIABLE reg_sql = (SELECT content FROM read_text('reg_model.sql'));
-SET VARIABLE clf_sql = (SELECT content FROM read_text('clf_model.sql'));
+SET VARIABLE mass_sql = (SELECT content FROM read_text('mass_model.sql'));
+SET VARIABLE species_sql = (SELECT content FROM read_text('species_model.sql'));
 
-CREATE TABLE reg_preds_sql AS FROM query(getvariable('reg_sql'));
-CREATE TABLE clf_preds_sql AS FROM query(getvariable('clf_sql'));
+CREATE TABLE mass_preds_sql AS FROM query(getvariable('mass_sql'));
+CREATE TABLE species_preds_sql AS FROM query(getvariable('species_sql'));
 ```
 
 ```text
@@ -482,17 +539,17 @@ Then the comparison queries for the regression export and the classifier export:
 SELECT count(*) AS n_rows,
        count(*) FILTER (WHERE a.pred = b.pred) AS identical_rows,
        max(abs(a.pred - b.pred)) AS max_abs_diff
-FROM reg_preds a JOIN reg_preds_sql b USING (id);
+FROM reg_preds a JOIN mass_preds_sql b USING (id);
 
 -- Classification: what the exported query returns
-SELECT column_name, column_type FROM (DESCRIBE clf_preds_sql);
+SELECT column_name, column_type FROM (DESCRIBE species_preds_sql);
 
 SELECT count(*) AS n_rows,
        count(*) FILTER (WHERE a.pred_class = b.pred_class) AS same_class,
        max(greatest(abs(a.proba[1] - b.proba_0),
                     abs(a.proba[2] - b.proba_1),
                     abs(a.proba[3] - b.proba_2))) AS max_abs_proba_diff
-FROM clf_preds a JOIN clf_preds_sql b USING (id);
+FROM clf_preds a JOIN species_preds_sql b USING (id);
 ```
 
 ```text
@@ -500,7 +557,7 @@ FROM clf_preds a JOIN clf_preds_sql b USING (id);
 │ n_rows │ identical_rows │ max_abs_diff │
 │ int64  │     int64      │    double    │
 ├────────┼────────────────┼──────────────┤
-│    750 │            750 │          0.0 │
+│     83 │             83 │          0.0 │
 └────────┴────────────────┴──────────────┘
 ┌─────────────┬─────────────┐
 │ column_name │ column_type │
@@ -516,11 +573,11 @@ FROM clf_preds a JOIN clf_preds_sql b USING (id);
 │ n_rows │ same_class │ max_abs_proba_diff │
 │ int64  │   int64    │       double       │
 ├────────┼────────────┼────────────────────┤
-│    750 │        750 │                0.0 │
+│     83 │         83 │                0.0 │
 └────────┴────────────┴────────────────────┘
 ```
 
-The exported regression SQL matched all 750 predictions exactly, with a maximum difference of 0.0. The classifier SQL matched all 750 classes and every probability to a maximum difference of 0.0. No extension, no Python, and the same answers.
+The exported regression SQL matched all 83 predictions exactly, with a maximum difference of 0.0. The classifier SQL matched all 83 species and every probability to a maximum difference of 0.0. No extension, no Python, and the same answers.
 
 # Importing XGBoost, LightGBM, and CatBoost Dumps
 
@@ -536,53 +593,70 @@ SELECT duckboost_import(
 ) AS model;
 ```
 
-I ran this form against the tiny fixture dumps in the repo's test folder, not against a production model, so treat that as a smoke test. The [import vignette](https://javorraca.github.io/duckboost/vignettes/import-dumps.html){target="_blank"} has the details for each format, including how learning rate and missing values are handled.
+The [import vignette](https://javorraca.github.io/duckboost/vignettes/import-dumps.html){target="_blank"} has the details for each format, including how learning rate and missing values are handled.
 
 # Calling It from R
 
-I live in R most days, and the extension works through the `duckdb` R package as long as the engine is 2.0.0 or newer. I ran this with the CRAN `duckdb` 2.0.0 package and DBI, using the same fifty-row loop as the top of the post:
+I live in R most days, and the extension works through the `duckdb` R package as long as the engine is 2.0.0 or newer. Here the data comes straight from the palmerpenguins package, which is the same data as the CSV above. I ran this with the CRAN `duckdb` 2.0.0 package and DBI. It writes the data frame into DuckDB, counts the complete rows, trains the body mass model on all of them, and compares average actual and predicted body mass by species. Those predictions are on the training rows, so this shows that the calls work, not how well the model generalizes.
 
 ```r
 library(DBI)
+library(palmerpenguins)
 
 con <- dbConnect(duckdb::duckdb())
 invisible(dbExecute(con, "INSTALL duckboost FROM community"))
 invisible(dbExecute(con, "LOAD duckboost"))
 
-invisible(dbExecute(con, "
-  CREATE TABLE tiny AS
-  SELECT i::DOUBLE AS x, (2 * i + 1)::DOUBLE AS y FROM range(50) t(i)
-"))
-
-invisible(dbExecute(con, "
-  CREATE TABLE tiny_model AS
-  SELECT duckboost_train(
-    y, [x],
-    MAP {'backend': 'native', 'n_estimators': '50', 'feature_names': 'x'}
-  ) AS model
-  FROM tiny
-"))
+# The data frame from the palmerpenguins package, straight into DuckDB
+dbWriteTable(con, "penguins_raw", as.data.frame(penguins))
 
 dbGetQuery(con, "
-  SELECT x, y, round(duckboost_predict(model, [x]), 2) AS pred
-  FROM tiny_model, tiny
-  WHERE x IN (5, 25, 45)
-  ORDER BY x
+  SELECT count(*) AS total_rows,
+         count(*) FILTER (WHERE body_mass_g IS NOT NULL AND bill_length_mm IS NOT NULL
+                             AND bill_depth_mm IS NOT NULL AND flipper_length_mm IS NOT NULL
+                             AND sex IS NOT NULL) AS rows_kept
+  FROM penguins_raw
+")
+
+invisible(dbExecute(con, "
+  CREATE TABLE penguin_model AS
+  SELECT duckboost_train(
+    body_mass_g::DOUBLE,
+    [bill_length_mm, bill_depth_mm, flipper_length_mm::DOUBLE, (sex = 'male')::DOUBLE],
+    MAP {'backend': 'native', 'n_estimators': '100', 'max_depth': '3', 'feature_names': 'bill_length_mm,bill_depth_mm,flipper_length_mm,is_male'}
+  ) AS model
+  FROM penguins_raw
+  WHERE body_mass_g IS NOT NULL AND bill_length_mm IS NOT NULL AND bill_depth_mm IS NOT NULL
+    AND flipper_length_mm IS NOT NULL AND sex IS NOT NULL
+"))
+
+# Average actual vs predicted body mass by species (training rows, just to show the call)
+dbGetQuery(con, "
+  SELECT species,
+         round(avg(body_mass_g)) AS avg_g,
+         round(avg(duckboost_predict(model, [bill_length_mm, bill_depth_mm, flipper_length_mm::DOUBLE, (sex = 'male')::DOUBLE]))) AS avg_pred_g
+  FROM penguin_model, penguins_raw
+  WHERE body_mass_g IS NOT NULL AND bill_length_mm IS NOT NULL AND bill_depth_mm IS NOT NULL
+    AND flipper_length_mm IS NOT NULL AND sex IS NOT NULL
+  GROUP BY species
+  ORDER BY species
 ")
 
 dbDisconnect(con, shutdown = TRUE)
 ```
 
 ```text
-   x  y  pred
-1  5 11 11.19
-2 25 51 51.00
-3 45 91 90.78
+  total_rows rows_kept
+1        344       333
+    species avg_g avg_pred_g
+1    Adelie  3706       3699
+2 Chinstrap  3733       3757
+3    Gentoo  5092       5087
 ```
 
 # Where I Would Use It
 
-I reach for duckboost when the data already lives in DuckDB, the table is moderate in size, and the model has to travel as SQL. That last part is the point: a scoring query with no Python runtime and no extension is easy to review and easy to run in a place where you cannot install anything.
+I reach for duckboost when the data already lives in DuckDB, the table is moderate in size, and the model has to travel as SQL. That last part is the point: a scoring query with no Python or R runtime and no extension is easy to review and easy to run in a place where you cannot install anything.
 
 I would not reach for it for very large training sets. The docs are direct about the limits: training is single-threaded, all training rows are materialized in memory, and there are no monotonic constraints. The README also labels the project experimental, and v0.0.5 is early, so pin your versions.
 
@@ -595,6 +669,7 @@ For anything bigger, train with XGBoost, LightGBM, or CatBoost, then import the 
 - [SQL reference](https://javorraca.github.io/duckboost/reference.html){target="_blank"} for every function and option used above
 - [duckboost on DuckDB Community Extensions](https://duckdb.org/community_extensions/extensions/duckboost.html){target="_blank"}
 - [Announcing DuckDB 2.0.0 LTS "Cinnamon Teal"](https://duckdb.org/2026/10/21/announcing-duckdb-200.html){target="_blank"} by the DuckDB team
+- [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/){target="_blank"} by Allison Horst, Alison Hill, and Kristen Gorman, also [on CRAN](https://cran.r-project.org/package=palmerpenguins){target="_blank"}
 - [DuckDB installation page](https://duckdb.org/install/){target="_blank"}
 - [duckboost issues](https://github.com/JavOrraca/duckboost/issues){target="_blank"} if something breaks
 
@@ -602,6 +677,8 @@ For anything bigger, train with XGBoost, LightGBM, or CatBoost, then import the 
 
 If you try duckboost on a table you already have in DuckDB, I would love to hear how it goes. Open an issue if anything breaks and I will take a look.
 
-Thanks again to the DuckDB team, the community extensions maintainers, and the XGBoost, LightGBM, and CatBoost projects whose model formats make the importers possible.
+Thank you to the early testers of duckboost, including [Greg Faletto](https://github.com/gregfaletto){target="_blank"}, who ran into issues along the way and is a duckboost contributor.
 
-Happy Saturday, and happy coding!
+Thanks again to the DuckDB team, the community extensions maintainers, Allison Horst, Alison Hill, and Kristen Gorman for the penguins, and the XGBoost, LightGBM, and CatBoost projects whose model formats make the importers possible.
+
+Happy coding!
