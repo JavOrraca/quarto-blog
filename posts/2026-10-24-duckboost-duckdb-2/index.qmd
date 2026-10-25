@@ -678,6 +678,8 @@ For anything bigger, train with XGBoost, LightGBM, or CatBoost, then import the 
 
 If you try duckboost on a table you already have in DuckDB, I would love to hear how it goes. Open an issue if anything breaks and I will take a look.
 
+Thank you to the early testers of duckboost, including [Greg Faletto](https://github.com/gregfaletto){target="_blank"}, who ran into issues along the way and is a duckboost contributor.
+
 Thanks again to the DuckDB team, the community extensions maintainers, Allison Horst, Alison Hill, and Kristen Gorman for the penguins, and the XGBoost, LightGBM, and CatBoost projects whose model formats make the importers possible.
 
 Happy Saturday, and happy coding!
