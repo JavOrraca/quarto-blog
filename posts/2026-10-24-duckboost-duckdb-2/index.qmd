@@ -51,7 +51,7 @@ Features always go in as a `DOUBLE[]` list, which is why you see `[x]` even with
 
 [`duckboost`](https://github.com/JavOrraca/duckboost){target="_blank"} is the DuckDB extension I maintain. It trains histogram gradient-boosted decision trees (GBDT, the model family behind XGBoost, LightGBM, and CatBoost) with a built-in trainer, evaluates them in SQL, and exports a trained model as a plain SQL query.
 
-It reached the community extensions repository on October 23, 2026 through [community-extensions PR #3236](https://github.com/duckdb/community-extensions/pull/3236){target="_blank"}. The current release is [v0.0.4](https://github.com/JavOrraca/duckboost/releases/tag/v0.0.4){target="_blank"}, under an MIT license.
+It reached the community extensions repository on October 23, 2026 through [community-extensions PR #3236](https://github.com/duckdb/community-extensions/pull/3236){target="_blank"}. The current release is [v0.0.5](https://github.com/JavOrraca/duckboost/releases/tag/v0.0.5){target="_blank"}, under an MIT license.
 
 Thank you to the DuckDB team and the maintainers of [DuckDB community extensions](https://duckdb.org/community_extensions/){target="_blank"}. Their build pipeline compiles the extension for each platform, and that is the reason the install is one line.
 
@@ -61,7 +61,7 @@ DuckDB 2.0.0 LTS, codenamed "Cinnamon Teal", shipped on October 21, 2026. The [a
 
 None of those are what duckboost builds on. Three smaller facts from the announcement and the extension docs matter for this post:
 
-- DuckDB 2.0 is an LTS release with support until at least October 2027, and duckboost v0.0.4 targets it. DuckDB 1.x clients cannot load the extension.
+- DuckDB 2.0 is an LTS release with support until at least October 2027, and duckboost v0.0.5 targets it. DuckDB 1.x clients cannot load the extension.
 - The old single-arrow lambda syntax is disabled by default. The one lambda below uses the `lambda p:` form.
 - DuckDB versions before 2.0 cannot read database files created by 2.0. The model store in this post is a `.duckdb` file, so read the [migration guide](https://duckdb.org/docs/2.0/operations_manual/migration){target="_blank"} before you point an older client at it.
 
@@ -448,18 +448,22 @@ COPY (
 ) TO 'clf_model.sql' (FORMAT blob);
 ```
 
-The regression export is 878,484 bytes of SQL text and the classifier export is 298,045 bytes. That is a lot to read and no trouble to ship.
+The regression export is 919,180 bytes of SQL text and the classifier export is 312,361 bytes. That is a lot to read and no trouble to ship.
 
-Now the part that matters. In a fresh process, without loading duckboost, I ran the exported text and compared it with the predictions `duckboost_predict()` made earlier. Attempt 1 runs the text as-is:
+Now the part that matters. In a fresh process, without loading duckboost, I ran the exported text as-is and compared it with the predictions `duckboost_predict()` made earlier. The exported query spells every number as a `DOUBLE` literal such as `0.10000000000000001e0`, so DuckDB does the same arithmetic that `duckboost_predict()` does.
+
+The first query confirms that the extension is not loaded:
 
 ```sql
 -- New process, duckboost is NOT loaded. Only DuckDB's built-in SQL runs from here.
 SELECT count(*) FILTER (WHERE extension_name = 'duckboost' AND loaded) AS duckboost_loaded
 FROM duckdb_extensions();
 
--- Attempt 1: run the exported text as-is
-SET VARIABLE reg_sql_raw = (SELECT content FROM read_text('reg_model.sql'));
-SELECT count(*), max(pred) FROM query(getvariable('reg_sql_raw'));
+SET VARIABLE reg_sql = (SELECT content FROM read_text('reg_model.sql'));
+SET VARIABLE clf_sql = (SELECT content FROM read_text('clf_model.sql'));
+
+CREATE TABLE reg_preds_sql AS FROM query(getvariable('reg_sql'));
+CREATE TABLE clf_preds_sql AS FROM query(getvariable('clf_sql'));
 ```
 
 ```text
@@ -469,22 +473,11 @@ SELECT count(*), max(pred) FROM query(getvariable('reg_sql_raw'));
 ├──────────────────┤
 │                0 │
 └──────────────────┘
-Conversion Error: Casting value "13.06043230907708435666831746849372420" to type DECIMAL(38,37) failed: value is out of range!
 ```
 
-The first line confirms the extension is not loaded. The second is the failure, which I explain in the callout below. The fix is a small macro that rewrites the text before DuckDB parses it, and then the comparison queries run:
+Then the comparison queries for the regression export and the classifier export:
 
 ```sql
--- Attempt 2: write the 17-digit literals as DOUBLEs (append e0), then run
-CREATE MACRO as_doubles(sql) AS
-  regexp_replace(sql, '([0-9]+\.[0-9]+)([^0-9e.])', '\1e0\2', 'g');
-
-SET VARIABLE reg_sql = (SELECT as_doubles(content) FROM read_text('reg_model.sql'));
-SET VARIABLE clf_sql = (SELECT as_doubles(content) FROM read_text('clf_model.sql'));
-
-CREATE TABLE reg_preds_sql AS FROM query(getvariable('reg_sql'));
-CREATE TABLE clf_preds_sql AS FROM query(getvariable('clf_sql'));
-
 -- Regression: exported SQL vs. the predictions duckboost_predict made earlier
 SELECT count(*) AS n_rows,
        count(*) FILTER (WHERE a.pred = b.pred) AS identical_rows,
@@ -527,16 +520,7 @@ FROM clf_preds a JOIN clf_preds_sql b USING (id);
 └────────┴────────────┴────────────────────┘
 ```
 
-With the rewrite, the exported regression SQL matched all 750 predictions exactly, and the classifier SQL matched all 750 classes and every probability to a maximum difference of 0.0.
-
-::: {.callout-warning}
-## The DECIMAL gotcha in v0.0.4
-Attempt 1 failed. The exported query writes leaf values and the learning rate as 17-digit literals such as `0.10000000000000001`, and DuckDB reads a literal like that as a `DECIMAL`. Summing hundreds of them can overflow, which is the error above.
-
-The `as_doubles()` macro appends `e0` to every decimal literal so DuckDB treats it as a `DOUBLE`, the same arithmetic `duckboost_predict()` uses. Smaller ensembles sometimes ran without the rewrite in my tests and came back as a `DECIMAL` column, so whether it fails depends on the model.
-
-I apply the rewrite every time. If you are on a later duckboost release, try attempt 1 first, since the rewrite may no longer be needed.
-:::
+The exported regression SQL matched all 750 predictions exactly, with a maximum difference of 0.0. The classifier SQL matched all 750 classes and every probability to a maximum difference of 0.0. No extension, no Python, and the same answers.
 
 # Importing XGBoost, LightGBM, and CatBoost Dumps
 
@@ -600,7 +584,7 @@ dbDisconnect(con, shutdown = TRUE)
 
 I reach for duckboost when the data already lives in DuckDB, the table is moderate in size, and the model has to travel as SQL. That last part is the point: a scoring query with no Python runtime and no extension is easy to review and easy to run in a place where you cannot install anything.
 
-I would not reach for it for very large training sets. The docs are direct about the limits: training is single-threaded, all training rows are materialized in memory, and there are no monotonic constraints. The README also labels the project experimental, and v0.0.4 is early, so pin your versions.
+I would not reach for it for very large training sets. The docs are direct about the limits: training is single-threaded, all training rows are materialized in memory, and there are no monotonic constraints. The README also labels the project experimental, and v0.0.5 is early, so pin your versions.
 
 For anything bigger, train with XGBoost, LightGBM, or CatBoost, then import the dump. The inspiration for the SQL export is Posit's [orbital](https://posit-dev.github.io/orbital/){target="_blank"}, which converts trained scikit-learn and tidymodels pipelines into SQL, and I wanted a similar loop inside DuckDB.
 
@@ -616,7 +600,7 @@ For anything bigger, train with XGBoost, LightGBM, or CatBoost, then import the 
 
 ---
 
-If you try duckboost on a table you already have in DuckDB, I would love to hear how it goes, especially if you hit a sharp edge like the DECIMAL one. Open an issue and I will take a look.
+If you try duckboost on a table you already have in DuckDB, I would love to hear how it goes. Open an issue if anything breaks and I will take a look.
 
 Thanks again to the DuckDB team, the community extensions maintainers, and the XGBoost, LightGBM, and CatBoost projects whose model formats make the importers possible.
 
