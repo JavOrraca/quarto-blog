@@ -4,7 +4,6 @@ description: "Install the duckboost community extension, use its native trainer 
 date: 10-24-2026
 categories: [duckdb, machine-learning, sql, r]
 image: preview.jpg
-draft: true
 ---
 
 ![](preview.jpg){.preview-image}
@@ -682,4 +681,4 @@ Thank you to the early testers of duckboost, including [Greg Faletto](https://gi
 
 Thanks again to the DuckDB team, the community extensions maintainers, Allison Horst, Alison Hill, and Kristen Gorman for the penguins, and the XGBoost, LightGBM, and CatBoost projects whose model formats make the importers possible.
 
-Happy Saturday, and happy coding!
+Happy coding!
