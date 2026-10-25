@@ -1,0 +1,607 @@
+---
+title: "SQL-Native Gradient Boosting in DuckDB 2.0 with duckboost"
+description: "Install the duckboost community extension, train regression and multi-class gradient-boosted trees in plain SQL, then save the model and export it as SQL that runs without the extension."
+date: 10-24-2026
+categories: [duckdb, machine-learning, sql, r]
+image: preview.jpg
+draft: true
+---
+
+![](preview.jpg){.preview-image}
+
+# Gradient-Boosted Trees Are One INSTALL Away
+
+Here is the whole setup. You need DuckDB 2.0.0 or newer, and then two lines:
+
+```sql
+INSTALL duckboost FROM community;
+LOAD duckboost;
+```
+
+And here is the smallest train-and-predict loop I know how to write: fifty rows, one feature, and a perfectly linear target.
+
+```sql
+CREATE TABLE tiny AS
+SELECT i::DOUBLE AS x, (2 * i + 1)::DOUBLE AS y FROM range(50) t(i);
+
+CREATE TABLE tiny_model AS
+SELECT duckboost_train(y, [x], MAP {'backend': 'native', 'n_estimators': '50', 'feature_names': 'x'}) AS model
+FROM tiny;
+
+SELECT x, y, round(duckboost_predict(model, [x]), 2) AS pred
+FROM tiny_model, tiny
+WHERE x IN (5, 25, 45)
+ORDER BY x;
+```
+
+```text
+┌────────┬────────┬────────┐
+│   x    │   y    │  pred  │
+│ double │ double │ double │
+├────────┼────────┼────────┤
+│    5.0 │   11.0 │  11.19 │
+│   25.0 │   51.0 │   51.0 │
+│   45.0 │   91.0 │  90.78 │
+└────────┴────────┴────────┘
+```
+
+`duckboost_train()` is an aggregate, so it behaves like `sum()` or `avg()`: many rows in, one value out. That value is the model, stored as a JSON string. `duckboost_predict()` takes the string plus a list of features and returns a number.
+
+Features always go in as a `DOUBLE[]` list, which is why you see `[x]` even with a single column. Everything else in this post is a variation on those two functions.
+
+[`duckboost`](https://github.com/JavOrraca/duckboost){target="_blank"} is the DuckDB extension I maintain. It trains histogram gradient-boosted decision trees (GBDT, the model family behind XGBoost, LightGBM, and CatBoost) with a built-in trainer, evaluates them in SQL, and exports a trained model as a plain SQL query.
+
+It reached the community extensions repository on October 23, 2026 through [community-extensions PR #3236](https://github.com/duckdb/community-extensions/pull/3236){target="_blank"}. The current release is [v0.0.5](https://github.com/JavOrraca/duckboost/releases/tag/v0.0.5){target="_blank"}, under an MIT license.
+
+Thank you to the DuckDB team and the maintainers of [DuckDB community extensions](https://duckdb.org/community_extensions/){target="_blank"}. Their build pipeline compiles the extension for each platform, and that is the reason the install is one line.
+
+# What DuckDB 2.0 Changes for This
+
+DuckDB 2.0.0 LTS, codenamed "Cinnamon Teal", shipped on October 21, 2026. The [announcement](https://duckdb.org/2026/10/21/announcing-duckdb-200.html){target="_blank"} calls it the team's biggest feature release so far. The headline items are a polished Quack protocol with the new `CONNECT` statement, asynchronous I/O, a first-class `VARIANT` type, triggers, agent mode in the CLI, and a PEG-based SQL parser that is now the default.
+
+None of those are what duckboost builds on. Three smaller facts from the announcement and the extension docs matter for this post:
+
+- DuckDB 2.0 is an LTS release with support until at least October 2027, and duckboost v0.0.5 targets it. DuckDB 1.x clients cannot load the extension.
+- The old single-arrow lambda syntax is disabled by default. The one lambda below uses the `lambda p:` form.
+- DuckDB versions before 2.0 cannot read database files created by 2.0. The model store in this post is a `.duckdb` file, so read the [migration guide](https://duckdb.org/docs/2.0/operations_manual/migration){target="_blank"} before you point an older client at it.
+
+# Multivariate Regression in Plain SQL
+
+Both examples use synthetic tables built with SQL, so nothing downloads and a render never touches the network. Instead of `random()`, I derive every column from `hash()` of the row number, which builds the same 3,000 rows however many threads DuckDB uses.^[The numbers below reproduced exactly across repeated runs on DuckDB 2.0.0. I would not promise that `hash()` output stays identical in future DuckDB versions, so read the metrics as "about this", not as a contract.]
+
+The target is deliberately non-linear: a linear term, a sine of `x2`, a threshold on `x3` that switches on an `x4` effect, an `x1 * x2` interaction, and uniform noise. The noise has a standard deviation of about 0.82, so no model should be expected to land far below a holdout RMSE of 0.82.
+
+For the split I use `duckboost_initial_split()`, a table macro that adds a `split` column holding `'train'` or `'test'`. It borrows the idea (not the code) of [rsample](https://rsample.tidymodels.org/){target="_blank"}'s `initial_split()`. The assignment is a hash of the row values plus the seed, so the same rows and seed give the same split.
+
+```sql
+-- 3,000 synthetic rows. hash() gives reproducible uniforms (no random() ordering surprises).
+CREATE TABLE reg_data AS
+WITH u AS (
+  SELECT i AS id,
+         (hash(i * 10 + 1) % 1000000) / 1000000.0 AS x1,
+         (hash(i * 10 + 2) % 1000000) / 1000000.0 AS x2,
+         (hash(i * 10 + 3) % 1000000) / 1000000.0 AS x3,
+         (hash(i * 10 + 4) % 1000000) / 1000000.0 AS x4,
+         (hash(i * 10 + 5) % 1000000) / 1000000.0 AS e1,
+         (hash(i * 10 + 6) % 1000000) / 1000000.0 AS e2
+  FROM range(3000) t(i)
+)
+SELECT id, x1, x2, x3, x4,
+       (10 * x1 + 6 * sin(6 * x2) + 8 * (x3 > 0.5)::INT * x4 - 4 * x1 * x2
+        + 2.0 * (e1 + e2 - 1))::DOUBLE AS y
+FROM u;
+
+-- 75/25 train/test split, reproducible with a seed
+CREATE TABLE reg_split AS
+FROM duckboost_initial_split('reg_data', prop := 0.75, seed := 42);
+
+SELECT split, count(*) AS n, round(avg(y), 3) AS mean_y
+FROM reg_split GROUP BY split ORDER BY split;
+```
+
+```text
+┌─────────┬───────┬────────┐
+│  split  │   n   │ mean_y │
+│ varchar │ int64 │ double │
+├─────────┼───────┼────────┤
+│ test    │   750 │  5.948 │
+│ train   │  2250 │  5.914 │
+└─────────┴───────┴────────┘
+```
+
+That is 2,250 training rows and 750 test rows, with similar means on both sides. I like to see that before I train anything.
+
+Now the model. Options travel in a `MAP` of strings, so numbers are quoted. Unknown keys raise an error instead of being ignored, so a typo in `'learning_rate'` fails loudly.
+
+`'backend': 'native'` selects the built-in trainer. The docs describe it as dependency-free, single-threaded, and aimed at SQL-native workflows rather than replacing XGBoost, LightGBM, or CatBoost at every scale. That matches how I would use it.
+
+```sql
+-- Train on the training rows only
+CREATE TABLE reg_models AS
+SELECT duckboost_train(
+  y, [x1, x2, x3, x4],
+  MAP {
+    'backend': 'native',
+    'task': 'regression',
+    'n_estimators': '200',
+    'max_depth': '4',
+    'learning_rate': '0.1',
+    'min_samples_leaf': '5',
+    'seed': '42',
+    'feature_names': 'x1,x2,x3,x4'
+  }
+) AS model
+FROM reg_split
+WHERE split = 'train';
+```
+
+Predicting on the holdout is a cross join between the one-row model table and the test rows. Here are five predictions next to the truth:
+
+```sql
+-- Predict on the holdout
+CREATE TABLE reg_preds AS
+SELECT id, y, duckboost_predict(model, [x1, x2, x3, x4]) AS pred
+FROM reg_models, reg_split
+WHERE split = 'test';
+
+SELECT id, round(y, 3) AS y, round(pred, 3) AS pred
+FROM reg_preds ORDER BY id LIMIT 5;
+```
+
+```text
+┌───────┬────────┬────────┐
+│  id   │   y    │  pred  │
+│ int64 │ double │ double │
+├───────┼────────┼────────┤
+│     3 │  6.356 │  5.236 │
+│     8 │ 13.186 │ 14.225 │
+│    17 │ 11.676 │  14.39 │
+│    20 │  0.476 │  1.759 │
+│    30 │  8.797 │  8.976 │
+└───────┴────────┴────────┘
+```
+
+Metrics are ordinary SQL, which I prefer because I can group them by segment later. The baseline column is the RMSE you get by predicting the training mean for every test row.
+
+```sql
+-- Holdout metrics in plain SQL, next to a "predict the training mean" baseline
+WITH train_mean AS (SELECT avg(y) AS m FROM reg_split WHERE split = 'train'),
+     test_mean  AS (SELECT avg(y) AS ybar FROM reg_preds)
+SELECT
+  round(sqrt(avg((y - pred) ^ 2)), 3)                  AS rmse,
+  round(avg(abs(y - pred)), 3)                         AS mae,
+  round(1 - sum((y - pred) ^ 2) / sum((y - ybar) ^ 2), 3) AS r2,
+  round(sqrt(avg((y - m) ^ 2)), 3)                     AS baseline_rmse
+FROM reg_preds, train_mean, test_mean;
+```
+
+```text
+┌────────┬────────┬────────┬───────────────┐
+│  rmse  │  mae   │   r2   │ baseline_rmse │
+│ double │ double │ double │    double     │
+├────────┼────────┼────────┼───────────────┤
+│  0.989 │  0.785 │  0.974 │         6.095 │
+└────────┴────────┴────────┴───────────────┘
+```
+
+The model removes most of the error: RMSE falls from 6.095 to 0.989, which sits about 0.17 above the noise floor, and R2 is 0.974. The built-in evaluator should agree with the hand-written SQL, so I check:
+
+```sql
+-- Same numbers from duckboost's own evaluator
+SELECT
+  round(duckboost_evaluate_agg(model, y, [x1, x2, x3, x4], MAP {'metric': 'rmse'}), 3) AS rmse,
+  round(duckboost_evaluate_agg(model, y, [x1, x2, x3, x4], MAP {'metric': 'mae'}), 3)  AS mae
+FROM reg_models, reg_split
+WHERE split = 'test';
+```
+
+```text
+┌────────┬────────┐
+│  rmse  │  mae   │
+│ double │ double │
+├────────┼────────┤
+│  0.989 │  0.785 │
+└────────┴────────┘
+```
+
+Same RMSE and MAE. The `metric` option also accepts `accuracy`, `logloss`, `brier_score`, and `roc_auc_ovr` for classification, which is where we go next.
+
+# Multivariate Multi-Class Classification
+
+Multi-class labels must be integer class indices from 0 to `n_classes - 1`, passed as `DOUBLE`. Map string labels with a `CASE` first. Set `'task': 'multiclass'` and duckboost fits one tree per class per boosting round, so 60 rounds on 3 classes is 180 trees.
+
+The synthetic table has four features and three classes with a noisy, non-linear boundary. This time the split is stratified on `label`, so each class lands in train and test in the same proportions.
+
+```sql
+-- 3,000 synthetic rows, three classes (0, 1, 2) with a noisy, non-linear boundary
+CREATE TABLE clf_data AS
+WITH u AS (
+  SELECT i AS id,
+         (hash(i * 10 + 11) % 1000000) / 1000000.0 AS x1,
+         (hash(i * 10 + 12) % 1000000) / 1000000.0 AS x2,
+         (hash(i * 10 + 13) % 1000000) / 1000000.0 AS x3,
+         (hash(i * 10 + 14) % 1000000) / 1000000.0 AS x4,
+         (hash(i * 10 + 15) % 1000000) / 1000000.0 AS e1,
+         (hash(i * 10 + 16) % 1000000) / 1000000.0 AS e2
+  FROM range(3000) t(i)
+),
+s AS (
+  SELECT *,
+         3 * x1 + 2 * sin(5 * x2) + 0.6 * (e1 - 0.5) AS score_a,
+         4 * x3 * x4 + 0.6 * (e2 - 0.5)              AS score_b
+  FROM u
+)
+SELECT id, x1, x2, x3, x4,
+       CASE WHEN score_a < 1.6 THEN 0
+            WHEN score_b > 1.2 THEN 2
+            ELSE 1 END::DOUBLE AS label
+FROM s;
+
+SELECT label::INT AS label, count(*) AS n FROM clf_data GROUP BY label ORDER BY label;
+
+CREATE TABLE clf_split AS
+FROM duckboost_initial_split('clf_data', prop := 0.75, strata := label, seed := 42);
+```
+
+```text
+┌───────┬───────┐
+│ label │   n   │
+│ int32 │ int64 │
+├───────┼───────┤
+│     0 │  1290 │
+│     1 │  1135 │
+│     2 │   575 │
+└───────┴───────┘
+```
+
+```sql
+CREATE TABLE clf_models AS
+SELECT duckboost_train(
+  label, [x1, x2, x3, x4],
+  MAP {
+    'backend': 'native',
+    'task': 'multiclass',
+    'n_estimators': '60',
+    'max_depth': '3',
+    'learning_rate': '0.15',
+    'min_samples_leaf': '5',
+    'seed': '42',
+    'feature_names': 'x1,x2,x3,x4'
+  }
+) AS model
+FROM clf_split
+WHERE split = 'train';
+```
+
+`duckboost_predict()` returns the most likely class index. `duckboost_predict_proba()` returns a list with one softmax probability per class. SQL lists are 1-based, so class `k` sits at position `k + 1`, which matters in the log loss below.
+
+```sql
+CREATE TABLE clf_preds AS
+SELECT id, label,
+       duckboost_predict(model, [x1, x2, x3, x4])       AS pred_class,
+       duckboost_predict_proba(model, [x1, x2, x3, x4]) AS proba
+FROM clf_models, clf_split
+WHERE split = 'test';
+
+SELECT id, label::INT AS label, pred_class::INT AS pred_class,
+       list_transform(proba, lambda p: round(p, 3)) AS proba
+FROM clf_preds ORDER BY id LIMIT 5;
+```
+
+```text
+┌───────┬───────┬────────────┬───────────────────────┐
+│  id   │ label │ pred_class │         proba         │
+│ int64 │ int32 │   int32    │       double[]        │
+├───────┼───────┼────────────┼───────────────────────┤
+│     2 │     1 │          1 │ [0.231, 0.767, 0.002] │
+│     3 │     0 │          0 │ [0.999, 0.001, 0.0]   │
+│     4 │     2 │          2 │ [0.116, 0.088, 0.796] │
+│     8 │     2 │          2 │ [0.004, 0.052, 0.944] │
+│    10 │     0 │          0 │ [1.0, 0.0, 0.0]       │
+└───────┴───────┴────────────┴───────────────────────┘
+```
+
+Now the holdout metrics. Accuracy and log loss are one query. The majority-class accuracy is the floor to beat, meaning what you get by always predicting the most common training class.
+
+```sql
+SELECT round(avg((pred_class = label)::INT), 4) AS accuracy,
+       round(-avg(ln(greatest(proba[(label + 1)::INT], 1e-15))), 4) AS log_loss
+FROM clf_preds;
+
+-- Baseline: always predict the most common training class
+SELECT round(avg((label = (SELECT mode(label) FROM clf_split WHERE split = 'train'))::INT), 4)
+         AS majority_class_accuracy
+FROM clf_preds;
+```
+
+```text
+┌──────────┬──────────┐
+│ accuracy │ log_loss │
+│  double  │  double  │
+├──────────┼──────────┤
+│    0.944 │   0.1452 │
+└──────────┴──────────┘
+┌─────────────────────────┐
+│ majority_class_accuracy │
+│         double          │
+├─────────────────────────┤
+│                  0.4293 │
+└─────────────────────────┘
+```
+
+Accuracy is 0.944 against a 0.4293 floor, and log loss is 0.1452. A confusion matrix is one `PIVOT` away, with true classes in rows and predicted classes in columns:
+
+```sql
+-- Confusion matrix: rows are the true class, columns are the predicted class
+PIVOT (SELECT label::INT AS actual, pred_class::INT AS predicted FROM clf_preds)
+ON predicted USING count(*) GROUP BY actual ORDER BY actual;
+```
+
+```text
+┌────────┬───────┬───────┬───────┐
+│ actual │   0   │   1   │   2   │
+│ int32  │ int64 │ int64 │ int64 │
+├────────┼───────┼───────┼───────┤
+│      0 │   308 │    11 │     3 │
+│      1 │     9 │   268 │     7 │
+│      2 │     3 │     9 │   132 │
+└────────┴───────┴───────┴───────┘
+```
+
+Most mistakes are between neighboring classes, 11 true zeros predicted as ones and 9 true ones predicted as zeros, which is what I expect from a boundary I blurred with noise. The built-in evaluator reports the same accuracy and log loss, plus a one-vs-rest AUC:
+
+```sql
+-- duckboost's own evaluator on the same holdout
+SELECT
+  round(duckboost_evaluate_agg(model, label, [x1, x2, x3, x4], MAP {'metric': 'accuracy'}), 4) AS accuracy,
+  round(duckboost_evaluate_agg(model, label, [x1, x2, x3, x4], MAP {'metric': 'logloss'}), 4)  AS log_loss,
+  round(duckboost_evaluate_agg(model, label, [x1, x2, x3, x4], MAP {'metric': 'roc_auc_ovr'}), 4) AS auc_ovr
+FROM clf_models, clf_split
+WHERE split = 'test';
+```
+
+```text
+┌──────────┬──────────┬─────────┐
+│ accuracy │ log_loss │ auc_ovr │
+│  double  │  double  │ double  │
+├──────────┼──────────┼─────────┤
+│    0.944 │   0.1452 │  0.9931 │
+└──────────┴──────────┴─────────┘
+```
+
+# Saving the Model: As an Object and as SQL
+
+A duckboost model is a `VARCHAR` containing JSON. The docs call it an opaque document, so a table is a perfectly good model store. I keep the name next to the model, and in a real project I would add a version, a training date, and the holdout metrics as columns too.
+
+```sql
+-- 1) The model object is a VARCHAR holding JSON, so a table is a model store
+CREATE TABLE saved_models AS
+SELECT 'reg_gbdt_v1' AS model_name, now() AS saved_at, model FROM reg_models
+UNION ALL
+SELECT 'clf_gbdt_v1', now(), model FROM clf_models;
+
+SELECT model_name, length(model) AS json_chars, left(model, 60) AS model_prefix
+FROM saved_models ORDER BY model_name;
+```
+
+```text
+┌─────────────┬────────────┬──────────────────────────────────────────────────────────────┐
+│ model_name  │ json_chars │                         model_prefix                         │
+│   varchar   │   int64    │                           varchar                            │
+├─────────────┼────────────┼──────────────────────────────────────────────────────────────┤
+│ clf_gbdt_v1 │     328571 │ {"duckboost_version":1,"backend":"reference","task":"multicl │
+│ reg_gbdt_v1 │     632561 │ {"duckboost_version":1,"backend":"reference","task":"regress │
+└─────────────┴────────────┴──────────────────────────────────────────────────────────────┘
+```
+
+Because that table lives in a database file, a new process can reuse the model. I quit the shell, reopened `duckdb duckboost_demo.duckdb`, and scored the test rows again with the stored regression model:
+
+```sql
+-- New process, new connection. Load duckboost and reuse the stored model object.
+LOAD duckboost;
+
+CREATE TABLE reg_preds_reloaded AS
+SELECT s.id, duckboost_predict(m.model, [s.x1, s.x2, s.x3, s.x4]) AS pred
+FROM saved_models m, reg_split s
+WHERE m.model_name = 'reg_gbdt_v1' AND s.split = 'test';
+
+SELECT count(*) AS n_rows,
+       count(*) FILTER (WHERE a.pred = b.pred) AS identical_rows,
+       max(abs(a.pred - b.pred)) AS max_abs_diff
+FROM reg_preds a JOIN reg_preds_reloaded b USING (id);
+```
+
+```text
+┌────────┬────────────────┬──────────────┐
+│ n_rows │ identical_rows │ max_abs_diff │
+│ int64  │     int64      │    double    │
+├────────┼────────────────┼──────────────┤
+│    750 │            750 │          0.0 │
+└────────┴────────────────┴──────────────┘
+```
+
+All 750 predictions are identical to the ones from before the restart. The extension is still needed for this path, because `duckboost_predict()` does the scoring.
+
+The second form needs no extension at all. `duckboost_to_sql()` takes the model, a table name, and the feature column names, and returns a `SELECT` that scores that table. `separate_trees` computes one column per tree and sums them, `keep_columns` carries your ID column through, and `proba` adds one `proba_k` column per class for classifiers.
+
+Here I write each query to a file. Casting to `BLOB` and using `FORMAT blob` writes the text untouched, with no CSV quoting in the way:
+
+```sql
+-- 2) Export to plain SQL. Views name the holdout rows so the SQL has a table to score.
+CREATE VIEW reg_test AS SELECT id, x1, x2, x3, x4 FROM reg_split WHERE split = 'test';
+CREATE VIEW clf_test AS SELECT id, x1, x2, x3, x4 FROM clf_split WHERE split = 'test';
+
+COPY (
+  SELECT duckboost_to_sql(
+    model, 'reg_test', ['x1', 'x2', 'x3', 'x4'],
+    MAP {'separate_trees': 'true', 'prediction_alias': 'pred', 'keep_columns': 'id'}
+  )::BLOB
+  FROM saved_models WHERE model_name = 'reg_gbdt_v1'
+) TO 'reg_model.sql' (FORMAT blob);
+
+COPY (
+  SELECT duckboost_to_sql(
+    model, 'clf_test', ['x1', 'x2', 'x3', 'x4'],
+    MAP {'separate_trees': 'true', 'prediction_alias': 'pred_class', 'keep_columns': 'id', 'proba': 'true'}
+  )::BLOB
+  FROM saved_models WHERE model_name = 'clf_gbdt_v1'
+) TO 'clf_model.sql' (FORMAT blob);
+```
+
+The regression export is 919,180 bytes of SQL text and the classifier export is 312,361 bytes. That is a lot to read and no trouble to ship.
+
+Now the part that matters. In a fresh process, without loading duckboost, I ran the exported text as-is and compared it with the predictions `duckboost_predict()` made earlier. The exported query spells every number as a `DOUBLE` literal such as `0.10000000000000001e0`, so DuckDB does the same arithmetic that `duckboost_predict()` does.
+
+The first query confirms that the extension is not loaded:
+
+```sql
+-- New process, duckboost is NOT loaded. Only DuckDB's built-in SQL runs from here.
+SELECT count(*) FILTER (WHERE extension_name = 'duckboost' AND loaded) AS duckboost_loaded
+FROM duckdb_extensions();
+
+SET VARIABLE reg_sql = (SELECT content FROM read_text('reg_model.sql'));
+SET VARIABLE clf_sql = (SELECT content FROM read_text('clf_model.sql'));
+
+CREATE TABLE reg_preds_sql AS FROM query(getvariable('reg_sql'));
+CREATE TABLE clf_preds_sql AS FROM query(getvariable('clf_sql'));
+```
+
+```text
+┌──────────────────┐
+│ duckboost_loaded │
+│      int64       │
+├──────────────────┤
+│                0 │
+└──────────────────┘
+```
+
+Then the comparison queries for the regression export and the classifier export:
+
+```sql
+-- Regression: exported SQL vs. the predictions duckboost_predict made earlier
+SELECT count(*) AS n_rows,
+       count(*) FILTER (WHERE a.pred = b.pred) AS identical_rows,
+       max(abs(a.pred - b.pred)) AS max_abs_diff
+FROM reg_preds a JOIN reg_preds_sql b USING (id);
+
+-- Classification: what the exported query returns
+SELECT column_name, column_type FROM (DESCRIBE clf_preds_sql);
+
+SELECT count(*) AS n_rows,
+       count(*) FILTER (WHERE a.pred_class = b.pred_class) AS same_class,
+       max(greatest(abs(a.proba[1] - b.proba_0),
+                    abs(a.proba[2] - b.proba_1),
+                    abs(a.proba[3] - b.proba_2))) AS max_abs_proba_diff
+FROM clf_preds a JOIN clf_preds_sql b USING (id);
+```
+
+```text
+┌────────┬────────────────┬──────────────┐
+│ n_rows │ identical_rows │ max_abs_diff │
+│ int64  │     int64      │    double    │
+├────────┼────────────────┼──────────────┤
+│    750 │            750 │          0.0 │
+└────────┴────────────────┴──────────────┘
+┌─────────────┬─────────────┐
+│ column_name │ column_type │
+│   varchar   │   varchar   │
+├─────────────┼─────────────┤
+│ id          │ BIGINT      │
+│ pred_class  │ INTEGER     │
+│ proba_0     │ DOUBLE      │
+│ proba_1     │ DOUBLE      │
+│ proba_2     │ DOUBLE      │
+└─────────────┴─────────────┘
+┌────────┬────────────┬────────────────────┐
+│ n_rows │ same_class │ max_abs_proba_diff │
+│ int64  │   int64    │       double       │
+├────────┼────────────┼────────────────────┤
+│    750 │        750 │                0.0 │
+└────────┴────────────┴────────────────────┘
+```
+
+The exported regression SQL matched all 750 predictions exactly, with a maximum difference of 0.0. The classifier SQL matched all 750 classes and every probability to a maximum difference of 0.0. No extension, no Python, and the same answers.
+
+# Importing XGBoost, LightGBM, and CatBoost Dumps
+
+If you already train with [XGBoost](https://github.com/dmlc/xgboost){target="_blank"}, [LightGBM](https://github.com/microsoft/LightGBM){target="_blank"}, or [CatBoost](https://github.com/catboost/catboost){target="_blank"}, `duckboost_import()` converts a model dump into the same JSON model. After that, `duckboost_predict()`, `duckboost_predict_proba()`, and `duckboost_to_sql()` all work on it.
+
+The docs list the inputs it reads: XGBoost JSON from `dump_model(..., dump_format='json')`, LightGBM text from `booster_.save_model()`, and CatBoost JSON from `save_model(..., format='json')`. In the community build CatBoost is import-only, and unsupported LightGBM objectives such as `poisson` are rejected rather than skipped.
+
+```sql
+-- Shape of the call; swap in your own dump file
+SELECT duckboost_import(
+  'lightgbm',
+  (SELECT content FROM read_text('lgb_model.txt'))
+) AS model;
+```
+
+I ran this form against the tiny fixture dumps in the repo's test folder, not against a production model, so treat that as a smoke test. The [import vignette](https://javorraca.github.io/duckboost/vignettes/import-dumps.html){target="_blank"} has the details for each format, including how learning rate and missing values are handled.
+
+# Calling It from R
+
+I live in R most days, and the extension works through the `duckdb` R package as long as the engine is 2.0.0 or newer. I ran this with the CRAN `duckdb` 2.0.0 package and DBI, using the same fifty-row loop as the top of the post:
+
+```r
+library(DBI)
+
+con <- dbConnect(duckdb::duckdb())
+invisible(dbExecute(con, "INSTALL duckboost FROM community"))
+invisible(dbExecute(con, "LOAD duckboost"))
+
+invisible(dbExecute(con, "
+  CREATE TABLE tiny AS
+  SELECT i::DOUBLE AS x, (2 * i + 1)::DOUBLE AS y FROM range(50) t(i)
+"))
+
+invisible(dbExecute(con, "
+  CREATE TABLE tiny_model AS
+  SELECT duckboost_train(
+    y, [x],
+    MAP {'backend': 'native', 'n_estimators': '50', 'feature_names': 'x'}
+  ) AS model
+  FROM tiny
+"))
+
+dbGetQuery(con, "
+  SELECT x, y, round(duckboost_predict(model, [x]), 2) AS pred
+  FROM tiny_model, tiny
+  WHERE x IN (5, 25, 45)
+  ORDER BY x
+")
+
+dbDisconnect(con, shutdown = TRUE)
+```
+
+```text
+   x  y  pred
+1  5 11 11.19
+2 25 51 51.00
+3 45 91 90.78
+```
+
+# Where I Would Use It
+
+I reach for duckboost when the data already lives in DuckDB, the table is moderate in size, and the model has to travel as SQL. That last part is the point: a scoring query with no Python runtime and no extension is easy to review and easy to run in a place where you cannot install anything.
+
+I would not reach for it for very large training sets. The docs are direct about the limits: training is single-threaded, all training rows are materialized in memory, and there are no monotonic constraints. The README also labels the project experimental, and v0.0.5 is early, so pin your versions.
+
+For anything bigger, train with XGBoost, LightGBM, or CatBoost, then import the dump. The inspiration for the SQL export is Posit's [orbital](https://posit-dev.github.io/orbital/){target="_blank"}, which converts trained scikit-learn and tidymodels pipelines into SQL, and I wanted a similar loop inside DuckDB.
+
+# Learn More
+
+- [duckboost on GitHub](https://github.com/JavOrraca/duckboost){target="_blank"} by me, MIT licensed
+- [duckboost documentation site](https://javorraca.github.io/duckboost/){target="_blank"}, including [Getting started](https://javorraca.github.io/duckboost/getting-started.html){target="_blank"}, the [native trainer vignette](https://javorraca.github.io/duckboost/vignettes/native-trainer.html){target="_blank"}, and the [train, predict, export vignette](https://javorraca.github.io/duckboost/vignettes/train-predict-export.html){target="_blank"}
+- [SQL reference](https://javorraca.github.io/duckboost/reference.html){target="_blank"} for every function and option used above
+- [duckboost on DuckDB Community Extensions](https://duckdb.org/community_extensions/extensions/duckboost.html){target="_blank"}
+- [Announcing DuckDB 2.0.0 LTS "Cinnamon Teal"](https://duckdb.org/2026/10/21/announcing-duckdb-200.html){target="_blank"} by the DuckDB team
+- [DuckDB installation page](https://duckdb.org/install/){target="_blank"}
+- [duckboost issues](https://github.com/JavOrraca/duckboost/issues){target="_blank"} if something breaks
+
+---
+
+If you try duckboost on a table you already have in DuckDB, I would love to hear how it goes. Open an issue if anything breaks and I will take a look.
+
+Thanks again to the DuckDB team, the community extensions maintainers, and the XGBoost, LightGBM, and CatBoost projects whose model formats make the importers possible.
+
+Happy Saturday, and happy coding!
