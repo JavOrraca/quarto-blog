@@ -4,7 +4,7 @@ comments: false
 title-block-banner: false
 ---
 
-![A fresh look brought to you by DALL-E](./images/Javier_Wide.jpg)
+![](./images/Javier_Wide.jpg)
 
 ## Professional
 
